@@ -1,7 +1,7 @@
 /*
  * notification_data.h
  *
- * Data sent in notifications from NRF to subscribed NF Instances
+ * 
  */
 
 #ifndef _OpenAPI_notification_data_H_
@@ -26,6 +26,7 @@ typedef struct OpenAPI_notification_data_s OpenAPI_notification_data_t;
 typedef struct OpenAPI_notification_data_s {
     OpenAPI_notification_event_type_e event;
     char *nf_instance_uri;
+    bool is_nf_profile_null;
     struct OpenAPI_nf_profile_s *nf_profile;
     OpenAPI_list_t *profile_changes;
     OpenAPI_condition_event_type_e condition_event;
@@ -35,6 +36,7 @@ typedef struct OpenAPI_notification_data_s {
 OpenAPI_notification_data_t *OpenAPI_notification_data_create(
     OpenAPI_notification_event_type_e event,
     char *nf_instance_uri,
+    bool is_nf_profile_null,
     OpenAPI_nf_profile_t *nf_profile,
     OpenAPI_list_t *profile_changes,
     OpenAPI_condition_event_type_e condition_event,

@@ -12,7 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "supported_gad_shapes_any_of.h"
 
 #ifdef __cplusplus
 extern "C" {

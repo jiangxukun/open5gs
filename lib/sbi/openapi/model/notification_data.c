@@ -7,6 +7,7 @@
 OpenAPI_notification_data_t *OpenAPI_notification_data_create(
     OpenAPI_notification_event_type_e event,
     char *nf_instance_uri,
+    bool is_nf_profile_null,
     OpenAPI_nf_profile_t *nf_profile,
     OpenAPI_list_t *profile_changes,
     OpenAPI_condition_event_type_e condition_event,
@@ -18,6 +19,7 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_create(
 
     notification_data_local_var->event = event;
     notification_data_local_var->nf_instance_uri = nf_instance_uri;
+    notification_data_local_var->is_nf_profile_null = is_nf_profile_null;
     notification_data_local_var->nf_profile = nf_profile;
     notification_data_local_var->profile_changes = profile_changes;
     notification_data_local_var->condition_event = condition_event;
@@ -95,6 +97,11 @@ cJSON *OpenAPI_notification_data_convertToJSON(OpenAPI_notification_data_t *noti
         ogs_error("OpenAPI_notification_data_convertToJSON() failed [nf_profile]");
         goto end;
     }
+    } else if (notification_data->is_nf_profile_null) {
+        if (cJSON_AddNullToObject(item, "nfProfile") == NULL) {
+            ogs_error("OpenAPI_notification_data_convertToJSON() failed [nf_profile]");
+            goto end;
+        }
     }
 
     if (notification_data->profile_changes) {
@@ -175,10 +182,12 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_parseFromJSON(cJSON *noti
 
     nf_profile = cJSON_GetObjectItemCaseSensitive(notification_dataJSON, "nfProfile");
     if (nf_profile) {
+    if (!cJSON_IsNull(nf_profile)) {
     nf_profile_local_nonprim = OpenAPI_nf_profile_parseFromJSON(nf_profile);
     if (!nf_profile_local_nonprim) {
         ogs_error("OpenAPI_nf_profile_parseFromJSON failed [nf_profile]");
         goto end;
+    }
     }
     }
 
@@ -227,6 +236,7 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_parseFromJSON(cJSON *noti
     notification_data_local_var = OpenAPI_notification_data_create (
         eventVariable,
         ogs_strdup(nf_instance_uri->valuestring),
+        nf_profile && cJSON_IsNull(nf_profile) ? true : false,
         nf_profile ? nf_profile_local_nonprim : NULL,
         profile_changes ? profile_changesList : NULL,
         condition_event ? condition_eventVariable : 0,

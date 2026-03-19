@@ -12,7 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "nwdaf_event_any_of.h"
 
 #ifdef __cplusplus
 extern "C" {

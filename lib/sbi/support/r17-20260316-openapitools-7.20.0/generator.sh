@@ -18,6 +18,6 @@ openapi_generator_cli="openapi-generator-cli"
 #$openapi_generator_cli generate -i ./modified/TS29503_Nudm_UEAU.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
 #$openapi_generator_cli generate -i ./modified/TS29509_Nausf_UEAuthentication.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
 #$openapi_generator_cli generate -i ./modified/TS29502_Nsmf_PDUSession.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
-$openapi_generator_cli generate -i ./modified/TS29518_Namf_Communication.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
+#$openapi_generator_cli generate -i ./modified/TS29518_Namf_Communication.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
 $openapi_generator_cli generate -i ./modified/TS29510_Nnrf_NFDiscovery.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1
 $openapi_generator_cli generate -i ./modified/TS29510_Nnrf_NFManagement.yaml -c ./openapi-generator/config.yaml -g c -o ../../openapi || exit 1

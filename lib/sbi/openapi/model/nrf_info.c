@@ -115,7 +115,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_udr_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udr_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_udr_info_list);
@@ -135,7 +135,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_udm_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udm_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_udm_info_list);
@@ -155,7 +155,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_ausf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_ausf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_ausf_info_list);
@@ -175,7 +175,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_amf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_amf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_amf_info_list);
@@ -195,7 +195,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_smf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_smf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_smf_info_list);
@@ -215,7 +215,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_upf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_upf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_upf_info_list);
@@ -235,7 +235,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_pcf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_pcf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_pcf_info_list);
@@ -255,7 +255,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_bsf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_bsf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_bsf_info_list);
@@ -275,7 +275,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_chf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_chf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_chf_info_list);
@@ -305,7 +305,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_nwdaf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nwdaf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_nwdaf_info_list);
@@ -315,7 +315,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_pcscf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_pcscf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_pcscf_info_list);
@@ -355,7 +355,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_hss_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_hss_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_hss_info_list);
@@ -375,7 +375,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_udsf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udsf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_udsf_info_list);
@@ -405,7 +405,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_aanf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_aanf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_aanf_info_list);
@@ -435,7 +435,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_easdf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_easdf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_easdf_info_list);
@@ -455,7 +455,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_mb_smf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_mb_smf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_mb_smf_info_list);
@@ -465,7 +465,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_tsctsf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_tsctsf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_tsctsf_info_list);
@@ -475,7 +475,7 @@ void OpenAPI_nrf_info_free(OpenAPI_nrf_info_t *nrf_info)
         OpenAPI_list_for_each(nrf_info->served_mb_upf_info_list, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_mb_upf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nrf_info->served_mb_upf_info_list);
@@ -1841,8 +1841,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_udr_info_list_local_map, served_udr_info_list) {
                 cJSON *localMapObject = served_udr_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_udr_info_value_parseFromJSON(localMapObject));
@@ -1895,8 +1893,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_udm_info_list_local_map, served_udm_info_list) {
                 cJSON *localMapObject = served_udm_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_udm_info_value_parseFromJSON(localMapObject));
@@ -1949,8 +1945,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_ausf_info_list_local_map, served_ausf_info_list) {
                 cJSON *localMapObject = served_ausf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_ausf_info_value_parseFromJSON(localMapObject));
@@ -2003,8 +1997,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_amf_info_list_local_map, served_amf_info_list) {
                 cJSON *localMapObject = served_amf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_amf_info_value_parseFromJSON(localMapObject));
@@ -2057,8 +2049,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_smf_info_list_local_map, served_smf_info_list) {
                 cJSON *localMapObject = served_smf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_smf_info_value_parseFromJSON(localMapObject));
@@ -2111,8 +2101,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_upf_info_list_local_map, served_upf_info_list) {
                 cJSON *localMapObject = served_upf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_upf_info_value_parseFromJSON(localMapObject));
@@ -2165,8 +2153,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_pcf_info_list_local_map, served_pcf_info_list) {
                 cJSON *localMapObject = served_pcf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_pcf_info_value_parseFromJSON(localMapObject));
@@ -2219,8 +2205,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_bsf_info_list_local_map, served_bsf_info_list) {
                 cJSON *localMapObject = served_bsf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_bsf_info_value_parseFromJSON(localMapObject));
@@ -2273,8 +2257,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_chf_info_list_local_map, served_chf_info_list) {
                 cJSON *localMapObject = served_chf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_chf_info_value_parseFromJSON(localMapObject));
@@ -2353,8 +2335,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_nwdaf_info_list_local_map, served_nwdaf_info_list) {
                 cJSON *localMapObject = served_nwdaf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nwdaf_info_parseFromJSON(localMapObject));
@@ -2381,8 +2361,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_pcscf_info_list_local_map, served_pcscf_info_list) {
                 cJSON *localMapObject = served_pcscf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_pcscf_info_list_value_value_parseFromJSON(localMapObject));
@@ -2487,8 +2465,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_hss_info_list_local_map, served_hss_info_list) {
                 cJSON *localMapObject = served_hss_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_hss_info_list_value_value_parseFromJSON(localMapObject));
@@ -2541,8 +2517,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_udsf_info_list_local_map, served_udsf_info_list) {
                 cJSON *localMapObject = served_udsf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_udsf_info_value_parseFromJSON(localMapObject));
@@ -2621,8 +2595,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_aanf_info_list_local_map, served_aanf_info_list) {
                 cJSON *localMapObject = served_aanf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_aanf_info_list_value_value_parseFromJSON(localMapObject));
@@ -2701,8 +2673,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_easdf_info_list_local_map, served_easdf_info_list) {
                 cJSON *localMapObject = served_easdf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_easdf_info_parseFromJSON(localMapObject));
@@ -2755,8 +2725,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_mb_smf_info_list_local_map, served_mb_smf_info_list) {
                 cJSON *localMapObject = served_mb_smf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_nrf_info_served_mb_smf_info_list_value_value_parseFromJSON(localMapObject));
@@ -2783,8 +2751,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_tsctsf_info_list_local_map, served_tsctsf_info_list) {
                 cJSON *localMapObject = served_tsctsf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_tsctsf_info_parseFromJSON(localMapObject));
@@ -2811,8 +2777,6 @@ OpenAPI_nrf_info_t *OpenAPI_nrf_info_parseFromJSON(cJSON *nrf_infoJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(served_mb_upf_info_list_local_map, served_mb_upf_info_list) {
                 cJSON *localMapObject = served_mb_upf_info_list_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_mb_upf_info_parseFromJSON(localMapObject));
@@ -2938,7 +2902,7 @@ end:
         OpenAPI_list_for_each(served_udr_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udr_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_udr_info_listList);
@@ -2958,7 +2922,7 @@ end:
         OpenAPI_list_for_each(served_udm_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udm_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_udm_info_listList);
@@ -2978,7 +2942,7 @@ end:
         OpenAPI_list_for_each(served_ausf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_ausf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_ausf_info_listList);
@@ -2998,7 +2962,7 @@ end:
         OpenAPI_list_for_each(served_amf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_amf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_amf_info_listList);
@@ -3018,7 +2982,7 @@ end:
         OpenAPI_list_for_each(served_smf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_smf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_smf_info_listList);
@@ -3038,7 +3002,7 @@ end:
         OpenAPI_list_for_each(served_upf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_upf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_upf_info_listList);
@@ -3058,7 +3022,7 @@ end:
         OpenAPI_list_for_each(served_pcf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_pcf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_pcf_info_listList);
@@ -3078,7 +3042,7 @@ end:
         OpenAPI_list_for_each(served_bsf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_bsf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_bsf_info_listList);
@@ -3098,7 +3062,7 @@ end:
         OpenAPI_list_for_each(served_chf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_chf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_chf_info_listList);
@@ -3128,7 +3092,7 @@ end:
         OpenAPI_list_for_each(served_nwdaf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nwdaf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_nwdaf_info_listList);
@@ -3138,7 +3102,7 @@ end:
         OpenAPI_list_for_each(served_pcscf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_pcscf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_pcscf_info_listList);
@@ -3178,7 +3142,7 @@ end:
         OpenAPI_list_for_each(served_hss_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_hss_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_hss_info_listList);
@@ -3198,7 +3162,7 @@ end:
         OpenAPI_list_for_each(served_udsf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_udsf_info_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_udsf_info_listList);
@@ -3228,7 +3192,7 @@ end:
         OpenAPI_list_for_each(served_aanf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_aanf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_aanf_info_listList);
@@ -3258,7 +3222,7 @@ end:
         OpenAPI_list_for_each(served_easdf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_easdf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_easdf_info_listList);
@@ -3278,7 +3242,7 @@ end:
         OpenAPI_list_for_each(served_mb_smf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_nrf_info_served_mb_smf_info_list_value_value_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_mb_smf_info_listList);
@@ -3288,7 +3252,7 @@ end:
         OpenAPI_list_for_each(served_tsctsf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_tsctsf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_tsctsf_info_listList);
@@ -3298,7 +3262,7 @@ end:
         OpenAPI_list_for_each(served_mb_upf_info_listList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_mb_upf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(served_mb_upf_info_listList);

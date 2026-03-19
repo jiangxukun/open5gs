@@ -223,7 +223,7 @@ void OpenAPI_nf_service_free(OpenAPI_nf_service_t *nf_service)
         OpenAPI_list_for_each(nf_service->supported_vendor_specific_features, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_vendor_specific_feature_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(nf_service->supported_vendor_specific_features);
@@ -1112,8 +1112,6 @@ OpenAPI_nf_service_t *OpenAPI_nf_service_parseFromJSON(cJSON *nf_serviceJSON)
             OpenAPI_map_t *localMapKeyPair = NULL;
             cJSON_ArrayForEach(supported_vendor_specific_features_local_map, supported_vendor_specific_features) {
                 cJSON *localMapObject = supported_vendor_specific_features_local_map;
-                double *localDouble = NULL;
-                int *localInt = NULL;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
                         ogs_strdup(localMapObject->string), OpenAPI_vendor_specific_feature_parseFromJSON(localMapObject));
@@ -1282,7 +1280,7 @@ end:
         OpenAPI_list_for_each(supported_vendor_specific_featuresList, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
-            ogs_free(localKeyValue->value);
+            OpenAPI_vendor_specific_feature_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(supported_vendor_specific_featuresList);

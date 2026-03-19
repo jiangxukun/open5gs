@@ -12,7 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "external_client_type_any_of.h"
 
 #ifdef __cplusplus
 extern "C" {
