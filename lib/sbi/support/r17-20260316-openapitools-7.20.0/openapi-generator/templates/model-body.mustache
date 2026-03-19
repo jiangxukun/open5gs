@@ -268,12 +268,19 @@ void OpenAPI_{{classname}}_free(OpenAPI_{{classname}}_t *{{classname}})
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             {{^isEnum}}
-                {{#isPrimitiveType}}
-            ogs_free(localKeyValue->value);
-                {{/isPrimitiveType}}
-                {{^isPrimitiveType}}
+                {{#items}}
+                    {{#isPrimitiveType}}
+                        {{#isMap}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
-                {{/isPrimitiveType}}
+                        {{/isMap}}
+                        {{^isMap}}
+            ogs_free(localKeyValue->value);
+                        {{/isMap}}
+                    {{/isPrimitiveType}}
+                    {{^isPrimitiveType}}
+            OpenAPI_{{complexType}}_free(localKeyValue->value);
+                    {{/isPrimitiveType}}
+                {{/items}}
             {{/isEnum}}
             OpenAPI_map_free(localKeyValue);
         }
@@ -548,19 +555,30 @@ cJSON *OpenAPI_{{classname}}_convertToJSON(OpenAPI_{{classname}}_t *{{classname}
             {{^isEnum}}
                 {{#items}}
                     {{#isPrimitiveType}}
-                        {{#isString}}
+                        {{#isMap}}
+            cJSON *itemLocal = localKeyValue->value ?
+                OpenAPI_{{complexType}}_convertToJSON(localKeyValue->value) :
+                cJSON_CreateNull();
+            if (itemLocal == NULL) {
+                ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
+                goto end;
+            }
+            cJSON_AddItemToObject(localMapObject, localKeyValue->key, itemLocal);
+                        {{/isMap}}
+                        {{^isMap}}
+                            {{#isString}}
             if (cJSON_AddStringToObject(localMapObject, localKeyValue->key, (char*)localKeyValue->value) == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
                 goto end;
             }
-                        {{/isString}}
-                        {{#isByteArray}}
+                            {{/isString}}
+                            {{#isByteArray}}
             if(cJSON_AddStringToObject(localMapObject, localKeyValue->key, (char*)localKeyValue->value) == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
                 goto end;
             }
-                        {{/isByteArray}}
-                        {{#isNumeric}}
+                            {{/isByteArray}}
+                            {{#isNumeric}}
             if (localKeyValue->value == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
                 goto end;
@@ -569,13 +587,14 @@ cJSON *OpenAPI_{{classname}}_convertToJSON(OpenAPI_{{classname}}_t *{{classname}
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
                 goto end;
             }
-                        {{/isNumeric}}
-                        {{#isBoolean}}
+                            {{/isNumeric}}
+                            {{#isBoolean}}
             if (cJSON_AddBoolToObject(localMapObject, localKeyValue->key, (uintptr_t)localKeyValue->value) == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
                 goto end;
             }
-                        {{/isBoolean}}
+                            {{/isBoolean}}
+                        {{/isMap}}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
             cJSON *itemLocal = localKeyValue->value ?
@@ -884,27 +903,37 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                 localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), (void *)OpenAPI_{{{complexType}}}_FromString(localMapObject->string));
             {{/isEnum}}
             {{^isEnum}}
-                {{#isPrimitiveType}}
-                double *localDouble = NULL;
-                int *localInt = NULL;
-                {{/isPrimitiveType}}
                 {{#items}}
                     {{#isPrimitiveType}}
-                        {{#isString}}
+                        {{#isMap}}
+                if (cJSON_IsObject(localMapObject)) {
+                    localMapKeyPair = OpenAPI_map_create(
+                        ogs_strdup(localMapObject->string), OpenAPI_{{complexType}}_parseFromJSON(localMapObject));
+                } else if (cJSON_IsNull(localMapObject)) {
+                    localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), NULL);
+                } else {
+                    ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
+                    goto end;
+                }
+                        {{/isMap}}
+                        {{^isMap}}
+                double *localDouble = NULL;
+                int *localInt = NULL;
+                            {{#isString}}
                 if (!cJSON_IsString(localMapObject)) {
                     ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
                     goto end;
                 }
                 localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), ogs_strdup(localMapObject->valuestring));
-                        {{/isString}}
-                        {{#isByteArray}}
+                            {{/isString}}
+                            {{#isByteArray}}
                 if (!cJSON_IsString(localMapObject)) {
                     ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
                     goto end;
                 }
                 localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), ogs_strdup(localMapObject->valuestring));
-                        {{/isByteArray}}
-                        {{#isNumeric}}
+                            {{/isByteArray}}
+                            {{#isNumeric}}
                 if (!cJSON_IsNumber(localMapObject)) {
                     ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
                     goto end;
@@ -916,8 +945,8 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                 }
                 *localDouble = localMapObject->valuedouble;
                 localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), localDouble);
-                        {{/isNumeric}}
-                        {{#isBoolean}}
+                            {{/isNumeric}}
+                            {{#isBoolean}}
                 if (!cJSON_IsBool(localMapObject)) {
                     ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
                     goto end;
@@ -929,7 +958,8 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                 }
                 *localInt = localMapObject->valueint;
                 localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), localInt);
-                        {{/isBoolean}}
+                            {{/isBoolean}}
+                        {{/isMap}}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
                 if (cJSON_IsObject(localMapObject)) {
@@ -1081,12 +1111,19 @@ end:
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
             ogs_free(localKeyValue->key);
             {{^isEnum}}
-                {{#isPrimitiveType}}
-            ogs_free(localKeyValue->value);
-                {{/isPrimitiveType}}
-                {{^isPrimitiveType}}
+                {{#items}}
+                    {{#isPrimitiveType}}
+                        {{#isMap}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
-                {{/isPrimitiveType}}
+                        {{/isMap}}
+                        {{^isMap}}
+            ogs_free(localKeyValue->value);
+                        {{/isMap}}
+                    {{/isPrimitiveType}}
+                    {{^isPrimitiveType}}
+            OpenAPI_{{complexType}}_free(localKeyValue->value);
+                    {{/isPrimitiveType}}
+                {{/items}}
             {{/isEnum}}
             OpenAPI_map_free(localKeyValue);
         }
