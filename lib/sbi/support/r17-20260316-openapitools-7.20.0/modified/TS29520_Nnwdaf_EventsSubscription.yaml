@@ -1312,11 +1312,11 @@ components:
           $ref: '#/components/schemas/TimeUnit'
         relFlowRatio:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/SamplingRatio'
-      oneOf:
-        - allOf:
-          - required: [relFlowNum]
-          - required: [relTimeUnit]
-        - required: [relFlowRatio]
+#      oneOf:
+#        - allOf:
+#          - required: [relFlowNum]
+#          - required: [relTimeUnit]
+#        - required: [relFlowRatio]
 
     NetworkPerfRequirement:
       description: Represents a network performance requirement.
@@ -2011,11 +2011,11 @@ components:
           items:
             $ref: 'TS29571_CommonData.yaml#/components/schemas/Tai'
           minItems: 1
-      oneOf:
-        - oneOf:
-          - required: [nfId]
-          - required: [nfSetId]
-        - required: [taiList]
+#      oneOf:
+#        - oneOf:
+#          - required: [nfId]
+#          - required: [nfSetId]
+#        - required: [taiList]
 
 #
 # ENUMERATIONS DATA TYPES
