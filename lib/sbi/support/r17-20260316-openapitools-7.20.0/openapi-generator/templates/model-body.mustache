@@ -63,9 +63,11 @@ OpenAPI_{{classVarName}}_{{name}}_e OpenAPI_{{name}}{{classname}}_FromString(cha
 {{/vars}}
 OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_create(
 {{#vars}}
+    {{^required}}
     {{#isNullable}}
     bool is_{{name}}_null,
     {{/isNullable}}
+    {{/required}}
     {{^isContainer}}
         {{^isPrimitiveType}}
             {{#isEnum}}
@@ -140,9 +142,11 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_create(
     ogs_assert({{classname}}_local_var);
 
 {{#vars}}
+    {{^required}}
     {{#isNullable}}
     {{classname}}_local_var->is_{{{name}}}_null = is_{{{name}}}_null;
     {{/isNullable}}
+    {{/required}}
     {{^isContainer}}
         {{#isPrimitiveType}}
             {{^isEnum}}
@@ -989,9 +993,11 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
 {{/vars}}
     {{classname}}_local_var = OpenAPI_{{classname}}_create (
 {{#vars}}
+    {{^required}}
     {{#isNullable}}
         {{{name}}} && cJSON_IsNull({{{name}}}) ? true : false,
     {{/isNullable}}
+    {{/required}}
     {{^isContainer}}
         {{^isPrimitiveType}}
             {{#isEnum}}

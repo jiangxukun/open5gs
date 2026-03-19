@@ -2720,38 +2720,39 @@ components:
         nfInstanceUri:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
         nfProfile:
-          allOf:
-            - $ref: '#/components/schemas/NFProfile'
-            - not:
-                required: [ interPlmnFqdn ]
-            - not:
-                required: [ allowedPlmns ]
-            - not:
-                required: [ allowedSnpns ]
-            - not:
-                required: [ allowedNfTypes ]
-            - not:
-                required: [ allowedNfDomains ]
-            - not:
-                required: [ allowedNssais ]
-            - properties:
-                nfServices:
-                  type: array
-                  items:
-                    allOf:
-                      - $ref: '#/components/schemas/NFService'
-                      - not:
-                          required: [ interPlmnFqdn ]
-                      - not:
-                          required: [ allowedPlmns ]
-                      - not:
-                          required: [ allowedSnpns ]
-                      - not:
-                          required: [ allowedNfTypes ]
-                      - not:
-                          required: [ allowedNfDomains ]
-                      - not:
-                          required: [ allowedNssais ]
+#          allOf:
+#            - $ref: '#/components/schemas/NFProfile'
+#            - not:
+#                required: [ interPlmnFqdn ]
+#            - not:
+#                required: [ allowedPlmns ]
+#            - not:
+#                required: [ allowedSnpns ]
+#            - not:
+#                required: [ allowedNfTypes ]
+#            - not:
+#                required: [ allowedNfDomains ]
+#            - not:
+#                required: [ allowedNssais ]
+#            - properties:
+#                nfServices:
+#                  type: array
+#                  items:
+#                    allOf:
+#                      - $ref: '#/components/schemas/NFService'
+#                      - not:
+#                          required: [ interPlmnFqdn ]
+#                      - not:
+#                          required: [ allowedPlmns ]
+#                      - not:
+#                          required: [ allowedSnpns ]
+#                      - not:
+#                          required: [ allowedNfTypes ]
+#                      - not:
+#                          required: [ allowedNfDomains ]
+#                      - not:
+#                          required: [ allowedNssais ]
+          $ref: '#/components/schemas/NFProfile'
         profileChanges:
           type: array
           items:
