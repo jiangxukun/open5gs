@@ -489,7 +489,7 @@ end:
     }
     if (dnai_nw_instance_listList) {
         OpenAPI_list_for_each(dnai_nw_instance_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

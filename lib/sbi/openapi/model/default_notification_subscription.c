@@ -338,7 +338,7 @@ end:
     }
     if (service_info_listList) {
         OpenAPI_list_for_each(service_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_def_sub_service_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

@@ -3905,7 +3905,7 @@ end:
     }
     if (udr_info_listList) {
         OpenAPI_list_for_each(udr_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_udr_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3919,7 +3919,7 @@ end:
     }
     if (udm_info_listList) {
         OpenAPI_list_for_each(udm_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_udm_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3933,7 +3933,7 @@ end:
     }
     if (ausf_info_listList) {
         OpenAPI_list_for_each(ausf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_ausf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3947,7 +3947,7 @@ end:
     }
     if (amf_info_listList) {
         OpenAPI_list_for_each(amf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_amf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3961,7 +3961,7 @@ end:
     }
     if (smf_info_listList) {
         OpenAPI_list_for_each(smf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_smf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3975,7 +3975,7 @@ end:
     }
     if (upf_info_listList) {
         OpenAPI_list_for_each(upf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_upf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -3989,7 +3989,7 @@ end:
     }
     if (pcf_info_listList) {
         OpenAPI_list_for_each(pcf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_pcf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4003,7 +4003,7 @@ end:
     }
     if (bsf_info_listList) {
         OpenAPI_list_for_each(bsf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_bsf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4017,7 +4017,7 @@ end:
     }
     if (chf_info_listList) {
         OpenAPI_list_for_each(chf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_chf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4039,7 +4039,7 @@ end:
     }
     if (udsf_info_listList) {
         OpenAPI_list_for_each(udsf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_udsf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4053,7 +4053,7 @@ end:
     }
     if (nwdaf_info_listList) {
         OpenAPI_list_for_each(nwdaf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_nwdaf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4063,7 +4063,7 @@ end:
     }
     if (pcscf_info_listList) {
         OpenAPI_list_for_each(pcscf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_pcscf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4073,7 +4073,7 @@ end:
     }
     if (hss_info_listList) {
         OpenAPI_list_for_each(hss_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_hss_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4094,7 +4094,7 @@ end:
     }
     if (nf_service_listList) {
         OpenAPI_list_for_each(nf_service_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_nf_service_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4133,7 +4133,7 @@ end:
     }
     if (nf_set_recovery_time_listList) {
         OpenAPI_list_for_each(nf_set_recovery_time_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4143,7 +4143,7 @@ end:
     }
     if (service_set_recovery_time_listList) {
         OpenAPI_list_for_each(service_set_recovery_time_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4168,7 +4168,7 @@ end:
     }
     if (supported_vendor_specific_featuresList) {
         OpenAPI_list_for_each(supported_vendor_specific_featuresList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_vendor_specific_feature_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4178,7 +4178,7 @@ end:
     }
     if (aanf_info_listList) {
         OpenAPI_list_for_each(aanf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_aanf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4196,7 +4196,7 @@ end:
     }
     if (easdf_info_listList) {
         OpenAPI_list_for_each(easdf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_easdf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4210,7 +4210,7 @@ end:
     }
     if (nsacf_info_listList) {
         OpenAPI_list_for_each(nsacf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_nsacf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4220,7 +4220,7 @@ end:
     }
     if (mb_smf_info_listList) {
         OpenAPI_list_for_each(mb_smf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_mb_smf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4230,7 +4230,7 @@ end:
     }
     if (tsctsf_info_listList) {
         OpenAPI_list_for_each(tsctsf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_tsctsf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -4240,7 +4240,7 @@ end:
     }
     if (mb_upf_info_listList) {
         OpenAPI_list_for_each(mb_upf_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_mb_upf_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

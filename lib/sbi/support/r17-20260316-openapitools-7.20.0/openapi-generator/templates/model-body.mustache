@@ -1114,7 +1114,7 @@ end:
         {{#isMap}}
     if ({{{name}}}List) {
         OpenAPI_list_for_each({{{name}}}List, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             {{^isEnum}}
                 {{#items}}

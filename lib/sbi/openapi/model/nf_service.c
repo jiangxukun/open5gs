@@ -1237,7 +1237,7 @@ end:
     }
     if (allowed_operations_per_nf_typeList) {
         OpenAPI_list_for_each(allowed_operations_per_nf_typeList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1247,7 +1247,7 @@ end:
     }
     if (allowed_operations_per_nf_instanceList) {
         OpenAPI_list_for_each(allowed_operations_per_nf_instanceList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1278,7 +1278,7 @@ end:
     }
     if (supported_vendor_specific_featuresList) {
         OpenAPI_list_for_each(supported_vendor_specific_featuresList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_vendor_specific_feature_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

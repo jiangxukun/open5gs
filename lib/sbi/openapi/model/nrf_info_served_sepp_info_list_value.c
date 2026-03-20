@@ -252,7 +252,7 @@ OpenAPI_nrf_info_served_sepp_info_list_value_t *OpenAPI_nrf_info_served_sepp_inf
 end:
     if (sepp_portsList) {
         OpenAPI_list_for_each(sepp_portsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
