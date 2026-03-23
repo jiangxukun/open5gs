@@ -276,10 +276,76 @@ def try_transform_category_b(lines, start_idx):
     return out, j
 
 
+def try_transform_category_c(lines, start_idx):
+    """
+    Transform category C: anyOf with only $ref items (no enum).
+
+    Supported forms (property-level or items-level):
+
+      anyOf:
+        - $ref: '...#/schemas/Foo'
+        - $ref: '...#/schemas/Bar'
+        ...
+
+    Transformed to first $ref, rest commented out:
+
+      $ref: '...#/schemas/Foo'
+    #      anyOf:
+    #        - $ref: '...#/schemas/Foo'
+    #        - $ref: '...#/schemas/Bar'
+
+    Returns:
+      (new_lines, next_idx) if matched
+      None otherwise
+    """
+    if lines[start_idx].strip() != "anyOf:":
+        return None
+
+    anyof_line = lines[start_idx]
+    anyof_indent = leading_spaces(anyof_line)
+    j = start_idx + 1
+
+    refs = []
+    while j < len(lines):
+        line = lines[j]
+
+        if is_blank(line):
+            j += 1
+            continue
+
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
+
+        if indent > anyof_indent and stripped.startswith("- $ref:"):
+            refs.append((line, indent))
+            j += 1
+            continue
+
+        break
+
+    # Must have 2+ pure $ref items (no enum, no type: string items)
+    if len(refs) < 2:
+        return None
+
+    first_ref_line, first_ref_indent = refs[0]
+    # Extract the $ref value from "- $ref: '...'"
+    ref_value = first_ref_line.lstrip().removeprefix("- $ref:").strip()
+
+    # Build replacement: one real $ref line + all original lines commented out
+    out = []
+    out.append(" " * anyof_indent + "$ref: " + ref_value + "\n")
+    out.append(comment_exact(anyof_line))
+    for ref_line, _ in refs:
+        out.append(comment_exact(ref_line))
+
+    return out, j
+
+
 def transform_lines(lines):
     out = []
     i = 0
     changed_b_blocks = 0
+    changed_c_blocks = 0
     changed_allof_blocks = 0
 
     while i < len(lines):
@@ -292,6 +358,14 @@ def transform_lines(lines):
             continue
 
         if lines[i].strip() == "anyOf:":
+            transformed = try_transform_category_c(lines, i)
+            if transformed is not None:
+                new_lines, next_i = transformed
+                out.extend(new_lines)
+                i = next_i
+                changed_c_blocks += 1
+                continue
+
             transformed = try_transform_category_b(lines, i)
             if transformed is not None:
                 new_lines, next_i = transformed
@@ -303,7 +377,7 @@ def transform_lines(lines):
         out.append(lines[i])
         i += 1
 
-    return out, changed_b_blocks, changed_allof_blocks
+    return out, changed_b_blocks, changed_c_blocks, changed_allof_blocks
 
 
 def process_yaml_file(in_file: Path, out_file: Path):
@@ -311,14 +385,14 @@ def process_yaml_file(in_file: Path, out_file: Path):
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, changed_b_blocks, changed_allof_blocks = transform_lines(lines)
+    new_lines, changed_b_blocks, changed_c_blocks, changed_allof_blocks = transform_lines(lines)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return changed_b_blocks, changed_allof_blocks
+    return changed_b_blocks, changed_c_blocks, changed_allof_blocks
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -359,6 +433,7 @@ def main():
 
     total_yaml = 0
     total_changed_b_blocks = 0
+    total_changed_c_blocks = 0
     total_changed_allof_blocks = 0
 
     for in_file in sorted(input_dir.rglob("*")):
@@ -370,14 +445,16 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            changed_b_blocks, changed_allof_blocks = process_yaml_file(
+            changed_b_blocks, changed_c_blocks, changed_allof_blocks = process_yaml_file(
                 in_file, out_file
             )
             total_changed_b_blocks += changed_b_blocks
+            total_changed_c_blocks += changed_c_blocks
             total_changed_allof_blocks += changed_allof_blocks
             print(
                 f"[YAML] {rel} "
                 f"(changed_b_blocks={changed_b_blocks}, "
+                f"changed_c_blocks={changed_c_blocks}, "
                 f"changed_allof_blocks={changed_allof_blocks})"
             )
         else:
@@ -387,6 +464,7 @@ def main():
     print()
     print(f"Processed YAML files   : {total_yaml}")
     print(f"Changed B blocks       : {total_changed_b_blocks}")
+    print(f"Changed C blocks       : {total_changed_c_blocks}")
     print(f"Changed allOf blocks   : {total_changed_allof_blocks}")
 
 
