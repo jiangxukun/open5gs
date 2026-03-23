@@ -19,35 +19,112 @@ def is_blank(line: str) -> bool:
 def comment_exact(line: str) -> str:
     return "#" + line
 
+
 def split_lines_preserve_exact(text: str):
     # Keep original line endings exactly.
     return text.splitlines(keepends=True)
 
 
-def collect_indented_block(lines, start_idx):
+def reindent_block(block_lines, new_base_indent):
     """
-    Generic YAML block collector:
-    include following blank lines and lines more indented than the first line.
+    Reindent a block so that its first non-blank line starts at new_base_indent.
+    Relative indentation inside the block is preserved.
     """
-    base_indent = leading_spaces(lines[start_idx])
-    block = [lines[start_idx]]
-    i = start_idx + 1
+    first_nonblank = None
+    for line in block_lines:
+        if line.strip():
+            first_nonblank = line
+            break
 
-    while i < len(lines):
-        line = lines[i]
+    if first_nonblank is None:
+        return block_lines[:]
+
+    old_base_indent = leading_spaces(first_nonblank)
+    delta = old_base_indent - new_base_indent
+
+    out = []
+    for line in block_lines:
+        if not line.strip():
+            out.append(line)
+            continue
+
+        indent = leading_spaces(line)
+        new_indent = max(0, indent - delta)
+        out.append(" " * new_indent + line.lstrip(" "))
+    return out
+
+
+def try_transform_allof_patterns(lines, start_idx):
+    """
+    Transform this form:
+
+      type: string
+      allOf:
+        - pattern: ...
+        - pattern: ...
+      example: ...
+
+    into:
+
+      type: string
+    #      allOf:
+    #        - pattern: ...
+    #        - pattern: ...
+      example: ...
+
+    Returns:
+      (new_lines, next_idx) if matched
+      None otherwise
+    """
+    if lines[start_idx].strip() != "type: string":
+        return None
+
+    type_line = lines[start_idx]
+    type_indent = leading_spaces(type_line)
+    j = start_idx + 1
+
+    # optional blank lines are allowed but uncommon
+    while j < len(lines) and is_blank(lines[j]):
+        return None
+
+    if j >= len(lines) or lines[j].strip() != "allOf:":
+        return None
+
+    allof_indent = leading_spaces(lines[j])
+    if allof_indent != type_indent:
+        return None
+
+    block = [lines[j]]
+    j += 1
+
+    saw_pattern = False
+    while j < len(lines):
+        line = lines[j]
 
         if is_blank(line):
             block.append(line)
-            i += 1
+            j += 1
             continue
 
-        if leading_spaces(line) <= base_indent:
-            break
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
 
-        block.append(line)
-        i += 1
+        if indent > allof_indent and stripped.startswith("- pattern:"):
+            block.append(line)
+            saw_pattern = True
+            j += 1
+            continue
 
-    return block, i
+        break
+
+    if not saw_pattern:
+        return None
+
+    out = [type_line]
+    for line in block:
+        out.append(comment_exact(line))
+
+    return out, j
 
 
 def try_transform_category_b(lines, start_idx):
@@ -97,8 +174,6 @@ def try_transform_category_b(lines, start_idx):
 
     # 2) enum header
     while j < len(lines) and is_blank(lines[j]):
-        # category B in these files doesn't place blank lines here
-        # but if it does, it's not a supported match
         return None
 
     if j >= len(lines) or lines[j].strip() != "enum:":
@@ -163,7 +238,6 @@ def try_transform_category_b(lines, start_idx):
     if j < len(lines) and lines[j].strip().startswith("description:"):
         desc_indent = leading_spaces(lines[j])
 
-        # must be sibling of anyOf block, not less-indented outer content
         if desc_indent == anyof_indent:
             sibling_desc.append(lines[j])
             j += 1
@@ -205,22 +279,31 @@ def try_transform_category_b(lines, start_idx):
 def transform_lines(lines):
     out = []
     i = 0
-    changed_blocks = 0
+    changed_b_blocks = 0
+    changed_allof_blocks = 0
 
     while i < len(lines):
+        transformed = try_transform_allof_patterns(lines, i)
+        if transformed is not None:
+            new_lines, next_i = transformed
+            out.extend(new_lines)
+            i = next_i
+            changed_allof_blocks += 1
+            continue
+
         if lines[i].strip() == "anyOf:":
             transformed = try_transform_category_b(lines, i)
             if transformed is not None:
                 new_lines, next_i = transformed
                 out.extend(new_lines)
                 i = next_i
-                changed_blocks += 1
+                changed_b_blocks += 1
                 continue
 
         out.append(lines[i])
         i += 1
 
-    return out, changed_blocks
+    return out, changed_b_blocks, changed_allof_blocks
 
 
 def process_yaml_file(in_file: Path, out_file: Path):
@@ -228,14 +311,14 @@ def process_yaml_file(in_file: Path, out_file: Path):
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, changed_blocks = transform_lines(lines)
+    new_lines, changed_b_blocks, changed_allof_blocks = transform_lines(lines)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return changed_blocks
+    return changed_b_blocks, changed_allof_blocks
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -243,40 +326,11 @@ def copy_other_file(in_file: Path, out_file: Path):
     shutil.copy2(in_file, out_file)
 
 
-def reindent_block(block_lines, new_base_indent):
-    """
-    Reindent a block so that its first non-blank line starts at new_base_indent.
-    Relative indentation inside the block is preserved.
-    """
-    first_nonblank = None
-    for line in block_lines:
-        if line.strip():
-            first_nonblank = line
-            break
-
-    if first_nonblank is None:
-        return block_lines[:]
-
-    old_base_indent = leading_spaces(first_nonblank)
-    delta = old_base_indent - new_base_indent
-
-    out = []
-    for line in block_lines:
-        if not line.strip():
-            out.append(line)
-            continue
-
-        indent = leading_spaces(line)
-        new_indent = max(0, indent - delta)
-        out.append(" " * new_indent + line.lstrip(" "))
-    return out
-
-
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            "Apply category B transformation only "
-            "(anyOf(enum,string) -> modified-style comments) "
+            "Apply YAML transformations "
+            "(allOf(pattern) comment-out + category B anyOf(enum,string) transform) "
             "from input_dir to output_dir."
         )
     )
@@ -304,7 +358,8 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     total_yaml = 0
-    total_changed_blocks = 0
+    total_changed_b_blocks = 0
+    total_changed_allof_blocks = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -315,16 +370,24 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            changed_blocks = process_yaml_file(in_file, out_file)
-            total_changed_blocks += changed_blocks
-            print(f"[YAML] {rel} (changed_blocks={changed_blocks})")
+            changed_b_blocks, changed_allof_blocks = process_yaml_file(
+                in_file, out_file
+            )
+            total_changed_b_blocks += changed_b_blocks
+            total_changed_allof_blocks += changed_allof_blocks
+            print(
+                f"[YAML] {rel} "
+                f"(changed_b_blocks={changed_b_blocks}, "
+                f"changed_allof_blocks={changed_allof_blocks})"
+            )
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
 
     print()
-    print(f"Processed YAML files : {total_yaml}")
-    print(f"Changed B blocks     : {total_changed_blocks}")
+    print(f"Processed YAML files   : {total_yaml}")
+    print(f"Changed B blocks       : {total_changed_b_blocks}")
+    print(f"Changed allOf blocks   : {total_changed_allof_blocks}")
 
 
 if __name__ == "__main__":
