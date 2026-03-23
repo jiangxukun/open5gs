@@ -188,7 +188,8 @@ def try_transform_category_b(lines, start_idx):
     out.append(comment_exact(anyof_line))
     out.append(comment_exact(first_head))
 
-    for line in enum_lines:
+    reindented_enum_lines = reindent_block(enum_lines, anyof_indent)
+    for line in reindented_enum_lines:
         out.append(line)
 
     out.append(comment_exact(second_head))
@@ -240,6 +241,35 @@ def process_yaml_file(in_file: Path, out_file: Path):
 def copy_other_file(in_file: Path, out_file: Path):
     out_file.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(in_file, out_file)
+
+
+def reindent_block(block_lines, new_base_indent):
+    """
+    Reindent a block so that its first non-blank line starts at new_base_indent.
+    Relative indentation inside the block is preserved.
+    """
+    first_nonblank = None
+    for line in block_lines:
+        if line.strip():
+            first_nonblank = line
+            break
+
+    if first_nonblank is None:
+        return block_lines[:]
+
+    old_base_indent = leading_spaces(first_nonblank)
+    delta = old_base_indent - new_base_indent
+
+    out = []
+    for line in block_lines:
+        if not line.strip():
+            out.append(line)
+            continue
+
+        indent = leading_spaces(line)
+        new_indent = max(0, indent - delta)
+        out.append(" " * new_indent + line.lstrip(" "))
+    return out
 
 
 def main():
