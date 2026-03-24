@@ -47,6 +47,9 @@ OpenAPI_{{classVarName}}_{{name}}_e OpenAPI_{{classVarName}}_{{name}}_FromString
     {{/isContainer}}
 {{/vars}}
 typedef struct OpenAPI_{{classname}}_s {
+{{^vars}}
+    char *value;
+{{/vars}}
 {{#vars}}
     {{^required}}
     {{#isNullable}}
@@ -125,6 +128,9 @@ typedef struct OpenAPI_{{classname}}_s {
 } OpenAPI_{{classname}}_t;
 
 OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_create(
+{{^vars}}
+char *value
+{{/vars}}
 {{#vars}}
     {{^required}}
     {{#isNullable}}

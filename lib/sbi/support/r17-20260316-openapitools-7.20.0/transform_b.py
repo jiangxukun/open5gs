@@ -258,9 +258,14 @@ def try_transform_category_b(lines, start_idx):
                 break
 
     # 7) build transformed output
+    eol = "\r\n" if anyof_line.endswith("\r\n") else "\n"
     out = []
     out.append(comment_exact(anyof_line))
     out.append(comment_exact(first_head))
+
+    # type: string 삽입 — 제너레이터가 string enum으로 정확히 분류하고
+    # collect_string_enums가 수집할 수 있도록
+    out.append(" " * anyof_indent + "type: string" + eol)
 
     reindented_enum_lines = reindent_block(enum_lines, anyof_indent)
     for line in reindented_enum_lines:
@@ -276,123 +281,181 @@ def try_transform_category_b(lines, start_idx):
     return out, j
 
 
-def try_transform_category_c(lines, start_idx):
-    """
-    Transform category C: anyOf with only $ref items (no enum).
+def detect_eol(lines):
+    """Detect line ending style. Returns '\r\n' or '\n'."""
+    for line in lines:
+        if line.endswith("\r\n"):
+            return "\r\n"
+        if line.endswith("\n"):
+            return "\n"
+    return "\n"
 
-    Supported forms (property-level or items-level):
 
-      anyOf:
-        - $ref: '...#/schemas/Foo'
-        - $ref: '...#/schemas/Bar'
-        ...
+# ---------------------------------------------------------------------------
+# Category C: anyOf with ONLY $ref items → first $ref
+# ---------------------------------------------------------------------------
 
-    Transformed to first $ref, rest commented out:
-
-      $ref: '...#/schemas/Foo'
-    #      anyOf:
-    #        - $ref: '...#/schemas/Foo'
-    #        - $ref: '...#/schemas/Bar'
-
-    Returns:
-      (new_lines, next_idx) if matched
-      None otherwise
-    """
+def try_transform_category_c(lines, start_idx, eol="\n"):
     if lines[start_idx].strip() != "anyOf:":
         return None
 
     anyof_line = lines[start_idx]
     anyof_indent = leading_spaces(anyof_line)
     j = start_idx + 1
-
     refs = []
+
     while j < len(lines):
         line = lines[j]
-
         if is_blank(line):
             j += 1
             continue
-
         indent = leading_spaces(line)
         stripped = line.lstrip(" ")
-
-        if indent > anyof_indent and stripped.startswith("- $ref:"):
-            refs.append((line, indent))
+        if indent > anyof_indent and stripped.startswith("- "):
+            if not stripped.startswith("- $ref:"):
+                return None   # mixed → skip
+            refs.append(line)
             j += 1
             continue
-
         break
 
-    # Must have 2+ pure $ref items (no enum, no type: string items)
-    if len(refs) < 2:
+    if not refs:
         return None
 
-    first_ref_line, first_ref_indent = refs[0]
-    # Extract the $ref value from "- $ref: '...'"
-    ref_value = first_ref_line.lstrip().removeprefix("- $ref:").strip()
-
-    # Build replacement: one real $ref line + all original lines commented out
+    ref_value = refs[0].lstrip().removeprefix("- $ref:").strip()
     out = []
-    out.append(" " * anyof_indent + "$ref: " + ref_value + "\n")
+    out.append(" " * anyof_indent + "$ref: " + ref_value + eol)
     out.append(comment_exact(anyof_line))
-    for ref_line, _ in refs:
+    for ref_line in refs:
         out.append(comment_exact(ref_line))
-
     return out, j
 
 
+# ---------------------------------------------------------------------------
+# Category D: allOf whose first item is $ref, rest are not/properties/required
+# ---------------------------------------------------------------------------
+
+def try_transform_category_d(lines, start_idx, eol="\n"):
+    if lines[start_idx].strip() != "allOf:":
+        return None
+
+    allof_line = lines[start_idx]
+    allof_indent = leading_spaces(allof_line)
+    j = start_idx + 1
+
+    while j < len(lines) and is_blank(lines[j]):
+        j += 1
+    if j >= len(lines) or leading_spaces(lines[j]) <= allof_indent:
+        return None
+    if not lines[j].lstrip().startswith("- $ref:"):
+        return None
+
+    first_line = lines[j]
+    ref_value = first_line.lstrip().removeprefix("- $ref:").strip()
+    j += 1
+
+    rest_lines = []
+    while j < len(lines):
+        line = lines[j]
+        if is_blank(line):
+            rest_lines.append(line)
+            j += 1
+            continue
+        indent = leading_spaces(line)
+        if indent <= allof_indent:
+            break
+        stripped = line.lstrip()
+        if indent == allof_indent + 2 and stripped.startswith("- "):
+            allowed = ("- not:", "- properties:", "- required:")
+            if not any(stripped.startswith(a) for a in allowed):
+                return None
+        rest_lines.append(line)
+        j += 1
+
+    while rest_lines and is_blank(rest_lines[-1]):
+        rest_lines.pop()
+
+    out = []
+    out.append(" " * allof_indent + "$ref: " + ref_value + eol)
+    out.append(comment_exact(allof_line))
+    out.append(comment_exact(first_line))
+    for line in rest_lines:
+        out.append(comment_exact(line))
+    return out, j
+
+
+# ---------------------------------------------------------------------------
+# Main transform pass (A/B/C/D)
+# ---------------------------------------------------------------------------
+
 def transform_lines(lines):
+    eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b_blocks = 0
-    changed_c_blocks = 0
-    changed_allof_blocks = 0
+    changed_b = changed_c = changed_d = changed_allof = 0
 
     while i < len(lines):
+        # A: type:string + allOf(pattern only)
         transformed = try_transform_allof_patterns(lines, i)
         if transformed is not None:
             new_lines, next_i = transformed
             out.extend(new_lines)
             i = next_i
-            changed_allof_blocks += 1
+            changed_allof += 1
             continue
 
-        if lines[i].strip() == "anyOf:":
-            transformed = try_transform_category_c(lines, i)
+        if lines[i].strip() == "allOf:":
+            # D: allOf[$ref + not/properties]
+            transformed = try_transform_category_d(lines, i, eol=eol)
             if transformed is not None:
                 new_lines, next_i = transformed
                 out.extend(new_lines)
                 i = next_i
-                changed_c_blocks += 1
+                changed_d += 1
                 continue
 
+        if lines[i].strip() == "anyOf:":
+            # C: anyOf[$ref only]
+            transformed = try_transform_category_c(lines, i, eol=eol)
+            if transformed is not None:
+                new_lines, next_i = transformed
+                out.extend(new_lines)
+                i = next_i
+                changed_c += 1
+                continue
+
+            # B: anyOf[enum + string]
             transformed = try_transform_category_b(lines, i)
             if transformed is not None:
                 new_lines, next_i = transformed
                 out.extend(new_lines)
                 i = next_i
-                changed_b_blocks += 1
+                changed_b += 1
                 continue
 
         out.append(lines[i])
         i += 1
 
-    return out, changed_b_blocks, changed_c_blocks, changed_allof_blocks
+    return out, changed_b, changed_c, changed_d, changed_allof
 
+
+# ---------------------------------------------------------------------------
+# File processing
+# ---------------------------------------------------------------------------
 
 def process_yaml_file(in_file: Path, out_file: Path):
     with open(in_file, "r", encoding="utf-8", newline="") as f:
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, changed_b_blocks, changed_c_blocks, changed_allof_blocks = transform_lines(lines)
+    new_lines, cb, cc, cd, ca = transform_lines(lines)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return changed_b_blocks, changed_c_blocks, changed_allof_blocks
+    return cb, cc, cd, ca
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -403,8 +466,7 @@ def copy_other_file(in_file: Path, out_file: Path):
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            "Apply YAML transformations "
-            "(allOf(pattern) comment-out + category B anyOf(enum,string) transform) "
+            "Apply YAML transformations (A/B/C/D) "
             "from input_dir to output_dir."
         )
     )
@@ -422,51 +484,43 @@ def main():
 
     if not input_dir.is_dir():
         raise SystemExit(f"Input directory does not exist: {input_dir}")
-
     if input_dir == output_dir:
         raise SystemExit("input_dir and output_dir must be different")
-
     if args.clean_output and output_dir.exists():
         shutil.rmtree(output_dir)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
     total_yaml = 0
-    total_changed_b_blocks = 0
-    total_changed_c_blocks = 0
-    total_changed_allof_blocks = 0
+    total_b = total_c = total_d = total_allof = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
             continue
-
         rel = in_file.relative_to(input_dir)
         out_file = output_dir / rel
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            changed_b_blocks, changed_c_blocks, changed_allof_blocks = process_yaml_file(
-                in_file, out_file
-            )
-            total_changed_b_blocks += changed_b_blocks
-            total_changed_c_blocks += changed_c_blocks
-            total_changed_allof_blocks += changed_allof_blocks
-            print(
-                f"[YAML] {rel} "
-                f"(changed_b_blocks={changed_b_blocks}, "
-                f"changed_c_blocks={changed_c_blocks}, "
-                f"changed_allof_blocks={changed_allof_blocks})"
-            )
+            cb, cc, cd, ca = process_yaml_file(in_file, out_file)
+            total_b += cb
+            total_c += cc
+            total_d += cd
+            total_allof += ca
+            print(f"[YAML] {rel} (b={cb}, c={cc}, d={cd}, allof={ca})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
 
     print()
     print(f"Processed YAML files   : {total_yaml}")
-    print(f"Changed B blocks       : {total_changed_b_blocks}")
-    print(f"Changed C blocks       : {total_changed_c_blocks}")
-    print(f"Changed allOf blocks   : {total_changed_allof_blocks}")
+    print(f"Changed B blocks       : {total_b}")
+    print(f"Changed C blocks       : {total_c}")
+    print(f"Changed D blocks       : {total_d}")
+    print(f"Changed allOf blocks   : {total_allof}")
+
 
 
 if __name__ == "__main__":
     main()
+

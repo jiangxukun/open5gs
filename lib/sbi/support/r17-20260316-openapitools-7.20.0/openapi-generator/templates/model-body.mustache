@@ -62,6 +62,9 @@ OpenAPI_{{classVarName}}_{{name}}_e OpenAPI_{{name}}{{classname}}_FromString(cha
     {{/isContainer}}
 {{/vars}}
 OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_create(
+{{^vars}}
+char *value
+{{/vars}}
 {{#vars}}
     {{^required}}
     {{#isNullable}}
