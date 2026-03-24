@@ -292,46 +292,6 @@ def detect_eol(lines):
 
 
 # ---------------------------------------------------------------------------
-# Category C: anyOf with ONLY $ref items → first $ref
-# ---------------------------------------------------------------------------
-
-def try_transform_category_c(lines, start_idx, eol="\n"):
-    if lines[start_idx].strip() != "anyOf:":
-        return None
-
-    anyof_line = lines[start_idx]
-    anyof_indent = leading_spaces(anyof_line)
-    j = start_idx + 1
-    refs = []
-
-    while j < len(lines):
-        line = lines[j]
-        if is_blank(line):
-            j += 1
-            continue
-        indent = leading_spaces(line)
-        stripped = line.lstrip(" ")
-        if indent > anyof_indent and stripped.startswith("- "):
-            if not stripped.startswith("- $ref:"):
-                return None   # mixed → skip
-            refs.append(line)
-            j += 1
-            continue
-        break
-
-    if not refs:
-        return None
-
-    ref_value = refs[0].lstrip().removeprefix("- $ref:").strip()
-    out = []
-    out.append(" " * anyof_indent + "$ref: " + ref_value + eol)
-    out.append(comment_exact(anyof_line))
-    for ref_line in refs:
-        out.append(comment_exact(ref_line))
-    return out, j
-
-
-# ---------------------------------------------------------------------------
 # Category D: allOf whose first item is $ref, rest are not/properties/required
 # ---------------------------------------------------------------------------
 
@@ -392,7 +352,7 @@ def transform_lines(lines):
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_c = changed_d = changed_allof = 0
+    changed_b = changed_d = changed_allof = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -415,15 +375,6 @@ def transform_lines(lines):
                 continue
 
         if lines[i].strip() == "anyOf:":
-            # C: anyOf[$ref only]
-            transformed = try_transform_category_c(lines, i, eol=eol)
-            if transformed is not None:
-                new_lines, next_i = transformed
-                out.extend(new_lines)
-                i = next_i
-                changed_c += 1
-                continue
-
             # B: anyOf[enum + string]
             transformed = try_transform_category_b(lines, i)
             if transformed is not None:
@@ -436,7 +387,7 @@ def transform_lines(lines):
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_c, changed_d, changed_allof
+    return out, changed_b, changed_d, changed_allof
 
 
 # ---------------------------------------------------------------------------
@@ -448,14 +399,14 @@ def process_yaml_file(in_file: Path, out_file: Path):
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cc, cd, ca = transform_lines(lines)
+    new_lines, cb, cd, ca = transform_lines(lines)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cc, cd, ca
+    return cb, cd, ca
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -492,7 +443,7 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     total_yaml = 0
-    total_b = total_c = total_d = total_allof = 0
+    total_b = total_d = total_allof = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -502,12 +453,11 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cc, cd, ca = process_yaml_file(in_file, out_file)
+            cb, cd, ca = process_yaml_file(in_file, out_file)
             total_b += cb
-            total_c += cc
             total_d += cd
             total_allof += ca
-            print(f"[YAML] {rel} (b={cb}, c={cc}, d={cd}, allof={ca})")
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -515,7 +465,6 @@ def main():
     print()
     print(f"Processed YAML files   : {total_yaml}")
     print(f"Changed B blocks       : {total_b}")
-    print(f"Changed C blocks       : {total_c}")
     print(f"Changed D blocks       : {total_d}")
     print(f"Changed allOf blocks   : {total_allof}")
 
