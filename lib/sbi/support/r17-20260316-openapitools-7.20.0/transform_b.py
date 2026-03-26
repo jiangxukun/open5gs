@@ -185,12 +185,19 @@ def try_transform_category_b(lines, start_idx):
     enum_indent = leading_spaces(lines[j])
     j += 1
 
-    # 3) enum values
+    # 3) enum values (comments inside enum block are preserved)
     saw_enum_value = False
     while j < len(lines):
         line = lines[j]
 
         if is_blank(line):
+            enum_lines.append(line)
+            j += 1
+            continue
+
+        # YAML comment lines (possibly at column 0) inside enum block
+        stripped_raw = line.strip()
+        if stripped_raw.startswith("#"):
             enum_lines.append(line)
             j += 1
             continue
@@ -394,23 +401,32 @@ def resolve_ref_is_string(ref_str: str, current_filename: str,
     return False
 
 
+def resolve_ref_is_null_value(ref_str: str) -> bool:
+    """Check whether a $ref target is NullValue."""
+    ref_str = ref_str.strip().strip("'\"")
+    if "#" not in ref_str:
+        return False
+    _, path_part = ref_str.split("#", 1)
+    parts = path_part.strip("/").split("/")
+    if len(parts) >= 3 and parts[0] == "components" and parts[1] == "schemas":
+        return parts[2] == "NullValue"
+    return False
+
+
 def try_transform_category_e(lines, start_idx, string_schemas,
                              current_file, eol="\n"):
     """
-    Category E — anyOf where ALL items are type: string ($ref or inline).
+    Category E — anyOf where items are a mix of:
+      - type: string schemas ($ref or inline)
+      - NullValue ($ref to NullValue — 3GPP's nullable pattern)
 
-    Replace with the first item promoted to a direct property; comment out
-    the original anyOf block.
+    At least one non-NullValue item must exist.
+    The first non-NullValue item is promoted; everything else is commented out.
 
-    Example:
-        anyOf:
-          - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-          - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-    becomes:
-        $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-    #    anyOf:
-    #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-    #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
+    Examples:
+        anyOf:                                       anyOf:
+          - $ref: '.../Dnn'                            - $ref: '.../AccessType'
+          - $ref: '.../WildcardDnn'                    - $ref: '.../NullValue'
     """
     if lines[start_idx].strip() != "anyOf:":
         return None
@@ -464,24 +480,36 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     if len(items) < 2:
         return None
 
-    # Check every item resolves to type: string
-    for item in items:
+    # Check every item: must be string-type OR NullValue
+    promote_idx = None
+    for idx, item in enumerate(items):
         first = item[0].strip()
         if first.startswith("- $ref:"):
             ref_val = first.removeprefix("- $ref:").strip()
-            if not resolve_ref_is_string(ref_val, current_file, string_schemas):
-                return None
+            if resolve_ref_is_null_value(ref_val):
+                continue  # NullValue — OK, skip
+            if resolve_ref_is_string(ref_val, current_file, string_schemas):
+                if promote_idx is None:
+                    promote_idx = idx
+                continue
+            return None  # neither string nor NullValue
         elif first == "- type: string":
-            pass
+            if promote_idx is None:
+                promote_idx = idx
+            continue
         else:
             return None
 
-    # Build output — promote first item, comment out everything
-    first_stripped = items[0][0].strip()
+    # Must have at least one non-NullValue item to promote
+    if promote_idx is None:
+        return None
+
+    # Build output — promote first non-NullValue item, comment out everything
+    promote_stripped = items[promote_idx][0].strip()
     out = []
 
-    if first_stripped.startswith("- $ref:"):
-        ref_val = first_stripped.removeprefix("- $ref:").strip()
+    if promote_stripped.startswith("- $ref:"):
+        ref_val = promote_stripped.removeprefix("- $ref:").strip()
         out.append(" " * anyof_indent + "$ref: " + ref_val + eol)
     else:
         out.append(" " * anyof_indent + "type: string" + eol)
