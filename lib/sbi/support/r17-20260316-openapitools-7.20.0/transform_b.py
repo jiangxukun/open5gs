@@ -3,6 +3,8 @@ import argparse
 import shutil
 from pathlib import Path
 
+import yaml
+
 
 def is_yaml_file(path: Path) -> bool:
     return path.suffix.lower() in {".yaml", ".yml"}
@@ -345,14 +347,161 @@ def try_transform_category_d(lines, start_idx, eol="\n"):
 
 
 # ---------------------------------------------------------------------------
-# Main transform pass (A/B/C/D)
+# Category E: anyOf whose ALL items resolve to type: string
 # ---------------------------------------------------------------------------
 
-def transform_lines(lines):
+def collect_string_schemas(input_dir: Path) -> set:
+    """
+    First pass: collect (filename, schema_name) pairs where the schema has
+    type: string at the top level.
+    """
+    string_schemas = set()
+    for yaml_file in sorted(input_dir.rglob("*")):
+        if not is_yaml_file(yaml_file):
+            continue
+        with open(yaml_file, "r", encoding="utf-8") as f:
+            try:
+                doc = yaml.safe_load(f)
+            except Exception:
+                continue
+        if not isinstance(doc, dict):
+            continue
+        components = doc.get("components")
+        if not isinstance(components, dict):
+            continue
+        schemas = components.get("schemas")
+        if not isinstance(schemas, dict):
+            continue
+        fname = yaml_file.name
+        for name, schema in schemas.items():
+            if isinstance(schema, dict) and schema.get("type") == "string":
+                string_schemas.add((fname, name))
+    return string_schemas
+
+
+def resolve_ref_is_string(ref_str: str, current_filename: str,
+                          string_schemas: set) -> bool:
+    """Check whether a $ref target is a type: string schema."""
+    ref_str = ref_str.strip().strip("'\"")
+    if "#" not in ref_str:
+        return False
+    file_part, path_part = ref_str.split("#", 1)
+    parts = path_part.strip("/").split("/")
+    if len(parts) >= 3 and parts[0] == "components" and parts[1] == "schemas":
+        schema_name = parts[2]
+        fname = file_part if file_part else current_filename
+        return (fname, schema_name) in string_schemas
+    return False
+
+
+def try_transform_category_e(lines, start_idx, string_schemas,
+                             current_file, eol="\n"):
+    """
+    Category E — anyOf where ALL items are type: string ($ref or inline).
+
+    Replace with the first item promoted to a direct property; comment out
+    the original anyOf block.
+
+    Example:
+        anyOf:
+          - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+          - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
+    becomes:
+        $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+    #    anyOf:
+    #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+    #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
+    """
+    if lines[start_idx].strip() != "anyOf:":
+        return None
+
+    anyof_line = lines[start_idx]
+    anyof_indent = leading_spaces(anyof_line)
+    j = start_idx + 1
+
+    # Collect entire anyOf body (lines indented deeper than anyOf)
+    body_start = j
+    while j < len(lines):
+        if is_blank(lines[j]):
+            j += 1
+            continue
+        if leading_spaces(lines[j]) <= anyof_indent:
+            break
+        j += 1
+    body_end = j
+    body_lines = lines[body_start:body_end]
+
+    # Parse items — new item starts at the same indent as the first "- "
+    items = []          # list of list-of-lines
+    current_item = None
+    item_base_indent = None
+
+    for line in body_lines:
+        if is_blank(line):
+            if current_item is not None:
+                current_item.append(line)
+            continue
+
+        indent = leading_spaces(line)
+        stripped = line.lstrip()
+
+        if stripped.startswith("- "):
+            if item_base_indent is None:
+                item_base_indent = indent
+            if indent == item_base_indent:
+                # start of a new item
+                if current_item is not None:
+                    items.append(current_item)
+                current_item = [line]
+                continue
+        # continuation of current item
+        if current_item is not None:
+            current_item.append(line)
+
+    if current_item is not None:
+        items.append(current_item)
+
+    if len(items) < 2:
+        return None
+
+    # Check every item resolves to type: string
+    for item in items:
+        first = item[0].strip()
+        if first.startswith("- $ref:"):
+            ref_val = first.removeprefix("- $ref:").strip()
+            if not resolve_ref_is_string(ref_val, current_file, string_schemas):
+                return None
+        elif first == "- type: string":
+            pass
+        else:
+            return None
+
+    # Build output — promote first item, comment out everything
+    first_stripped = items[0][0].strip()
+    out = []
+
+    if first_stripped.startswith("- $ref:"):
+        ref_val = first_stripped.removeprefix("- $ref:").strip()
+        out.append(" " * anyof_indent + "$ref: " + ref_val + eol)
+    else:
+        out.append(" " * anyof_indent + "type: string" + eol)
+
+    out.append(comment_exact(anyof_line))
+    for line in lines[body_start:body_end]:
+        out.append(comment_exact(line))
+
+    return out, body_end
+
+
+# ---------------------------------------------------------------------------
+# Main transform pass (A/B/D/E)
+# ---------------------------------------------------------------------------
+
+def transform_lines(lines, string_schemas=None, current_file=""):
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = 0
+    changed_b = changed_d = changed_allof = changed_e = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -375,7 +524,7 @@ def transform_lines(lines):
                 continue
 
         if lines[i].strip() == "anyOf:":
-            # B: anyOf[enum + string]
+            # B: anyOf[enum + string]  (try first — more specific)
             transformed = try_transform_category_b(lines, i)
             if transformed is not None:
                 new_lines, next_i = transformed
@@ -384,29 +533,42 @@ def transform_lines(lines):
                 changed_b += 1
                 continue
 
+            # E: anyOf where all items are type: string
+            if string_schemas is not None:
+                transformed = try_transform_category_e(
+                    lines, i, string_schemas, current_file, eol=eol)
+                if transformed is not None:
+                    new_lines, next_i = transformed
+                    out.extend(new_lines)
+                    i = next_i
+                    changed_e += 1
+                    continue
+
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_d, changed_allof
+    return out, changed_b, changed_d, changed_allof, changed_e
 
 
 # ---------------------------------------------------------------------------
 # File processing
 # ---------------------------------------------------------------------------
 
-def process_yaml_file(in_file: Path, out_file: Path):
+def process_yaml_file(in_file: Path, out_file: Path,
+                      string_schemas: set = None):
     with open(in_file, "r", encoding="utf-8", newline="") as f:
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca = transform_lines(lines)
+    new_lines, cb, cd, ca, ce = transform_lines(
+        lines, string_schemas=string_schemas, current_file=in_file.name)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca
+    return cb, cd, ca, ce
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -442,8 +604,13 @@ def main():
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # ---- 1st pass: collect type: string schemas across all YAML files ----
+    string_schemas = collect_string_schemas(input_dir)
+    print(f"Collected {len(string_schemas)} string-type schemas")
+
+    # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = 0
+    total_b = total_d = total_allof = total_e = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -453,11 +620,13 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca = process_yaml_file(in_file, out_file)
+            cb, cd, ca, ce = process_yaml_file(
+                in_file, out_file, string_schemas=string_schemas)
             total_b += cb
             total_d += cd
             total_allof += ca
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca})")
+            total_e += ce
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -467,6 +636,7 @@ def main():
     print(f"Changed B blocks       : {total_b}")
     print(f"Changed D blocks       : {total_d}")
     print(f"Changed allOf blocks   : {total_allof}")
+    print(f"Changed E blocks       : {total_e}")
 
 
 
