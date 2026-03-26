@@ -354,6 +354,155 @@ def try_transform_category_d(lines, start_idx, eol="\n"):
 
 
 # ---------------------------------------------------------------------------
+# Category F: oneOf whose ALL items are validation constraints only
+# (required, nested oneOf/allOf with required)
+# ---------------------------------------------------------------------------
+
+def _is_validation_only_item(item_lines):
+    """
+    Check if a single oneOf item (list of lines starting with "- ") is
+    purely a validation constraint.
+
+    Valid patterns:
+        - required: [field1]
+        - required: [field1, field2]
+        - oneOf:                    (followed by nested required items)
+        - allOf:                    (followed by nested required items)
+    """
+    if not item_lines:
+        return False
+
+    first = item_lines[0].strip()
+
+    # Direct required
+    if first.startswith("- required:"):
+        return True
+
+    # Nested oneOf/allOf — check sub-items recursively
+    if first in ("- oneOf:", "- allOf:"):
+        # All continuation lines must be required or nested oneOf/allOf
+        item_indent = leading_spaces(item_lines[0])
+        for line in item_lines[1:]:
+            if is_blank(line):
+                continue
+            s = line.strip()
+            if s.startswith("#"):
+                continue
+            indent = leading_spaces(line)
+            if indent <= item_indent:
+                return False
+            # Must be required or nested structure keywords
+            if s.startswith("- required:"):
+                continue
+            if s.startswith("- oneOf:") or s.startswith("- allOf:"):
+                continue
+            if s.startswith("- "):
+                # Unknown item type — not validation-only
+                return False
+            # Continuation of a required/oneOf/allOf line (deeper indent) is OK
+            continue
+        return True
+
+    return False
+
+
+def try_transform_category_f(lines, start_idx, eol="\n"):
+    """
+    Category F — oneOf where ALL items are validation-only constraints.
+
+    Comment out the entire oneOf block.
+
+    Examples:
+        oneOf:                           oneOf:
+          - required: [appId]              - oneOf:
+          - required: [ipTrafficFilter]      - required: [nfId]
+                                             - required: [nfSetId]
+                                           - required: [taiList]
+    """
+    if lines[start_idx].strip() != "oneOf:":
+        return None
+
+    oneof_line = lines[start_idx]
+    oneof_indent = leading_spaces(oneof_line)
+    j = start_idx + 1
+
+    # Detect compact style
+    peek = j
+    while peek < len(lines) and is_blank(lines[peek]):
+        peek += 1
+    compact = (peek < len(lines)
+               and leading_spaces(lines[peek]) == oneof_indent
+               and lines[peek].lstrip().startswith("- "))
+
+    # Collect body
+    body_start = j
+    while j < len(lines):
+        if is_blank(lines[j]):
+            j += 1
+            continue
+        indent = leading_spaces(lines[j])
+        stripped = lines[j].lstrip()
+        if compact:
+            if indent > oneof_indent:
+                j += 1
+                continue
+            if indent == oneof_indent and stripped.startswith("- "):
+                j += 1
+                continue
+            break
+        else:
+            if indent <= oneof_indent:
+                break
+            j += 1
+    body_end = j
+    body_lines = lines[body_start:body_end]
+
+    if not body_lines:
+        return None
+
+    # Parse into items
+    items = []
+    current_item = None
+    item_base_indent = None
+
+    for line in body_lines:
+        if is_blank(line):
+            if current_item is not None:
+                current_item.append(line)
+            continue
+        indent = leading_spaces(line)
+        stripped = line.lstrip()
+        if stripped.startswith("- "):
+            if item_base_indent is None:
+                item_base_indent = indent
+            if indent == item_base_indent:
+                if current_item is not None:
+                    items.append(current_item)
+                current_item = [line]
+                continue
+        if current_item is not None:
+            current_item.append(line)
+
+    if current_item is not None:
+        items.append(current_item)
+
+    if not items:
+        return None
+
+    # Every item must be validation-only
+    for item in items:
+        if not _is_validation_only_item(item):
+            return None
+
+    out = []
+    out.append(comment_exact(oneof_line))
+    for line in body_lines:
+        out.append(comment_exact(line))
+
+    return out, body_end
+
+
+# ---------------------------------------------------------------------------
 # Category E: anyOf whose ALL items resolve to type: string
 # ---------------------------------------------------------------------------
 
@@ -736,7 +885,7 @@ def transform_lines(lines, string_schemas=None, current_file=""):
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = 0
+    changed_b = changed_d = changed_allof = changed_e = changed_f = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -756,6 +905,16 @@ def transform_lines(lines, string_schemas=None, current_file=""):
                 out.extend(new_lines)
                 i = next_i
                 changed_d += 1
+                continue
+
+        if lines[i].strip() == "oneOf:":
+            # F: oneOf[validation-only constraints]
+            transformed = try_transform_category_f(lines, i, eol=eol)
+            if transformed is not None:
+                new_lines, next_i = transformed
+                out.extend(new_lines)
+                i = next_i
+                changed_f += 1
                 continue
 
         if lines[i].strip() == "anyOf:":
@@ -782,7 +941,7 @@ def transform_lines(lines, string_schemas=None, current_file=""):
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e
+    return out, changed_b, changed_d, changed_allof, changed_e, changed_f
 
 
 # ---------------------------------------------------------------------------
@@ -795,7 +954,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce = transform_lines(
+    new_lines, cb, cd, ca, ce, cf = transform_lines(
         lines, string_schemas=string_schemas, current_file=in_file.name)
     new_text = "".join(new_lines)
 
@@ -803,7 +962,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce
+    return cb, cd, ca, ce, cf
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -845,7 +1004,7 @@ def main():
 
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = 0
+    total_b = total_d = total_allof = total_e = total_f = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -855,13 +1014,14 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce = process_yaml_file(
+            cb, cd, ca, ce, cf = process_yaml_file(
                 in_file, out_file, string_schemas=string_schemas)
             total_b += cb
             total_d += cd
             total_allof += ca
             total_e += ce
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce})")
+            total_f += cf
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -872,6 +1032,7 @@ def main():
     print(f"Changed D blocks       : {total_d}")
     print(f"Changed allOf blocks   : {total_allof}")
     print(f"Changed E blocks       : {total_e}")
+    print(f"Changed F blocks       : {total_f}")
 
 
 
