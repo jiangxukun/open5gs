@@ -285,6 +285,13 @@ components:
           scopes:
             nsmf-event-exposure: Access to the Nsmf_EventExposure API
   schemas:
+    UpfInformation:
+      type: object
+      properties:
+        upfId:
+          type: string
+        upfAddr:
+          $ref: 'TS29517_Naf_EventExposure.yaml#/components/schemas/AddrFqdn'
     NsmfEventExposure:
       description: Represents an Individual SMF Notification Subscription resource. The serviveName property corresponds to the serviceName in the main body of the specification.
       type: object
