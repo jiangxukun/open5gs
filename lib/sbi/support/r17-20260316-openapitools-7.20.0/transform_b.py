@@ -205,7 +205,7 @@ def try_transform_category_b(lines, start_idx):
         indent = leading_spaces(line)
         stripped = line.lstrip(" ")
 
-        if indent > enum_indent and stripped.startswith("- "):
+        if indent >= enum_indent and stripped.startswith("- "):
             enum_lines.append(line)
             saw_enum_value = True
             j += 1
@@ -357,10 +357,22 @@ def try_transform_category_d(lines, start_idx, eol="\n"):
 # Category E: anyOf whose ALL items resolve to type: string
 # ---------------------------------------------------------------------------
 
+def _is_extensible_enum(schema: dict) -> bool:
+    """Check if a schema is an extensible enum (anyOf[string+enum, string])."""
+    if not isinstance(schema, dict):
+        return False
+    variants = schema.get("anyOf")
+    if not isinstance(variants, list) or len(variants) != 2:
+        return False
+    return (all(isinstance(v, dict) and v.get("type") == "string" for v in variants)
+            and any("enum" in v for v in variants))
+
+
 def collect_string_schemas(input_dir: Path) -> set:
     """
-    First pass: collect (filename, schema_name) pairs where the schema has
-    type: string at the top level.
+    First pass: collect (filename, schema_name) pairs where the schema is
+    type: string at the top level, OR is an extensible enum
+    (anyOf[string+enum, string]).
     """
     string_schemas = set()
     for yaml_file in sorted(input_dir.rglob("*")):
@@ -381,7 +393,11 @@ def collect_string_schemas(input_dir: Path) -> set:
             continue
         fname = yaml_file.name
         for name, schema in schemas.items():
-            if isinstance(schema, dict) and schema.get("type") == "string":
+            if not isinstance(schema, dict):
+                continue
+            if schema.get("type") == "string":
+                string_schemas.add((fname, name))
+            elif _is_extensible_enum(schema):
                 string_schemas.add((fname, name))
     return string_schemas
 
@@ -413,20 +429,111 @@ def resolve_ref_is_null_value(ref_str: str) -> bool:
     return False
 
 
+def _is_inline_extensible_enum(item_lines):
+    """
+    Check if an anyOf item is an inline extensible enum:
+        - anyOf:
+            - type: string
+              enum:
+                - VALUE
+            - type: string
+
+    Returns the enum value lines (reindentable) if matched, None otherwise.
+    """
+    if not item_lines:
+        return None
+    first = item_lines[0].strip()
+    if first != "- anyOf:":
+        return None
+
+    # Parse the inner sub-items
+    rest = item_lines[1:]
+    sub_items = []
+    current_sub = None
+    sub_base_indent = None
+
+    for line in rest:
+        if is_blank(line):
+            if current_sub is not None:
+                current_sub.append(line)
+            continue
+        indent = leading_spaces(line)
+        stripped = line.lstrip()
+        if stripped.startswith("- "):
+            if sub_base_indent is None:
+                sub_base_indent = indent
+            if indent == sub_base_indent:
+                if current_sub is not None:
+                    sub_items.append(current_sub)
+                current_sub = [line]
+                continue
+        if current_sub is not None:
+            current_sub.append(line)
+
+    if current_sub is not None:
+        sub_items.append(current_sub)
+
+    if len(sub_items) != 2:
+        return None
+
+    # One sub-item must be "- type: string" with enum, the other plain
+    enum_sub = None
+    plain_sub = None
+    for sub in sub_items:
+        first_sub = sub[0].strip()
+        if first_sub == "- type: string" and len(sub) == 1:
+            plain_sub = sub
+        elif first_sub == "- type: string" and len(sub) > 1:
+            has_enum = any(l.strip() == "enum:" or l.strip().startswith("enum:")
+                          for l in sub[1:])
+            if has_enum:
+                enum_sub = sub
+            else:
+                return None
+        else:
+            return None
+
+    if enum_sub is None or plain_sub is None:
+        return None
+
+    # Extract enum: header and values from enum_sub
+    enum_lines = []
+    in_enum = False
+    enum_indent = None
+    for line in enum_sub[1:]:  # skip "- type: string"
+        stripped = line.strip()
+        if not in_enum:
+            if stripped == "enum:" or stripped.startswith("enum:"):
+                in_enum = True
+                enum_lines.append(line)
+                enum_indent = leading_spaces(line)
+                continue
+        else:
+            if is_blank(line):
+                enum_lines.append(line)
+                continue
+            if stripped.startswith("#"):
+                enum_lines.append(line)
+                continue
+            indent = leading_spaces(line)
+            if indent >= enum_indent and stripped.startswith("- "):
+                enum_lines.append(line)
+                continue
+            break
+
+    return enum_lines if enum_lines else None
+
+
 def try_transform_category_e(lines, start_idx, string_schemas,
                              current_file, eol="\n"):
     """
     Category E — anyOf where items are a mix of:
       - type: string schemas ($ref or inline)
-      - NullValue ($ref to NullValue — 3GPP's nullable pattern)
+      - NullValue ($ref — 3GPP's nullable pattern)
+      - inline extensible enums (- anyOf: with enum+string sub-items)
 
     At least one non-NullValue item must exist.
     The first non-NullValue item is promoted; everything else is commented out.
-
-    Examples:
-        anyOf:                                       anyOf:
-          - $ref: '.../Dnn'                            - $ref: '.../AccessType'
-          - $ref: '.../WildcardDnn'                    - $ref: '.../NullValue'
     """
     if lines[start_idx].strip() != "anyOf:":
         return None
@@ -465,12 +572,10 @@ def try_transform_category_e(lines, start_idx, string_schemas,
             if item_base_indent is None:
                 item_base_indent = indent
             if indent == item_base_indent:
-                # start of a new item
                 if current_item is not None:
                     items.append(current_item)
                 current_item = [line]
                 continue
-        # continuation of current item
         if current_item is not None:
             current_item.append(line)
 
@@ -480,40 +585,71 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     if len(items) < 2:
         return None
 
-    # Check every item: must be string-type OR NullValue
+    # Classify each item
+    ITEM_STRING = "string"
+    ITEM_NULL = "null"
+    ITEM_INLINE_ENUM = "inline_enum"
+
+    item_types = []
     promote_idx = None
+
     for idx, item in enumerate(items):
         first = item[0].strip()
+
         if first.startswith("- $ref:"):
             ref_val = first.removeprefix("- $ref:").strip()
             if resolve_ref_is_null_value(ref_val):
-                continue  # NullValue — OK, skip
+                item_types.append(ITEM_NULL)
+                continue
             if resolve_ref_is_string(ref_val, current_file, string_schemas):
+                item_types.append(ITEM_STRING)
                 if promote_idx is None:
                     promote_idx = idx
                 continue
-            return None  # neither string nor NullValue
+            return None
+
         elif first == "- type: string":
+            item_types.append(ITEM_STRING)
             if promote_idx is None:
                 promote_idx = idx
             continue
+
+        elif first == "- anyOf:":
+            enum_lines = _is_inline_extensible_enum(item)
+            if enum_lines is not None:
+                item_types.append(ITEM_INLINE_ENUM)
+                if promote_idx is None:
+                    promote_idx = idx
+                continue
+            return None
+
         else:
             return None
 
-    # Must have at least one non-NullValue item to promote
+    # Must have at least one promotable item
     if promote_idx is None:
         return None
 
-    # Build output — promote first non-NullValue item, comment out everything
-    promote_stripped = items[promote_idx][0].strip()
+    # Build output
     out = []
+    promote_type = item_types[promote_idx]
+    promote_item = items[promote_idx]
 
-    if promote_stripped.startswith("- $ref:"):
-        ref_val = promote_stripped.removeprefix("- $ref:").strip()
-        out.append(" " * anyof_indent + "$ref: " + ref_val + eol)
-    else:
+    if promote_type == ITEM_STRING:
+        promote_stripped = promote_item[0].strip()
+        if promote_stripped.startswith("- $ref:"):
+            ref_val = promote_stripped.removeprefix("- $ref:").strip()
+            out.append(" " * anyof_indent + "$ref: " + ref_val + eol)
+        else:
+            out.append(" " * anyof_indent + "type: string" + eol)
+
+    elif promote_type == ITEM_INLINE_ENUM:
+        enum_lines = _is_inline_extensible_enum(promote_item)
         out.append(" " * anyof_indent + "type: string" + eol)
+        reindented = reindent_block(enum_lines, anyof_indent)
+        out.extend(reindented)
 
+    # Comment out original anyOf block
     out.append(comment_exact(anyof_line))
     for line in lines[body_start:body_end]:
         out.append(comment_exact(line))
