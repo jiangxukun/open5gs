@@ -542,15 +542,36 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     anyof_indent = leading_spaces(anyof_line)
     j = start_idx + 1
 
-    # Collect entire anyOf body (lines indented deeper than anyOf)
+    # Detect compact style: first non-blank line starts with "- " at anyof_indent
+    peek = j
+    while peek < len(lines) and is_blank(lines[peek]):
+        peek += 1
+    compact = (peek < len(lines)
+               and leading_spaces(lines[peek]) == anyof_indent
+               and lines[peek].lstrip().startswith("- "))
+
+    # Collect entire anyOf body
     body_start = j
     while j < len(lines):
         if is_blank(lines[j]):
             j += 1
             continue
-        if leading_spaces(lines[j]) <= anyof_indent:
-            break
-        j += 1
+        indent = leading_spaces(lines[j])
+        stripped = lines[j].lstrip()
+        if compact:
+            # In compact style, items start at anyof_indent with "- "
+            # Body continues while: deeper than anyof_indent, OR at anyof_indent with "- "
+            if indent > anyof_indent:
+                j += 1
+                continue
+            if indent == anyof_indent and stripped.startswith("- "):
+                j += 1
+                continue
+            break  # sibling key at same indent (e.g. description:)
+        else:
+            if indent <= anyof_indent:
+                break
+            j += 1
     body_end = j
     body_lines = lines[body_start:body_end]
 
@@ -589,6 +610,7 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     ITEM_STRING = "string"
     ITEM_NULL = "null"
     ITEM_INLINE_ENUM = "inline_enum"
+    ITEM_DIRECT_ENUM = "direct_enum"   # - type: string + enum: [...]
 
     item_types = []
     promote_idx = None
@@ -609,9 +631,23 @@ def try_transform_category_e(lines, start_idx, string_schemas,
             return None
 
         elif first == "- type: string":
-            item_types.append(ITEM_STRING)
-            if promote_idx is None:
-                promote_idx = idx
+            # Check if this item has an enum: block
+            has_enum = False
+            if len(item) > 1:
+                for sub_line in item[1:]:
+                    s = sub_line.strip()
+                    if s == "enum:" or s.startswith("enum:"):
+                        has_enum = True
+                        break
+            if has_enum:
+                item_types.append(ITEM_DIRECT_ENUM)
+                if promote_idx is None:
+                    promote_idx = idx
+            else:
+                item_types.append(ITEM_STRING)
+                # Only set promote_idx if no better candidate yet
+                if promote_idx is None:
+                    promote_idx = idx
             continue
 
         elif first == "- anyOf:":
@@ -630,6 +666,12 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     if promote_idx is None:
         return None
 
+    # Prefer DIRECT_ENUM or INLINE_ENUM over plain STRING for promotion
+    for idx, itype in enumerate(item_types):
+        if itype in (ITEM_DIRECT_ENUM, ITEM_INLINE_ENUM):
+            promote_idx = idx
+            break
+
     # Build output
     out = []
     promote_type = item_types[promote_idx]
@@ -642,6 +684,35 @@ def try_transform_category_e(lines, start_idx, string_schemas,
             out.append(" " * anyof_indent + "$ref: " + ref_val + eol)
         else:
             out.append(" " * anyof_indent + "type: string" + eol)
+
+    elif promote_type == ITEM_DIRECT_ENUM:
+        # Extract enum: block from the item
+        out.append(" " * anyof_indent + "type: string" + eol)
+        enum_lines_extracted = []
+        in_enum = False
+        enum_indent_local = None
+        for sub_line in promote_item[1:]:  # skip "- type: string"
+            s = sub_line.strip()
+            if not in_enum:
+                if s == "enum:" or s.startswith("enum:"):
+                    in_enum = True
+                    enum_lines_extracted.append(sub_line)
+                    enum_indent_local = leading_spaces(sub_line)
+                continue
+            # inside enum block
+            if is_blank(sub_line):
+                enum_lines_extracted.append(sub_line)
+                continue
+            if s.startswith("#"):
+                enum_lines_extracted.append(sub_line)
+                continue
+            indent = leading_spaces(sub_line)
+            if indent >= enum_indent_local and s.startswith("- "):
+                enum_lines_extracted.append(sub_line)
+                continue
+            break  # end of enum block
+        reindented = reindent_block(enum_lines_extracted, anyof_indent)
+        out.extend(reindented)
 
     elif promote_type == ITEM_INLINE_ENUM:
         enum_lines = _is_inline_extensible_enum(promote_item)
