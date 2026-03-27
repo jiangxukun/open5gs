@@ -434,7 +434,8 @@ components:
         maPduInd:
           $ref: '#/components/schemas/MaPduIndication'
         atsssCapab:
-          $ref: '#/components/schemas/AtsssCapability'
+#          $ref: '#/components/schemas/AtsssCapability'
+          $ref: '#/components/schemas/NpcfAtsssCapability'
         ipv4FrameRouteList:
           type: array
           items:
@@ -1260,7 +1261,8 @@ components:
         maPduInd:
           $ref: '#/components/schemas/MaPduIndication'
         atsssCapab:
-          $ref: '#/components/schemas/AtsssCapability'
+#          $ref: '#/components/schemas/AtsssCapability'
+          $ref: '#/components/schemas/NpcfAtsssCapability'
         tsnBridgeInfo:
           $ref: '#/components/schemas/TsnBridgeInfo'
         tsnBridgeManCont:
@@ -2223,8 +2225,8 @@ components:
           - CREATE_PCC_RULE
           - DELETE_PCC_RULE
           - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS
-          - MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS
-          - MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS
+          - MODIFY_PCC_RULE_AND_REPLACE_PACKET_FILTERS
+          - MODIFY_PCC_RULE_AND_DELETE_PACKET_FILTERS
           - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS
       - type: string
         description: >
@@ -2416,7 +2418,8 @@ components:
           - MA_PDU_REQUEST
           - MA_PDU_NETWORK_UPGRADE_ALLOWED
       - type: string
-    AtsssCapability:
+#    AtsssCapability:
+    NpcfAtsssCapability:
       description: Contains the ATSSS capability supported for the MA PDU Session.
       anyOf:
       - type: string
