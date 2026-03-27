@@ -507,14 +507,17 @@ def try_transform_category_f(lines, start_idx, eol="\n"):
 # ---------------------------------------------------------------------------
 
 def _is_extensible_enum(schema: dict) -> bool:
-    """Check if a schema is an extensible enum (anyOf[string+enum, string])."""
+    """Check if a schema is an extensible enum (anyOf/oneOf[string+enum, string])."""
     if not isinstance(schema, dict):
         return False
-    variants = schema.get("anyOf")
-    if not isinstance(variants, list) or len(variants) != 2:
-        return False
-    return (all(isinstance(v, dict) and v.get("type") == "string" for v in variants)
-            and any("enum" in v for v in variants))
+    for key in ("anyOf", "oneOf"):
+        variants = schema.get(key)
+        if not isinstance(variants, list) or len(variants) != 2:
+            continue
+        if (all(isinstance(v, dict) and v.get("type") == "string" for v in variants)
+                and any("enum" in v for v in variants)):
+            return True
+    return False
 
 
 def collect_string_schemas(input_dir: Path) -> set:
@@ -878,14 +881,395 @@ def try_transform_category_e(lines, start_idx, string_schemas,
 
 
 # ---------------------------------------------------------------------------
-# Main transform pass (A/B/D/E)
+# Category G: oneOf[enum + string]  — mirrors Category B but for oneOf:
+# ---------------------------------------------------------------------------
+
+def try_transform_category_g(lines, start_idx):
+    """
+    Match oneOf extensible enum — same structure as Category B but with oneOf:.
+
+    Supported forms:
+
+      oneOf:
+        - type: string
+          enum:
+            - ...
+        - type: string
+      description: ...
+
+    and also:
+
+      oneOf:
+      - type: string
+        enum:
+          - ...
+      - type: string
+        description: >
+          ...
+      description: |
+        ...
+
+    Return:
+      (new_lines, next_idx) if matched
+      None otherwise
+    """
+    if lines[start_idx].strip() != "oneOf:":
+        return None
+
+    oneof_line = lines[start_idx]
+    oneof_indent = leading_spaces(oneof_line)
+    j = start_idx + 1
+
+    # 1) first item head: allow indent >= oneOf indent
+    if j >= len(lines) or lines[j].strip() != "- type: string":
+        return None
+    first_head = lines[j]
+    first_indent = leading_spaces(first_head)
+    if first_indent < oneof_indent:
+        return None
+    j += 1
+
+    # 2) enum header
+    while j < len(lines) and is_blank(lines[j]):
+        return None
+
+    if j >= len(lines) or lines[j].strip() != "enum:":
+        return None
+
+    enum_lines = [lines[j]]
+    enum_indent = leading_spaces(lines[j])
+    j += 1
+
+    # 3) enum values
+    saw_enum_value = False
+    while j < len(lines):
+        line = lines[j]
+
+        if is_blank(line):
+            enum_lines.append(line)
+            j += 1
+            continue
+
+        stripped_raw = line.strip()
+        if stripped_raw.startswith("#"):
+            enum_lines.append(line)
+            j += 1
+            continue
+
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
+
+        if indent >= enum_indent and stripped.startswith("- "):
+            enum_lines.append(line)
+            saw_enum_value = True
+            j += 1
+            continue
+
+        break
+
+    if not saw_enum_value:
+        return None
+
+    # 4) second item head
+    if j >= len(lines) or lines[j].strip() != "- type: string":
+        return None
+    second_head = lines[j]
+    second_indent = leading_spaces(second_head)
+    if second_indent < oneof_indent:
+        return None
+    j += 1
+
+    # 5) second item tail: nested description block etc.
+    second_tail = []
+    while j < len(lines):
+        line = lines[j]
+
+        if is_blank(line):
+            second_tail.append(line)
+            j += 1
+            continue
+
+        if leading_spaces(line) > second_indent:
+            second_tail.append(line)
+            j += 1
+            continue
+
+        break
+
+    # 6) sibling description block after oneOf
+    sibling_desc = []
+    if j < len(lines) and lines[j].strip().startswith("description:"):
+        desc_indent = leading_spaces(lines[j])
+
+        if desc_indent == oneof_indent:
+            sibling_desc.append(lines[j])
+            j += 1
+
+            while j < len(lines):
+                line = lines[j]
+
+                if is_blank(line):
+                    sibling_desc.append(line)
+                    j += 1
+                    continue
+
+                if leading_spaces(line) > desc_indent:
+                    sibling_desc.append(line)
+                    j += 1
+                    continue
+
+                break
+
+    # 7) build transformed output
+    eol = "\r\n" if oneof_line.endswith("\r\n") else "\n"
+    out = []
+    out.append(comment_exact(oneof_line))
+    out.append(comment_exact(first_head))
+
+    # type: string 삽입 — 제너레이터가 string enum으로 정확히 분류하고
+    # collect_string_enums가 수집할 수 있도록
+    out.append(" " * oneof_indent + "type: string" + eol)
+
+    reindented_enum_lines = reindent_block(enum_lines, oneof_indent)
+    for line in reindented_enum_lines:
+        out.append(line)
+
+    out.append(comment_exact(second_head))
+    for line in second_tail:
+        out.append(comment_exact(line))
+
+    for line in sibling_desc:
+        out.append(comment_exact(line))
+
+    return out, j
+
+
+# ---------------------------------------------------------------------------
+# Category H: oneOf catch-all — promote first item for composed types
+# ---------------------------------------------------------------------------
+
+def try_transform_category_h(lines, start_idx, eol="\n"):
+    """
+    Category H — oneOf catch-all for remaining composed types.
+
+    Promote the first oneOf item to replace the entire oneOf block.
+    Also comment out any discriminator: block that follows at the same indent.
+
+    Handles patterns like:
+
+      oneOf:                                    oneOf:
+        - type: array                             - $ref: '#/.../AvEapAkaPrime'
+          items:                                  - $ref: '#/.../Av5GHeAka'
+            $ref: '#/.../AvEpsAka'              discriminator:
+          minItems: 1                             propertyName: avType
+          maxItems: 5                             mapping: ...
+        - type: array
+          items:
+            $ref: '#/.../AvImsGbaEapAka'
+          ...
+
+    The first item is promoted; the rest (including discriminator) is
+    commented out.
+    """
+    if lines[start_idx].strip() != "oneOf:":
+        return None
+
+    oneof_line = lines[start_idx]
+    oneof_indent = leading_spaces(oneof_line)
+    j = start_idx + 1
+
+    # Skip blank lines to find first item
+    while j < len(lines) and is_blank(lines[j]):
+        j += 1
+    if j >= len(lines):
+        return None
+
+    # First non-blank must be "- ..."
+    if not lines[j].lstrip(" ").startswith("- "):
+        return None
+
+    first_item_indent = leading_spaces(lines[j])
+    if first_item_indent < oneof_indent:
+        return None
+
+    # Detect compact style (items at same indent as oneOf:)
+    compact = (first_item_indent == oneof_indent)
+
+    # Collect entire oneOf body
+    body_start = start_idx + 1
+    k = body_start
+    while k < len(lines):
+        if is_blank(lines[k]):
+            k += 1
+            continue
+        indent = leading_spaces(lines[k])
+        stripped = lines[k].lstrip(" ")
+        if compact:
+            if indent > oneof_indent:
+                k += 1
+                continue
+            if indent == oneof_indent and stripped.startswith("- "):
+                k += 1
+                continue
+            break
+        else:
+            if indent <= oneof_indent:
+                break
+            k += 1
+    body_end = k
+    body_lines = lines[body_start:body_end]
+
+    if not body_lines:
+        return None
+
+    # Parse items
+    items = []
+    current_item = None
+    item_base_indent = None
+
+    for line in body_lines:
+        if is_blank(line):
+            if current_item is not None:
+                current_item.append(line)
+            continue
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
+        if stripped.startswith("- "):
+            if item_base_indent is None:
+                item_base_indent = indent
+            if indent == item_base_indent:
+                if current_item is not None:
+                    items.append(current_item)
+                current_item = [line]
+                continue
+        if current_item is not None:
+            current_item.append(line)
+
+    if current_item is not None:
+        items.append(current_item)
+
+    if not items:
+        return None
+
+    # --- Promote first item ---
+    first_item = items[0]
+    first_line = first_item[0]
+    content_start = leading_spaces(first_line) + 2   # column after "- "
+
+    promoted = []
+    # First line: strip "- " prefix, reindent to oneof_indent
+    first_content = first_line.lstrip(" ")[2:]        # remove "- "
+    promoted.append(" " * oneof_indent + first_content)
+
+    # Remaining lines: shift by (content_start → oneof_indent)
+    for line in first_item[1:]:
+        if is_blank(line):
+            promoted.append(line)
+            continue
+        old_indent = leading_spaces(line)
+        new_indent = max(0, old_indent - content_start + oneof_indent)
+        promoted.append(" " * new_indent + line.lstrip(" "))
+
+    # Strip trailing blank lines from promoted block
+    while promoted and is_blank(promoted[-1]):
+        promoted.pop()
+
+    # --- Check sibling key conflict ---
+    # Extract keys the promoted content would introduce at oneof_indent
+    promoted_keys = set()
+    for line in promoted:
+        if is_blank(line):
+            continue
+        if leading_spaces(line) == oneof_indent:
+            key_part = line.strip().split(":")[0].strip()
+            if key_part and not key_part.startswith("#"):
+                promoted_keys.add(key_part)
+
+    # Scan backward to collect existing sibling keys at same indent
+    sibling_keys = set()
+    scan = start_idx - 1
+    while scan >= 0:
+        line = lines[scan]
+        if is_blank(line):
+            scan -= 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break  # reached parent level
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                scan -= 1
+                continue
+            key_part = stripped.split(":")[0].strip()
+            if key_part:
+                sibling_keys.add(key_part)
+        scan -= 1
+
+    # Scan forward to collect sibling keys after oneOf body
+    scan = body_end
+    while scan < len(lines):
+        line = lines[scan]
+        if is_blank(line):
+            scan += 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break  # reached parent level
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                scan += 1
+                continue
+            key_part = stripped.split(":")[0].strip()
+            if key_part:
+                sibling_keys.add(key_part)
+        scan += 1
+
+    # If any promoted key already exists as a sibling, skip
+    if promoted_keys & sibling_keys:
+        return None
+
+    # --- Detect discriminator: at same indent after oneOf body ---
+    disc_end = body_end
+    tmp = disc_end
+    while tmp < len(lines) and is_blank(lines[tmp]):
+        tmp += 1
+    if (tmp < len(lines)
+            and lines[tmp].strip().startswith("discriminator:")
+            and leading_spaces(lines[tmp]) == oneof_indent):
+        disc_indent = oneof_indent
+        disc_end = tmp + 1
+        while disc_end < len(lines):
+            if is_blank(lines[disc_end]):
+                disc_end += 1
+                continue
+            if leading_spaces(lines[disc_end]) > disc_indent:
+                disc_end += 1
+                continue
+            break
+
+    # --- Build output ---
+    out = []
+    out.extend(promoted)
+    out.append(comment_exact(oneof_line))
+    for line in body_lines:
+        out.append(comment_exact(line))
+    for line in lines[body_end:disc_end]:
+        out.append(comment_exact(line))
+
+    return out, disc_end
+
+
+# ---------------------------------------------------------------------------
+# Main transform pass (A/B/D/E/F/G/H)
 # ---------------------------------------------------------------------------
 
 def transform_lines(lines, string_schemas=None, current_file=""):
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = changed_f = 0
+    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -908,6 +1292,15 @@ def transform_lines(lines, string_schemas=None, current_file=""):
                 continue
 
         if lines[i].strip() == "oneOf:":
+            # G: oneOf[enum + string]  (try first — more specific)
+            transformed = try_transform_category_g(lines, i)
+            if transformed is not None:
+                new_lines, next_i = transformed
+                out.extend(new_lines)
+                i = next_i
+                changed_g += 1
+                continue
+
             # F: oneOf[validation-only constraints]
             transformed = try_transform_category_f(lines, i, eol=eol)
             if transformed is not None:
@@ -915,6 +1308,15 @@ def transform_lines(lines, string_schemas=None, current_file=""):
                 out.extend(new_lines)
                 i = next_i
                 changed_f += 1
+                continue
+
+            # H: oneOf catch-all (composed types — promote first item)
+            transformed = try_transform_category_h(lines, i, eol=eol)
+            if transformed is not None:
+                new_lines, next_i = transformed
+                out.extend(new_lines)
+                i = next_i
+                changed_h += 1
                 continue
 
         if lines[i].strip() == "anyOf:":
@@ -941,7 +1343,7 @@ def transform_lines(lines, string_schemas=None, current_file=""):
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e, changed_f
+    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h
 
 
 # ---------------------------------------------------------------------------
@@ -954,7 +1356,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce, cf = transform_lines(
+    new_lines, cb, cd, ca, ce, cf, cg, ch = transform_lines(
         lines, string_schemas=string_schemas, current_file=in_file.name)
     new_text = "".join(new_lines)
 
@@ -962,7 +1364,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce, cf
+    return cb, cd, ca, ce, cf, cg, ch
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -1004,7 +1406,7 @@ def main():
 
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = total_f = 0
+    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -1014,14 +1416,16 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce, cf = process_yaml_file(
+            cb, cd, ca, ce, cf, cg, ch = process_yaml_file(
                 in_file, out_file, string_schemas=string_schemas)
             total_b += cb
             total_d += cd
             total_allof += ca
             total_e += ce
             total_f += cf
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf})")
+            total_g += cg
+            total_h += ch
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -1033,6 +1437,8 @@ def main():
     print(f"Changed allOf blocks   : {total_allof}")
     print(f"Changed E blocks       : {total_e}")
     print(f"Changed F blocks       : {total_f}")
+    print(f"Changed G blocks       : {total_g}")
+    print(f"Changed H blocks       : {total_h}")
 
 
 

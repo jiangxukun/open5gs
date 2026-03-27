@@ -902,7 +902,8 @@ components:
         steerModeUl:
           $ref: '#/components/schemas/SteeringMode'
         mulAccCtrl:
-          $ref: '#/components/schemas/MulticastAccessControl'
+#          $ref: '#/components/schemas/MulticastAccessControl'
+          $ref: '#/components/schemas/NpcfMulticastAccessControl'
       required:
         - tcId
       nullable: true
@@ -2350,7 +2351,8 @@ components:
           - SMALLEST_DELAY
           - PRIORITY_BASED
       - type: string
-    MulticastAccessControl:
+#    MulticastAccessControl:
+    NpcfMulticastAccessControl:
       description: Indicates whether the service data flow, corresponding to the service data flow template, is allowed or not allowed.
       anyOf:
       - type: string
