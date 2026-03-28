@@ -1267,7 +1267,8 @@ components:
         - event
       properties:
         event:
-          $ref: '#/components/schemas/AfEvent'
+#          $ref: '#/components/schemas/AfEvent'
+          $ref: '#/components/schemas/NpcfAfEvent'
         notifMethod:
           $ref: '#/components/schemas/AfNotifMethod'
         repPeriod:
@@ -1281,7 +1282,8 @@ components:
         - event
       properties:
         event:
-          $ref: '#/components/schemas/AfEvent'
+#          $ref: '#/components/schemas/AfEvent'
+          $ref: '#/components/schemas/NpcfAfEvent'
         flows:
           type: array
           items:
@@ -1913,7 +1915,8 @@ components:
           - SPONSOR_ENABLED
       - type: string
 #        
-    AfEvent:
+#    AfEvent:
+    NpcfAfEvent:
       description: Represents an event to notify to the AF.
       anyOf:
       - type: string
