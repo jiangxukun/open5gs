@@ -29,18 +29,14 @@ libsbi_openapi_sources = files('''
     model/access_and_mobility_subscription_data.c
     model/access_net_charging_identifier.c
     model/access_network_id.c
-    model/access_right_status_any_of.c
     model/access_right_status.c
-    model/access_tech_any_of.c
     model/access_tech.c
     model/access_token_err.c
     model/access_token_req.c
     model/access_type.c
-    model/access_type_rm.c
     model/acc_net_charging_address.c
     model/acc_net_ch_id.c
     model/accumulated_usage.c
-    model/accuracy_any_of.c
     model/accuracy.c
     model/accu_usage_report.c
     model/acknowledge_info.c
@@ -86,10 +82,9 @@ libsbi_openapi_sources = files('''
     model/amf_event_mode.c
     model/amf_event_subscription_add_info.c
     model/amf_event_subscription.c
-    model/amf_event_trigger_any_of.c
     model/amf_event_trigger.c
-    model/amf_event_type_any_of.c
     model/amf_event_type.c
+    model/amf_info_1.c
     model/amf_info.c
     model/amf_non3_gpp_access_registration.c
     model/amf_non3_gpp_access_registration_modification.c
@@ -97,16 +92,13 @@ libsbi_openapi_sources = files('''
     model/amf_status_info.c
     model/amf_subscription_info.c
     model/am_influ_data.c
-    model/am_influ_event_any_of.c
     model/am_influ_event.c
     model/am_policy_data.c
     model/am_requested_value_rep.c
-    model/analytics_metadata_any_of.c
     model/analytics_metadata.c
     model/analytics_metadata_indication.c
     model/analytics_metadata_info.c
     model/analytics_subscription.c
-    model/analytics_subset_any_of.c
     model/analytics_subset.c
     model/anchor_smf_features.c
     model/an_gw_address.c
@@ -116,11 +108,11 @@ libsbi_openapi_sources = files('''
     model/api_signature.c
     model/apn_rate_status.c
     model/app_descriptor_1.c
+    model/app_descriptor_2.c
     model/app_descriptor.c
     model/app_detection_info.c
     model/app_detection_notif_type.c
     model/app_detection_report.c
-    model/application_data_change_notif.c
     model/_application_data_influence_data_subs_to_notify_post_request_inner.c
     model/application_data_subs.c
     model/application_volume.c
@@ -142,7 +134,6 @@ libsbi_openapi_sources = files('''
     model/assign_ebi_error.c
     model/assign_ebi_failed.c
     model/assigned_ebi_data.c
-    model/association_type_any_of.c
     model/association_type.c
     model/as_time_distribution_param.c
     model/atom.c
@@ -175,7 +166,6 @@ libsbi_openapi_sources = files('''
     model/bdt_data_patch.c
     model/bdt_policy_data.c
     model/bdt_policy_data_patch.c
-    model/bdt_policy_status_any_of.c
     model/bdt_policy_status.c
     model/binding_level.c
     model/binding_resp.c
@@ -208,10 +198,8 @@ libsbi_openapi_sources = files('''
     model/civic_address.c
     model/class_criterion.c
     model/cm_info.c
-    model/cm_state_any_of.c
     model/cm_state.c
     model/cn_assisted_ran_para.c
-    model/cnf.c
     model/cnf_unit.c
     model/code_word_ind.c
     model/collection_period_rmm_lte_mdt.c
@@ -227,9 +215,7 @@ libsbi_openapi_sources = files('''
     model/confirmation_data.c
     model/confirmation_data_response.c
     model/congestion_info.c
-    model/congestion_type_any_of.c
     model/congestion_type.c
-    model/connection_capabilities_any_of.c
     model/connection_capabilities.c
     model/consumer_nf_information.c
     model/context_data_set_name.c
@@ -240,16 +226,13 @@ libsbi_openapi_sources = files('''
     model/create_ue_context_403_response.c
     model/create_ue_context_request.c
     model/credit_management_status.c
-    model/data_change_notify.c
     model/data_filter.c
-    model/data_ind_any_of.c
     model/data_ind.c
     model/datalink_reporting_configuration_1.c
     model/datalink_reporting_configuration.c
     model/data_restoration_notification.c
     model/data_set_id.c
     model/data_set_name.c
-    model/dataset_statistical_property_any_of.c
     model/dataset_statistical_property.c
     model/dccf_cond.c
     model/dccf_info.c
@@ -258,6 +241,7 @@ libsbi_openapi_sources = files('''
     model/ddn_failure_sub_info.c
     model/ddn_failure_subs.c
     model/default_notification_subscription.c
+    model/default_unrelated_class_1.c
     model/default_unrelated_class.c
     model/def_sub_service_info.c
     model/deregistration_data.c
@@ -265,18 +249,14 @@ libsbi_openapi_sources = files('''
     model/deregistration_reason.c
     model/dispersion_area.c
     model/dispersion_class.c
-    model/dispersion_class_one_of.c
     model/dispersion_collection.c
     model/dispersion_info.c
-    model/dispersion_ordering_criterion_any_of.c
     model/dispersion_ordering_criterion.c
     model/dispersion_requirement.c
     model/dispersion_type.c
-    model/dispersion_type_one_of.c
     model/dl_data_delivery_status.c
     model/dnai_change_type.c
     model/dnai_information.c
-    model/dnf.c
     model/dnf_unit.c
     model/dnn_configuration_1.c
     model/dnn_configuration.c
@@ -287,16 +267,13 @@ libsbi_openapi_sources = files('''
     model/dnn_route_selection_descriptor.c
     model/dnn_selection_mode.c
     model/dnn_smf_info_item.c
-    model/dnn_smf_info_item_dnai_list_inner.c
     model/dnn_snssai_information.c
     model/dnn_tsctsf_info_item.c
     model/dnn_upf_info_item.c
     model/dn_perf.c
     model/dn_perf_info.c
-    model/dn_perf_ordering_criterion_any_of.c
     model/dn_perf_ordering_criterion.c
     model/dn_performance_req.c
-    model/domain_name_protocol_any_of.c
     model/domain_name_protocol.c
     model/downlink_data_notification_control.c
     model/downlink_data_notification_control_rm.c
@@ -322,8 +299,8 @@ libsbi_openapi_sources = files('''
     model/ee_subscription_1.c
     model/ee_subscription.c
     model/ee_subscription_ext.c
-    model/ellipsoid_arc_all_of.c
     model/ellipsoid_arc.c
+    model/emergency_info_1.c
     model/emergency_info.c
     model/enhanced_coverage_restriction_data.c
     model/eps_bearer_info.c
@@ -335,43 +312,34 @@ libsbi_openapi_sources = files('''
     model/eps_nas_security_mode.c
     model/eps_pdn_cnx_info.c
     model/error_report.c
+    model/eth_flow_description_1.c
     model/eth_flow_description.c
     model/eutra_location.c
-    model/event_any_of.c
     model/event.c
     model/event_for_mdt.c
-    model/event_id_any_of.c
     model/event_id.c
     model/event_notification.c
     model/event_reporting_requirement.c
-    model/event_report_mode_any_of.c
     model/event_report_mode.c
     model/events_notification.c
     model/events_subsc_put_data.c
     model/events_subsc_req_data.c
     model/events_subsc_req_data_rm.c
     model/event_subscription.c
-    model/event_type_any_of.c
     model/event_type.c
     model/exception.c
-    model/exception_id_any_of.c
     model/exception_id.c
-    model/exception_trend_any_of.c
     model/exception_trend.c
     model/exemption_ind.c
-    model/expected_analytics_type_any_of.c
     model/expected_analytics_type.c
     model/expected_ue_behavior.c
     model/expected_ue_behaviour.c
     model/expected_ue_behaviour_data_1.c
     model/expected_ue_behaviour_data.c
-    model/exposure_data_change_notification.c
     model/exposure_data_subscription.c
     model/ext_amf_event_subscription.c
-    model/extended_problem_details_all_of.c
     model/extended_problem_details.c
     model/extended_sm_subs_data.c
-    model/external_client_type_any_of.c
     model/external_client_type.c
     model/external_unrelated_class.c
     model/ext_problem_details.c
@@ -380,18 +348,14 @@ libsbi_openapi_sources = files('''
     model/failure_cause.c
     model/failure_code.c
     model/failure_event_info.c
-    model/failure_reason_any_of.c
     model/failure_reason.c
-    model/final_unit_action_any_of.c
     model/final_unit_action.c
     model/flow_direction.c
-    model/flow_direction_rm.c
     model/flow_info.c
     model/flow_information.c
     model/flows.c
     model/flow_status.c
     model/flow_usage.c
-    model/fqdn_rm.c
     model/frame_route_info_1.c
     model/frame_route_info.c
     model/gad_shape.c
@@ -405,13 +369,13 @@ libsbi_openapi_sources = files('''
     model/geo_service_area_1.c
     model/geo_service_area.c
     model/gera_location.c
-    model/get_multiple_pp_data_entries_ue_id_parameter.c
     model/global_ran_node_id_1.c
     model/global_ran_node_id.c
     model/gmlc_info.c
     model/gnb_id.c
     model/gpsi_type.c
     model/group_identifiers.c
+    model/guami_1.c
     model/guami.c
     model/guami_list_cond.c
     model/hfc_node_id.c
@@ -428,17 +392,15 @@ libsbi_openapi_sources = files('''
     model/hss_info.c
     model/hss_subscription_info.c
     model/hss_subscription_item.c
-    model/http_method_any_of.c
     model/http_method.c
     model/identity_data.c
     model/identity_range.c
     model/id_translation_result.c
     model/ie_info.c
-    model/ie_location_any_of.c
     model/ie_location.c
-    model/ie_type_any_of.c
     model/ie_type.c
     model/immediate_mdt_conf.c
+    model/immediate_report_1.c
     model/immediate_report.c
     model/imsi_range.c
     model/ims_vo_ps.c
@@ -472,30 +434,29 @@ libsbi_openapi_sources = files('''
     model/key_amf.c
     model/key_amf_type.c
     model/ladn_info.c
+    model/lcs_broadcast_assistance_types_data_1.c
     model/lcs_broadcast_assistance_types_data.c
     model/lcs_client_class.c
     model/lcs_client_external.c
     model/lcs_client_group_external.c
+    model/lcs_mo_data_1.c
     model/lcs_mo_data.c
     model/lcs_mo_service_class.c
     model/lcs_privacy.c
+    model/lcs_privacy_data_1.c
     model/lcs_privacy_data.c
     model/limit_id_to_monitoring_key.c
     model/line_type.c
     model/link.c
     model/links_value_schema.c
     model/lmf_info.c
-    model/local2d_point_uncertainty_ellipse_all_of.c
     model/local2d_point_uncertainty_ellipse.c
-    model/local3d_point_uncertainty_ellipsoid_all_of.c
     model/local3d_point_uncertainty_ellipsoid.c
     model/local_origin.c
-    model/location_accuracy_any_of.c
     model/location_accuracy.c
     model/location_area_1.c
     model/location_area.c
     model/location_area_id.c
-    model/location_filter_any_of.c
     model/location_filter.c
     model/location_info.c
     model/location_privacy_ind.c
@@ -507,13 +468,14 @@ libsbi_openapi_sources = files('''
     model/logging_interval_nr_mdt.c
     model/loss_connectivity_cfg_1.c
     model/loss_connectivity_cfg.c
+    model/lpi_1.c
     model/lpi.c
     model/lte_m_ind.c
+    model/lte_v2x_auth_1.c
     model/lte_v2x_auth.c
     model/ma_pdu_indication.c
     model/mapping_of_snssai.c
     model/ma_release_indication.c
-    model/matching_direction_any_of.c
     model/matching_direction.c
     model/max_integrity_protected_data_rate.c
     model/mbs_binding_resp.c
@@ -554,6 +516,9 @@ libsbi_openapi_sources = files('''
     model/model_5_mbs_authorization_info.c
     model/modification_notification.c
     model/modify_200_response.c
+    model/modify_pdu_session_200_response.c
+    model/modify_pdu_session_400_response.c
+    model/modify_pdu_session_request.c
     model/modifysubscription_data_subscription_200_response.c
     model/mo_exp_data_counter.c
     model/monitoring_configuration_1.c
@@ -564,9 +529,11 @@ libsbi_openapi_sources = files('''
     model/n1_message_class.c
     model/n1_message_container.c
     model/n1_message_notification.c
+    model/n1_message_notify_request.c
     model/n1_n2_message_transfer_cause.c
     model/n1_n2_message_transfer_error.c
     model/n1_n2_message_transfer_req_data.c
+    model/n1_n2_message_transfer_request.c
     model/n1_n2_message_transfer_rsp_data.c
     model/n1_n2_msg_txfr_err_detail.c
     model/n1_n2_msg_txfr_failure_notification.c
@@ -589,14 +556,11 @@ libsbi_openapi_sources = files('''
     model/n32f_context_info.c
     model/n32f_error_detail.c
     model/n32f_error_info.c
-    model/n32f_error_type_any_of.c
     model/n32f_error_type.c
-    model/n32_purpose_any_of.c
     model/n32_purpose.c
     model/n3ga_location.c
     model/n4_information.c
     model/n4_message_type.c
-    model/namf_subscription_data.c
     model/nas_security_mode.c
     model/ncgi_1.c
     model/ncgi.c
@@ -606,12 +570,12 @@ libsbi_openapi_sources = files('''
     model/net_loc_access_support.c
     model/network_area_info_1.c
     model/network_area_info_2.c
+    model/network_area_info_3.c
     model/network_area_info.c
     model/network_node_diameter_address_1.c
     model/network_node_diameter_address.c
     model/network_perf_info.c
     model/network_perf_requirement.c
-    model/network_perf_type_any_of.c
     model/network_perf_type.c
     model/network_slice_cond.c
     model/nf_group_cond.c
@@ -648,7 +612,6 @@ libsbi_openapi_sources = files('''
     model/non_ue_n2_info_subscription_created_data.c
     model/non_ue_n2_message_transfer_request.c
     model/no_profile_match_info.c
-    model/no_profile_match_reason_any_of.c
     model/no_profile_match_reason.c
     model/notif_condition.c
     model/notification_cause.c
@@ -658,17 +621,13 @@ libsbi_openapi_sources = files('''
     model/notification_event_type.c
     model/notification_flag.c
     model/notification_info.c
-    model/notification_item.c
-    model/notification_method_1_any_of.c
     model/notification_method_1.c
-    model/notification_method_any_of.c
     model/notification_method.c
     model/notification_type.c
     model/notify_item.c
     model/npcf_af_event.c
     model/npcf_atsss_capability.c
     model/npcf_multicast_access_control.c
-    model/npcf_pdu_session_status.c
     model/npn_access_info.c
     model/nrf_info.c
     model/nrf_info_served_aanf_info_list_value_value.c
@@ -693,6 +652,7 @@ libsbi_openapi_sources = files('''
     model/nrf_info_served_upf_info_value.c
     model/nr_location.c
     model/nrppa_information.c
+    model/nr_v2x_auth_1.c
     model/nr_v2x_auth.c
     model/nsacf_capability.c
     model/nsacf_info.c
@@ -706,15 +666,12 @@ libsbi_openapi_sources = files('''
     model/nssai_ack_data.c
     model/nssai.c
     model/nssai_mapping.c
-    model/nudm_amf_info.c
     model/null_value.c
     model/number_average.c
     model/nwdaf_capability.c
     model/nwdaf_cond.c
     model/nwdaf_data.c
-    model/nwdaf_event_any_of.c
     model/nwdaf_event.c
-    model/nwdaf_failure_code_any_of.c
     model/nwdaf_failure_code.c
     model/nwdaf_info.c
     model/nwdaf_registration.c
@@ -727,14 +684,11 @@ libsbi_openapi_sources = files('''
     model/odb_packet_services.c
     model/operation_mode.c
     model/operator_specific_data_container.c
-    model/operator_specific_data_container_value.c
     model/options_response.c
     model/out_of_credit_information.c
-    model/output_strategy_any_of.c
     model/output_strategy.c
     model/packet_filter_info.c
     model/parameter_combination.c
-    model/partial_record_method_any_of.c
     model/partial_record_method.c
     model/partial_success_report.c
     model/partitioning_criteria.c
@@ -762,6 +716,7 @@ libsbi_openapi_sources = files('''
     model/pcscf_info.c
     model/pcscf_restoration_notification.c
     model/pcscf_restoration_request_data.c
+    model/pdu_session_1.c
     model/pdu_session.c
     model/pdu_session_context.c
     model/pdu_session_context_type.c
@@ -784,12 +739,11 @@ libsbi_openapi_sources = files('''
     model/pei_update_info.c
     model/perf_data.c
     model/periodic_communication_indicator.c
-    model/periodicity_any_of.c
     model/periodicity.c
-    model/pfd_change_notification.c
     model/pfd_content.c
     model/pfd_data.c
     model/pfd_data_for_app_ext.c
+    model/pgw_info_1.c
     model/pgw_info.c
     model/plmn_ec_info_1.c
     model/plmn_ec_info.c
@@ -798,39 +752,38 @@ libsbi_openapi_sources = files('''
     model/plmn_id_nid_1.c
     model/plmn_id_nid.c
     model/plmn_oauth2.c
+    model/plmn_operator_class_1.c
     model/plmn_operator_class.c
     model/plmn_range.c
     model/plmn_restriction_1.c
     model/plmn_restriction.c
     model/plmn_route_selection_descriptor.c
     model/plmn_snssai.c
-    model/point_all_of.c
-    model/point_altitude_all_of.c
     model/point_altitude.c
-    model/point_altitude_uncertainty_all_of.c
     model/point_altitude_uncertainty.c
     model/point.c
-    model/point_uncertainty_circle_all_of.c
     model/point_uncertainty_circle.c
-    model/point_uncertainty_ellipse_all_of.c
     model/point_uncertainty_ellipse.c
     model/policy_association.c
     model/policy_association_release_cause.c
     model/policy_association_request.c
     model/policy_association_update_request.c
     model/policy_control_request_trigger.c
-    model/policy_data_change_notification.c
     model/policy_data_for_individual_ue.c
     model/policy_data_subscription.c
-    model/policy_data_subset_any_of.c
     model/policy_data_subset.c
     model/policy_decision_failure_code.c
     model/policy_req_trigger.c
     model/policy_update.c
-    model/polygon_all_of.c
     model/polygon.c
     model/port_management_container.c
     model/positioning_method_mdt.c
+    model/post_pdu_sessions_201_response.c
+    model/post_pdu_sessions_400_response.c
+    model/post_pdu_sessions_request.c
+    model/post_sm_contexts_201_response.c
+    model/post_sm_contexts_400_response.c
+    model/post_sm_contexts_request.c
     model/pp5g_vn_group_profile_data.c
     model/pp_active_time.c
     model/pp_data.c
@@ -842,11 +795,8 @@ libsbi_openapi_sources = files('''
     model/pp_profile_data.c
     model/pp_subs_reg_timer.c
     model/preemption_capability.c
-    model/preemption_capability_rm.c
     model/preemption_control_information.c
-    model/preemption_control_information_rm.c
     model/preemption_vulnerability.c
-    model/preemption_vulnerability_rm.c
     model/preferred_search.c
     model/presence_info.c
     model/presence_info_rm.c
@@ -857,20 +807,21 @@ libsbi_openapi_sources = files('''
     model/problem_details_1.c
     model/problem_details_add_info.c
     model/problem_details.c
+    model/pro_se_allowed_plmn_1.c
     model/pro_se_allowed_plmn.c
-    model/pro_se_auth_data.c
     model/pro_se_authentication_ctx.c
     model/pro_se_authentication_info.c
     model/pro_se_authentication_info_request.c
     model/pro_se_authentication_info_result.c
     model/pro_se_authentication_result.c
-    model/pro_se_authentication_vectors.c
     model/pro_se_capability.c
     model/prose_context.c
     model/prose_direct_allowed.c
     model/pro_se_eap_session.c
     model/pro_se_information.c
+    model/prose_service_auth_1.c
     model/prose_service_auth.c
+    model/prose_subscription_data_1.c
     model/prose_subscription_data.c
     model/protection_policy.c
     model/protection_result.c
@@ -912,18 +863,14 @@ libsbi_openapi_sources = files('''
     model/rat_freq_information.c
     model/rat_selector.c
     model/rat_type.c
-    model/reachability_filter_any_of.c
     model/reachability_filter.c
     model/reachability_for_data_configuration_1.c
     model/reachability_for_data_configuration.c
-    model/reachability_for_data_report_config_any_of.c
     model/reachability_for_data_report_config.c
-    model/reachability_for_sms_configuration_any_of.c
     model/reachability_for_sms_configuration.c
     model/redirect_address_type.c
     model/redirect_information.c
     model/redirect_response.c
-    model/red_trans_exp_ordering_criterion_any_of.c
     model/red_trans_exp_ordering_criterion.c
     model/redundant_pdu_session_information.c
     model/redundant_transmission_exp_info.c
@@ -979,15 +926,16 @@ libsbi_openapi_sources = files('''
     model/rg_auth_ctx.c
     model/rg_authentication_info.c
     model/rm_info.c
-    model/rm_state_any_of.c
     model/rm_state.c
     model/roaming_charging_profile.c
     model/roaming_indication.c
     model/roaming_info_update.c
     model/roaming_odb.c
     model/roaming_restrictions.c
+    model/route_information_1.c
     model/route_information.c
     model/route_selection_parameter_set.c
+    model/route_to_location_1.c
     model/route_to_location.c
     model/routing_area_id.c
     model/routing_info_sm_request.c
@@ -1002,7 +950,6 @@ libsbi_openapi_sources = files('''
     model/scheduled_communication_time.c
     model/scheduled_communication_time_rm.c
     model/scheduled_communication_type.c
-    model/scheduled_communication_type_rm.c
     model/scp_capability.c
     model/scp_domain_cond.c
     model/scp_domain_connectivity.c
@@ -1024,7 +971,6 @@ libsbi_openapi_sources = files('''
     model/secondary_rat_usage_report.c
     model/sec_param_exch_req_data.c
     model/sec_param_exch_rsp_data.c
-    model/security_capability_any_of.c
     model/security_capability.c
     model/security_result.c
     model/send_mo_data_req_data.c
@@ -1039,7 +985,6 @@ libsbi_openapi_sources = files('''
     model/service_area_restriction_1.c
     model/service_area_restriction.c
     model/service_experience_info.c
-    model/service_experience_type_any_of.c
     model/service_experience_type.c
     model/service_info_status.c
     model/service_name_cond.c
@@ -1047,8 +992,8 @@ libsbi_openapi_sources = files('''
     model/service_parameter_data.c
     model/service_parameter_data_patch.c
     model/service_specific_authorization_info.c
-    model/service_type_any_of.c
     model/service_type.c
+    model/service_type_unrelated_class_1.c
     model/service_type_unrelated_class.c
     model/serving_nf_identity.c
     model/sess_inact_timer_for_ue_comm.c
@@ -1058,6 +1003,7 @@ libsbi_openapi_sources = files('''
     model/session_rule_failure_code.c
     model/session_rule_report.c
     model/sgsn_address.c
+    model/shared_data_1.c
     model/shared_data.c
     model/shared_data_id_range.c
     model/shared_data_treatment_instruction.c
@@ -1070,7 +1016,6 @@ libsbi_openapi_sources = files('''
     model/slice_mbr_1.c
     model/slice_mbr.c
     model/slice_mbr_rm.c
-    model/slice_policy_data.c
     model/small_data_rate_status.c
     model/small_data_rate_status_info.c
     model/smcce_info.c
@@ -1095,10 +1040,12 @@ libsbi_openapi_sources = files('''
     model/smf_registration_info.c
     model/smf_registration_modification.c
     model/smf_selection_data.c
+    model/smf_selection_subscription_data_1.c
     model/smf_selection_subscription_data.c
     model/smf_selection_type.c
     model/smf_subscription_info.c
     model/smf_subscription_item.c
+    model/_sm_policies_post_200_response.c
     model/sm_policy_association_release_cause.c
     model/sm_policy_context_data.c
     model/sm_policy_control.c
@@ -1113,6 +1060,7 @@ libsbi_openapi_sources = files('''
     model/sm_policy_snssai_data_patch.c
     model/sm_policy_update_context_data.c
     model/smsc_data.c
+    model/smsf_info_1.c
     model/smsf_info.c
     model/smsf_registration.c
     model/sms_management_subscription_data_1.c
@@ -1121,6 +1069,7 @@ libsbi_openapi_sources = files('''
     model/sms_subscription_data_1.c
     model/sms_subscription_data.c
     model/sms_support.c
+    model/sm_subs_data_1.c
     model/sm_subs_data.c
     model/snssai.c
     model/snssai_dnn_pair.c
@@ -1151,12 +1100,13 @@ libsbi_openapi_sources = files('''
     model/ssm_1.c
     model/ssm.c
     model/stationary_indication.c
-    model/stationary_indication_rm.c
     model/status_change.c
     model/status_info.c
     model/status_notification.c
+    model/steering_container_1.c
     model/steering_container.c
     model/steering_functionality.c
+    model/steering_info_1.c
     model/steering_info.c
     model/steering_mode.c
     model/steer_mode_indicator.c
@@ -1165,11 +1115,11 @@ libsbi_openapi_sources = files('''
     model/subscr_cond.c
     model/subscribed_default_qos_1.c
     model/subscribed_default_qos.c
-    model/subscribed_event_any_of.c
     model/subscribed_event.c
     model/subscribed_snssai.c
     model/subscription_context.c
     model/subscription_data.c
+    model/subscription_data_sets_1.c
     model/subscription_data_sets.c
     model/subscription_data_subscriptions.c
     model/suci_info.c
@@ -1177,7 +1127,6 @@ libsbi_openapi_sources = files('''
     model/suggested_packet_num_dl.c
     model/supi_info.c
     model/supi_range.c
-    model/supported_gad_shapes_any_of.c
     model/supported_gad_shapes.c
     model/svc_experience.c
     model/tac_info.c
@@ -1188,6 +1137,7 @@ libsbi_openapi_sources = files('''
     model/target_area.c
     model/target_dnai_info.c
     model/target_ue_information.c
+    model/temporal_validity_1.c
     model/temporal_validity.c
     model/termination_cause.c
     model/termination_info.c
@@ -1195,7 +1145,6 @@ libsbi_openapi_sources = files('''
     model/threshold_level.c
     model/threshold_value.c
     model/time_period.c
-    model/time_unit_any_of.c
     model/time_unit.c
     model/time_window.c
     model/tmgi_1.c
@@ -1213,27 +1162,23 @@ libsbi_openapi_sources = files('''
     model/traffic_descriptor.c
     model/traffic_descriptor_components.c
     model/traffic_influ_data.c
-    model/traffic_influ_data_notif.c
     model/traffic_influ_data_patch.c
     model/traffic_influ_sub.c
     model/traffic_information.c
     model/traffic_profile.c
-    model/traffic_profile_rm.c
     model/transfer_mo_data_req_data.c
     model/transfer_mo_data_request.c
     model/transfer_mt_data_add_info.c
     model/transfer_mt_data_error.c
-    model/transfer_mt_data_ismf_request.c
     model/transfer_mt_data_req_data.c
+    model/transfer_mt_data_request.c
     model/transfer_policy.c
     model/transfer_reason.c
     model/transport_protocol_1.c
     model/transport_protocol.c
     model/trigger.c
-    model/trigger_category_any_of.c
     model/trigger_category.c
     model/trigger_request.c
-    model/trigger_type_any_of.c
     model/trigger_type.c
     model/trust_af_info.c
     model/tscai_input_container.c
@@ -1260,10 +1205,13 @@ libsbi_openapi_sources = files('''
     model/ue_context_create_data.c
     model/ue_context_created_data.c
     model/ue_context_create_error.c
+    model/ue_context_in_amf_data_1.c
     model/ue_context_in_amf_data.c
+    model/ue_context_in_smf_data_1.c
     model/ue_context_in_smf_data.c
     model/ue_context_in_smf_data_sub_filter_1.c
     model/ue_context_in_smf_data_sub_filter.c
+    model/ue_context_in_smsf_data_1.c
     model/ue_context_in_smsf_data.c
     model/ue_context_release.c
     model/ue_context_relocate_data.c
@@ -1284,13 +1232,11 @@ libsbi_openapi_sources = files('''
     model/ue_policy_section.c
     model/ue_policy_set.c
     model/ue_policy_set_patch.c
-    model/ue_reachability_any_of.c
     model/ue_reachability.c
     model/ue_reachable_ind.c
     model/ue_reg_status_update_req_data.c
     model/ue_reg_status_update_rsp_data.c
     model/ue_slice_mbr.c
-    model/ue_type_any_of.c
     model/ue_type.c
     model/ue_update_status.c
     model/ulcl_bp_information.c
@@ -1299,11 +1245,11 @@ libsbi_openapi_sources = files('''
     model/unavailable_access_indication.c
     model/uncertainty_ellipse.c
     model/uncertainty_ellipsoid.c
+    model/unrelated_class_1.c
     model/unrelated_class.c
     model/un_trust_af_info.c
     model/up_cnx_state.c
     model/up_confidentiality.c
-    model/updated_item.c
     model/update_nwdaf_registration_200_response.c
     model/update_pdu_session_200_response.c
     model/update_pdu_session_400_response.c
@@ -1333,7 +1279,6 @@ libsbi_openapi_sources = files('''
     model/usage_mon_data_limit.c
     model/usage_mon_data_scope.c
     model/usage_monitoring_data.c
-    model/usage_mon_level_any_of.c
     model/usage_mon_level.c
     model/usage_threshold.c
     model/usage_threshold_rm.c
@@ -1346,10 +1291,13 @@ libsbi_openapi_sources = files('''
     model/v2x_capability.c
     model/v2x_context.c
     model/v2x_information.c
+    model/v2x_subscription_data_1.c
     model/v2x_subscription_data.c
+    model/valid_time_period_1.c
     model/valid_time_period.c
     model/vendor_specific_feature.c
     model/vgmlc_address.c
+    model/vn_group_data_1.c
     model/vn_group_data.c
     model/volume_timed_report.c
     model/vplmn_qos.c
@@ -1361,7 +1309,6 @@ libsbi_openapi_sources = files('''
     model/wireline_area.c
     model/wireline_service_area_restriction_1.c
     model/wireline_service_area_restriction.c
-    model/wlan_ordering_criterion_any_of.c
     model/wlan_ordering_criterion.c
     model/wlan_performance_info.c
     model/wlan_performance_req.c
