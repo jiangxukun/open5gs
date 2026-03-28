@@ -1,4 +1,3 @@
-
 ### Ubuntu
 
 * To install JDK(Java)
@@ -15,6 +14,7 @@ $ sudo npm install @openapitools/openapi-generator-cli -g
 
 $ Run generator
 $ sudo openapi-generator-cli version-manager set 6.4.0
+$ python3 transform.py ./standard ./modified
 $ ./generator.sh
 
 
@@ -31,44 +31,35 @@ $ npm install @openapitools/openapi-generator-cli -g
 
 $ Run generator
 $ openapi-generator-cli version-manager set 6.4.0
+$ python3 transform.py ./standard ./modified
 $ ./generator.sh
 
 
 ### How to upgrade SBI
 
 1. Download the *.yaml from etsi.org
-2. Copy *.yaml to standard/modified directory
-3. Run ./generator.sh and check for openapi-generator-cli errors
-4. If you copy the entire OLD version without ERROR to modified,
+2. Copy *.yaml to standard directory
+3. The standard directory contains diffs of hand-edited changes
+   from the original ETSI YAML files. Apply similar modifications
+   to the new version.
+4. Run python3 transform.py ./standard ./modified
+   to generate the modified directory.
+5. Run ./generator.sh and check for openapi-generator-cli errors
+6. If you copy the entire OLD version without ERROR to standard,
    you can identify the problem.
-5. Check the *.yaml below in the OLD version to apply the changes.
 
-./modified/TS29508_Nsmf_EventExposure.yaml
-./modified/TS32291_Nchf_ConvergedCharging.yaml
-./modified/TS29519_Exposure_Data.yaml
-
-./modified/TS29517_Naf_EventExposure.yaml
-./modified/TS29521_Nbsf_Management.yaml
-./modified/TS29531_Nnssf_NSSelection.yaml
-./modified/TS29507_Npcf_AMPolicyControl.yaml
-./modified/TS29512_Npcf_SMPolicyControl.yaml
-./modified/TS29514_Npcf_PolicyAuthorization.yaml
-./modified/TS29503_Nudm_SDM.yaml
-./modified/TS29503_Nudm_UEAU.yaml
-./modified/TS29503_Nudm_UECM.yaml
-./modified/TS29509_Nausf_UEAuthentication.yaml
-./modified/TS29502_Nsmf_PDUSession.yaml
-./modified/TS29518_Namf_Communication.yaml
-./modified/TS29510_Nnrf_NFManagement.yaml
-./modified/TS29505_Subscription_Data.yaml
-./modified/TS29571_CommonData.yaml
-
-./modified/TS29520_Nnwdaf_EventsSubscription.yaml
-./modified/TS29507_Npcf_AMPolicyControl.yaml
-./modified/TS29512_Npcf_SMPolicyControl.yaml
-./modified/TS29503_Nudm_SDM.yaml
-./modified/TS29518_Namf_Communication.yaml
-./modified/TS29510_Nnrf_NFManagement.yaml
-./modified/TS29505_Subscription_Data.yaml
-./modified/TS29571_CommonData.yaml
-
+./standard/TS29573_N32_Handshake.yaml
+./standard/TS29504_Nudr_DR.yaml
+./standard/TS29521_Nbsf_Management.yaml
+./standard/TS29531_Nnssf_NSSelection.yaml
+./standard/TS29507_Npcf_AMPolicyControl.yaml
+./standard/TS29512_Npcf_SMPolicyControl.yaml
+./standard/TS29514_Npcf_PolicyAuthorization.yaml
+./standard/TS29503_Nudm_SDM.yaml
+./standard/TS29503_Nudm_UECM.yaml
+./standard/TS29503_Nudm_UEAU.yaml
+./standard/TS29509_Nausf_UEAuthentication.yaml
+./standard/TS29502_Nsmf_PDUSession.yaml
+./standard/TS29518_Namf_Communication.yaml
+./standard/TS29510_Nnrf_NFDiscovery.yaml
+./standard/TS29510_Nnrf_NFManagement.yaml
