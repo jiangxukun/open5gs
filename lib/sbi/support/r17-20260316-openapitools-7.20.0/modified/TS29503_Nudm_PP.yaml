@@ -37,9 +37,10 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
         - name: supported-features
           in: query
           description: Features required to be supported by the target NF
@@ -231,11 +232,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier
@@ -280,11 +282,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier
@@ -317,11 +320,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier

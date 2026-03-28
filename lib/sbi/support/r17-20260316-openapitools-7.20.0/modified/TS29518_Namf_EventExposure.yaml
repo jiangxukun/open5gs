@@ -162,12 +162,25 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              oneOf:
-                - type: array
+#              oneOf:
+#                - type: array
+#                  items:
+#                   $ref: '#/components/schemas/AmfUpdateEventSubscriptionItem'
+#                  minItems: 1
+#                - type: array
+#                  items:
+#                   $ref: '#/components/schemas/AmfUpdateEventOptionItem'
+#                  minItems: 1
+#                  maxItems: 1
+              type: object
+              properties:
+                AmfUpdateEventSubscriptionItemList:
+                  type: array
                   items:
                    $ref: '#/components/schemas/AmfUpdateEventSubscriptionItem'
                   minItems: 1
-                - type: array
+                AmfUpdateEventOptionItemList:
+                  type: array
                   items:
                    $ref: '#/components/schemas/AmfUpdateEventOptionItem'
                   minItems: 1
@@ -916,127 +929,138 @@ components:
 
     AmfEventType:
       description: Describes the supported event types of Namf_EventExposure Service
-      anyOf:
-      - type: string
-        enum:
-          - LOCATION_REPORT
-          - PRESENCE_IN_AOI_REPORT
-          - TIMEZONE_REPORT
-          - ACCESS_TYPE_REPORT
-          - REGISTRATION_STATE_REPORT
-          - CONNECTIVITY_STATE_REPORT
-          - REACHABILITY_REPORT
-          - COMMUNICATION_FAILURE_REPORT
-          - UES_IN_AREA_REPORT
-          - SUBSCRIPTION_ID_CHANGE
-          - SUBSCRIPTION_ID_ADDITION
-          - LOSS_OF_CONNECTIVITY
-          - 5GS_USER_STATE_REPORT
-          - AVAILABILITY_AFTER_DDN_FAILURE
-          - TYPE_ALLOCATION_CODE_REPORT
-          - FREQUENT_MOBILITY_REGISTRATION_REPORT
-          - SNSSAI_TA_MAPPING_REPORT
-          - UE_LOCATION_TRENDS
-          - UE_ACCESS_BEHAVIOR_TRENDS
-          - UE_MM_TRANSACTION_REPORT
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - LOCATION_REPORT
+        - PRESENCE_IN_AOI_REPORT
+        - TIMEZONE_REPORT
+        - ACCESS_TYPE_REPORT
+        - REGISTRATION_STATE_REPORT
+        - CONNECTIVITY_STATE_REPORT
+        - REACHABILITY_REPORT
+        - COMMUNICATION_FAILURE_REPORT
+        - UES_IN_AREA_REPORT
+        - SUBSCRIPTION_ID_CHANGE
+        - SUBSCRIPTION_ID_ADDITION
+        - LOSS_OF_CONNECTIVITY
+        - 5GS_USER_STATE_REPORT
+        - AVAILABILITY_AFTER_DDN_FAILURE
+        - TYPE_ALLOCATION_CODE_REPORT
+        - FREQUENT_MOBILITY_REGISTRATION_REPORT
+        - SNSSAI_TA_MAPPING_REPORT
+        - UE_LOCATION_TRENDS
+        - UE_ACCESS_BEHAVIOR_TRENDS
+        - UE_MM_TRANSACTION_REPORT
+#      - type: string
     AmfEventTrigger:
       description: Describes how AMF should generate the report for the event
-      anyOf:
-      - type: string
-        enum:
-          - ONE_TIME
-          - CONTINUOUS
-          - PERIODIC
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - ONE_TIME
+        - CONTINUOUS
+        - PERIODIC
+#      - type: string
     LocationFilter :
       description: Describes the supported filters of LOCATION_REPORT event type
-      anyOf:
-      - type: string
-        enum:
-          - TAI
-          - CELL_ID
-          - RAN_NODE
-          - N3IWF
-          - UE_IP
-          - UDP_PORT
-          - TNAP_ID
-          - GLI
-          - TWAP_ID
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - TAI
+        - CELL_ID
+        - RAN_NODE
+        - N3IWF
+        - UE_IP
+        - UDP_PORT
+        - TNAP_ID
+        - GLI
+        - TWAP_ID
+#      - type: string
     UeReachability:
       description: Describes the reachability of the UE
-      anyOf:
-      - type: string
-        enum:
-          - UNREACHABLE
-          - REACHABLE
-          - REGULATORY_ONLY
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UNREACHABLE
+        - REACHABLE
+        - REGULATORY_ONLY
+#      - type: string
     RmState:
       description: Describes the registration management state of a UE
-      anyOf:
-      - type: string
-        enum:
-          - REGISTERED
-          - DEREGISTERED
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - REGISTERED
+        - DEREGISTERED
+#      - type: string
     CmState:
       description: Describes the connection management state of a UE
-      anyOf:
-      - type: string
-        enum:
-          - IDLE
-          - CONNECTED
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - IDLE
+        - CONNECTED
+#      - type: string
     5GsUserState:
       description: Describes the 5GS User State of a UE
-      anyOf:
-      - type: string
-        enum:
-          - DEREGISTERED
-          - CONNECTED_NOT_REACHABLE_FOR_PAGING
-          - CONNECTED_REACHABLE_FOR_PAGING
-          - NOT_PROVIDED_FROM_AMF
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - DEREGISTERED
+        - CONNECTED_NOT_REACHABLE_FOR_PAGING
+        - CONNECTED_REACHABLE_FOR_PAGING
+        - NOT_PROVIDED_FROM_AMF
+#      - type: string
     LossOfConnectivityReason:
       description: Describes the reason for loss of connectivity
-      anyOf:
-      - type: string
-        enum:
-          - DEREGISTERED
-          - MAX_DETECTION_TIME_EXPIRED
-          - PURGED
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - DEREGISTERED
+        - MAX_DETECTION_TIME_EXPIRED
+        - PURGED
+#      - type: string
+#
     ReachabilityFilter:
       description: Event filter for REACHABILITY_REPORT event type
-      anyOf:
-      - type: string
-        enum:
-          - UE_REACHABILITY_STATUS_CHANGE
-          - UE_REACHABLE_DL_TRAFFIC
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UE_REACHABILITY_STATUS_CHANGE
+        - UE_REACHABLE_DL_TRAFFIC
+#      - type: string
+#
     UeType:
       description: Describes the type of UEs
-      anyOf:
-      - type: string
-        enum:
-          - AERIAL_UE
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AERIAL_UE
+#      - type: string
+#
     AccessStateTransitionType:
       description: Access State Transition Type.
-      anyOf:
-      - type: string
-        enum:
-          - ACCESS_TYPE_CHANGE_3GPP
-          - ACCESS_TYPE_CHANGE_N3GPP
-          - RM_STATE_CHANGE_DEREGISTERED
-          - RM_STATE_CHANGE_REGISTERED
-          - CM_STATE_CHANGE_IDLE
-          - CM_STATE_CHANGE_CONNECTED
-          - HANDOVER
-          - MOBILITY_REGISTRATION_UPDATE
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - ACCESS_TYPE_CHANGE_3GPP
+        - ACCESS_TYPE_CHANGE_N3GPP
+        - RM_STATE_CHANGE_DEREGISTERED
+        - RM_STATE_CHANGE_REGISTERED
+        - CM_STATE_CHANGE_IDLE
+        - CM_STATE_CHANGE_CONNECTED
+        - HANDOVER
+        - MOBILITY_REGISTRATION_UPDATE
+#      - type: string

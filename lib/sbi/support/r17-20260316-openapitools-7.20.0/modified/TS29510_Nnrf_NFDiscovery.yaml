@@ -1993,9 +1993,9 @@ components:
     NfServiceInstance:
       description: NF service instance
       type: object
-      oneOf:
-        - required: [ nfInstanceId ]
-        - required: [ nfServiceSetId ]
+#      oneOf:
+#        - required: [ nfInstanceId ]
+#        - required: [ nfServiceSetId ]
       properties:
         serviceInstanceId:
           type: string
@@ -2044,12 +2044,13 @@ components:
 
     NoProfileMatchReason:
       description: No Profile Match Reason
-      anyOf:
-        - type: string
-          enum:
-            - REQUESTER_PLMN_NOT_ALLOWED
-            - TARGET_NF_SUSPENDED
-            - TARGET_NF_UNDISCOVERABLE
-            - QUERY_PARAMS_COMBINATION_NO_MATCH
-            - UNSPECIFIED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - REQUESTER_PLMN_NOT_ALLOWED
+        - TARGET_NF_SUSPENDED
+        - TARGET_NF_UNDISCOVERABLE
+        - QUERY_PARAMS_COMBINATION_NO_MATCH
+        - UNSPECIFIED
+#        - type: string

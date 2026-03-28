@@ -159,10 +159,11 @@ components:
 
     MbsNgapIeType:
       description: NGAP Information Element Type
-      anyOf:
-      - type: string
-        enum:
-          - MBS_SES_ACT_REQ
-          - MBS_SES_DEACT_REQ
-          - MBS_SES_UPD_REQ
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MBS_SES_ACT_REQ
+        - MBS_SES_DEACT_REQ
+        - MBS_SES_UPD_REQ
+#      - type: string

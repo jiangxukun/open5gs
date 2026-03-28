@@ -253,36 +253,38 @@ components:
 # ENUMS:
 
     ServiceType:
-      anyOf:
-        - type: string
-          enum:
-          - AF_GUIDANCE_FOR_URSP
-        - type: string
-          description: >
-            This string provides forward-compatibility with future
-            extensions to the enumeration but is not used to encode
-            content defined in the present version of this API.
-      description: >
-        Possible values are
-        - AF_GUIDANCE_FOR_URSP
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - AF_GUIDANCE_FOR_URSP
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future
+#            extensions to the enumeration but is not used to encode
+#            content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - AF_GUIDANCE_FOR_URSP
+#
     InvalidCause:
-      anyOf:
-        - type: string
-          enum:
-          - SUBSRIPTION_WITHDRAWAL
-          - DNN_REMOVED
-          - SLICE_REMOVED
-          - AUTHORIZATION_REVOKED
-        - type: string
-          description: >
-            This string provides forward-compatibility with future
-            extensions to the enumeration but is not used to encode
-            content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SUBSRIPTION_WITHDRAWAL
-        - DNN_REMOVED
-        - SLICE_REMOVED
-        - AUTHORIZATION_REVOKED
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - SUBSRIPTION_WITHDRAWAL
+      - DNN_REMOVED
+      - SLICE_REMOVED
+      - AUTHORIZATION_REVOKED
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future
+#            extensions to the enumeration but is not used to encode
+#            content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SUBSRIPTION_WITHDRAWAL
+#        - DNN_REMOVED
+#        - SLICE_REMOVED
+#        - AUTHORIZATION_REVOKED
+#

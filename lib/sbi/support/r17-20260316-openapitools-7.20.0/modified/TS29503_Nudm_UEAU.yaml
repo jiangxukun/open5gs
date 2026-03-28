@@ -458,24 +458,42 @@ components:
           minItems: 1
 
     AuthenticationVector:
-      oneOf:
-        - $ref: '#/components/schemas/AvEapAkaPrime'
-        - $ref: '#/components/schemas/Av5GHeAka'
-      discriminator:
-        propertyName: avType
-        mapping:
-          5G_HE_AKA: '#/components/schemas/Av5GHeAka'
-          EAP_AKA_PRIME: '#/components/schemas/AvEapAkaPrime'
-
+#      oneOf:
+#        - $ref: '#/components/schemas/AvEapAkaPrime'
+#        - $ref: '#/components/schemas/Av5GHeAka'
+#      discriminator:
+#        propertyName: avType
+#        mapping:
+#          5G_HE_AKA: '#/components/schemas/Av5GHeAka'
+#          EAP_AKA_PRIME: '#/components/schemas/AvEapAkaPrime'
+#
+      type: object
+      properties:
+        avType:
+          $ref: '#/components/schemas/AvType'
+        rand:
+          $ref: '#/components/schemas/Rand'
+        xres:
+          $ref: '#/components/schemas/Xres'
+        autn:
+          $ref: '#/components/schemas/Autn'
+        ckPrime:
+          $ref: '#/components/schemas/CkPrime'
+        ikPrime:
+          $ref: '#/components/schemas/IkPrime'
+        xresStar:
+          $ref: '#/components/schemas/XresStar'
+        kausf:
+          $ref: '#/components/schemas/Kausf'
     AvEapAkaPrime:
       type: object
       required:
         - avType
         - rand
-#        - xres
+        - xres
         - autn
-#        - ckPrime
-#        - ikPrime
+        - ckPrime
+        - ikPrime
       properties:
         avType:
           $ref: '#/components/schemas/AvType'
@@ -495,9 +513,9 @@ components:
       required:
         - avType
         - rand
-#        - xresStar
+        - xresStar
         - autn
-#        - kausf
+        - kausf
       properties:
         avType:
           $ref: '#/components/schemas/AvType'
@@ -597,23 +615,43 @@ components:
           $ref: '#/components/schemas/HssAuthenticationVectors'
 
     HssAuthenticationVectors:
-      oneOf:
-        - type: array
+#      oneOf:
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/AvEpsAka'
+#          minItems: 1
+#          maxItems: 5
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/AvImsGbaEapAka'
+#          minItems: 1
+#          maxItems: 5
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/AvEapAkaPrime'
+#          minItems: 1
+#          maxItems: 5
+#
+      type: object
+      properties:
+        AvEpsAkaList:
+          type: array
           items:
             $ref: '#/components/schemas/AvEpsAka'
           minItems: 1
           maxItems: 5
-        - type: array
+        AvImsGbaEapAkaList:
+          type: array
           items:
             $ref: '#/components/schemas/AvImsGbaEapAka'
           minItems: 1
           maxItems: 5
-        - type: array
+        AvEapAkaPrimeList:
+          type: array
           items:
             $ref: '#/components/schemas/AvEapAkaPrime'
           minItems: 1
           maxItems: 5
-
     AvEpsAka:
       type: object
       required:
@@ -783,84 +821,92 @@ components:
     AuthType:
 #      anyOf:
 #        - type: string
-          enum:
-          - 5G_AKA
-          - EAP_AKA_PRIME
-          - EAP_TLS
-          - NONE
-          - EAP_TTLS
+      type: string
+      enum:
+      - 5G_AKA
+      - EAP_AKA_PRIME
+      - EAP_TLS
+      - NONE
+      - EAP_TTLS
 #        - type: string
-
+#
     AvType:
 #      anyOf:
 #        - type: string
-          enum:
-          - 5G_HE_AKA
-          - EAP_AKA_PRIME
+      type: string
+      enum:
+      - 5G_HE_AKA
+      - EAP_AKA_PRIME
 #        - type: string
-
+#
     HssAuthType:
 #      anyOf:
 #        - type: string
-          enum:
-          - EPS_AKA
-          - EAP_AKA
-          - EAP_AKA_PRIME
-          - IMS_AKA
-          - GBA_AKA
-          - UMTS_AKA
+      type: string
+      enum:
+      - EPS_AKA
+      - EAP_AKA
+      - EAP_AKA_PRIME
+      - IMS_AKA
+      - GBA_AKA
+      - UMTS_AKA
 #        - type: string
-
+#
     HssAvType:
 #      anyOf:
 #        - type: string
-          enum:
-          - EPS_AKA
-          - EAP_AKA
-          - IMS_AKA
-          - GBA_AKA
-          - UMTS_AKA
+      type: string
+      enum:
+      - EPS_AKA
+      - EAP_AKA
+      - IMS_AKA
+      - GBA_AKA
+      - UMTS_AKA
 #        - type: string
-
+#
     HssAuthTypeInUri:
 #      anyOf:
 #        - type: string
-          enum:
-          - eps-aka
-          - eap-aka
-          - eap-aka-prime
-          - ims-aka
-          - gba-aka
+      type: string
+      enum:
+      - eps-aka
+      - eap-aka
+      - eap-aka-prime
+      - ims-aka
+      - gba-aka
 #        - type: string
-
+#
     AccessNetworkId:
 #      anyOf:
 #        - type: string
-          enum:
-          - HRPD
-          - WIMAX
-          - WLAN
-          - ETHERNET
+      type: string
+      enum:
+      - HRPD
+      - WIMAX
+      - WLAN
+      - ETHERNET
 #        - type: string
-
+#
     NodeType:
 #      anyOf:
 #        - type: string
-          enum:
-          - AUSF
-          - VLR
-          - SGSN
-          - S_CSCF
-          - BSF
-          - GAN_AAA_SERVER
-          - WLAN_AAA_SERVER
-          - MME
+      type: string
+      enum:
+      - AUSF
+      - VLR
+      - SGSN
+      - S_CSCF
+      - BSF
+      - GAN_AAA_SERVER
+      - WLAN_AAA_SERVER
+      - MME
 #        - type: string
-
+#
     GbaAuthType:
 #      anyOf:
 #        - type: string
-          enum:
-          - DIGEST_AKAV1_MD5
+      type: string
+      enum:
+      - DIGEST_AKAV1_MD5
 #        - type: string
-
+#

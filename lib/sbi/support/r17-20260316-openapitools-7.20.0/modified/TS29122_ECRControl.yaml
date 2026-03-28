@@ -148,9 +148,9 @@ components:
           description: Indicates a complete list (and possibly empty) of serving PLMNs where Enhanced Coverage shall be allowed. This attribute shall not be present for the query custom operation.
       required:
         - supportedFeatures
-      oneOf:
-        - required: [externalId]
-        - required: [msisdn]
+#      oneOf:
+#        - required: [externalId]
+#        - required: [msisdn]
       not:
         required: [restrictedPlmnIds, allowedPlmnIds]
     ECRData:

@@ -621,84 +621,87 @@ components:
         - required: [dataSub]
 
     EventId:
-      anyOf:
-      - type: string
-        enum:
-          - LOAD_LEVEL_INFORMATION
-          - NETWORK_PERFORMANCE
-          - NF_LOAD
-          - SERVICE_EXPERIENCE
-          - UE_MOBILITY
-          - UE_COMMUNICATION
-          - QOS_SUSTAINABILITY
-          - ABNORMAL_BEHAVIOUR
-          - USER_DATA_CONGESTION
-          - NSI_LOAD_LEVEL
-          - SM_CONGESTION
-          - DISPERSION
-          - RED_TRANS_EXP
-          - WLAN_PERFORMANCE
-          - DN_PERFORMANCE
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - LOAD_LEVEL_INFORMATION: Represent the analytics of load level information of corresponding network slice.
-        - NETWORK_PERFORMANCE: Represent the analytics of network performance information.
-        - NF_LOAD: Indicates that the event subscribed is NF Load.
-        - SERVICE_EXPERIENCE: Represent the analytics of service experience information of the specific applications.
-        - UE_MOBILITY: Represent the analytics of UE mobility.
-        - UE_COMMUNICATION: Represent the analytics of UE communication.
-        - QOS_SUSTAINABILITY: Represent the analytics of QoS sustainability information in the certain area.
-        - ABNORMAL_BEHAVIOUR: Indicates that the event subscribed is abnormal behaviour information.
-        - USER_DATA_CONGESTION: Represent the analytics of the user data congestion in the certain area.
-        - NSI_LOAD_LEVEL: Represent the analytics of Network Slice and the optionally associated Network Slice Instance.
-        - SM_CONGESTION: Represent the analytics of Session Management congestion control experience information for specific DNN and/or S-NSSAI.
-        - DISPERSION: Represents the analytics of dispersion.
-        - RED_TRANS_EXP: Represents the analytics of Redundant Transmission Experience.
-        - WLAN_PERFORMANCE: Represents the analytics of WLAN performance.
-        - DN_PERFORMANCE: Represents the analytics of DN performance.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - LOAD_LEVEL_INFORMATION
+        - NETWORK_PERFORMANCE
+        - NF_LOAD
+        - SERVICE_EXPERIENCE
+        - UE_MOBILITY
+        - UE_COMMUNICATION
+        - QOS_SUSTAINABILITY
+        - ABNORMAL_BEHAVIOUR
+        - USER_DATA_CONGESTION
+        - NSI_LOAD_LEVEL
+        - SM_CONGESTION
+        - DISPERSION
+        - RED_TRANS_EXP
+        - WLAN_PERFORMANCE
+        - DN_PERFORMANCE
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - LOAD_LEVEL_INFORMATION: Represent the analytics of load level information of corresponding network slice.
+#        - NETWORK_PERFORMANCE: Represent the analytics of network performance information.
+#        - NF_LOAD: Indicates that the event subscribed is NF Load.
+#        - SERVICE_EXPERIENCE: Represent the analytics of service experience information of the specific applications.
+#        - UE_MOBILITY: Represent the analytics of UE mobility.
+#        - UE_COMMUNICATION: Represent the analytics of UE communication.
+#        - QOS_SUSTAINABILITY: Represent the analytics of QoS sustainability information in the certain area.
+#        - ABNORMAL_BEHAVIOUR: Indicates that the event subscribed is abnormal behaviour information.
+#        - USER_DATA_CONGESTION: Represent the analytics of the user data congestion in the certain area.
+#        - NSI_LOAD_LEVEL: Represent the analytics of Network Slice and the optionally associated Network Slice Instance.
+#        - SM_CONGESTION: Represent the analytics of Session Management congestion control experience information for specific DNN and/or S-NSSAI.
+#        - DISPERSION: Represents the analytics of dispersion.
+#        - RED_TRANS_EXP: Represents the analytics of Redundant Transmission Experience.
+#        - WLAN_PERFORMANCE: Represents the analytics of WLAN performance.
+#        - DN_PERFORMANCE: Represents the analytics of DN performance.
+#
     ContextType:
-      anyOf:
-      - type: string
-        enum:
-          - PENDING_ANALYTICS
-          - HISTORICAL_ANALYTICS
-          - AGGR_SUBS
-          - DATA
-          - AGGR_INFO
-          - ML_MODELS
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - PENDING_ANALYTICS: Represents context information that relates to pending output analytics.
-        - HISTORICAL_ANALYTICS: Represents context information that relates to historical output analytics.
-        - AGGR_SUBS: Represents context information about the analytics subscriptions that an NWDAF has with other NWDAFs that collectively serve an analytics subscription.
-        - DATA: Represents context information about historical data that is available.
-        - AGGR_INFO: Represents context information that is related to aggregation of analytics from multiple NWDAF subscriptions.
-        - ML_MODELS: Represents context information about used ML models.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - PENDING_ANALYTICS
+        - HISTORICAL_ANALYTICS
+        - AGGR_SUBS
+        - DATA
+        - AGGR_INFO
+        - ML_MODELS
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - PENDING_ANALYTICS: Represents context information that relates to pending output analytics.
+#        - HISTORICAL_ANALYTICS: Represents context information that relates to historical output analytics.
+#        - AGGR_SUBS: Represents context information about the analytics subscriptions that an NWDAF has with other NWDAFs that collectively serve an analytics subscription.
+#        - DATA: Represents context information about historical data that is available.
+#        - AGGR_INFO: Represents context information that is related to aggregation of analytics from multiple NWDAF subscriptions.
+#        - ML_MODELS: Represents context information about used ML models.
+#
     AdrfDataType:
-      anyOf:
-      - type: string
-        enum:
-          - HISTORICAL_ANALYTICS
-          - HISTORICAL_DATA
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - HISTORICAL_ANALYTICS: Indicates that historical analytics are stored in the ADRF.
-        - HISTORICAL_DATA: Indicates that historical data are stored in the ADRF.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - HISTORICAL_ANALYTICS
+        - HISTORICAL_DATA
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - HISTORICAL_ANALYTICS: Indicates that historical analytics are stored in the ADRF.
+#        - HISTORICAL_DATA: Indicates that historical data are stored in the ADRF.
+#

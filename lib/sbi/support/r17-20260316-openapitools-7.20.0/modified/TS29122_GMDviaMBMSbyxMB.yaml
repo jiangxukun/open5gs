@@ -744,18 +744,19 @@ components:
           minItems: 1
           description: Identifies a civic address of the user where the UE is located.
     ServiceAnnouncementMode:
-      anyOf:
-      - type: string
-        enum:
-          - SACH
-          - CONTENT_PROVIDER
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SACH: BM-SC performs the service announcement for the current service using the SACH channel.
-        - CONTENT_PROVIDER: BM-SC provides the necessary service access information used by the Content Provider to create the service announcement information.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SACH
+        - CONTENT_PROVIDER
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SACH: BM-SC performs the service announcement for the current service using the SACH channel.
+#        - CONTENT_PROVIDER: BM-SC provides the necessary service access information used by the Content Provider to create the service announcement information.
       readOnly: true

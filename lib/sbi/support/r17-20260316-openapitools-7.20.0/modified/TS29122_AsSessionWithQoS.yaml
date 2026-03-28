@@ -735,37 +735,38 @@ components:
         tscaiInputUl:
           $ref: 'TS29514_Npcf_PolicyAuthorization.yaml#/components/schemas/TscaiInputContainer'
     UserPlaneEvent:
-      anyOf:
-      - type: string
-        enum:
-          - SESSION_TERMINATION
-          - LOSS_OF_BEARER
-          - RECOVERY_OF_BEARER
-          - RELEASE_OF_BEARER
-          - USAGE_REPORT
-          - FAILED_RESOURCES_ALLOCATION
-          - QOS_GUARANTEED
-          - QOS_NOT_GUARANTEED
-          - QOS_MONITORING
-          - SUCCESSFUL_RESOURCES_ALLOCATION
-          - ACCESS_TYPE_CHANGE
-          - PLMN_CHG
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SESSION_TERMINATION: Indicates that Rx session is terminated.
-        - LOSS_OF_BEARER : Indicates a loss of a bearer.
-        - RECOVERY_OF_BEARER: Indicates a recovery of a bearer.
-        - RELEASE_OF_BEARER: Indicates a release of a bearer.
-        - USAGE_REPORT: Indicates the usage report event.
-        - FAILED_RESOURCES_ALLOCATION: Indicates the resource allocation is failed.
-        - QOS_GUARANTEED: The QoS targets of one or more SDFs are guaranteed again.
-        - QOS_NOT_GUARANTEED: The QoS targets of one or more SDFs are not being guaranteed.
-        - QOS_MONITORING: Indicates a QoS monitoring event.
-        - SUCCESSFUL_RESOURCES_ALLOCATION: Indicates the resource allocation is successful.
-        - ACCESS_TYPE_CHANGE: Indicates an Access type change.
-        - PLMN_CHG: Indicates a PLMN change.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SESSION_TERMINATION
+        - LOSS_OF_BEARER
+        - RECOVERY_OF_BEARER
+        - RELEASE_OF_BEARER
+        - USAGE_REPORT
+        - FAILED_RESOURCES_ALLOCATION
+        - QOS_GUARANTEED
+        - QOS_NOT_GUARANTEED
+        - QOS_MONITORING
+        - SUCCESSFUL_RESOURCES_ALLOCATION
+        - ACCESS_TYPE_CHANGE
+        - PLMN_CHG
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SESSION_TERMINATION: Indicates that Rx session is terminated.
+#        - LOSS_OF_BEARER : Indicates a loss of a bearer.
+#        - RECOVERY_OF_BEARER: Indicates a recovery of a bearer.
+#        - RELEASE_OF_BEARER: Indicates a release of a bearer.
+#        - USAGE_REPORT: Indicates the usage report event.
+#        - FAILED_RESOURCES_ALLOCATION: Indicates the resource allocation is failed.
+#        - QOS_GUARANTEED: The QoS targets of one or more SDFs are guaranteed again.
+#        - QOS_NOT_GUARANTEED: The QoS targets of one or more SDFs are not being guaranteed.
+#        - QOS_MONITORING: Indicates a QoS monitoring event.
+#        - SUCCESSFUL_RESOURCES_ALLOCATION: Indicates the resource allocation is successful.
+#        - ACCESS_TYPE_CHANGE: Indicates an Access type change.
+#        - PLMN_CHG: Indicates a PLMN change.

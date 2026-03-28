@@ -409,19 +409,20 @@ components:
       maximum: 31
       description: Unsigned integer with valid values between 0 and 31. The value 0 indicates that there is no congestion. The value 1 is the lowest congestion level and value 31 is the highest congestion level.
     CongestionType:
-      anyOf:
-      - type: string
-        enum:
-          - HIGH
-          - MEDIUM
-          - LOW
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - HIGH: The congestion status is high.
-        - MEDIUM: The congestion status is medium.
-        - LOW: The congestion status is low.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - HIGH
+        - MEDIUM
+        - LOW
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - HIGH: The congestion status is high.
+#        - MEDIUM: The congestion status is medium.
+#        - LOW: The congestion status is low.

@@ -470,33 +470,36 @@ components:
         - ldrReference
     LocationType:
       description: Type of location measurement requested
-      anyOf:
-      - type: string
-        enum:
-          - CURRENT_LOCATION
-          - CURRENT_OR_LAST_KNOWN_LOCATION
-          - NOTIFICATION_VERIFICATION_ONLY
-          - DEFERRED_LOCATION
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - CURRENT_LOCATION
+        - CURRENT_OR_LAST_KNOWN_LOCATION
+        - NOTIFICATION_VERIFICATION_ONLY
+        - DEFERRED_LOCATION
+#      - type: string
     LocationEvent:
       description: Type of events initiating location procedures
-      anyOf:
-      - type: string
-        enum:
-          - EMERGENCY_CALL_ORIGINATION
-          - EMERGENCY_CALL_RELEASE
-          - EMERGENCY_CALL_HANDOVER
-          - ACTIVATION_OF_DEFERRED_LOCATION
-          - UE_MOBILITY_FOR_DEFERRED_LOCATION
-          - CANCELLATION_OF_DEFERRED_LOCATION
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - EMERGENCY_CALL_ORIGINATION
+        - EMERGENCY_CALL_RELEASE
+        - EMERGENCY_CALL_HANDOVER
+        - ACTIVATION_OF_DEFERRED_LOCATION
+        - UE_MOBILITY_FOR_DEFERRED_LOCATION
+        - CANCELLATION_OF_DEFERRED_LOCATION
+#      - type: string
+#
     LocationPrivacyVerResult:
       description: The result of location privacy verification by UE
-      anyOf:
-      - type: string
-        enum:
-          - LOCATION_ALLOWED
-          - LOCATION_NOT_ALLOWED
-          - RESPONSE_TIME_OUT
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - LOCATION_ALLOWED
+        - LOCATION_NOT_ALLOWED
+        - RESPONSE_TIME_OUT
+#      - type: string

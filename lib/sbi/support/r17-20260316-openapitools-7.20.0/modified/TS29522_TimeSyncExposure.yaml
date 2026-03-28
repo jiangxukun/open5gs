@@ -929,88 +929,93 @@ components:
         - state
 
     Protocol:
-      anyOf:
-      - type: string
-        enum:
-          - ETH
-          - IPV4
-          - IPV6
-      - type: string
-        description: >
-          This string identifies supported protocol.
-      description: |
-        Possible values are:
-        - ETH: Indicates Ethernet as defined in IEEE Std 1588 [45] Annex E is supported.
-        - IPV4: Indicates IPv4 as defined in IEEE Std 1588 [45] Annex C is supported.
-        - IPV6: Indicates IPv6 as defined in IEEE Std 1588 [45] Annex D is supported.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - ETH
+        - IPV4
+        - IPV6
+#      - type: string
+#        description: >
+#          This string identifies supported protocol.
+#      description: |
+#        Possible values are:
+#        - ETH: Indicates Ethernet as defined in IEEE Std 1588 [45] Annex E is supported.
+#        - IPV4: Indicates IPv4 as defined in IEEE Std 1588 [45] Annex C is supported.
+#        - IPV6: Indicates IPv6 as defined in IEEE Std 1588 [45] Annex D is supported.
+#
     GmCapable:
-      anyOf:
-      - type: string
-        enum:
-          - GPTP
-          - PTP
-      - type: string
-        description: >
-          This string identifies supported grandmaster.
-      description: |
-        Possible values are:
-        - GPTP: gPTP grandmaster is supported.
-        - PTP: PTP grandmaste is supported.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - GPTP
+        - PTP
+#      - type: string
+#        description: >
+#          This string identifies supported grandmaster.
+#      description: |
+#        Possible values are:
+#        - GPTP: gPTP grandmaster is supported.
+#        - PTP: PTP grandmaste is supported.
     InstanceType:
-      anyOf:
-      - type: string
-        enum:
-          - BOUNDARY_CLOCK
-          - E2E_TRANS_CLOCK
-          - P2P_TRANS_CLOCK
-          - P2P_RELAY_INSTANCE
-      - type: string
-        description: >
-          This string identifies supported PTP instance type.
-      description: |
-        Possible values are:
-        - BOUNDARY_CLOCK: Indicates Boundary Clock as defined in IEEE Std 1588.
-        - E2E_TRANS_CLOCK: Indicates End-to-End Transparent Clock as defined in IEEE Std 1588.
-        - P2P_TRANS_CLOCK: Indicates Peer-to-Peer Transparent Clock as defined in IEEE Std 1588.
-        - P2P_RELAY_INSTANCE: Indicates PTP Relay instance as defined in IEEE Std 802.1AS.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - BOUNDARY_CLOCK
+        - E2E_TRANS_CLOCK
+        - P2P_TRANS_CLOCK
+        - P2P_RELAY_INSTANCE
+#      - type: string
+#        description: >
+#          This string identifies supported PTP instance type.
+#      description: |
+#        Possible values are:
+#        - BOUNDARY_CLOCK: Indicates Boundary Clock as defined in IEEE Std 1588.
+#        - E2E_TRANS_CLOCK: Indicates End-to-End Transparent Clock as defined in IEEE Std 1588.
+#        - P2P_TRANS_CLOCK: Indicates Peer-to-Peer Transparent Clock as defined in IEEE Std 1588.
+#        - P2P_RELAY_INSTANCE: Indicates PTP Relay instance as defined in IEEE Std 802.1AS.
+#
     SubscribedEvent:
-      anyOf:
-      - type: string
-        enum:
-          - AVAILABILITY_FOR_TIME_SYNC_SERVICE
-      - type: string
-        description: >
-          This string identifies supported event.
-      description: |
-        Possible values are:
-        - AVAILABILITY_FOR_TIME_SYNC_SERVICE: The UE is availability for time synchronization service.
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AVAILABILITY_FOR_TIME_SYNC_SERVICE
+#      - type: string
+#        description: >
+#          This string identifies supported event.
+#      description: |
+#        Possible values are:
+#        - AVAILABILITY_FOR_TIME_SYNC_SERVICE: The UE is availability for time synchronization service.
+#
     AsTimeResource:
-      anyOf:
-      - type: string
-        enum:
-          - ATOMIC_CLOCK
-          - GNSS
-          - TERRESTRIAL_RADIO
-          - SERIAL_TIME_CODE
-          - PTP
-          - NTP
-          - HAND_SET
-          - INTERNAL_OSCILLATOR
-          - OTHER
-      - type: string
-        description: >
-          This string identifies the supported 5G clock quality.
-      description: |
-        Possible values are:
-        - ATOMIC_CLOCK: Indicates atomic clock is supported.
-        - GNSS: Indicates Global Navigation Satellite System is supported.
-        - TERRESTRIAL_RADIO: Indicates terrestrial radio is supported.
-        - SERIAL_TIME_CODE: Indicates serial time code is supported.
-        - PTP: Indicates PTP is supported.
-        - NTP: Indicates NTP is supported.
-        - HAND_SET: Indicates hand set is supported.
-        - INTERNAL_OSCILLATOR: Indicates internal oscillator is supported.
-        - OTHER: Indicates other source of time is supported.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - ATOMIC_CLOCK
+        - GNSS
+        - TERRESTRIAL_RADIO
+        - SERIAL_TIME_CODE
+        - PTP
+        - NTP
+        - HAND_SET
+        - INTERNAL_OSCILLATOR
+        - OTHER
+#      - type: string
+#        description: >
+#          This string identifies the supported 5G clock quality.
+#      description: |
+#        Possible values are:
+#        - ATOMIC_CLOCK: Indicates atomic clock is supported.
+#        - GNSS: Indicates Global Navigation Satellite System is supported.
+#        - TERRESTRIAL_RADIO: Indicates terrestrial radio is supported.
+#        - SERIAL_TIME_CODE: Indicates serial time code is supported.
+#        - PTP: Indicates PTP is supported.
+#        - NTP: Indicates NTP is supported.
+#        - HAND_SET: Indicates hand set is supported.
+#        - INTERNAL_OSCILLATOR: Indicates internal oscillator is supported.
+#        - OTHER: Indicates other source of time is supported.

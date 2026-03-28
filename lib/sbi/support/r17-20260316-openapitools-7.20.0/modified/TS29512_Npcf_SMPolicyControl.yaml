@@ -93,13 +93,27 @@ paths:
                   content:
                     application/json:
                       schema:
-                        oneOf:
-                          - $ref: '#/components/schemas/UeCampingRep'
-                          - type: array
+#                        oneOf:
+#                          - $ref: '#/components/schemas/UeCampingRep'
+#                          - type: array
+#                            items:
+#                              $ref: '#/components/schemas/PartialSuccessReport'
+#                            minItems: 1
+#                          - type: array
+#                            items:
+#                              $ref: '#/components/schemas/PolicyDecisionFailureCode'
+#                            minItems: 1
+                        type: object
+                        properties:
+                          UeCampingRep:
+                            $ref: '#/components/schemas/UeCampingRep'
+                          PartialSuccessReportList:
+                            type: array
                             items:
                               $ref: '#/components/schemas/PartialSuccessReport'
                             minItems: 1
-                          - type: array
+                          PolicyDecisionFailureCodeList:
+                            type: array
                             items:
                               $ref: '#/components/schemas/PolicyDecisionFailureCode'
                             minItems: 1
@@ -1030,8 +1044,7 @@ components:
           description: the Ipv6 flow label header field.
           nullable: true
         flowDirection:
-#          $ref: '#/components/schemas/FlowDirectionRm'
-          $ref: '#/components/schemas/FlowDirection'
+          $ref: '#/components/schemas/FlowDirectionRm'
     SmPolicyDeleteData:
       description: Contains the parameters to be sent to the PCF when an individual SM policy is deleted.
       type: object
@@ -1394,9 +1407,9 @@ components:
         sessionChScope:
           type: boolean
           description: When it is included and set to true, indicates the Access Network Charging Identifier applies to the whole PDU Session
-      oneOf:
-        - required: [accNetChaIdValue]
-        - required: [accNetChargId]
+#      oneOf:
+#        - required: [accNetChaIdValue]
+#        - required: [accNetChargId]
     AccNetChargingAddress:
       description: Describes the network entity within the access network performing charging
       type: object
@@ -1928,11 +1941,12 @@ components:
     FlowDirection:
 #      anyOf:
 #      - type: string
-        enum:
-          - DOWNLINK
-          - UPLINK
-          - BIDIRECTIONAL
-          - UNSPECIFIED
+      type: string
+      enum:
+        - DOWNLINK
+        - UPLINK
+        - BIDIRECTIONAL
+        - UNSPECIFIED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -1946,99 +1960,112 @@ components:
 #        - UNSPECIFIED: The corresponding filter applies for traffic to the UE (downlink), but has no specific direction declared. The service data flow detection shall apply the filter for uplink traffic as if the filter was bidirectional. The PCF shall not use the value UNSPECIFIED in filters created by the network in NW-initiated procedures. The PCF shall only include the value UNSPECIFIED in filters in UE-initiated procedures if the same value is received from the SMF.
     FlowDirectionRm:
       description: This data type is defined in the same way as the "FlowDirection" data type, with the only difference that it allows null value.
-      anyOf:
-        - $ref: '#/components/schemas/FlowDirection'
-        - $ref: 'TS29571_CommonData.yaml#/components/schemas/NullValue'
+      $ref: '#/components/schemas/FlowDirection'
+#      anyOf:
+#        - $ref: '#/components/schemas/FlowDirection'
+#        - $ref: 'TS29571_CommonData.yaml#/components/schemas/NullValue'
     ReportingLevel:
+      type: string
+      enum:
+        - SER_ID_LEVEL
+        - RAT_GR_LEVEL
+        - SPON_CON_LEVEL
 #      anyOf:
 #      - type: string
-        enum:
-          - SER_ID_LEVEL
-          - RAT_GR_LEVEL
-          - SPON_CON_LEVEL
+#        enum:
+#          - SER_ID_LEVEL
+#          - RAT_GR_LEVEL
+#          - SPON_CON_LEVEL
 #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/NullValue'
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
 #          extensions to the enumeration but is not used to encode
 #          content defined in the present version of this API.
-#      description: |
-#        Possible values are
-#        - SER_ID_LEVEL: Indicates that the usage shall be reported on service id and rating group combination level.
-#        - RAT_GR_LEVEL: Indicates that the usage shall be reported on rating group level.
-#        - SPON_CON_LEVEL: Indicates that the usage shall be reported on sponsor identity and rating group combination level.
+      description: |
+        Possible values are
+        - SER_ID_LEVEL: Indicates that the usage shall be reported on service id and rating group combination level.
+        - RAT_GR_LEVEL: Indicates that the usage shall be reported on rating group level.
+        - SPON_CON_LEVEL: Indicates that the usage shall be reported on sponsor identity and rating group combination level.
     MeteringMethod:
+      type: string
+      enum:
+        - DURATION
+        - VOLUME
+        - DURATION_VOLUME
+        - EVENT
 #      anyOf:
 #      - type: string
-        enum:
-          - DURATION
-          - VOLUME
-          - DURATION_VOLUME
-          - EVENT
+#        enum:
+#          - DURATION
+#          - VOLUME
+#          - DURATION_VOLUME
+#          - EVENT
 #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/NullValue'
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
 #          extensions to the enumeration but is not used to encode
 #          content defined in the present version of this API.
-#      description: |
-#        Possible values are
-#        - DURATION: Indicates that the duration of the service data flow traffic shall be metered.
-#        - VOLUME: Indicates that volume of the service data flow traffic shall be metered.
-#        - DURATION_VOLUME: Indicates that the duration and the volume of the service data flow traffic shall be metered.
-#        - EVENT: Indicates that events of the service data flow traffic shall be metered.
+      description: |
+        Possible values are
+        - DURATION: Indicates that the duration of the service data flow traffic shall be metered.
+        - VOLUME: Indicates that volume of the service data flow traffic shall be metered.
+        - DURATION_VOLUME: Indicates that the duration and the volume of the service data flow traffic shall be metered.
+        - EVENT: Indicates that events of the service data flow traffic shall be metered.
     PolicyControlRequestTrigger:
 #      anyOf:
 #      - type: string
-        enum:
-          - PLMN_CH
-          - RES_MO_RE
-          - AC_TY_CH
-          - UE_IP_CH
-          - UE_MAC_CH
-          - AN_CH_COR
-          - US_RE
-          - APP_STA
-          - APP_STO
-          - AN_INFO
-          - CM_SES_FAIL
-          - PS_DA_OFF
-          - DEF_QOS_CH
-          - SE_AMBR_CH
-          - QOS_NOTIF
-          - NO_CREDIT
-          - REALLO_OF_CREDIT
-          - PRA_CH
-          - SAREA_CH
-          - SCNN_CH
-          - RE_TIMEOUT
-          - RES_RELEASE
-          - SUCC_RES_ALLO
-          - RAI_CH
-          - RAT_TY_CH
-          - REF_QOS_IND_CH
-          - NUM_OF_PACKET_FILTER
-          - UE_STATUS_RESUME
-          - UE_TZ_CH
-          - AUTH_PROF_CH
-          - QOS_MONITORING
-          - SCELL_CH
-          - USER_LOCATION_CH
-          - EPS_FALLBACK
-          - MA_PDU
-          - TSN_BRIDGE_INFO
-          - 5G_RG_JOIN
-          - 5G_RG_LEAVE
-          - DDN_FAILURE
-          - DDN_DELIVERY_STATUS
-          - GROUP_ID_LIST_CHG
-          - DDN_FAILURE_CANCELLATION
-          - DDN_DELIVERY_STATUS_CANCELLATION
-          - VPLMN_QOS_CH
-          - SUCC_QOS_UPDATE
-          - SAT_CATEGORY_CHG
-          - PCF_UE_NOTIF_IND
-          - NWDAF_DATA_CHG
+      type: string
+      enum:
+        - PLMN_CH
+        - RES_MO_RE
+        - AC_TY_CH
+        - UE_IP_CH
+        - UE_MAC_CH
+        - AN_CH_COR
+        - US_RE
+        - APP_STA
+        - APP_STO
+        - AN_INFO
+        - CM_SES_FAIL
+        - PS_DA_OFF
+        - DEF_QOS_CH
+        - SE_AMBR_CH
+        - QOS_NOTIF
+        - NO_CREDIT
+        - REALLO_OF_CREDIT
+        - PRA_CH
+        - SAREA_CH
+        - SCNN_CH
+        - RE_TIMEOUT
+        - RES_RELEASE
+        - SUCC_RES_ALLO
+        - RAI_CH
+        - RAT_TY_CH
+        - REF_QOS_IND_CH
+        - NUM_OF_PACKET_FILTER
+        - UE_STATUS_RESUME
+        - UE_TZ_CH
+        - AUTH_PROF_CH
+        - QOS_MONITORING
+        - SCELL_CH
+        - USER_LOCATION_CH
+        - EPS_FALLBACK
+        - MA_PDU
+        - TSN_BRIDGE_INFO
+        - 5G_RG_JOIN
+        - 5G_RG_LEAVE
+        - DDN_FAILURE
+        - DDN_DELIVERY_STATUS
+        - GROUP_ID_LIST_CHG
+        - DDN_FAILURE_CANCELLATION
+        - DDN_DELIVERY_STATUS_CANCELLATION
+        - VPLMN_QOS_CH
+        - SUCC_QOS_UPDATE
+        - SAT_CATEGORY_CHG
+        - PCF_UE_NOTIF_IND
+        - NWDAF_DATA_CHG
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2097,13 +2124,14 @@ components:
     RequestedRuleDataType:
 #      anyOf:
 #      - type: string
-        enum:
-          - CH_ID
-          - MS_TIME_ZONE
-          - USER_LOC_INFO
-          - RES_RELEASE
-          - SUCC_RES_ALLO
-          - EPS_FALLBACK
+      type: string
+      enum:
+        - CH_ID
+        - MS_TIME_ZONE
+        - USER_LOC_INFO
+        - RES_RELEASE
+        - SUCC_RES_ALLO
+        - EPS_FALLBACK
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2120,9 +2148,10 @@ components:
     RuleStatus:
 #      anyOf:
 #      - type: string
-        enum:
-          - ACTIVE
-          - INACTIVE
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2135,37 +2164,38 @@ components:
     FailureCode:
 #      anyOf:
 #      - type: string
-        enum:
-          - UNK_RULE_ID
-          - RA_GR_ERR
-          - SER_ID_ERR
-          - NF_MAL
-          - RES_LIM
-          - MAX_NR_QoS_FLOW
-          - MISS_FLOW_INFO
-          - RES_ALLO_FAIL
-          - UNSUCC_QOS_VAL
-          - INCOR_FLOW_INFO
-          - PS_TO_CS_HAN
-          - APP_ID_ERR
-          - NO_QOS_FLOW_BOUND
-          - FILTER_RES
-          - MISS_REDI_SER_ADDR
-          - CM_END_USER_SER_DENIED
-          - CM_CREDIT_CON_NOT_APP
-          - CM_AUTH_REJ
-          - CM_USER_UNK
-          - CM_RAT_FAILED
-          - UE_STA_SUSP
-          - UNKNOWN_REF_ID
-          - INCORRECT_COND_DATA
-          - REF_ID_COLLISION
-          - TRAFFIC_STEERING_ERROR
-          - DNAI_STEERING_ERROR
-          - AN_GW_FAILE
-          - MAX_NR_PACKET_FILTERS_EXCEEDED
-          - PACKET_FILTER_TFT_ALLOCATION_EXCEEDED
-          - MUTE_CHG_NOT_ALLOWED
+      type: string
+      enum:
+        - UNK_RULE_ID
+        - RA_GR_ERR
+        - SER_ID_ERR
+        - NF_MAL
+        - RES_LIM
+        - MAX_NR_QoS_FLOW
+        - MISS_FLOW_INFO
+        - RES_ALLO_FAIL
+        - UNSUCC_QOS_VAL
+        - INCOR_FLOW_INFO
+        - PS_TO_CS_HAN
+        - APP_ID_ERR
+        - NO_QOS_FLOW_BOUND
+        - FILTER_RES
+        - MISS_REDI_SER_ADDR
+        - CM_END_USER_SER_DENIED
+        - CM_CREDIT_CON_NOT_APP
+        - CM_AUTH_REJ
+        - CM_USER_UNK
+        - CM_RAT_FAILED
+        - UE_STA_SUSP
+        - UNKNOWN_REF_ID
+        - INCORRECT_COND_DATA
+        - REF_ID_COLLISION
+        - TRAFFIC_STEERING_ERROR
+        - DNAI_STEERING_ERROR
+        - AN_GW_FAILE
+        - MAX_NR_PACKET_FILTERS_EXCEEDED
+        - PACKET_FILTER_TFT_ALLOCATION_EXCEEDED
+        - MUTE_CHG_NOT_ALLOWED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2204,38 +2234,36 @@ components:
 #        - PACKET_FILTER_TFT_ALLOCATION_EXCEEDED: This value is used to indicate that the PCC rule is removed at 5GS to EPS mobility because TFT allocation was not possible since the number of active packet filters in the EPC bearer is exceeded.
 #        - MUTE_CHG_NOT_ALLOWED: Indicates that the PCC rule could not be successfully modified because the mute condition for application detection report cannot be changed. Applicable when the functionality introduced with the ADC feature applies.
     AfSigProtocol:
+      type: string
+      enum:
+        - NO_INFORMATION
+        - SIP
 #      anyOf:
 #      - type: string
-        enum:
-          - NO_INFORMATION
-          - SIP
+#        enum:
+#          - NO_INFORMATION
+#          - SIP
 #      - $ref: 'TS29571_CommonData.yaml#/components/schemas/NullValue'
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
 #          extensions to the enumeration but is not used to encode
 #          content defined in the present version of this API.
-#      description: |
-#        Possible values are
-#        - NO_INFORMATION: Indicate that no information about the AF signalling protocol is being provided. 
-#        - SIP: Indicate that the signalling protocol is Session Initiation Protocol.
+      description: |
+        Possible values are
+        - NO_INFORMATION: Indicate that no information about the AF signalling protocol is being provided. 
+        - SIP: Indicate that the signalling protocol is Session Initiation Protocol.
     RuleOperation:
-        enum:
-          - CREATE_PCC_RULE
-          - DELETE_PCC_RULE
-          - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS
-          - MODIFY_PCC_RULE_AND_REPLACE_PACKET_FILTERS
-          - MODIFY_PCC_RULE_AND_DELETE_PACKET_FILTERS
-          - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS
 #      anyOf:
 #      - type: string
-#        enum:
-#          - CREATE_PCC_RULE
-#          - DELETE_PCC_RULE
-#          - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS
-#          - MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS
-#          - MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS
-#          - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS
+      type: string
+      enum:
+        - CREATE_PCC_RULE
+        - DELETE_PCC_RULE
+        - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS
+        - MODIFY_PCC_RULE_AND_REPLACE_PACKET_FILTERS
+        - MODIFY_PCC_RULE_AND_DELETE_PACKET_FILTERS
+        - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2252,11 +2280,12 @@ components:
     RedirectAddressType:
 #      anyOf:
 #      - type: string
-        enum:
-          - IPV4_ADDR
-          - IPV6_ADDR
-          - URL
-          - SIP_URI
+      type: string
+      enum:
+        - IPV4_ADDR
+        - IPV6_ADDR
+        - URL
+        - SIP_URI
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2271,9 +2300,10 @@ components:
     QosFlowUsage:
 #      anyOf:
 #      - type: string
-        enum:
-          - GENERAL
-          - IMS_SIG
+      type: string
+      enum:
+        - GENERAL
+        - IMS_SIG
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2284,41 +2314,44 @@ components:
 #        - GENERAL: Indicate no specific QoS flow usage information is available. 
 #        - IMS_SIG: Indicate that the QoS flow is used for IMS signalling only.
     FailureCause:
-#      description: Indicates the cause of the failure in a Partial Success Report.
+      description: Indicates the cause of the failure in a Partial Success Report.
 #      anyOf:
 #      - type: string
-        enum:
-          - PCC_RULE_EVENT
-          - PCC_QOS_FLOW_EVENT
-          - RULE_PERMANENT_ERROR
-          - RULE_TEMPORARY_ERROR
-          - POL_DEC_ERROR
+      type: string
+      enum:
+        - PCC_RULE_EVENT
+        - PCC_QOS_FLOW_EVENT
+        - RULE_PERMANENT_ERROR
+        - RULE_TEMPORARY_ERROR
+        - POL_DEC_ERROR
 #      - type: string
     CreditManagementStatus:
-#      description: Indicates the reason of the credit management session failure.
+      description: Indicates the reason of the credit management session failure.
 #      anyOf:
 #      - type: string
-        enum:
-          - END_USER_SER_DENIED
-          - CREDIT_CTRL_NOT_APP
-          - AUTH_REJECTED
-          - USER_UNKNOWN
-          - RATING_FAILED
+      type: string
+      enum:
+        - END_USER_SER_DENIED
+        - CREDIT_CTRL_NOT_APP
+        - AUTH_REJECTED
+        - USER_UNKNOWN
+        - RATING_FAILED
 #      - type: string
     SessionRuleFailureCode:
 #      anyOf:
 #      - type: string
-        enum:
-          - NF_MAL
-          - RES_LIM
-          - SESSION_RESOURCE_ALLOCATION_FAILURE
-          - UNSUCC_QOS_VAL
-          - INCORRECT_UM
-          - UE_STA_SUSP
-          - UNKNOWN_REF_ID
-          - INCORRECT_COND_DATA
-          - REF_ID_COLLISION
-          - AN_GW_FAILED
+      type: string
+      enum:
+        - NF_MAL
+        - RES_LIM
+        - SESSION_RESOURCE_ALLOCATION_FAILURE
+        - UNSUCC_QOS_VAL
+        - INCORRECT_UM
+        - UE_STA_SUSP
+        - UNKNOWN_REF_ID
+        - INCORRECT_COND_DATA
+        - REF_ID_COLLISION
+        - AN_GW_FAILED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2339,9 +2372,10 @@ components:
     SteeringFunctionality:
 #      anyOf:
 #      - type: string
-        enum:
-          - MPTCP
-          - ATSSS_LL
+      type: string
+      enum:
+        - MPTCP
+        - ATSSS_LL
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2352,41 +2386,45 @@ components:
 #          - MPTCP: Indicates that PCF authorizes the MPTCP functionality to support traffic steering, switching and splitting.
 #          - ATSSS_LL: Indicates that PCF authorizes the ATSSS-LL functionality to support traffic steering, switching and splitting.
     SteerModeValue:
-#      description: Indicates the steering mode value determined by the PCF.
+      description: Indicates the steering mode value determined by the PCF.
 #      anyOf:
 #      - type: string
-        enum:
-          - ACTIVE_STANDBY
-          - LOAD_BALANCING
-          - SMALLEST_DELAY
-          - PRIORITY_BASED
+      type: string
+      enum:
+        - ACTIVE_STANDBY
+        - LOAD_BALANCING
+        - SMALLEST_DELAY
+        - PRIORITY_BASED
 #      - type: string
 #    MulticastAccessControl:
     NpcfMulticastAccessControl:
-#      description: Indicates whether the service data flow, corresponding to the service data flow template, is allowed or not allowed.
+      description: Indicates whether the service data flow, corresponding to the service data flow template, is allowed or not allowed.
 #      anyOf:
 #      - type: string
-        enum:
-          - ALLOWED
-          - NOT_ALLOWED
+      type: string
+      enum:
+        - ALLOWED
+        - NOT_ALLOWED
 #      - type: string
     RequestedQosMonitoringParameter:
-#      description: Indicates the requested QoS monitoring parameters to be measured.
+      description: Indicates the requested QoS monitoring parameters to be measured.
 #      anyOf:
 #      - type: string
-        enum:
-          - DOWNLINK
-          - UPLINK
-          - ROUND_TRIP
+      type: string
+      enum:
+        - DOWNLINK
+        - UPLINK
+        - ROUND_TRIP
 #      - type: string
     ReportingFrequency:
-#      description: Indicates the frequency for the reporting.
+      description: Indicates the frequency for the reporting.
 #      anyOf:
 #      - type: string
-        enum:
-          - EVENT_TRIGGERED
-          - PERIODIC
-          - SESSION_RELEASE
+      type: string
+      enum:
+        - EVENT_TRIGGERED
+        - PERIODIC
+        - SESSION_RELEASE
 #      - type: string
     SgsnAddress:
       description: describes the address of the SGSN
@@ -2400,52 +2438,57 @@ components:
         sgsnIpv6Addr:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv6Addr'
     SmPolicyAssociationReleaseCause:
-#      description: Represents the cause due to which the PCF requests the termination of the SM policy association.
+      description: Represents the cause due to which the PCF requests the termination of the SM policy association.
 #      anyOf:
 #      - type: string
-        enum:
-          - UNSPECIFIED
-          - UE_SUBSCRIPTION
-          - INSUFFICIENT_RES
-          - VALIDATION_CONDITION_NOT_MET
-          - REACTIVATION_REQUESTED
+      type: string
+      enum:
+        - UNSPECIFIED
+        - UE_SUBSCRIPTION
+        - INSUFFICIENT_RES
+        - VALIDATION_CONDITION_NOT_MET
+        - REACTIVATION_REQUESTED
 #      - type: string
     PduSessionRelCause:
-#      description: Contains the SMF PDU Session release cause.
+      description: Contains the SMF PDU Session release cause.
 #      anyOf:
 #      - type: string
-        enum:
-          - PS_TO_CS_HO
-          - RULE_ERROR
+      type: string
+      enum:
+        - PS_TO_CS_HO
+        - RULE_ERROR
 #      - type: string
     MaPduIndication:
-#      description: Contains the MA PDU session indication, i.e., MA PDU Request or MA PDU Network-Upgrade Allowed.
+      description: Contains the MA PDU session indication, i.e., MA PDU Request or MA PDU Network-Upgrade Allowed.
 #      anyOf:
 #      - type: string
-        enum:
-          - MA_PDU_REQUEST
-          - MA_PDU_NETWORK_UPGRADE_ALLOWED
+      type: string
+      enum:
+        - MA_PDU_REQUEST
+        - MA_PDU_NETWORK_UPGRADE_ALLOWED
 #      - type: string
 #    AtsssCapability:
     NpcfAtsssCapability:
-#      description: Contains the ATSSS capability supported for the MA PDU Session.
+      description: Contains the ATSSS capability supported for the MA PDU Session.
 #      anyOf:
 #      - type: string
-        enum:
-          - MPTCP_ATSSS_LL_WITH_ASMODE_UL
-          - MPTCP_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL
-          - MPTCP_ATSSS_LL_WITH_ASMODE_DLUL
-          - ATSSS_LL
-          - MPTCP_ATSSS_LL
+      type: string
+      enum:
+        - MPTCP_ATSSS_LL_WITH_ASMODE_UL
+        - MPTCP_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL
+        - MPTCP_ATSSS_LL_WITH_ASMODE_DLUL
+        - ATSSS_LL
+        - MPTCP_ATSSS_LL
 #      - type: string
 #
     NetLocAccessSupport:
 #      anyOf:
 #      - type: string
-        enum:
-          - ANR_NOT_SUPPORTED
-          - TZR_NOT_SUPPORTED
-          - LOC_NOT_SUPPORTED
+      type: string
+      enum:
+        - ANR_NOT_SUPPORTED
+        - TZR_NOT_SUPPORTED
+        - LOC_NOT_SUPPORTED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -2457,34 +2500,37 @@ components:
 #        - TZR_NOT_SUPPORTED: Indicates that the access network does not support the report of UE time zone.
 #        - LOC_NOT_SUPPORTED: Indicates that the access network does not support the report of UE Location (or PLMN Id).
     PolicyDecisionFailureCode:
-#      description: Indicates the type of the failed policy decision and/or condition data.
+      description: Indicates the type of the failed policy decision and/or condition data.
 #      anyOf:
 #      - type: string
-        enum:
-          - TRA_CTRL_DECS_ERR
-          - QOS_DECS_ERR
-          - CHG_DECS_ERR
-          - USA_MON_DECS_ERR
-          - QOS_MON_DECS_ERR
-          - CON_DATA_ERR
-          - POLICY_PARAM_ERR
+      type: string
+      enum:
+        - TRA_CTRL_DECS_ERR
+        - QOS_DECS_ERR
+        - CHG_DECS_ERR
+        - USA_MON_DECS_ERR
+        - QOS_MON_DECS_ERR
+        - CON_DATA_ERR
+        - POLICY_PARAM_ERR
 #      - type: string
 #
     NotificationControlIndication:
-#      description: Indicates that the notification of DDD Status is requested and/or that the notification of DDN Failure is requested.
+      description: Indicates that the notification of DDD Status is requested and/or that the notification of DDN Failure is requested.
 #      anyOf:
 #      - type: string
-        enum:
-          - DDN_FAILURE
-          - DDD_STATUS
+      type: string
+      enum:
+        - DDN_FAILURE
+        - DDD_STATUS
 #      - type: string
 #
     SteerModeIndicator:
-#      description: Contains Autonomous load-balance indicator or UE-assistance indicator.
+      description: Contains Autonomous load-balance indicator or UE-assistance indicator.
 #      anyOf:
 #      - type: string
-        enum:
-          - AUTO_LOAD_BALANCE
-          - UE_ASSISTANCE
+      type: string
+      enum:
+        - AUTO_LOAD_BALANCE
+        - UE_ASSISTANCE
 #      - type: string
 #

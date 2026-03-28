@@ -407,19 +407,20 @@ components:
       required:
         - accStatus
     AccessRightStatus:
-      anyOf:
-        - type: string
-          enum:
-            - FULLY_ALLOWED
-            - PREVIEW_ALLOWED
-            - NO_ALLOWED
-        - type: string
-          description: >
-            This string provides forward-compatibility with future extensions to the enumeration but
-            is not used to encode content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - FULLY_ALLOWED: The User is fully allowed to access to the channel.
-        - PREVIEW_ALLOWED: The User is preview allowed to access to the channel.
-        - NO_ALLOWED: The User is not allowed to access to the channel.
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - FULLY_ALLOWED
+        - PREVIEW_ALLOWED
+        - NO_ALLOWED
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future extensions to the enumeration but
+#            is not used to encode content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - FULLY_ALLOWED: The User is fully allowed to access to the channel.
+#        - PREVIEW_ALLOWED: The User is preview allowed to access to the channel.
+#        - NO_ALLOWED: The User is not allowed to access to the channel.
+#

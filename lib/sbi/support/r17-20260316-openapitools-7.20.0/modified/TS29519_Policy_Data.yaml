@@ -2318,10 +2318,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/BitRate'
         remainMbrDl:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/BitRate'
-      oneOf:
-        - required: [remainMbrUl]
-        - required: [remainMbrDl]
-
+#      oneOf:
+#        - required: [remainMbrUl]
+#        - required: [remainMbrDl]
+#
     MbsSessPolCtrlData:
       description: Represents MBS Session Policy Control Data.
       type: object
@@ -2348,10 +2348,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/MbsSessionId'
         afAppId:
           type: string
-      oneOf:
-        - required: [mbsSessionId]
-        - required: [afAppId]
-
+#      oneOf:
+#        - required: [mbsSessionId]
+#        - required: [afAppId]
+#
 # SIMPLE TYPES:
 
     IpIndex:
@@ -2373,42 +2373,46 @@ components:
 
     UsageMonLevel:
       description: Represents the usage monitoring level.
-      anyOf:
-      - type: string
-        enum:
-          - SESSION_LEVEL
-          - SERVICE_LEVEL
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SESSION_LEVEL
+        - SERVICE_LEVEL
+#      - type: string
+#
     Periodicity:
       description: Represents the time period.
-      anyOf:
-      - type: string
-        enum:
-          - YEARLY
-          - MONTHLY
-          - WEEKLY
-          - DAILY
-          - HOURLY
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - YEARLY
+        - MONTHLY
+        - WEEKLY
+        - DAILY
+        - HOURLY
+#      - type: string
+#
     BdtPolicyStatus:
       description: Indicates the validation status of a negotiated BDT policy.
-      anyOf:
-      - type: string
-        enum:
-          - INVALID
-          - VALID
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - INVALID
+        - VALID
+#      - type: string
+#
     PolicyDataSubset:
       description: Indicates a policy data subset.
-      anyOf:
-        - type: string
-          enum:
-          - AM_POLICY_DATA
-          - SM_POLICY_DATA
-          - UE_POLICY_DATA
-          - UM_DATA
-          - OPERATOR_SPECIFIC_DATA
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - AM_POLICY_DATA
+      - SM_POLICY_DATA
+      - UE_POLICY_DATA
+      - UM_DATA
+      - OPERATOR_SPECIFIC_DATA
+#        - type: string

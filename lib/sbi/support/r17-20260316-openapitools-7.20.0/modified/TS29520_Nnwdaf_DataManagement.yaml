@@ -296,9 +296,9 @@ components:
       required:
         - notifCorrId
         - notificURI
-      oneOf:
-        - required: [anaSub]
-        - required: [dataSub]
+#      oneOf:
+#        - required: [anaSub]
+#        - required: [dataSub]
     NnwdafDataManagementNotif:
       description: Represents an Individual Notification.
       type: object
@@ -326,8 +326,8 @@ components:
       required:  
         - notifCorrId
         - notifTimestamp
-      oneOf:
-        - required: [dataNotification]
-        - required: [dataReports]
-        - required: [fetchInstruct]
-
+#      oneOf:
+#        - required: [dataNotification]
+#        - required: [dataReports]
+#        - required: [fetchInstruct]
+#

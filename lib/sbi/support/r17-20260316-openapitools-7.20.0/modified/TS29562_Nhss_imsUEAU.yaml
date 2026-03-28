@@ -218,30 +218,33 @@ components:
 
     SipAuthenticationScheme:
       description: Authentication scheme to be used in the SIP authentication request message
-      anyOf:
-        - type: string
-          enum:
-          - DIGEST-AKAV1-MD5
-          - DIGEST-HTTP
-          - NBA
-          - GIBA
-          - UNKNOWN
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - DIGEST-AKAV1-MD5
+      - DIGEST-HTTP
+      - NBA
+      - GIBA
+      - UNKNOWN
+#        - type: string
+#
     SipDigestAlgorithm:
       description: Algorithm used for the SIP Digest authentication scheme
-      anyOf:
-        - type: string
-          enum:
-          - MD5
-          - MD5_SESS
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - MD5
+      - MD5_SESS
+#        - type: string
+#
     SipDigestQop:
       description: Quality of Protection for the SIP Digest authentication scheme
-      anyOf:
-        - type: string
-          enum:
-          - AUTH
-          - AUTH_INT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - AUTH
+      - AUTH_INT
+#        - type: string

@@ -354,11 +354,12 @@ components:
 
     UeId:
       description: UE ID can be MSISDN, IMSI, IMPI or IMPU
-      anyOf:
-        - $ref: '#/components/schemas/Msisdn'
-        - $ref: '#/components/schemas/Imsi'
-        - $ref: 'TS29562_Nhss_imsSDM.yaml#/components/schemas/ImsUeId'
-
+      $ref: '#/components/schemas/Msisdn'
+#      anyOf:
+#        - $ref: '#/components/schemas/Msisdn'
+#        - $ref: '#/components/schemas/Imsi'
+#        - $ref: 'TS29562_Nhss_imsSDM.yaml#/components/schemas/ImsUeId'
+#
     Msisdn:
       description: MS-ISDN of the UE
       type: string
@@ -375,9 +376,10 @@ components:
 
     UiccType:
       description: Indicates whether GBA or GBA_U is to be used
-      anyOf:
-        - type: string
-          enum:
-            - GBA
-            - GBA_U
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - GBA
+        - GBA_U
+#        - type: string

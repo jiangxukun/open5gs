@@ -1793,8 +1793,7 @@ paths:
         content:
           application/json:
             schema:
-#              $ref: '#/components/schemas/SubscriptionData'
-              $ref: '#/components/schemas/NamfSubscriptionData'
+              $ref: '#/components/schemas/SubscriptionData'
         required: true
       responses:
         '201':
@@ -1808,8 +1807,7 @@ paths:
           content:
             application/json:
               schema:
-#                $ref: '#/components/schemas/SubscriptionData'
-                $ref: '#/components/schemas/NamfSubscriptionData'
+                $ref: '#/components/schemas/SubscriptionData'
         '307':
           $ref: 'TS29571_CommonData.yaml#/components/responses/307'
         '308':
@@ -1917,8 +1915,7 @@ paths:
         content:
           application/json:
             schema:
-#              $ref: '#/components/schemas/SubscriptionData'
-              $ref: '#/components/schemas/NamfSubscriptionData'
+              $ref: '#/components/schemas/SubscriptionData'
         required: true
       responses:
         '200':
@@ -1926,8 +1923,7 @@ paths:
           content:
             application/json:
               schema:
-#                $ref: '#/components/schemas/SubscriptionData'
-                $ref: '#/components/schemas/NamfSubscriptionData'
+                $ref: '#/components/schemas/SubscriptionData'
         '204':
           description: Events subscription modification is accepted entirely
         '307':
@@ -2002,7 +1998,7 @@ components:
 #
 # STRUCTURED DATA TYPES
 #
-    NamfSubscriptionData:
+    SubscriptionData:
       description: Data within an AMF Status Change Subscription request and response
       type: object
       properties:
@@ -3659,246 +3655,269 @@ components:
 # ENUMERATIONS
 #
     StatusChange:
-#      description: Enumeration for AMF status
+      description: Enumeration for AMF status
 #      anyOf:
 #      - type: string
-        enum:
-          - AMF_UNAVAILABLE
-          - AMF_AVAILABLE
+      type: string
+      enum:
+        - AMF_UNAVAILABLE
+        - AMF_AVAILABLE
 #      - type: string
     N2InformationClass:
-#      description: Enumeration for N2 Information Class
+      description: Enumeration for N2 Information Class
 #      anyOf:
 #      - type: string
-        enum:
-          - SM
-          - NRPPa
-          - PWS
-          - PWS-BCAL
-          - PWS-RF
-          - RAN
-          - V2X
-          - PROSE
+      type: string
+      enum:
+        - SM
+        - NRPPa
+        - PWS
+        - PWS-BCAL
+        - PWS-RF
+        - RAN
+        - V2X
+        - PROSE
 #      - type: string
     N1MessageClass:
-#      description: Enumeration for N1 Message Class
+      description: Enumeration for N1 Message Class
 #      anyOf:
 #      - type: string
-        enum:
-          - 5GMM
-          - SM
-          - LPP
-          - SMS
-          - UPDP
-          - LCS
+      type: string
+      enum:
+        - 5GMM
+        - SM
+        - LPP
+        - SMS
+        - UPDP
+        - LCS
 #      - type: string
     N1N2MessageTransferCause:
-#      description: Enumeration for N1N2Message Transfer Cause
+      description: Enumeration for N1N2Message Transfer Cause
 #      anyOf:
 #      - type: string
-        enum:
-          - ATTEMPTING_TO_REACH_UE
-          - N1_N2_TRANSFER_INITIATED
-          - WAITING_FOR_ASYNCHRONOUS_TRANSFER
-          - UE_NOT_RESPONDING
-          - N1_MSG_NOT_TRANSFERRED
-          - N2_MSG_NOT_TRANSFERRED
-          - UE_NOT_REACHABLE_FOR_SESSION
-          - TEMPORARY_REJECT_REGISTRATION_ONGOING
-          - TEMPORARY_REJECT_HANDOVER_ONGOING
-          - REJECTION_DUE_TO_PAGING_RESTRICTION
-          - AN_NOT_RESPONDING
-          - FAILURE_CAUSE_UNSPECIFIED
+      type: string
+      enum:
+        - ATTEMPTING_TO_REACH_UE
+        - N1_N2_TRANSFER_INITIATED
+        - WAITING_FOR_ASYNCHRONOUS_TRANSFER
+        - UE_NOT_RESPONDING
+        - N1_MSG_NOT_TRANSFERRED
+        - N2_MSG_NOT_TRANSFERRED
+        - UE_NOT_REACHABLE_FOR_SESSION
+        - TEMPORARY_REJECT_REGISTRATION_ONGOING
+        - TEMPORARY_REJECT_HANDOVER_ONGOING
+        - REJECTION_DUE_TO_PAGING_RESTRICTION
+        - AN_NOT_RESPONDING
+        - FAILURE_CAUSE_UNSPECIFIED
 #      - type: string
     UeContextTransferStatus:
-#      description: Describes the status of an individual ueContext resource in UE Context Transfer procedures
+      description: Describes the status of an individual ueContext resource in UE Context Transfer procedures
 #      anyOf:
 #      - type: string
-        enum:
-          - TRANSFERRED
-          - NOT_TRANSFERRED
+      type: string
+      enum:
+        - TRANSFERRED
+        - NOT_TRANSFERRED
 #      - type: string
     N2InformationTransferResult:
-#      description: Describes the result of N2 information transfer by AMF to the AN
+      description: Describes the result of N2 information transfer by AMF to the AN
 #      anyOf:
 #      - type: string
-        enum:
-          - N2_INFO_TRANSFER_INITIATED
+      type: string
+      enum:
+        - N2_INFO_TRANSFER_INITIATED
 #      - type: string
     CipheringAlgorithm:
-#      description: Indicates the supported Ciphering Algorithm
+      description: Indicates the supported Ciphering Algorithm
 #      anyOf:
 #      - type: string
-        enum:
-          - NEA0
-          - NEA1
-          - NEA2
-          - NEA3
+      type: string
+      enum:
+        - NEA0
+        - NEA1
+        - NEA2
+        - NEA3
 #      - type: string
     IntegrityAlgorithm:
-#      description: Indicates the supported Integrity Algorithm
+      description: Indicates the supported Integrity Algorithm
 #      anyOf:
 #      - type: string
-        enum:
-          - NIA0
-          - NIA1
-          - NIA2
-          - NIA3
+      type: string
+      enum:
+        - NIA0
+        - NIA1
+        - NIA2
+        - NIA3
 #      - type: string
     SmsSupport:
-#      description: Indicates the supported SMS delivery of a UE
+      description: Indicates the supported SMS delivery of a UE
 #      anyOf:
 #      - type: string
-        enum:
-          - 3GPP
-          - NON_3GPP
-          - BOTH
-          - NONE
+      type: string
+      enum:
+        - 3GPP
+        - NON_3GPP
+        - BOTH
+        - NONE
 #      - type: string
     ScType:
-#      description: Indicates the security context type
+      description: Indicates the security context type
 #      anyOf:
 #      - type: string
-        enum:
-          - NATIVE
-          - MAPPED
+      type: string
+      enum:
+        - NATIVE
+        - MAPPED
 #      - type: string
     KeyAmfType:
-#      description: Indicates the Kamf type
+      description: Indicates the Kamf type
 #      anyOf:
 #      - type: string
-        enum:
-          - KAMF
-          - KPRIMEAMF
+      type: string
+      enum:
+        - KAMF
+        - KPRIMEAMF
 #      - type: string
     TransferReason:
-#      description: Indicates UE Context Transfer Reason
+      description: Indicates UE Context Transfer Reason
 #      anyOf:
 #      - type: string
-        enum:
-          - INIT_REG
-          - MOBI_REG
-          - MOBI_REG_UE_VALIDATED
+      type: string
+      enum:
+        - INIT_REG
+        - MOBI_REG
+        - MOBI_REG_UE_VALIDATED
 #      - type: string
     PolicyReqTrigger:
-#      description: Policy Request Triggers
+      description: Policy Request Triggers
 #      anyOf:
 #      - type: string
-        enum:
-          - LOCATION_CHANGE
-          - PRA_CHANGE
-          - ALLOWED_NSSAI_CHANGE
-          - NWDAF_DATA_CHANGE
-          - PLMN_CHANGE
-          - CON_STATE_CHANGE
-          - SMF_SELECT_CHANGE
-          - ACCESS_TYPE_CHANGE
+      type: string
+      enum:
+        - LOCATION_CHANGE
+        - PRA_CHANGE
+        - ALLOWED_NSSAI_CHANGE
+        - NWDAF_DATA_CHANGE
+        - PLMN_CHANGE
+        - CON_STATE_CHANGE
+        - SMF_SELECT_CHANGE
+        - ACCESS_TYPE_CHANGE
 #      - type: string
     RatSelector:
-#      description: Indicates the RAT type for the transfer of N2 information
+      description: Indicates the RAT type for the transfer of N2 information
 #      anyOf:
 #      - type: string
-        enum:
-          - E-UTRA
-          - NR
+      type: string
+      enum:
+        - E-UTRA
+        - NR
 #      - type: string
     NgapIeType:
-#      description: Indicates the supported NGAP IE types
+      description: Indicates the supported NGAP IE types
 #      anyOf:
 #      - type: string
-        enum:
-          - PDU_RES_SETUP_REQ
-          - PDU_RES_REL_CMD
-          - PDU_RES_MOD_REQ
-          - HANDOVER_CMD
-          - HANDOVER_REQUIRED
-          - HANDOVER_PREP_FAIL
-          - SRC_TO_TAR_CONTAINER
-          - TAR_TO_SRC_CONTAINER
-          - TAR_TO_SRC_FAIL_CONTAINER
-          - RAN_STATUS_TRANS_CONTAINER
-          - SON_CONFIG_TRANSFER
-          - NRPPA_PDU
-          - UE_RADIO_CAPABILITY
-          - RIM_INFO_TRANSFER
-          - SECONDARY_RAT_USAGE
-          - PC5_QOS_PARA
-          - EARLY_STATUS_TRANS_CONTAINER
-          - UE_RADIO_CAPABILITY_FOR_PAGING
+      type: string
+      enum:
+        - PDU_RES_SETUP_REQ
+        - PDU_RES_REL_CMD
+        - PDU_RES_MOD_REQ
+        - HANDOVER_CMD
+        - HANDOVER_REQUIRED
+        - HANDOVER_PREP_FAIL
+        - SRC_TO_TAR_CONTAINER
+        - TAR_TO_SRC_CONTAINER
+        - TAR_TO_SRC_FAIL_CONTAINER
+        - RAN_STATUS_TRANS_CONTAINER
+        - SON_CONFIG_TRANSFER
+        - NRPPA_PDU
+        - UE_RADIO_CAPABILITY
+        - RIM_INFO_TRANSFER
+        - SECONDARY_RAT_USAGE
+        - PC5_QOS_PARA
+        - EARLY_STATUS_TRANS_CONTAINER
+        - UE_RADIO_CAPABILITY_FOR_PAGING
 #      - type: string
     N2InfoNotifyReason:
-#      description: N2 Information Notify Reason
+      description: N2 Information Notify Reason
 #      anyOf:
 #      - type: string
-        enum:
-          - HANDOVER_COMPLETED
+      type: string
+      enum:
+        - HANDOVER_COMPLETED
 #      - type: string
     SmfChangeIndication:
-#      description: Indicates the I-SMF or V-SMF change or removal
+      description: Indicates the I-SMF or V-SMF change or removal
 #      anyOf:
 #      - type: string
-        enum:
-          - CHANGED
-          - REMOVED
+      type: string
+      enum:
+        - CHANGED
+        - REMOVED
 #      - type: string
     SbiBindingLevel:
-#      description: SBI Binding Level
+      description: SBI Binding Level
 #      anyOf:
 #      - type: string
-        enum:
-          - NF_INSTANCE_BINDING
-          - NF_SET_BINDING
-          - NF_SERVICE_SET_BINDING
-          - NF_SERVICE_INSTANCE_BINDING
+      type: string
+      enum:
+        - NF_INSTANCE_BINDING
+        - NF_SET_BINDING
+        - NF_SERVICE_SET_BINDING
+        - NF_SERVICE_INSTANCE_BINDING
 #      - type: string
-
+#
     EpsNasCipheringAlgorithm:
-#      description: Indicates the supported EPS NAS Ciphering Algorithm
+      description: Indicates the supported EPS NAS Ciphering Algorithm
 #      anyOf:
 #      - type: string
-        enum:
-          - EEA0
-          - EEA1
-          - EEA2
-          - EEA3
+      type: string
+      enum:
+        - EEA0
+        - EEA1
+        - EEA2
+        - EEA3
 #      - type: string
-
+#
     EpsNasIntegrityAlgorithm:
-#      description: Indicates the supported EPS NAS Integrity Algorithm
+      description: Indicates the supported EPS NAS Integrity Algorithm
 #      anyOf:
 #      - type: string
-        enum:
-          - EIA0
-          - EIA1
-          - EIA2
-          - EIA3
+      type: string
+      enum:
+        - EIA0
+        - EIA1
+        - EIA2
+        - EIA3
 #      - type: string
-
+#
     PeriodicCommunicationIndicator:
-#      description: Indicates the Periodic Communication Indicator
+      description: Indicates the Periodic Communication Indicator
 #      anyOf:
 #      - type: string
-        enum:
-          - PIORIODICALLY
-          - ON_DEMAND
+      type: string
+      enum:
+        - PIORIODICALLY
+        - ON_DEMAND
 #      - type: string
-
+#
     UuaaMmStatus:
-#      description: Indicates the UUAA-MM status
+      description: Indicates the UUAA-MM status
 #      anyOf:
 #      - type: string
-        enum:
-          - SUCCESS
-          - PENDING
-          - FAILED
+      type: string
+      enum:
+        - SUCCESS
+        - PENDING
+        - FAILED
 #      - type: string
-
+#
     ReleaseCause:
-#      description: The cause for triggering the release.
+      description: The cause for triggering the release.
 #      anyOf:
 #      - type: string
-        enum:
-          - SNPN_SNPN_MOBILITY
-          - NO_HR_AGREEMENT
-          - UNSPECIFIED
+      type: string
+      enum:
+        - SNPN_SNPN_MOBILITY
+        - NO_HR_AGREEMENT
+        - UNSPECIFIED
 #      - type: string

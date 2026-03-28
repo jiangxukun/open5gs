@@ -165,13 +165,14 @@ paths:
 components:
   schemas:
     SecurityCapability:
-#      description: Enumeration of security capabilities
+      description: Enumeration of security capabilities
 #      anyOf:
 #        - type: string
-          enum:
-            - TLS
-            - PRINS
-            - NONE
+      type: string
+      enum:
+        - TLS
+        - PRINS
+        - NONE
 #        - type: string
     ApiSignature:
       description: API URI of the service operation
@@ -179,46 +180,49 @@ components:
         - $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
         - $ref: '#/components/schemas/CallbackName'
     HttpMethod:
-#      description: Enumeration of HTTP methods
+      description: Enumeration of HTTP methods
 #      anyOf:
 #        - type: string
-          enum:
-            - GET
-            - PUT
-            - POST
-            - DELETE
-            - PATCH
-            - HEAD
-            - OPTIONS
-            - CONNECT
-            - TRACE
+      type: string
+      enum:
+        - GET
+        - PUT
+        - POST
+        - DELETE
+        - PATCH
+        - HEAD
+        - OPTIONS
+        - CONNECT
+        - TRACE
 #        - type: string
-
+#
     IeType:
-#      description: Enumeration of types of IEs (i.e kind of IE) to specify the protection policy
+      description: Enumeration of types of IEs (i.e kind of IE) to specify the protection policy
 #      anyOf:
 #        - type: string
-          enum:
-            - UEID
-            - LOCATION
-            - KEY_MATERIAL
-            - AUTHENTICATION_MATERIAL
-            - AUTHORIZATION_TOKEN
-            - OTHER
-            - NONSENSITIVE
+      type: string
+      enum:
+        - UEID
+        - LOCATION
+        - KEY_MATERIAL
+        - AUTHENTICATION_MATERIAL
+        - AUTHORIZATION_TOKEN
+        - OTHER
+        - NONSENSITIVE
 #        - type: string
-
+#
     IeLocation:
-#      description: Location of the IE in a HTTP message
+      description: Location of the IE in a HTTP message
 #      anyOf:
 #        - type: string
-          enum:
-            - URI_PARAM
-            - HEADER
-            - BODY
-            - MULTIPART_BINARY
+      type: string
+      enum:
+        - URI_PARAM
+        - HEADER
+        - BODY
+        - MULTIPART_BINARY
 #        - type: string
-
+#
     IeInfo:
       description: Protection and modification policy for the IE
       type: object
@@ -504,43 +508,46 @@ components:
           type: string
 
     N32fErrorType:
-#      description: Type of error while processing N32-f message
+      description: Type of error while processing N32-f message
 #      anyOf:
 #        - type: string
-          enum:
-            - INTEGRITY_CHECK_FAILED
-            - INTEGRITY_CHECK_ON_MODIFICATIONS_FAILED
-            - MODIFICATIONS_INSTRUCTIONS_FAILED
-            - DECIPHERING_FAILED
-            - MESSAGE_RECONSTRUCTION_FAILED
-            - CONTEXT_NOT_FOUND
-            - INTEGRITY_KEY_EXPIRED
-            - ENCRYPTION_KEY_EXPIRED
-            - POLICY_MISMATCH
+      type: string
+      enum:
+        - INTEGRITY_CHECK_FAILED
+        - INTEGRITY_CHECK_ON_MODIFICATIONS_FAILED
+        - MODIFICATIONS_INSTRUCTIONS_FAILED
+        - DECIPHERING_FAILED
+        - MESSAGE_RECONSTRUCTION_FAILED
+        - CONTEXT_NOT_FOUND
+        - INTEGRITY_KEY_EXPIRED
+        - ENCRYPTION_KEY_EXPIRED
+        - POLICY_MISMATCH
 #        - type: string
     FailureReason:
-#      description: Reason for failure to reconstruct a HTTP/2 message from N32-f message
+      description: Reason for failure to reconstruct a HTTP/2 message from N32-f message
 #      anyOf:
 #        - type: string
-          enum:
-            - INVALID_JSON_POINTER
-            - INVALID_INDEX_TO_ENCRYPTED_BLOCK
-            - INVALID_HTTP_HEADER
+      type: string
+      enum:
+        - INVALID_JSON_POINTER
+        - INVALID_INDEX_TO_ENCRYPTED_BLOCK
+        - INVALID_HTTP_HEADER
 #        - type: string
-
+#
     N32Purpose:
-#      description: Usage purpose of establishing N32 connectivity
+      description: Usage purpose of establishing N32 connectivity
 #      anyOf:
 #        - type: string
-          enum:
-            - ROAMING
-            - INTER_PLMN_MOBILITY
-            - SMS_INTERCONNECT
-            - ROAMING_TEST
-            - INTER_PLMN_MOBILITY_TEST
-            - SMS_INTERCONNECT_TEST
-            - SNPN_INTERCONNECT
-            - SNPN_INTERCONNECT_TEST
-            - DISASTER_ROAMING
-            - DISASTER_ROAMING_TEST
+      type: string
+      enum:
+        - ROAMING
+        - INTER_PLMN_MOBILITY
+        - SMS_INTERCONNECT
+        - ROAMING_TEST
+        - INTER_PLMN_MOBILITY_TEST
+        - SMS_INTERCONNECT_TEST
+        - SNPN_INTERCONNECT
+        - SNPN_INTERCONNECT_TEST
+        - DISASTER_ROAMING
+        - DISASTER_ROAMING_TEST
 #        - type: string

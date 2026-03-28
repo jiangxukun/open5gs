@@ -2412,10 +2412,10 @@ components:
         - dnn
         - servingNetwork
         - anType
-      oneOf:
-        - required: [ vsmfId, vsmfPduSessionUri ]
-        - required: [ ismfId, ismfPduSessionUri ]
-
+#      oneOf:
+#        - required: [ vsmfId, vsmfPduSessionUri ]
+#        - required: [ ismfId, ismfPduSessionUri ]
+#
     PduSessionCreatedData:
       description: Data within Create Response
       type: object
@@ -2521,10 +2521,10 @@ components:
       required:
         - pduSessionType
         - sscMode
-      oneOf:
-        - required: [ hSmfInstanceId ]
-        - required: [ smfInstanceId ]
-
+#      oneOf:
+#        - required: [ hSmfInstanceId ]
+#        - required: [ smfInstanceId ]
+#
     HsmfUpdateData:
       description: Data within Update Request towards H-SMF, or from I-SMF to SMF
       type: object
@@ -3813,13 +3813,13 @@ components:
     IpAddress:
       description: IP Address
       type: object
-      oneOf:
-        - required:
-          - ipv4Addr
-        - required:
-          - ipv6Addr
-        - required:
-          - ipv6Prefix
+#      oneOf:
+#        - required:
+#          - ipv4Addr
+#        - required:
+#          - ipv6Addr
+#        - required:
+#          - ipv6Prefix
       properties:
         ipv4Addr:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv4Addr'
@@ -3966,11 +3966,12 @@ components:
     UpCnxState:
 #      anyOf:
 #      - type: string
-        enum:
-          - ACTIVATED
-          - DEACTIVATED
-          - ACTIVATING
-          - SUSPENDED
+      type: string
+      enum:
+        - ACTIVATED
+        - DEACTIVATED
+        - ACTIVATING
+        - SUSPENDED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -3982,16 +3983,17 @@ components:
 #        - DEACTIVATED
 #        - ACTIVATING
 #        - SUSPENDED
-
+#
     HoState:
 #      anyOf:
 #      - type: string
-        enum:
-          - NONE
-          - PREPARING
-          - PREPARED
-          - COMPLETED
-          - CANCELLED
+      type: string
+      enum:
+        - NONE
+        - PREPARING
+        - PREPARED
+        - COMPLETED
+        - CANCELLED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4004,15 +4006,16 @@ components:
 #        - PREPARED
 #        - COMPLETED
 #        - CANCELLED
-
+#
     RequestType:
 #      anyOf:
 #      - type: string
-        enum:
-          - INITIAL_REQUEST
-          - EXISTING_PDU_SESSION
-          - INITIAL_EMERGENCY_REQUEST
-          - EXISTING_EMERGENCY_PDU_SESSION
+      type: string
+      enum:
+        - INITIAL_REQUEST
+        - EXISTING_PDU_SESSION
+        - INITIAL_EMERGENCY_REQUEST
+        - EXISTING_EMERGENCY_PDU_SESSION
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4024,19 +4027,20 @@ components:
 #        - EXISTING_PDU_SESSION
 #        - INITIAL_EMERGENCY_REQUEST
 #        - EXISTING_EMERGENCY_PDU_SESSION
-
+#
     RequestIndication:
 #      anyOf:
 #      - type: string
-        enum:
-          - UE_REQ_PDU_SES_MOD
-          - UE_REQ_PDU_SES_REL
-          - PDU_SES_MOB
-          - NW_REQ_PDU_SES_AUTH
-          - NW_REQ_PDU_SES_MOD
-          - NW_REQ_PDU_SES_REL
-          - EBI_ASSIGNMENT_REQ
-          - REL_DUE_TO_5G_AN_REQUEST
+      type: string
+      enum:
+        - UE_REQ_PDU_SES_MOD
+        - UE_REQ_PDU_SES_REL
+        - PDU_SES_MOB
+        - NW_REQ_PDU_SES_AUTH
+        - NW_REQ_PDU_SES_MOD
+        - NW_REQ_PDU_SES_REL
+        - EBI_ASSIGNMENT_REQ
+        - REL_DUE_TO_5G_AN_REQUEST
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4052,15 +4056,16 @@ components:
 #        - NW_REQ_PDU_SES_REL
 #        - EBI_ASSIGNMENT_REQ
 #        - REL_DUE_TO_5G_AN_REQUEST
-
+#
     NotificationCause:
 #      anyOf:
 #      - type: string
-        enum:
-          - QOS_FULFILLED
-          - QOS_NOT_FULFILLED
-          - UP_SEC_FULFILLED
-          - UP_SEC_NOT_FULFILLED
+      type: string
+      enum:
+        - QOS_FULFILLED
+        - QOS_NOT_FULFILLED
+        - UP_SEC_FULFILLED
+        - UP_SEC_NOT_FULFILLED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4072,44 +4077,45 @@ components:
 #        - QOS_NOT_FULFILLED
 #        - UP_SEC_FULFILLED
 #        - UP_SEC_NOT_FULFILLED
-
+#
     Cause:
 #      anyOf:
 #      - type: string
-        enum:
-          - REL_DUE_TO_HO
-          - EPS_FALLBACK
-          - REL_DUE_TO_UP_SEC
-          - DNN_CONGESTION
-          - S_NSSAI_CONGESTION
-          - REL_DUE_TO_REACTIVATION
-          - 5G_AN_NOT_RESPONDING
-          - REL_DUE_TO_SLICE_NOT_AVAILABLE
-          - REL_DUE_TO_DUPLICATE_SESSION_ID
-          - PDU_SESSION_STATUS_MISMATCH
-          - HO_FAILURE
-          - INSUFFICIENT_UP_RESOURCES
-          - PDU_SESSION_HANDED_OVER
-          - PDU_SESSION_RESUMED
-          - CN_ASSISTED_RAN_PARAMETER_TUNING
-          - ISMF_CONTEXT_TRANSFER
-          - SMF_CONTEXT_TRANSFER
-          - REL_DUE_TO_PS_TO_CS_HO
-          - REL_DUE_TO_SUBSCRIPTION_CHANGE
-          - HO_CANCEL
-          - REL_DUE_TO_SLICE_NOT_AUTHORIZED
-          - PDU_SESSION_HAND_OVER_FAILURE
-          - DDN_FAILURE_STATUS
-          - REL_DUE_TO_CP_ONLY_NOT_APPLICABLE
-          - NOT_SUPPORTED_WITH_ISMF
-          - CHANGED_ANCHOR_SMF
-          - CHANGED_INTERMEDIATE_SMF
-          - TARGET_DNAI_NOTIFICATION
-          - REL_DUE_TO_VPLMN_QOS_FAILURE
-          - REL_DUE_TO_SMF_NOT_SUPPORT_PSETR
-          - REL_DUE_TO_SNPN_SNPN_MOBILITY
-          - REL_DUE_TO_NO_HR_AGREEMENT
-          - REL_DUE_TO_UNSPECIFIED_REASON
+      type: string
+      enum:
+        - REL_DUE_TO_HO
+        - EPS_FALLBACK
+        - REL_DUE_TO_UP_SEC
+        - DNN_CONGESTION
+        - S_NSSAI_CONGESTION
+        - REL_DUE_TO_REACTIVATION
+        - 5G_AN_NOT_RESPONDING
+        - REL_DUE_TO_SLICE_NOT_AVAILABLE
+        - REL_DUE_TO_DUPLICATE_SESSION_ID
+        - PDU_SESSION_STATUS_MISMATCH
+        - HO_FAILURE
+        - INSUFFICIENT_UP_RESOURCES
+        - PDU_SESSION_HANDED_OVER
+        - PDU_SESSION_RESUMED
+        - CN_ASSISTED_RAN_PARAMETER_TUNING
+        - ISMF_CONTEXT_TRANSFER
+        - SMF_CONTEXT_TRANSFER
+        - REL_DUE_TO_PS_TO_CS_HO
+        - REL_DUE_TO_SUBSCRIPTION_CHANGE
+        - HO_CANCEL
+        - REL_DUE_TO_SLICE_NOT_AUTHORIZED
+        - PDU_SESSION_HAND_OVER_FAILURE
+        - DDN_FAILURE_STATUS
+        - REL_DUE_TO_CP_ONLY_NOT_APPLICABLE
+        - NOT_SUPPORTED_WITH_ISMF
+        - CHANGED_ANCHOR_SMF
+        - CHANGED_INTERMEDIATE_SMF
+        - TARGET_DNAI_NOTIFICATION
+        - REL_DUE_TO_VPLMN_QOS_FAILURE
+        - REL_DUE_TO_SMF_NOT_SUPPORT_PSETR
+        - REL_DUE_TO_SNPN_SNPN_MOBILITY
+        - REL_DUE_TO_NO_HR_AGREEMENT
+        - REL_DUE_TO_UNSPECIFIED_REASON
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4150,16 +4156,17 @@ components:
 #        - REL_DUE_TO_SNPN_SNPN_MOBILITY
 #        - REL_DUE_TO_NO_HR_AGREEMENT
 #        - REL_DUE_TO_UNSPECIFIED_REASON
-
+#
     ResourceStatus:
 #      anyOf:
 #      - type: string
-        enum:
-          - RELEASED
-          - UNCHANGED
-          - TRANSFERRED
-          - UPDATED
-          - ALT_ANCHOR_SMF
+      type: string
+      enum:
+        - RELEASED
+        - UNCHANGED
+        - TRANSFERRED
+        - UPDATED
+        - ALT_ANCHOR_SMF
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4172,14 +4179,15 @@ components:
 #        - TRANSFERRED
 #        - UPDATED
 #        - ALT_ANCHOR_SMF
-
+#
     DnnSelectionMode:
 #      anyOf:
 #      - type: string
-        enum:
-          - VERIFIED
-          - UE_DNN_NOT_VERIFIED
-          - NW_DNN_NOT_VERIFIED
+      type: string
+      enum:
+        - VERIFIED
+        - UE_DNN_NOT_VERIFIED
+        - NW_DNN_NOT_VERIFIED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4190,15 +4198,16 @@ components:
 #        - VERIFIED
 #        - UE_DNN_NOT_VERIFIED
 #        - NW_DNN_NOT_VERIFIED
-
+#
     EpsInterworkingIndication:
 #      anyOf:
 #      - type: string
-        enum:
-          - NONE
-          - WITH_N26
-          - WITHOUT_N26
-          - IWK_NON_3GPP
+      type: string
+      enum:
+        - NONE
+        - WITH_N26
+        - WITHOUT_N26
+        - IWK_NON_3GPP
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4210,37 +4219,38 @@ components:
 #        - WITH_N26
 #        - WITHOUT_N26
 #        - IWK_NON_3GPP
-
+#
     N2SmInfoType:
 #      anyOf:
 #      - type: string
-        enum:
-          - PDU_RES_SETUP_REQ
-          - PDU_RES_SETUP_RSP
-          - PDU_RES_SETUP_FAIL
-          - PDU_RES_REL_CMD
-          - PDU_RES_REL_RSP
-          - PDU_RES_MOD_REQ
-          - PDU_RES_MOD_RSP
-          - PDU_RES_MOD_FAIL
-          - PDU_RES_NTY
-          - PDU_RES_NTY_REL
-          - PDU_RES_MOD_IND
-          - PDU_RES_MOD_CFM
-          - PATH_SWITCH_REQ
-          - PATH_SWITCH_SETUP_FAIL
-          - PATH_SWITCH_REQ_ACK
-          - PATH_SWITCH_REQ_FAIL
-          - HANDOVER_REQUIRED
-          - HANDOVER_CMD
-          - HANDOVER_PREP_FAIL
-          - HANDOVER_REQ_ACK
-          - HANDOVER_RES_ALLOC_FAIL
-          - SECONDARY_RAT_USAGE
-          - PDU_RES_MOD_IND_FAIL
-          - UE_CONTEXT_RESUME_REQ
-          - UE_CONTEXT_RESUME_RSP
-          - UE_CONTEXT_SUSPEND_REQ
+      type: string
+      enum:
+        - PDU_RES_SETUP_REQ
+        - PDU_RES_SETUP_RSP
+        - PDU_RES_SETUP_FAIL
+        - PDU_RES_REL_CMD
+        - PDU_RES_REL_RSP
+        - PDU_RES_MOD_REQ
+        - PDU_RES_MOD_RSP
+        - PDU_RES_MOD_FAIL
+        - PDU_RES_NTY
+        - PDU_RES_NTY_REL
+        - PDU_RES_MOD_IND
+        - PDU_RES_MOD_CFM
+        - PATH_SWITCH_REQ
+        - PATH_SWITCH_SETUP_FAIL
+        - PATH_SWITCH_REQ_ACK
+        - PATH_SWITCH_REQ_FAIL
+        - HANDOVER_REQUIRED
+        - HANDOVER_CMD
+        - HANDOVER_PREP_FAIL
+        - HANDOVER_REQ_ACK
+        - HANDOVER_RES_ALLOC_FAIL
+        - SECONDARY_RAT_USAGE
+        - PDU_RES_MOD_IND_FAIL
+        - UE_CONTEXT_RESUME_REQ
+        - UE_CONTEXT_RESUME_RSP
+        - UE_CONTEXT_SUSPEND_REQ
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4274,13 +4284,14 @@ components:
 #        - UE_CONTEXT_RESUME_REQ
 #        - UE_CONTEXT_RESUME_RSP
 #        - UE_CONTEXT_SUSPEND_REQ
-
+#
     MaxIntegrityProtectedDataRate:
 #      anyOf:
 #      - type: string
-        enum:
-          - 64_KBPS
-          - MAX_UE_RATE
+      type: string
+      enum:
+        - 64_KBPS
+        - MAX_UE_RATE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4290,13 +4301,14 @@ components:
 #        Maximum Integrity Protected Data Rate. Possible values are
 #          - 64_KBPS
 #          - MAX_UE_RATE
-
+#
     MaReleaseIndication:
 #      anyOf:
 #      - type: string
-        enum:
-          - REL_MAPDU_OVER_3GPP
-          - REL_MAPDU_OVER_N3GPP
+      type: string
+      enum:
+        - REL_MAPDU_OVER_3GPP
+        - REL_MAPDU_OVER_N3GPP
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4306,14 +4318,15 @@ components:
 #        Multi-Access PDU session release Indication. Possible values are
 #          - REL_MAPDU_OVER_3GPP
 #          - REL_MAPDU_OVER_N3GPP
-
+#
     SmContextType:
 #      anyOf:
 #      - type: string
-        enum:
-          - EPS_PDN_CONNECTION
-          - SM_CONTEXT
-          - AF_COORDINATION_INFO
+      type: string
+      enum:
+        - EPS_PDN_CONNECTION
+        - SM_CONTEXT
+        - AF_COORDINATION_INFO
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4324,15 +4337,16 @@ components:
 #          - EPS_PDN_CONNECTION
 #          - SM_CONTEXT
 #          - AF_COORDINATION_INFO
-
+#
     PsaIndication:
 #      anyOf:
 #      - type: string
-        enum:
-          - PSA_INSERTED
-          - PSA_REMOVED
-          - PSA_INSERTED_ONLY
-          - PSA_REMOVED_ONLY
+      type: string
+      enum:
+        - PSA_INSERTED
+        - PSA_REMOVED
+        - PSA_INSERTED_ONLY
+        - PSA_REMOVED_ONLY
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4344,19 +4358,20 @@ components:
 #          - PSA_REMOVED
 #          - PSA_INSERTED_ONLY
 #          - PSA_REMOVED_ONLY
-
+#
     N4MessageType:
 #      anyOf:
 #      - type: string
-        enum:
-          - PFCP_SES_EST_REQ
-          - PFCP_SES_EST_RSP
-          - PFCP_SES_MOD_REQ
-          - PFCP_SES_MOD_RSP
-          - PFCP_SES_DEL_REQ
-          - PFCP_SES_DEL_RSP
-          - PFCP_SES_REP_REQ
-          - PFCP_SES_REP_RSP
+      type: string
+      enum:
+        - PFCP_SES_EST_REQ
+        - PFCP_SES_EST_RSP
+        - PFCP_SES_MOD_REQ
+        - PFCP_SES_MOD_RSP
+        - PFCP_SES_DEL_REQ
+        - PFCP_SES_DEL_RSP
+        - PFCP_SES_REP_REQ
+        - PFCP_SES_REP_RSP
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4372,14 +4387,15 @@ components:
 #          - PFCP_SES_DEL_RSP
 #          - PFCP_SES_REP_REQ
 #          - PFCP_SES_REP_RSP
-
+#
     QosFlowAccessType:
 #      anyOf:
 #      - type: string
-        enum:
-          - 3GPP
-          - NON_3GPP
-          - 3GPP_AND_NON_3GPP
+      type: string
+      enum:
+        - 3GPP
+        - NON_3GPP
+        - 3GPP_AND_NON_3GPP
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4390,13 +4406,14 @@ components:
 #          - 3GPP
 #          - NON_3GPP
 #          - 3GPP_AND_NON_3GPP
-
+#
     UnavailableAccessIndication:
 #      anyOf:
 #      - type: string
-        enum:
-          - 3GA_UNAVAILABLE
-          - N3GA_UNAVAILABLE
+      type: string
+      enum:
+        - 3GA_UNAVAILABLE
+        - N3GA_UNAVAILABLE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4406,13 +4423,14 @@ components:
 #        Indicates the access type of a MA PDU session that is unavailable. Possible values are
 #          - 3GA_UNAVAILABLE
 #          - N3GA_UNAVAILABLE
-
+#
     ProtectionResult:
 #      anyOf:
 #      - type: string
-        enum:
-          - PERFORMED
-          - NOT_PERFORMED
+      type: string
+      enum:
+        - PERFORMED
+        - NOT_PERFORMED
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4422,15 +4440,16 @@ components:
 #        Protection Result of the security policy indicated as "preferred". Possible values are
 #          - PERFORMED
 #          - NOT_PERFORMED
-
+#
     QosMonitoringReq:
 #      anyOf:
 #      - type: string
-        enum:
-          - UL
-          - DL
-          - BOTH
-          - NONE
+      type: string
+      enum:
+        - UL
+        - DL
+        - BOTH
+        - NONE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4442,14 +4461,15 @@ components:
 #          - DL
 #          - BOTH
 #          - NONE
-
+#
     Rsn:
 #      anyOf:
 #      - type: string
-        enum:
-          - V1
-          - V2
-          - NONE
+      type: string
+      enum:
+        - V1
+        - V2
+        - NONE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4460,13 +4480,14 @@ components:
 #          - V1
 #          - V2
 #          - NONE
-
+#
     SmfSelectionType:
 #      anyOf:
 #      - type: string
-        enum:
-          - CURRENT_PDU_SESSION
-          - NEXT_PDU_SESSION
+      type: string
+      enum:
+        - CURRENT_PDU_SESSION
+        - NEXT_PDU_SESSION
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -4476,12 +4497,13 @@ components:
 #        Smf Selection Type. Possible values are
 #          - CURRENT_PDU_SESSION
 #          - NEXT_PDU_SESSION
-
+#
     PduSessionContextType:
 #      anyOf:
 #      - type: string
-        enum:
-          - AF_COORDINATION_INFO
+      type: string
+      enum:
+        - AF_COORDINATION_INFO
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future

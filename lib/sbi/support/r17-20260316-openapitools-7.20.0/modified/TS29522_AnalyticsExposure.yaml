@@ -949,50 +949,52 @@ components:
         - event
         - failureCode
     AnalyticsEvent:
-      anyOf:
-      - type: string
-        enum:
-          - UE_MOBILITY
-          - UE_COMM
-          - ABNORMAL_BEHAVIOR
-          - CONGESTION
-          - NETWORK_PERFORMANCE
-          - QOS_SUSTAINABILITY
-          - DISPERSION
-          - DN_PERFORMANCE
-          - SERVICE_EXPERIENCE
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - UE_MOBILITY: The AF requests to be notified about analytics information of UE mobility.
-        - UE_COMM: The AF requests to be notified about analytics information of UE communication.
-        - ABNORMAL_BEHAVIOR: The AF requests to be notified about analytics information of UE's abnormal behavior.
-        - CONGESTION: The AF requests to be notified about analytics information of user data congestion information. 
-        - NETWORK_PERFORMANCE: The AF requests to be notified about analytics information of network performance. 
-        - QOS_SUSTAINABILITY: The AF requests to be notified about analytics information of QoS sustainability.
-        - DISPERSION: The AF requests to be notified about analytics information of Dispersion analytics.
-        - DN_PERFORMANCE: The AF requests to be notified about analytics information of DN performance.
-        - SERVICE_EXPERIENCE: The AF requests to be notified about analytics information of service experience.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UE_MOBILITY
+        - UE_COMM
+        - ABNORMAL_BEHAVIOR
+        - CONGESTION
+        - NETWORK_PERFORMANCE
+        - QOS_SUSTAINABILITY
+        - DISPERSION
+        - DN_PERFORMANCE
+        - SERVICE_EXPERIENCE
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - UE_MOBILITY: The AF requests to be notified about analytics information of UE mobility.
+#        - UE_COMM: The AF requests to be notified about analytics information of UE communication.
+#        - ABNORMAL_BEHAVIOR: The AF requests to be notified about analytics information of UE's abnormal behavior.
+#        - CONGESTION: The AF requests to be notified about analytics information of user data congestion information. 
+#        - NETWORK_PERFORMANCE: The AF requests to be notified about analytics information of network performance. 
+#        - QOS_SUSTAINABILITY: The AF requests to be notified about analytics information of QoS sustainability.
+#        - DISPERSION: The AF requests to be notified about analytics information of Dispersion analytics.
+#        - DN_PERFORMANCE: The AF requests to be notified about analytics information of DN performance.
+#        - SERVICE_EXPERIENCE: The AF requests to be notified about analytics information of service experience.
     AnalyticsFailureCode:
-      anyOf:
-      - type: string
-        enum:
-          - UNAVAILABLE_DATA
-          - BOTH_STAT_PRED_NOT_ALLOWED
-          - UNSATISFIED_REQUESTED_ANALYTICS_TIME
-          - OTHER
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - UNAVAILABLE_DATA: The event is rejected since necessary data to perform the service is unavailable.
-        - BOTH_STAT_PRED_NOT_ALLOWED: The event is rejected since the start time is in the past and the end time is in the future, which means the NF service consumer requested both statistics and prediction for the analytics.
-        - UNSATISFIED_REQUESTED_ANALYTICS_TIME: Indicates that the requested event is rejected since the analytics information is not ready when the time indicated by the timeAnaNeeded attribute (as provided during the creation or modification of subscription) is reached.
-        - OTHER: The event is rejected due to other reasons.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UNAVAILABLE_DATA
+        - BOTH_STAT_PRED_NOT_ALLOWED
+        - UNSATISFIED_REQUESTED_ANALYTICS_TIME
+        - OTHER
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - UNAVAILABLE_DATA: The event is rejected since necessary data to perform the service is unavailable.
+#        - BOTH_STAT_PRED_NOT_ALLOWED: The event is rejected since the start time is in the past and the end time is in the future, which means the NF service consumer requested both statistics and prediction for the analytics.
+#        - UNSATISFIED_REQUESTED_ANALYTICS_TIME: Indicates that the requested event is rejected since the analytics information is not ready when the time indicated by the timeAnaNeeded attribute (as provided during the creation or modification of subscription) is reached.
+#        - OTHER: The event is rejected due to other reasons.

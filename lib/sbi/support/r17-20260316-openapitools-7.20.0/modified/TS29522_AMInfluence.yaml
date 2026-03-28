@@ -388,10 +388,10 @@ components:
       anyOf:
         - required: [highThruInd]
         - required: [geoAreas]
-      oneOf:
-        - required: [gpsi]
-        - required: [externalGroupId]
-        - required: [anyUeInd]
+#      oneOf:
+#        - required: [gpsi]
+#        - required: [externalGroupId]
+#        - required: [anyUeInd]
     AmInfluSubPatch:
       description: >
         Represents parameters to request the modification of an AM influence subscription resource.
@@ -462,12 +462,13 @@ components:
 #
     AmInfluEvent:
       description: Represents the service area coverage outcome event.
-      anyOf:
-        - type: string
-          enum:
-            - SERVICE_AREA_COVRG_OUTCOME
-        - type: string
-          description: >
-            This string provides forward-compatibility with future extensions to the enumeration but
-            is not used to encode content defined in the present version of this API.
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SERVICE_AREA_COVRG_OUTCOME
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future extensions to the enumeration but
+#            is not used to encode content defined in the present version of this API.
+#

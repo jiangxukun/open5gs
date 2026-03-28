@@ -186,10 +186,11 @@ components:
 # ENUMS:
 
     NiddCause:
-      anyOf:
-        - type: string
-          enum:
-          - SUBSCRIPTION_WITHDRAWAL
-          - DNN_REMOVED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - SUBSCRIPTION_WITHDRAWAL
+      - DNN_REMOVED
+#        - type: string
+#

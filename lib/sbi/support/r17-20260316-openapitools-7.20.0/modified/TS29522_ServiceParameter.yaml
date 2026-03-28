@@ -580,21 +580,22 @@ components:
             applicable only within the 5GC and it shall not be included in the request messages of 
             untrusted AFs for URSP guidance.
     Event:
-      anyOf:
-      - type: string
-        enum:
-          - SUCCESS_UE_POL_DEL_SP
-          - UNSUCCESS_UE_POL_DEL_SP
-      - type: string
-        description: >
-          This string identifies AF subscribe to event(s) notifications related to
-          AF provisioned service parameters.
-      description: |
-        Possible values are:
-        - SUCCESS_UE_POL_DEL_SP: Successful UE Policy Delivery related to 
-          the invocation of AF provisioned Service Parameters.
-        - UNSUCCESS_UE_POL_DEL_SP: Unsuccessful UE Policy Delivery related to the invocation of AF
-           provisioned Service Parameters.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SUCCESS_UE_POL_DEL_SP
+        - UNSUCCESS_UE_POL_DEL_SP
+#      - type: string
+#        description: >
+#          This string identifies AF subscribe to event(s) notifications related to
+#          AF provisioned service parameters.
+#      description: |
+#        Possible values are:
+#        - SUCCESS_UE_POL_DEL_SP: Successful UE Policy Delivery related to 
+#          the invocation of AF provisioned Service Parameters.
+#        - UNSUCCESS_UE_POL_DEL_SP: Unsuccessful UE Policy Delivery related to the invocation of AF
+#           provisioned Service Parameters.
     AfNotification:
       description: >
         Notifications upon AF Service Parameter Authorization Update e.g. to
@@ -678,17 +679,18 @@ components:
         - required: [dnns]
         - required: [connCaps]
     AuthorizationResult:
-      anyOf:
-      - type: string
-        enum:
-          - AUTH_REVOKED
-      - type: string
-        description: >
-          This string indicates NEF notify the AF about the service parameters authorization
-          updates result.
-      description: |
-        Possible values are:
-        - AUTH_REVOKED: Indicated the service parameters authorization is revoked.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AUTH_REVOKED
+#      - type: string
+#        description: >
+#          This string indicates NEF notify the AF about the service parameters authorization
+#          updates result.
+#      description: |
+#        Possible values are:
+#        - AUTH_REVOKED: Indicated the service parameters authorization is revoked.
     EventInfo:
       description: Indicates the event information.
       type: object
@@ -696,44 +698,46 @@ components:
         failureCause:
           $ref: '#/components/schemas/Failure'
     Failure:
-      oneOf:
-      - type: string
-        enum:
-          - UNSPECIFIED
-          - UE_NOT_REACHABLE
-          - UNKNOWN
-          - UE_TEMP_UNREACHABLE
-      - type: string
-        description: >
-          This string represents the failure reason for the unsuccessful result. May be
-          present if the reported afSubEvent attribute is "UNSUCCESS_UE_POL_DEL_SP".
-      description: |
-        Possible values are:
-        - UNSPECIFIED: Indicates the PCF received the UE sent UE policy delivery service cause #111
-          (Protocol error, unspecified).
-        - UE_NOT_REACHABLE: Indicates the PCF received the notification from the AMF that the UE is
-          not reachable.
-        - UNKNOWN: Indicates unknown reasons upon no response from the UE, e.g. UPDS message type is
-          not defined or not implemented by the UE, or not compatible with the UPDS state, in which
-          the UE shall ignore the UPDS message.
-        - UE_TEMP_UNREACHABLE: Indicates the PCF received the notification from the AMF that the UE
-          is not reachable but the PCF will retry again.
+#      oneOf:
+#      - type: string
+      type: string
+      enum:
+        - UNSPECIFIED
+        - UE_NOT_REACHABLE
+        - UNKNOWN
+        - UE_TEMP_UNREACHABLE
+#      - type: string
+#        description: >
+#          This string represents the failure reason for the unsuccessful result. May be
+#          present if the reported afSubEvent attribute is "UNSUCCESS_UE_POL_DEL_SP".
+#      description: |
+#        Possible values are:
+#        - UNSPECIFIED: Indicates the PCF received the UE sent UE policy delivery service cause #111
+#          (Protocol error, unspecified).
+#        - UE_NOT_REACHABLE: Indicates the PCF received the notification from the AMF that the UE is
+#          not reachable.
+#        - UNKNOWN: Indicates unknown reasons upon no response from the UE, e.g. UPDS message type is
+#          not defined or not implemented by the UE, or not compatible with the UPDS state, in which
+#          the UE shall ignore the UPDS message.
+#        - UE_TEMP_UNREACHABLE: Indicates the PCF received the notification from the AMF that the UE
+#          is not reachable but the PCF will retry again.
     ConnectionCapabilities:
-      anyOf:
-      - type: string
-        enum:
-          - IMS
-          - MMS
-          - SUPL
-          - INTERNET
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-          - IMS: Indicates the connection capability to support IMS service.
-          - MMS: Indicates the connection capability to support MMS service.
-          - SUPL: Indicates the connection capability to support SUPL service.
-          - INTERNET: Indicates the connection capability to support Internet service.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - IMS
+        - MMS
+        - SUPL
+        - INTERNET
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#          - IMS: Indicates the connection capability to support IMS service.
+#          - MMS: Indicates the connection capability to support MMS service.
+#          - SUPL: Indicates the connection capability to support SUPL service.
+#          - INTERNET: Indicates the connection capability to support Internet service.

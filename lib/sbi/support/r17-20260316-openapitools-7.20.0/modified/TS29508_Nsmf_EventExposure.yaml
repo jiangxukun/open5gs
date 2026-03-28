@@ -531,50 +531,52 @@ components:
         - notifId
         - ackResult
     SmfEvent:
-      anyOf:
-      - type: string
-        enum:
-          - AC_TY_CH
-          - UP_PATH_CH
-          - PDU_SES_REL
-          - PLMN_CH
-          - UE_IP_CH
-          - DDDS
-          - COMM_FAIL
-          - PDU_SES_EST
-          - QFI_ALLOC
-          - QOS_MON
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - AC_TY_CH: Access Type Change
-        - UP_PATH_CH: UP Path Change
-        - PDU_SES_REL: PDU Session Release
-        - PLMN_CH: PLMN Change
-        - UE_IP_CH: UE IP address change
-        - DDDS: Downlink data delivery status
-        - COMM_FAIL: Communication Failure
-        - PDU_SES_EST: PDU Session Establishment
-        - QFI_ALLOC: QFI allocation
-        - QOS_MON: QoS Monitoring
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AC_TY_CH
+        - UP_PATH_CH
+        - PDU_SES_REL
+        - PLMN_CH
+        - UE_IP_CH
+        - DDDS
+        - COMM_FAIL
+        - PDU_SES_EST
+        - QFI_ALLOC
+        - QOS_MON
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - AC_TY_CH: Access Type Change
+#        - UP_PATH_CH: UP Path Change
+#        - PDU_SES_REL: PDU Session Release
+#        - PLMN_CH: PLMN Change
+#        - UE_IP_CH: UE IP address change
+#        - DDDS: Downlink data delivery status
+#        - COMM_FAIL: Communication Failure
+#        - PDU_SES_EST: PDU Session Establishment
+#        - QFI_ALLOC: QFI allocation
+#        - QOS_MON: QoS Monitoring
     NotificationMethod:
-      anyOf:
-      - type: string
-        enum:
-          - PERIODIC
-          - ONE_TIME
-          - ON_EVENT_DETECTION
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
         - PERIODIC
         - ONE_TIME
         - ON_EVENT_DETECTION
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - PERIODIC
+#        - ONE_TIME
+#        - ON_EVENT_DETECTION

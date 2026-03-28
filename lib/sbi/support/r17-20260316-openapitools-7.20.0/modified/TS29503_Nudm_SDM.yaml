@@ -1322,9 +1322,55 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SdmSubscription'
-                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
+#                oneOf:
+#                  - $ref: '#/components/schemas/SdmSubscription'
+#                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
+                type: object
+                properties:
+                  nfInstanceId:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+                  implicitUnsubscribe:
+                    type: boolean
+                  expires:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/DateTime'
+                  callbackReference:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                  amfServiceName:
+                    $ref: 'TS29510_Nnrf_NFManagement.yaml#/components/schemas/ServiceName'
+                  monitoredResourceUris:
+                    type: array
+                    items:
+                      $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                    minItems: 1
+                  singleNssai:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Snssai'
+                  dnn:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+                  subscriptionId:
+                    type: string
+                  plmnId:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/PlmnId'
+                  immediateReport:
+                    type: boolean
+                    default: false
+                  report:
+                    $ref: '#/components/schemas/ImmediateReport'
+                  supportedFeatures:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+                  contextInfo:
+                    $ref: '#/components/schemas/ContextInfo'
+                  nfChangeFilter:
+                    type: boolean
+                    default: false
+                  uniqueSubscription:
+                    type: boolean
+                  resetIds:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
+                  ueConSmfDataSubFilter:
+                    $ref: '#/components/schemas/UeContextInSmfDataSubFilter'
         '400':
           $ref: 'TS29571_CommonData.yaml#/components/responses/400'
         '403':
@@ -1756,9 +1802,55 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SdmSubscription'
-                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
+#                oneOf:
+#                  - $ref: '#/components/schemas/SdmSubscription'
+#                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
+                type: object
+                properties:
+                  nfInstanceId:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+                  implicitUnsubscribe:
+                    type: boolean
+                  expires:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/DateTime'
+                  callbackReference:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                  amfServiceName:
+                    $ref: 'TS29510_Nnrf_NFManagement.yaml#/components/schemas/ServiceName'
+                  monitoredResourceUris:
+                    type: array
+                    items:
+                      $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                    minItems: 1
+                  singleNssai:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Snssai'
+                  dnn:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+                  subscriptionId:
+                    type: string
+                  plmnId:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/PlmnId'
+                  immediateReport:
+                    type: boolean
+                    default: false
+                  report:
+                    $ref: '#/components/schemas/ImmediateReport'
+                  supportedFeatures:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+                  contextInfo:
+                    $ref: '#/components/schemas/ContextInfo'
+                  nfChangeFilter:
+                    type: boolean
+                    default: false
+                  uniqueSubscription:
+                    type: boolean
+                  resetIds:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
+                  ueConSmfDataSubFilter:
+                    $ref: '#/components/schemas/UeContextInSmfDataSubFilter'
         '400':
           $ref: 'TS29571_CommonData.yaml#/components/responses/400'
         '403':
@@ -2135,10 +2227,10 @@ components:
         subscribedDnnList:
           type: array
           items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            anyOf:
 #              - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #              - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-               $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
         serviceGapTime:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/DurationSec'
         mdtUserConsent:
@@ -2340,10 +2432,10 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
         defaultDnnIndicator:
           $ref: '#/components/schemas/DnnIndicator'
         lboRoamingAllowed:
@@ -2400,7 +2492,7 @@ components:
           description: AMF information
           type: array
           items:
-            $ref: '#/components/schemas/NudmAmfInfo'
+            $ref: '#/components/schemas/AmfInfo'
           minItems: 1
           maxItems: 2
 
@@ -2422,11 +2514,11 @@ components:
 
     EmergencyInfo:
       type: object
-      oneOf:
-        - required:
-          - pgwFqdn
-        - required:
-          - pgwIpAddress
+#      oneOf:
+#        - required:
+#          - pgwFqdn
+#        - required:
+#          - pgwIpAddress
       properties:
         pgwFqdn:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Fqdn'
@@ -2457,7 +2549,7 @@ components:
         singleNssai:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Snssai'
 
-    NudmAmfInfo:
+    AmfInfo:
       type: object
       required:
         - amfInstanceId
@@ -2650,13 +2742,13 @@ components:
 
     IpAddress:
       type: object
-      oneOf:
-        - required:
-          - ipv4Addr
-        - required:
-          - ipv6Addr
-        - required:
-          - ipv6Prefix
+#      oneOf:
+#        - required:
+#          - ipv4Addr
+#        - required:
+#          - ipv6Addr
+#        - required:
+#          - ipv6Prefix
       properties:
         ipv4Addr:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv4Addr'
@@ -2949,13 +3041,22 @@ components:
           $ref: '#/components/schemas/SharedDataId'
 
     SteeringContainer:
-      oneOf:
-        - type: array
+#      oneOf:
+#        - type: array
+#          items:
+#            $ref: 'TS29509_Nausf_SoRProtection.yaml#/components/schemas/SteeringInfo'
+#          minItems: 1
+#        - $ref: '#/components/schemas/SecuredPacket'
+#
+      type: object
+      properties:
+        SteeringInfoList:
+          type: array
           items:
             $ref: 'TS29509_Nausf_SoRProtection.yaml#/components/schemas/SteeringInfo'
           minItems: 1
-        - $ref: '#/components/schemas/SecuredPacket'
-
+        SecuredPacket:
+          $ref: '#/components/schemas/SecuredPacket'
     GroupIdentifiers:
       type: object
       properties:
@@ -3351,16 +3452,22 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Gpsi'
 
     SmSubsData:
+#      oneOf:
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/SessionManagementSubscriptionData'
+#          minItems: 1
+#        - $ref: '#/components/schemas/ExtendedSmSubsData'
+#
       type: object
       properties:
         SessionManagementSubscriptionDataList:
           type: array
           items:
             $ref: '#/components/schemas/SessionManagementSubscriptionData'
-            minItems: 1
+          minItems: 1
         ExtendedSmSubsData:
           $ref: '#/components/schemas/ExtendedSmSubsData'
-
     ExtendedSmSubsData:
       description: Contains identifiers of shared Session Management Subscription Data and optionally individual Session Management Subscription Data.
       type: object
@@ -3378,13 +3485,22 @@ components:
             $ref: '#/components/schemas/SessionManagementSubscriptionData'
 
     ImmediateReport:
-      oneOf:
-        - $ref: '#/components/schemas/SubscriptionDataSets'
-        - type: array
+#      oneOf:
+#        - $ref: '#/components/schemas/SubscriptionDataSets'
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/SharedData'
+#          minItems: 0
+#
+      type: object
+      properties:
+        SubscriptionDataSets:
+          $ref: '#/components/schemas/SubscriptionDataSets'
+        SharedDataList:
+          type: array
           items:
             $ref: '#/components/schemas/SharedData'
           minItems: 0
-
     MbsSubscriptionData:
       description: Contains the 5MBS Subscription Data.
       type: object
@@ -3526,173 +3642,189 @@ components:
     DataSetName:
 #      anyOf:
 #        - type: string
-          enum:
-          - AM
-          - SMF_SEL
-          - UEC_SMF
-          - UEC_SMSF
-          - SMS_SUB
-          - SM
-          - TRACE
-          - SMS_MNG
-          - LCS_PRIVACY
-          - LCS_MO
-          - UEC_AMF
-          - V2X
-          - LCS_BCA
-          - PROSE
-          - UC
-          - MBS
+      type: string
+      enum:
+      - AM
+      - SMF_SEL
+      - UEC_SMF
+      - UEC_SMSF
+      - SMS_SUB
+      - SM
+      - TRACE
+      - SMS_MNG
+      - LCS_PRIVACY
+      - LCS_MO
+      - UEC_AMF
+      - V2X
+      - LCS_BCA
+      - PROSE
+      - UC
+      - MBS
 #        - type: string
-
+#
     UcPurpose:
 #      anyOf:
 #        - type: string
-          enum:
-          - ANALYTICS
-          - MODEL_TRAINING
-          - NW_CAP_EXPOSURE
-          - EDGEAPP_UE_LOCATION
+      type: string
+      enum:
+      - ANALYTICS
+      - MODEL_TRAINING
+      - NW_CAP_EXPOSURE
+      - EDGEAPP_UE_LOCATION
 #        - type: string
 #      description: Indicates the purpose of the user consent.
-
+#
     UserConsent:
 #      anyOf:
 #        - type: string
-          enum:
-          - CONSENT_NOT_GIVEN
-          - CONSENT_GIVEN
+      type: string
+      enum:
+      - CONSENT_NOT_GIVEN
+      - CONSENT_GIVEN
 #        - type: string
-
+#
     PduSessionContinuityInd:
 #      anyOf:
 #        - type: string
-          enum:
-          - MAINTAIN_PDUSESSION
-          - RECONNECT_PDUSESSION
-          - RELEASE_PDUSESSION
+      type: string
+      enum:
+      - MAINTAIN_PDUSESSION
+      - RECONNECT_PDUSESSION
+      - RELEASE_PDUSESSION
 #        - type: string
-
+#
     LocationPrivacyInd:
 #      anyOf:
 #        - type: string
-          enum:
-          - LOCATION_DISALLOWED
-          - LOCATION_ALLOWED
+      type: string
+      enum:
+      - LOCATION_DISALLOWED
+      - LOCATION_ALLOWED
 #        - type: string
-
+#
     PrivacyCheckRelatedAction:
 #      anyOf:
 #        - type: string
-          enum:
-          - LOCATION_NOT_ALLOWED
-          - LOCATION_ALLOWED_WITH_NOTIFICATION
-          - LOCATION_ALLOWED_WITHOUT_NOTIFICATION
-          - LOCATION_ALLOWED_WITHOUT_RESPONSE
-          - LOCATION_RESTRICTED_WITHOUT_RESPONSE
+      type: string
+      enum:
+      - LOCATION_NOT_ALLOWED
+      - LOCATION_ALLOWED_WITH_NOTIFICATION
+      - LOCATION_ALLOWED_WITHOUT_NOTIFICATION
+      - LOCATION_ALLOWED_WITHOUT_RESPONSE
+      - LOCATION_RESTRICTED_WITHOUT_RESPONSE
 #        - type: string
-
+#
     LcsClientClass:
 #      anyOf:
 #        - type: string
-          enum:
-          - BROADCAST_SERVICE
-          - OM_IN_HPLMN
-          - OM_IN_VPLMN
-          - ANONYMOUS_LOCATION_SERVICE
-          - SPECIFIC_SERVICE
+      type: string
+      enum:
+      - BROADCAST_SERVICE
+      - OM_IN_HPLMN
+      - OM_IN_VPLMN
+      - ANONYMOUS_LOCATION_SERVICE
+      - SPECIFIC_SERVICE
 #        - type: string
-
+#
     LcsMoServiceClass:
 #      anyOf:
 #        - type: string
-          enum:
-          - BASIC_SELF_LOCATION
-          - AUTONOMOUS_SELF_LOCATION
-          - TRANSFER_TO_THIRD_PARTY
+      type: string
+      enum:
+      - BASIC_SELF_LOCATION
+      - AUTONOMOUS_SELF_LOCATION
+      - TRANSFER_TO_THIRD_PARTY
 #        - type: string
-
+#
     OperationMode:
 #      anyOf:
 #        - type: string
-          enum:
-          - WB_S1
-          - NB_S1
-          - WB_N1
-          - NB_N1
+      type: string
+      enum:
+      - WB_S1
+      - NB_S1
+      - WB_N1
+      - NB_N1
 #        - type: string
-
+#
     SorUpdateIndicator:
 #      anyOf:
 #        - type: string
-          enum:
-          - INITIAL_REGISTRATION
-          - EMERGENCY_REGISTRATION
+      type: string
+      enum:
+      - INITIAL_REGISTRATION
+      - EMERGENCY_REGISTRATION
 #        - type: string
-
+#
     CodeWordInd:
 #      anyOf:
 #        - type: string
-          enum:
-          - CODEWORD_CHECK_IN_UE
-          - CODEWORD_CHECK_IN_GMLC
+      type: string
+      enum:
+      - CODEWORD_CHECK_IN_UE
+      - CODEWORD_CHECK_IN_GMLC
 #        - type: string
-
+#
     MdtUserConsent:
 #      anyOf:
 #        - type: string
-          enum:
-          - CONSENT_NOT_GIVEN
-          - CONSENT_GIVEN
+      type: string
+      enum:
+      - CONSENT_NOT_GIVEN
+      - CONSENT_GIVEN
 #        - type: string
-
+#
     SharedDataTreatmentInstruction:
 #      anyOf:
 #        - type: string
-          enum:
-          - USE_IF_NO_CLASH
-          - OVERWRITE
-          - MAX
-          - MIN
+      type: string
+      enum:
+      - USE_IF_NO_CLASH
+      - OVERWRITE
+      - MAX
+      - MIN
 #        - type: string
-
+#
     GpsiType:
-#      description: Type of GPSI (MSISDN or External-ID)
+      description: Type of GPSI (MSISDN or External-ID)
 #      anyOf:
 #        - type: string
-          enum:
-          - MSISDN
-          - EXT_ID
-          - EXT_GROUP_ID
+      type: string
+      enum:
+      - MSISDN
+      - EXT_ID
+      - EXT_GROUP_ID
 #        - type: string
-
+#
     AerialUeIndication:
 #      anyOf:
 #        - type: string
-          enum:
-          - AERIAL_UE_ALLOWED
-          - AERIAL_UE_NOT_ALLOWED
+      type: string
+      enum:
+      - AERIAL_UE_ALLOWED
+      - AERIAL_UE_NOT_ALLOWED
 #        - type: string
 #      description: >
 #        Indicates the Aerial service for the UE is allowed or not allowed, possible values are
 #        - AERIAL_UE_ALLOWED: Aerial service for the UE is allowed.
 #        - AERIAL_UE_NOT_ALLOWED: Aerial service for the UE is not allowed.
-
+#
     ProseDirectAllowed:
 #      anyOf:
 #        - type: string
-          enum:
-          - ANNOUNCE
-          - MONITOR
-          - RESTRICTD_ANNOUNCE
-          - RESTRICTD_MONITOR
-          - DISCOVERER
-          - DISCOVEREE
-          - BROADCAST
-          - GROUPCAST
-          - UNICAST
-          - LAYER2_RELAY
-          - LAYER3_RELAY
+      type: string
+      enum:
+      - ANNOUNCE
+      - MONITOR
+      - RESTRICTD_ANNOUNCE
+      - RESTRICTD_MONITOR
+      - DISCOVERER
+      - DISCOVEREE
+      - BROADCAST
+      - GROUPCAST
+      - UNICAST
+      - LAYER2_RELAY
+      - LAYER3_RELAY
 #        - type: string
 #      description: Indicates the 5G ProSe Direct services that can be authorised to use in the given PLMN for the UE.
-
+#

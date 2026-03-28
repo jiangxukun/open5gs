@@ -631,9 +631,96 @@ paths:
                     schema:
                       type: array
                       items: 
-                        oneOf:
-                          - $ref: '#/components/schemas/TrafficInfluData'
-                          - $ref: '#/components/schemas/TrafficInfluDataNotif'
+#                        oneOf:
+#                          - $ref: '#/components/schemas/TrafficInfluData'
+#                          - $ref: '#/components/schemas/TrafficInfluDataNotif'
+                        type: object
+                        properties:
+                          upPathChgNotifCorreId:
+                            type: string
+                            description: Contains the Notification Correlation Id allocated by the NEF for the UP path change notification.
+                          appReloInd:
+                            type: boolean
+                            description: Identifies whether an application can be relocated once a location of the application has been selected.
+                          afAppId:
+                            type: string
+                            description: Identifies an application.
+                          dnn:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+                          ethTrafficFilters:
+                            type: array
+                            items:
+                              $ref: 'TS29514_Npcf_PolicyAuthorization.yaml#/components/schemas/EthFlowDescription'
+                            minItems: 1
+                            description: Identifies Ethernet packet filters. Either "trafficFilters" or "ethTrafficFilters" shall be included if applicable.
+                          snssai:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Snssai'
+                          interGroupId:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/GroupId'
+                          supi:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Supi'
+                          trafficFilters:
+                            type: array
+                            items:
+                              $ref: 'TS29122_CommonData.yaml#/components/schemas/FlowInfo'
+                            minItems: 1
+                            description: Identifies IP packet filters. Either "trafficFilters" or "ethTrafficFilters" shall be included if applicable.
+                          trafficRoutes:
+                            type: array
+                            items:
+                              $ref: 'TS29571_CommonData.yaml#/components/schemas/RouteToLocation'
+                            minItems: 1
+                            description: Identifies the N6 traffic routing requirement.
+                          traffCorreInd:
+                            type: boolean
+                          validStartTime:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/DateTime'
+                          validEndTime:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/DateTime'
+                          tempValidities:
+                            type: array
+                            items:
+                              $ref: 'TS29514_Npcf_PolicyAuthorization.yaml#/components/schemas/TemporalValidity'
+                            minItems: 1
+                            description: Identifies the temporal validities for the N6 traffic routing requirement.
+                          nwAreaInfo:
+                            $ref: 'TS29554_Npcf_BDTPolicyControl.yaml#/components/schemas/NetworkAreaInfo'
+                          upPathChgNotifUri:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                          headers:
+                            type: array
+                            items:
+                              type: string
+                            minItems: 1
+                          subscribedEvents:
+                            type: array
+                            items:
+                              $ref: 'TS29522_TrafficInfluence.yaml#/components/schemas/SubscribedEvent'
+                            minItems: 1
+                          dnaiChgType:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/DnaiChangeType'
+                          afAckInd:
+                            type: boolean
+                          addrPreserInd:
+                            type: boolean
+                          maxAllowedUpLat:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Uinteger'
+                          simConnInd:
+                            type: boolean
+                            description: Indicates whether simultaneous connectivity should be temporarily maintained for the source and target PSA.
+                          simConnTerm:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/DurationSec'
+                          supportedFeatures:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+                          resUri:
+                            $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                          resetIds:
+                            type: array
+                            items:
+                              type: string
+                            minItems: 1
+                          trafficInfluData:
+                            $ref: '#/components/schemas/TrafficInfluData'
                       minItems: 1
               responses:
                 '204':
@@ -2846,12 +2933,12 @@ components:
           minItems: 1
       required:
         - notificationUri
-      oneOf:
-        - required: [dnns]
-        - required: [snssais]
-        - required: [internalGroupIds]
-        - required: [supis]
-
+#      oneOf:
+#        - required: [dnns]
+#        - required: [snssais]
+#        - required: [internalGroupIds]
+#        - required: [supis]
+#
     TrafficInfluDataNotif:
       description: Represents traffic influence data for notification.
       type: object
@@ -2957,10 +3044,10 @@ components:
       required:
         - afAppId
         - multiAccCtrls
-      oneOf:
-        - required: [interGroupId]
-        - required: [supi]
-
+#      oneOf:
+#        - required: [interGroupId]
+#        - required: [supi]
+#
     ServiceParameterData:
       description: Represents the service parameter data.
       type: object
@@ -3289,23 +3376,24 @@ components:
         - dataInd
 
     DataInd:
-      anyOf:
-      - type: string
-        enum:
-          - PFD
-          - IPTV
-          - BDT
-          - SVC_PARAM
-          - AM
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: |
-        Possible values are
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
         - PFD
         - IPTV
         - BDT
         - SVC_PARAM
         - AM
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: |
+#        Possible values are
+#        - PFD
+#        - IPTV
+#        - BDT
+#        - SVC_PARAM
+#        - AM

@@ -582,10 +582,10 @@ components:
         - n2MbsSmInfo
         - notifyUri
         - snssai
-      oneOf:
-        - required: [ mbsServiceArea ]
-        - required: [ mbsServiceAreaInfoList ]
-
+#      oneOf:
+#        - required: [ mbsServiceArea ]
+#        - required: [ mbsServiceAreaInfoList ]
+#
     ContextCreateRspData:
       description: Data within ContextCreate Response
       type: object
@@ -728,41 +728,45 @@ components:
 
     OperationStatus:
       description: Status of a Broadcast MBS session start or update operation.
-      anyOf:
-      - type: string
-        enum:
-          - MBS_SESSION_START_COMPLETE
-          - MBS_SESSION_START_INCOMPLETE
-          - MBS_SESSION_UPDATE_COMPLETE
-          - MBS_SESSION_UPDATE_INCOMPLETE
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MBS_SESSION_START_COMPLETE
+        - MBS_SESSION_START_INCOMPLETE
+        - MBS_SESSION_UPDATE_COMPLETE
+        - MBS_SESSION_UPDATE_INCOMPLETE
+#      - type: string
+#
     NgapIeType:
       description: NGAP Information Element Type
-      anyOf:
-      - type: string
-        enum:
-          - MBS_SES_REQ
-          - MBS_SES_RSP
-          - MBS_SES_FAIL
-          - MBS_SES_REL_RSP
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MBS_SES_REQ
+        - MBS_SES_RSP
+        - MBS_SES_FAIL
+        - MBS_SES_REL_RSP
+#      - type: string
+#
     OpEventType:
       description: Operation Event Type.
-      anyOf:
-      - type: string
-        enum:
-          - AMF_CHANGE
-          - NG_RAN_EVENT
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AMF_CHANGE
+        - NG_RAN_EVENT
+#      - type: string
+#
     NgranFailureIndication:
       description: Indicates a NG-RAN failure event.
-      anyOf:
-      - type: string
-        enum:
-          - NG_RAN_RESTART_OR_START
-          - NG_RAN_FAILURE_WITHOUT_RESTART
-          - NG_RAN_NOT_REACHABLE
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - NG_RAN_RESTART_OR_START
+        - NG_RAN_FAILURE_WITHOUT_RESTART
+        - NG_RAN_NOT_REACHABLE
+#      - type: string

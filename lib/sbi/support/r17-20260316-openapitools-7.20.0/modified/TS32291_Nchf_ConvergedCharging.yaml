@@ -1986,582 +1986,638 @@ components:
         virtualResource:
           $ref: 'TS28538_EdgeNrm.yaml/components/schemas/VirtualResource'
     NotificationType:
-      anyOf:
-        - type: string
-          enum:
-            - REAUTHORIZATION
-            - ABORT_CHARGING
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - REAUTHORIZATION
+        - ABORT_CHARGING
+#        - type: string
     NodeFunctionality:
-      anyOf:
-        - type: string
-          enum:
-            - AMF
-            - SMF
-            - SMS # Included for backwards compatibility, shall not be used
-            - SMSF
-            - PGW_C_SMF
-            - NEFF # Included for backwards compatibility, shall not be used
-            - SGW
-            - I_SMF
-            - ePDG
-            - CEF
-            - NEF
-            - MnS_Producer
-            - SGSN
-            - V_SMF
-            - 5G_DDNMF
-            - IMS_Node
-            - EES
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - AMF
+        - SMF
+        - SMS # Included for backwards compatibility, shall not be used
+        - SMSF
+        - PGW_C_SMF
+        - NEFF # Included for backwards compatibility, shall not be used
+        - SGW
+        - I_SMF
+        - ePDG
+        - CEF
+        - NEF
+        - MnS_Producer
+        - SGSN
+        - V_SMF
+        - 5G_DDNMF
+        - IMS_Node
+        - EES
+#        - type: string
     ChargingCharacteristicsSelectionMode:
-      anyOf:
-        - type: string
-          enum:
-            - HOME_DEFAULT
-            - ROAMING_DEFAULT
-            - VISITING_DEFAULT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - HOME_DEFAULT
+        - ROAMING_DEFAULT
+        - VISITING_DEFAULT
+#        - type: string
     TriggerType:
-      anyOf:
-        - type: string
-          enum:
-            - QUOTA_THRESHOLD
-            - QHT
-            - FINAL
-            - QUOTA_EXHAUSTED
-            - VALIDITY_TIME
-            - OTHER_QUOTA_TYPE
-            - FORCED_REAUTHORISATION
-            - UNUSED_QUOTA_TIMER # Included for backwards compatibility, shall not be used
-            - UNIT_COUNT_INACTIVITY_TIMER
-            - ABNORMAL_RELEASE
-            - QOS_CHANGE
-            - VOLUME_LIMIT
-            - TIME_LIMIT
-            - EVENT_LIMIT
-            - PLMN_CHANGE
-            - USER_LOCATION_CHANGE
-            - RAT_CHANGE
-            - SESSION_AMBR_CHANGE
-            - UE_TIMEZONE_CHANGE
-            - TARIFF_TIME_CHANGE
-            - MAX_NUMBER_OF_CHANGES_IN_CHARGING_CONDITIONS
-            - MANAGEMENT_INTERVENTION
-            - CHANGE_OF_UE_PRESENCE_IN_PRESENCE_REPORTING_AREA
-            - CHANGE_OF_3GPP_PS_DATA_OFF_STATUS
-            - SERVING_NODE_CHANGE
-            - REMOVAL_OF_UPF
-            - ADDITION_OF_UPF
-            - INSERTION_OF_ISMF
-            - REMOVAL_OF_ISMF
-            - CHANGE_OF_ISMF
-            - START_OF_SERVICE_DATA_FLOW
-            - ECGI_CHANGE
-            - TAI_CHANGE
-            - HANDOVER_CANCEL
-            - HANDOVER_START
-            - HANDOVER_COMPLETE
-            - GFBR_GUARANTEED_STATUS_CHANGE
-            - ADDITION_OF_ACCESS
-            - REMOVAL_OF_ACCESS
-            - START_OF_SDF_ADDITIONAL_ACCESS
-            - REDUNDANT_TRANSMISSION_CHANGE
-            - CGI_SAI_CHANGE
-            - RAI_CHANGE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - QUOTA_THRESHOLD
+        - QHT
+        - FINAL
+        - QUOTA_EXHAUSTED
+        - VALIDITY_TIME
+        - OTHER_QUOTA_TYPE
+        - FORCED_REAUTHORISATION
+        - UNUSED_QUOTA_TIMER # Included for backwards compatibility, shall not be used
+        - UNIT_COUNT_INACTIVITY_TIMER
+        - ABNORMAL_RELEASE
+        - QOS_CHANGE
+        - VOLUME_LIMIT
+        - TIME_LIMIT
+        - EVENT_LIMIT
+        - PLMN_CHANGE
+        - USER_LOCATION_CHANGE
+        - RAT_CHANGE
+        - SESSION_AMBR_CHANGE
+        - UE_TIMEZONE_CHANGE
+        - TARIFF_TIME_CHANGE
+        - MAX_NUMBER_OF_CHANGES_IN_CHARGING_CONDITIONS
+        - MANAGEMENT_INTERVENTION
+        - CHANGE_OF_UE_PRESENCE_IN_PRESENCE_REPORTING_AREA
+        - CHANGE_OF_3GPP_PS_DATA_OFF_STATUS
+        - SERVING_NODE_CHANGE
+        - REMOVAL_OF_UPF
+        - ADDITION_OF_UPF
+        - INSERTION_OF_ISMF
+        - REMOVAL_OF_ISMF
+        - CHANGE_OF_ISMF
+        - START_OF_SERVICE_DATA_FLOW
+        - ECGI_CHANGE
+        - TAI_CHANGE
+        - HANDOVER_CANCEL
+        - HANDOVER_START
+        - HANDOVER_COMPLETE
+        - GFBR_GUARANTEED_STATUS_CHANGE
+        - ADDITION_OF_ACCESS
+        - REMOVAL_OF_ACCESS
+        - START_OF_SDF_ADDITIONAL_ACCESS
+        - REDUNDANT_TRANSMISSION_CHANGE
+        - CGI_SAI_CHANGE
+        - RAI_CHANGE
+#        - type: string
     FinalUnitAction:
-      anyOf:
-        - type: string
-          enum:
-            - TERMINATE
-            - REDIRECT
-            - RESTRICT_ACCESS
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - TERMINATE
+        - REDIRECT
+        - RESTRICT_ACCESS
+#        - type: string
     RedirectAddressType:
-      anyOf:
-        - type: string
-          enum:
-            - IPV4
-            - IPV6
-            - URL
-            - URI
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - IPV4
+        - IPV6
+        - URL
+        - URI
+#        - type: string
     TriggerCategory:
-      anyOf:
-        - type: string
-          enum:
-            - IMMEDIATE_REPORT
-            - DEFERRED_REPORT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - IMMEDIATE_REPORT
+        - DEFERRED_REPORT
+#        - type: string
     QuotaManagementIndicator:
-      anyOf:
-        - type: string
-          enum:
-            - ONLINE_CHARGING
-            - OFFLINE_CHARGING
-            - QUOTA_MANAGEMENT_SUSPENDED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - ONLINE_CHARGING
+        - OFFLINE_CHARGING
+        - QUOTA_MANAGEMENT_SUSPENDED
+#        - type: string
     FailureHandling:
-      anyOf:
-        - type: string
-          enum:
-            - TERMINATE
-            - CONTINUE
-            - RETRY_AND_TERMINATE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - TERMINATE
+        - CONTINUE
+        - RETRY_AND_TERMINATE
+#        - type: string
     SessionFailover:
-      anyOf:
-        - type: string
-          enum:
-            - FAILOVER_NOT_SUPPORTED
-            - FAILOVER_SUPPORTED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - FAILOVER_NOT_SUPPORTED
+        - FAILOVER_SUPPORTED
+#        - type: string
     3GPPPSDataOffStatus:
-      anyOf:
-        - type: string
-          enum:
-            - ACTIVE
-            - INACTIVE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+#        - type: string
     ResultCode:
-      anyOf:
-        - type: string
-          enum: 
-            - SUCCESS
-            - END_USER_SERVICE_DENIED
-            - QUOTA_MANAGEMENT_NOT_APPLICABLE
-            - QUOTA_LIMIT_REACHED
-            - END_USER_SERVICE_REJECTED
-            - USER_UNKNOWN  #Included for backwards compatibility, shall not be used
-            - RATING_FAILED
-            - QUOTA_MANAGEMENT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - SUCCESS
+        - END_USER_SERVICE_DENIED
+        - QUOTA_MANAGEMENT_NOT_APPLICABLE
+        - QUOTA_LIMIT_REACHED
+        - END_USER_SERVICE_REJECTED
+        - USER_UNKNOWN  #Included for backwards compatibility, shall not be used
+        - RATING_FAILED
+        - QUOTA_MANAGEMENT
+#        - type: string
     PartialRecordMethod:
-      anyOf:
-        - type: string
-          enum:
-            - DEFAULT
-            - INDIVIDUAL
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - DEFAULT
+        - INDIVIDUAL
+#        - type: string
     RoamerInOut:
-      anyOf:
-        - type: string
-          enum:
-            - IN_BOUND
-            - OUT_BOUND
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - IN_BOUND
+        - OUT_BOUND
+#        - type: string
     SMMessageType:
-      anyOf:
-        - type: string
-          enum:
-            - SUBMISSION
-            - DELIVERY_REPORT
-            - SM_SERVICE_REQUEST
-            - DELIVERY
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SUBMISSION
+        - DELIVERY_REPORT
+        - SM_SERVICE_REQUEST
+        - DELIVERY
+#        - type: string
     SMPriority:
-      anyOf:
-        - type: string
-          enum:
-            - LOW
-            - NORMAL
-            - HIGH
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - LOW
+        - NORMAL
+        - HIGH
+#        - type: string
     DeliveryReportRequested:
-      anyOf:
-        - type: string
-          enum:
-            - YES
-            - NO
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - YES
+        - NO
+#        - type: string
     InterfaceType:
-      anyOf:
-        - type: string
-          enum:
-            - UNKNOWN
-            - MOBILE_ORIGINATING
-            - MOBILE_TERMINATING
-            - APPLICATION_ORIGINATING
-            - APPLICATION_TERMINATING
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - UNKNOWN
+        - MOBILE_ORIGINATING
+        - MOBILE_TERMINATING
+        - APPLICATION_ORIGINATING
+        - APPLICATION_TERMINATING
+#        - type: string
     ClassIdentifier:
-      anyOf:
-        - type: string
-          enum:
-            - PERSONAL
-            - ADVERTISEMENT
-            - INFORMATIONAL
-            - AUTO
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - PERSONAL
+        - ADVERTISEMENT
+        - INFORMATIONAL
+        - AUTO
+#        - type: string
     SMAddressType:
-      anyOf:
-        - type: string
-          enum:
-            - EMAIL_ADDRESS
-            - MSISDN
-            - IPV4_ADDRESS
-            - IPV6_ADDRESS
-            - NUMERIC_SHORTCODE
-            - ALPHANUMERIC_SHORTCODE
-            - OTHER
-            - IMSI
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - EMAIL_ADDRESS
+        - MSISDN
+        - IPV4_ADDRESS
+        - IPV6_ADDRESS
+        - NUMERIC_SHORTCODE
+        - ALPHANUMERIC_SHORTCODE
+        - OTHER
+        - IMSI
+#        - type: string
     SMAddresseeType:
-      anyOf:
-        - type: string
-          enum:
-            - TO
-            - CC
-            - BCC
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - TO
+        - CC
+        - BCC
+#        - type: string
     SMServiceType:
-      anyOf:
-        - type: string
-          enum:
-            - VAS4SMS_SHORT_MESSAGE_CONTENT_PROCESSING
-            - VAS4SMS_SHORT_MESSAGE_FORWARDING
-            - VAS4SMS_SHORT_MESSAGE_FORWARDING_MULTIPLE_SUBSCRIPTIONS
-            - VAS4SMS_SHORT_MESSAGE_FILTERING
-            - VAS4SMS_SHORT_MESSAGE_RECEIPT
-            - VAS4SMS_SHORT_MESSAGE_NETWORK_STORAGE
-            - VAS4SMS_SHORT_MESSAGE_TO_MULTIPLE_DESTINATIONS
-            - VAS4SMS_SHORT_MESSAGE_VIRTUAL_PRIVATE_NETWORK(VPN)
-            - VAS4SMS_SHORT_MESSAGE_AUTO_REPLY
-            - VAS4SMS_SHORT_MESSAGE_PERSONAL_SIGNATURE
-            - VAS4SMS_SHORT_MESSAGE_DEFERRED_DELIVERY
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - VAS4SMS_SHORT_MESSAGE_CONTENT_PROCESSING
+        - VAS4SMS_SHORT_MESSAGE_FORWARDING
+        - VAS4SMS_SHORT_MESSAGE_FORWARDING_MULTIPLE_SUBSCRIPTIONS
+        - VAS4SMS_SHORT_MESSAGE_FILTERING
+        - VAS4SMS_SHORT_MESSAGE_RECEIPT
+        - VAS4SMS_SHORT_MESSAGE_NETWORK_STORAGE
+        - VAS4SMS_SHORT_MESSAGE_TO_MULTIPLE_DESTINATIONS
+        - VAS4SMS_SHORT_MESSAGE_VIRTUAL_PRIVATE_NETWORK(VPN)
+        - VAS4SMS_SHORT_MESSAGE_AUTO_REPLY
+        - VAS4SMS_SHORT_MESSAGE_PERSONAL_SIGNATURE
+        - VAS4SMS_SHORT_MESSAGE_DEFERRED_DELIVERY
+#        - type: string
     ReplyPathRequested:
-      anyOf:
-        - type: string
-          enum:
-            - NO_REPLY_PATH_SET
-            - REPLY_PATH_SET
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - NO_REPLY_PATH_SET
+        - REPLY_PATH_SET
+#        - type: string
     oneTimeEventType:
-      anyOf:
-        - type: string
-          enum:
-            - IEC
-            - PEC
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - IEC
+        - PEC
+#        - type: string
     dnnSelectionMode:
-      anyOf:
-        - type: string
-          enum:
-            - VERIFIED
-            - UE_DNN_NOT_VERIFIED
-            - NW_DNN_NOT_VERIFIED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - VERIFIED
+        - UE_DNN_NOT_VERIFIED
+        - NW_DNN_NOT_VERIFIED
+#        - type: string
     APIDirection:
-      anyOf:
-        - type: string
-          enum:
-            - INVOCATION
-            - NOTIFICATION
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - INVOCATION
+        - NOTIFICATION
+#        - type: string
     RegistrationMessageType:
-      anyOf:
-        - type: string
-          enum:
-            - INITIAL
-            - MOBILITY
-            - PERIODIC
-            - EMERGENCY
-            - DEREGISTRATION
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - INITIAL
+        - MOBILITY
+        - PERIODIC
+        - EMERGENCY
+        - DEREGISTRATION
+#        - type: string
     MICOModeIndication:
-      anyOf:
-        - type: string
-          enum:
-            - MICO_MODE
-            - NO_MICO_MODE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - MICO_MODE
+        - NO_MICO_MODE
+#        - type: string
     SmsIndication:
-      anyOf:
-        - type: string
-          enum:
-            - SMS_SUPPORTED
-            - SMS_NOT_SUPPORTED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SMS_SUPPORTED
+        - SMS_NOT_SUPPORTED
+#        - type: string
     ManagementOperation:
-      anyOf:
-        - type: string
-          enum:
-            - CreateMOI       #Included for backwards compatibility, shall not be used
-            - ModifyMOIAttributes #Included for backwards compatibility, shall not be used
-            - DeleteMOI       #Included for backwards compatibility, shall not be used
-            - CREATE_MOI
-            - MODIFY_MOI_ATTR
-            - DELETE_MOI
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - CreateMOI       #Included for backwards compatibility, shall not be used
+        - ModifyMOIAttributes #Included for backwards compatibility, shall not be used
+        - DeleteMOI       #Included for backwards compatibility, shall not be used
+        - CREATE_MOI
+        - MODIFY_MOI_ATTR
+        - DELETE_MOI
+#        - type: string
     ManagementOperationStatus:
-      anyOf:
-        - type: string
-          enum:
-            - OPERATION_SUCCEEDED
-            - OPERATION_FAILED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - OPERATION_SUCCEEDED
+        - OPERATION_FAILED
+#        - type: string
     RedundantTransmissionType:
-      anyOf:
-        - type: string
-          enum: 
-            - NON_TRANSMISSION
-            - END_TO_END_USER_PLANE_PATHS
-            - N3/N9
-            - TRANSPORT_LAYER
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - NON_TRANSMISSION
+        - END_TO_END_USER_PLANE_PATHS
+        - N3/N9
+        - TRANSPORT_LAYER
+#        - type: string
     VariablePartType:
-      anyOf:
-        - type: string
-          enum:
-            - INTEGER
-            - NUMBER
-            - TIME
-            - DATE
-            - CURRENCY
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - INTEGER
+        - NUMBER
+        - TIME
+        - DATE
+        - CURRENCY
+#        - type: string
     QuotaConsumptionIndicator:
-      anyOf:
-        - type: string
-          enum:
-            - QUOTA_NOT_USED
-            - QUOTA_IS_USED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - QUOTA_NOT_USED
+        - QUOTA_IS_USED
+#        - type: string
     PlayToParty:
-      anyOf:
-        - type: string
-          enum:
-            - SERVED
-            - REMOTE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SERVED
+        - REMOTE
+#        - type: string
     AnnouncementPrivacyIndicator:
-      anyOf:
-        - type: string
-          enum:
-            - NOT_PRIVATE
-            - PRIVATE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - NOT_PRIVATE
+        - PRIVATE
+#        - type: string
     SupplementaryServiceType:
-      anyOf:
-        - type: string
-          enum: 
-            - OIP
-            - OIR
-            - TIP
-            - TIR
-            - HOLD
-            - CB
-            - CDIV
-            - CW
-            - MWI
-            - CONF
-            - FA
-            - CCBS
-            - CCNR
-            - MCID
-            - CAT
-            - CUG
-            - PNM
-            - CRS
-            - ECT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - OIP
+        - OIR
+        - TIP
+        - TIR
+        - HOLD
+        - CB
+        - CDIV
+        - CW
+        - MWI
+        - CONF
+        - FA
+        - CCBS
+        - CCNR
+        - MCID
+        - CAT
+        - CUG
+        - PNM
+        - CRS
+        - ECT
+#        - type: string
     SupplementaryServiceMode:
-      anyOf:
-        - type: string
-          enum: 
-            - CFU
-            - CFB
-            - CFNR
-            - CFNL
-            - CD
-            - CFNRC
-            - ICB
-            - OCB
-            - ACR
-            - BLIND_TRANFER
-            - CONSULTATIVE_TRANFER
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - CFU
+        - CFB
+        - CFNR
+        - CFNL
+        - CD
+        - CFNRC
+        - ICB
+        - OCB
+        - ACR
+        - BLIND_TRANFER
+        - CONSULTATIVE_TRANFER
+#        - type: string
     ParticipantActionType:
-      anyOf:
-        - type: string
-          enum: 
-            - CREATE
-            - JOIN
-            - INVITE_INTO
-            - QUIT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - CREATE
+        - JOIN
+        - INVITE_INTO
+        - QUIT
+#        - type: string
     TrafficForwardingWay:
-      anyOf:
-        - type: string
-          enum:            
-            - N6
-            - N19 
-            - LOCAL_SWITCH
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:            
+        - N6
+        - N19 
+        - LOCAL_SWITCH
+#        - type: string
     IMSNodeFunctionality:
 #      anyOf:
 #        - type: string
-#          enum:
+      type: string
+      enum:
 # The applicable IMS Nodes are MRFC, IMS-GWF (connected to S-CSCF using ISC) and SIP AS. 
-          type: string
-          enum:
-            - S_CSCF
-            - P_CSCF
-            - I_CSCF
-            - MRFC
-            - MGCF
-            - BGCF
-            - AS
-            - IBCF
-            - S-GW
-            - P-GW
-            - HSGW
-            - E-CSCF 
-            - MME 
-            - TRF
-            - TF
-            - ATCF
-            - PROXY
-            - EPDG
-            - TDF
-            - TWAG
-            - SCEF
-            - IWK_SCEF
-            - IMS_GWF
+        - S_CSCF
+        - P_CSCF
+        - I_CSCF
+        - MRFC
+        - MGCF
+        - BGCF
+        - AS
+        - IBCF
+        - S-GW
+        - P-GW
+        - HSGW
+        - E-CSCF 
+        - MME 
+        - TRF
+        - TF
+        - ATCF
+        - PROXY
+        - EPDG
+        - TDF
+        - TWAG
+        - SCEF
+        - IWK_SCEF
+        - IMS_GWF
 #         - type: string
     RoleOfIMSNode:
-      anyOf:
-        - type: string
-          enum: 
-            - ORIGINATING
-            - TERMINATING
-            - FORWARDING
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - ORIGINATING
+        - TERMINATING
+        - FORWARDING
+#        - type: string
     IMSSessionPriority:
-      anyOf:
-        - type: string
-          enum: 
-            - PRIORITY_0
-            - PRIORITY_1
-            - PRIORITY_2
-            - PRIORITY_3
-            - PRIORITY_4
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - PRIORITY_0
+        - PRIORITY_1
+        - PRIORITY_2
+        - PRIORITY_3
+        - PRIORITY_4
+#        - type: string
     MediaInitiatorFlag:
-      anyOf:
-        - type: string
-          enum: 
-            - CALLED_PARTY
-            - CALLING_PARTY
-            - UNKNOWN
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - CALLED_PARTY
+        - CALLING_PARTY
+        - UNKNOWN
+#        - type: string
     SDPType:
-      anyOf:
-        - type: string
-          enum: 
-            - OFFER
-            - ANSWER
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - OFFER
+        - ANSWER
+#        - type: string
     OriginatorPartyType:
-      anyOf:
-        - type: string
-          enum: 
-            - CALLING
-            - CALLED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - CALLING
+        - CALLED
+#        - type: string
     AccessTransferType:
-      anyOf:
-        - type: string
-          enum: 
-            - PS_TO_CS
-            - CS_TO_PS
-            - PS_TO_PS
-            - CS_TO_CS
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - PS_TO_CS
+        - CS_TO_PS
+        - PS_TO_PS
+        - CS_TO_CS
+#        - type: string
     UETransferType:
-      anyOf:
-        - type: string
-          enum: 
-            - INTRA_UE
-            - INTER_UE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - INTRA_UE
+        - INTER_UE
+#        - type: string
     NNISessionDirection:
-      anyOf:
-        - type: string
-          enum: 
-            - INBOUND
-            - OUTBOUND
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - INBOUND
+        - OUTBOUND
+#        - type: string
     NNIType:
-      anyOf:
-        - type: string
-          enum: 
-            - NON_ROAMING
-            - ROAMING_NO_LOOPBACK
-            - ROAMING_LOOPBACK
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - NON_ROAMING
+        - ROAMING_NO_LOOPBACK
+        - ROAMING_LOOPBACK
+#        - type: string
     NNIRelationshipMode:
-      anyOf:
-        - type: string
-          enum: 
-            - TRUSTED
-            - NON_TRUSTED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - TRUSTED
+        - NON_TRUSTED
+#        - type: string
     TADIdentifier:
-      anyOf:
-        - type: string
-          enum: 
-            - CS
-            - PS
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - CS
+        - PS
+#        - type: string
     ProseFunctionality:
-      anyOf:
-        - type: string
-          enum: 
-            - DIRECT_DISCOVERY
-            - DIRECT_COMMUNICATION
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - DIRECT_DISCOVERY
+        - DIRECT_COMMUNICATION
+#        - type: string
     ProseEventType:
-      anyOf:
-        - type: string
-          enum: 
-            - ANNOUNCING
-            - MONITORING
-            - MATCH_REPORT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - ANNOUNCING
+        - MONITORING
+        - MATCH_REPORT
+#        - type: string
     DirectDiscoveryModel:
-      anyOf:
-        - type: string
-          enum: 
-            - MODEL_A
-            - MODEL_B
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - MODEL_A
+        - MODEL_B
+#        - type: string
     RoleOfUE:
-      anyOf:
-        - type: string
-          enum: 
-            - ANNOUNCING_UE
-            - MONITORING_UE
-            - REQUESTOR_UE
-            - REQUESTED_UE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - ANNOUNCING_UE
+        - MONITORING_UE
+        - REQUESTOR_UE
+        - REQUESTED_UE
+#        - type: string
     RangeClass:
-      anyOf:
-        - type: string
-          enum: 
-            - RESERVED
-            - 50_METER
-            - 100_METER
-            - 200_METER
-            - 500_METER
-            - 1000_METER
-            - UNUSED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - RESERVED
+        - 50_METER
+        - 100_METER
+        - 200_METER
+        - 500_METER
+        - 1000_METER
+        - UNUSED
+#        - type: string
     RadioResourcesId:
-      anyOf:
-        - type: string
-          enum: 
-            - OPERATOR_PROVIDED
-            - CONFIGURED
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum: 
+        - OPERATOR_PROVIDED
+        - CONFIGURED
+#        - type: string

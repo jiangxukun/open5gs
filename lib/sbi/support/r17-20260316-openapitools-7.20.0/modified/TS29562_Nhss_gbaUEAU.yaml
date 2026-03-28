@@ -158,27 +158,30 @@ components:
 
     AuthenticationScheme:
       description: Authentication scheme to be used in the authentication request message
-      anyOf:
-        - type: string
-          enum:
-          - DIGEST_AKAV1_MD5
-          - DIGEST_HTTP
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - DIGEST_AKAV1_MD5
+      - DIGEST_HTTP
+#        - type: string
+#
     DigestAlgorithm:
       description: Algorithm used for the Digest authentication scheme
-      anyOf:
-        - type: string
-          enum:
-          - MD5
-          - MD5_SESS
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - MD5
+      - MD5_SESS
+#        - type: string
+#
     DigestQop:
       description: Quality of Protection for the Digest authentication scheme
-      anyOf:
-        - type: string
-          enum:
-          - AUTH
-          - AUTH_INT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - AUTH
+      - AUTH_INT
+#        - type: string

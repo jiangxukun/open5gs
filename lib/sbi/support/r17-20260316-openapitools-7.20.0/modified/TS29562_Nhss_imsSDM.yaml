@@ -2842,15 +2842,15 @@ components:
     PsLocation:
       description: Location data in PS domain
       type: object
-      oneOf:
-        - required:
-          - sgsnLocationData
-        - required:
-          - mmeLocationData
-        - required:
-          - amfLocationData
-        - required:
-          - twanLocationData
+#      oneOf:
+#        - required:
+#          - sgsnLocationData
+#        - required:
+#          - mmeLocationData
+#        - required:
+#          - amfLocationData
+#        - required:
+#          - twanLocationData
       properties:
         sgsnLocationData:
           $ref: '#/components/schemas/SgsnLocationData'
@@ -3105,11 +3105,11 @@ components:
     ImeiSvInformation:
       description: IMEI(SV) information
       type: object
-      oneOf:
-        - required:
-          - imei
-        - required:
-          - imeiSv
+#      oneOf:
+#        - required:
+#          - imei
+#        - required:
+#          - imeiSv
       properties:
         imei:
           $ref: '#/components/schemas/Imei'
@@ -3175,13 +3175,13 @@ components:
     PsUserState:
       description: User state in PS domain
       type: object
-      oneOf:
-        - required:
-          - sgsnUserState
-        - required:
-          - mmeUserState
-        - required:
-          - amfUserState
+#      oneOf:
+#        - required:
+#          - sgsnUserState
+#        - required:
+#          - mmeUserState
+#        - required:
+#          - amfUserState
       properties:
         sgsnUserState:
           $ref: '#/components/schemas/UserStatePs'
@@ -3442,171 +3442,187 @@ components:
 
     IdentityType:
       description: Represents the type of IMS Public Identity
-      anyOf:
-        - type: string
-          enum:
-          - DISTINCT_IMPU
-          - DISTINCT_PSI
-          - WILDCARDED_IMPU
-          - WILDCARDED_PSI
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - DISTINCT_IMPU
+      - DISTINCT_PSI
+      - WILDCARDED_IMPU
+      - WILDCARDED_PSI
+#        - type: string
+#
     PrivateIdentityType:
       description: Represents the type of IMS Private Identity (IMPI or IMSI)
-      anyOf:
-        - type: string
-          enum:
-          - IMPI
-          - IMSI
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - IMPI
+      - IMSI
+#        - type: string
+#
     ImsRegistrationState:
       description: Represents the IMS status of the user or Public Identity or the IRS
-      anyOf:
-        - type: string
-          enum:
-          - REGISTERED
-          - NOT_REGISTERED
-          - AUTHENTICATION_PENDING
-          - REGISTERED_UNREG_SERVICES
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - REGISTERED
+      - NOT_REGISTERED
+      - AUTHENTICATION_PENDING
+      - REGISTERED_UNREG_SERVICES
+#        - type: string
+#
     TypeOfCondition:
       description: >
         Represents the type of condition to be applied to the logical expression of SPT groups
         and SPTs (Conjunctive Normal Form, or Disjunctive Normal Form)
-      anyOf:
-        - type: string
-          enum:
-            - CNF
-            - DNF
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - CNF
+        - DNF
+#        - type: string
+#
     RegistrationType:
       description: Represents the type of registration associated to the REGISTER request
-      anyOf:
-        - type: string
-          enum:
-            - INITIAL_REGISTRATION
-            - RE_REGISTRATION
-            - DE_REGISTRATION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - INITIAL_REGISTRATION
+        - RE_REGISTRATION
+        - DE_REGISTRATION
+#        - type: string
+#
     RequestDirection:
       description: >
         Represents the direction of the request in combination with the registration status
         of the user as evaluated in the S-CSCF
-      anyOf:
-        - type: string
-          enum:
-            - ORIGINATING_REGISTERED
-            - ORIGINATING_UNREGISTERED
-            - ORIGINATING_CDIV
-            - TERMINATING_REGISTERED
-            - TERMINATING_UNREGISTERED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - ORIGINATING_REGISTERED
+        - ORIGINATING_UNREGISTERED
+        - ORIGINATING_CDIV
+        - TERMINATING_REGISTERED
+        - TERMINATING_UNREGISTERED
+#        - type: string
+#
     ServiceInformation:
       description: >
         Indicates the type of additional information to be included in the body of the SIP request
         towards the Application Server
-      anyOf:
-        - type: string
-          enum:
-            - INCLUDE_REGISTER_REQUEST
-            - INCLUDE_REGISTER_RESPONSE
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - INCLUDE_REGISTER_REQUEST
+        - INCLUDE_REGISTER_RESPONSE
+#        - type: string
+#
     RequestedNode:
       description: Represents the type of serving node for which certain data is requested
-      anyOf:
-        - type: string
-          enum:
-          - SGSN
-          - MME
-          - AMF
-          - 3GPP_AAA_SERVER_TWAN
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - SGSN
+      - MME
+      - AMF
+      - 3GPP_AAA_SERVER_TWAN
+#        - type: string
+#
     SrvccCapability:
       description: Represents the type of SRVCC support of the UE
-      anyOf:
-        - type: string
-          enum:
-          - UE_4G_SRVCC_CAPABLE
-          - UE_5G_SRVCC_CAPABLE
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - UE_4G_SRVCC_CAPABLE
+      - UE_5G_SRVCC_CAPABLE
+#        - type: string
+#
     ActivationState:
       description: Represents the activation state of a PSI or DSAI tag
-      anyOf:
-        - type: string
-          enum:
-          - ACTIVE
-          - INACTIVE
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+#        - type: string
+#
     ImsVoiceOverPsSessionSupport:
       description: Represents the support for Voice-over-PS of the UE
-      anyOf:
-        - type: string
-          enum:
-          - IMS_VOICE_OVER_PS_NOT_SUPPORTED
-          - IMS_VOICE_OVER_PS_SUPPORTED
-          - IMS_VOICE_OVER_PS_SUPPORT_UNKNOWN
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - IMS_VOICE_OVER_PS_NOT_SUPPORTED
+      - IMS_VOICE_OVER_PS_SUPPORTED
+      - IMS_VOICE_OVER_PS_SUPPORT_UNKNOWN
+#        - type: string
+#
     DetectingNode:
       description: Represents the type of serving node that detected the reachability of the UE
-      anyOf:
-        - type: string
-          enum:
-          - SGSN
-          - MME
-          - AMF
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - SGSN
+      - MME
+      - AMF
+#        - type: string
+#
     AccessType:
       description: Represents the type of access (3GPP or non-3GPP)
-      anyOf:
-        - type: string
-          enum:
-          - 3GPP_ACCESS
-          - NON_3GPP_ACCESS
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - 3GPP_ACCESS
+      - NON_3GPP_ACCESS
+#        - type: string
+#
     UserStatePs:
       description: Represents the user state in PS domain
-      anyOf:
-        - type: string
-          enum:
-          - DETACHED
-          - ATTACHED_NOT_REACHABLE_FOR_PAGING
-          - ATTACHED_REACHABLE_FOR_PAGING
-          - CONNECTED_NOT_REACHABLE_FOR_PAGING
-          - CONNECTED_REACHABLE_FOR_PAGING
-          - NOT_PROVIDED_FROM_SGSN_OR_MME_OR_AMF
-          - NETWORK_DETERMINED_NOT_REACHABLE
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - DETACHED
+      - ATTACHED_NOT_REACHABLE_FOR_PAGING
+      - ATTACHED_REACHABLE_FOR_PAGING
+      - CONNECTED_NOT_REACHABLE_FOR_PAGING
+      - CONNECTED_REACHABLE_FOR_PAGING
+      - NOT_PROVIDED_FROM_SGSN_OR_MME_OR_AMF
+      - NETWORK_DETERMINED_NOT_REACHABLE
+#        - type: string
+#
     UserStateCs:
       description: Represents the user state in CS domain
-      anyOf:
-        - type: string
-          enum:
-          - CAMEL_BUSY
-          - NETWORK_DETERMINED_NOT_REACHABLE
-          - ASSUMED_IDLE
-          - NOT_PROVIDED_FROM_VLR
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - CAMEL_BUSY
+      - NETWORK_DETERMINED_NOT_REACHABLE
+      - ASSUMED_IDLE
+      - NOT_PROVIDED_FROM_VLR
+#        - type: string
+#
     DataSetName:
       description: A set of data within the IMS User Profile
-      anyOf:
-        - type: string
-          enum:
-          - CHARGING_DATA
-          - IFC_DATA
-          - TRACE_DATA
-          - PRIORITY_DATA
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - CHARGING_DATA
+      - IFC_DATA
+      - TRACE_DATA
+      - PRIORITY_DATA
+#        - type: string

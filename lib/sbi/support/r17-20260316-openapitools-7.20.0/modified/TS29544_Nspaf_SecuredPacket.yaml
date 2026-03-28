@@ -73,10 +73,10 @@ components:
     UiccConfigurationParameter:
       description: Represents UICC Configuration Parameters.
       type: object
-      oneOf:
-        - required: [routingId ]
-        - required: [steeringContainer ]
-        - required: [extendedSteeringContainer ]
+#      oneOf:
+#        - required: [routingId ]
+#        - required: [steeringContainer ]
+#        - required: [extendedSteeringContainer ]
       properties:
         routingId:
           $ref: '#/components/schemas/RoutingId'

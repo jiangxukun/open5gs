@@ -717,44 +717,46 @@ components:
         notificationDestination:
           $ref: 'TS29122_CommonData.yaml#/components/schemas/Link'
     FailureCode:
-      anyOf:
-      - type: string
-        enum:
-          - MALFUNCTION
-          - RESOURCE_LIMITATION
-          - SHORT_DELAY
-          - APP_ID_DUPLICATED
-          - PARTIAL_FAILURE
-          - OTHER_REASON
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - MALFUNCTION: This value indicates that something functions wrongly in PFD provisioning or the PFD provisioning does not function at all.
-        - RESOURCE_LIMITATION: This value indicates there is resource limitation for PFD storage.
-        - SHORT_DELAY: This value indicates that the allowed delay is too short and PFD(s) are not stored.
-        - APP_ID_DUPLICATED: The received external application identifier(s) are already provisioned.
-        - PARTIAL_FAILURE: The PFD(s) are not provisioned to all PCEFs/TDFs/SMFs.
-        - OTHER_REASON: Other reason unspecified.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MALFUNCTION
+        - RESOURCE_LIMITATION
+        - SHORT_DELAY
+        - APP_ID_DUPLICATED
+        - PARTIAL_FAILURE
+        - OTHER_REASON
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - MALFUNCTION: This value indicates that something functions wrongly in PFD provisioning or the PFD provisioning does not function at all.
+#        - RESOURCE_LIMITATION: This value indicates there is resource limitation for PFD storage.
+#        - SHORT_DELAY: This value indicates that the allowed delay is too short and PFD(s) are not stored.
+#        - APP_ID_DUPLICATED: The received external application identifier(s) are already provisioned.
+#        - PARTIAL_FAILURE: The PFD(s) are not provisioned to all PCEFs/TDFs/SMFs.
+#        - OTHER_REASON: Other reason unspecified.
     DomainNameProtocol:
-      anyOf:
-      - type: string
-        enum:
-          - DNS_QNAME
-          - TLS_SNI
-          - TLS_SAN
-          - TSL_SCN
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - DNS_QNAME: Identifies the DNS protocol and the question name in DNS query.
-        - TLS_SNI: Identifies the Server Name Indication in TLS ClientHello message.
-        - TLS_SAN: Identifies the Subject Alternative Name in TLS ServerCertificate message.
-        - TLS_SCN: Identifies the Subject Common Name in TLS ServerCertificate message.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - DNS_QNAME
+        - TLS_SNI
+        - TLS_SAN
+        - TSL_SCN
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - DNS_QNAME: Identifies the DNS protocol and the question name in DNS query.
+#        - TLS_SNI: Identifies the Server Name Indication in TLS ClientHello message.
+#        - TLS_SAN: Identifies the Subject Alternative Name in TLS ServerCertificate message.
+#        - TLS_SCN: Identifies the Subject Common Name in TLS ServerCertificate message.

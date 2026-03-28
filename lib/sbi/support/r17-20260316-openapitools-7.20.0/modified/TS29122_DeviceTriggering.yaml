@@ -423,9 +423,9 @@ components:
         - applicationPortId
         - triggerPayload
         - notificationDestination
-      oneOf:
-        - required: [externalId]
-        - required: [msisdn]
+#      oneOf:
+#        - required: [externalId]
+#        - required: [msisdn]
     DeviceTriggeringDeliveryReportNotification:
       description: Represents a device triggering delivery report notification.
       type: object
@@ -459,45 +459,47 @@ components:
         websockNotifConfig:
           $ref: 'TS29122_CommonData.yaml#/components/schemas/WebsockNotifConfig'
     DeliveryResult:
-      anyOf:
-      - type: string
-        enum:
-          - SUCCESS
-          - UNKNOWN
-          - FAILURE
-          - TRIGGERED
-          - EXPIRED
-          - UNCONFIRMED
-          - REPLACED
-          - TERMINATE
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SUCCESS: This value indicates that the device action request was successfully completed.
-        - UNKNOWN: This value indicates any unspecified errors.
-        - FAILURE: This value indicates that this trigger encountered a delivery error and is deemed permanently undeliverable.
-        - TRIGGERED: This value indicates that device triggering request is accepted by the SCEF.
-        - EXPIRED: This value indicates that the validity period expired before the trigger could be delivered.
-        - UNCONFIRMED: This value indicates that the delivery of the device action request is not confirmed.
-        - REPLACED: This value indicates that the device triggering replacement request is accepted by the SCEF.
-        - TERMINATE: This value indicates that the delivery of the device action request is terminated by the SCS/AS.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SUCCESS
+        - UNKNOWN
+        - FAILURE
+        - TRIGGERED
+        - EXPIRED
+        - UNCONFIRMED
+        - REPLACED
+        - TERMINATE
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SUCCESS: This value indicates that the device action request was successfully completed.
+#        - UNKNOWN: This value indicates any unspecified errors.
+#        - FAILURE: This value indicates that this trigger encountered a delivery error and is deemed permanently undeliverable.
+#        - TRIGGERED: This value indicates that device triggering request is accepted by the SCEF.
+#        - EXPIRED: This value indicates that the validity period expired before the trigger could be delivered.
+#        - UNCONFIRMED: This value indicates that the delivery of the device action request is not confirmed.
+#        - REPLACED: This value indicates that the device triggering replacement request is accepted by the SCEF.
+#        - TERMINATE: This value indicates that the delivery of the device action request is terminated by the SCS/AS.
       readOnly: true
     Priority:
-      anyOf:
-      - type: string
-        enum:
-          - NO_PRIORITY
-          - PRIORITY
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - NO_PRIORITY: This value indicates that the device trigger has no priority.
-        - PRIORITY: This value indicates that the device trigger has priority.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - NO_PRIORITY
+        - PRIORITY
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - NO_PRIORITY: This value indicates that the device trigger has no priority.
+#        - PRIORITY: This value indicates that the device trigger has priority.

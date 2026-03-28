@@ -413,21 +413,22 @@ components:
           description: Related UE model's IMEI-TAC values.
       nullable: true
     RacsFailureCode:
-      anyOf:
-      - type: string
-        enum:
-          - MALFUNCTION
-          - RESOURCE_LIMITATION
-          - RACS_ID_DUPLICATED
-          - OTHER_REASON
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - MALFUNCTION: This value indicates that something functions wrongly in RACS provisioning or the RACS provisioning does not function at all.
-        - RESOURCE_LIMITATION: This value indicates there is resource limitation for RACS data storage.
-        - RACS_ID_DUPLICATED: The received RACS identifier(s) are already provisioned.
-        - OTHER_REASON: Other reason unspecified.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MALFUNCTION
+        - RESOURCE_LIMITATION
+        - RACS_ID_DUPLICATED
+        - OTHER_REASON
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - MALFUNCTION: This value indicates that something functions wrongly in RACS provisioning or the RACS provisioning does not function at all.
+#        - RESOURCE_LIMITATION: This value indicates there is resource limitation for RACS data storage.
+#        - RACS_ID_DUPLICATED: The received RACS identifier(s) are already provisioned.
+#        - OTHER_REASON: Other reason unspecified.

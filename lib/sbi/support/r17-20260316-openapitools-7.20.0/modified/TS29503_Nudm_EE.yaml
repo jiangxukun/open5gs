@@ -462,15 +462,65 @@ components:
           $ref: '#/components/schemas/ReachabilityReport'
 
     Report:
-      oneOf:
-        - $ref: '#/components/schemas/ChangeOfSupiPeiAssociationReport'
-        - $ref: '#/components/schemas/RoamingStatusReport'
-        - $ref: '#/components/schemas/CnTypeChangeReport'
-        - $ref: '#/components/schemas/CmInfoReport'
-        - $ref: '#/components/schemas/LossConnectivityReport'
-        - $ref: '#/components/schemas/LocationReport'
-        - $ref: '#/components/schemas/PdnConnectivityStatReport'
-
+#      oneOf:
+#        - $ref: '#/components/schemas/ChangeOfSupiPeiAssociationReport'
+#        - $ref: '#/components/schemas/RoamingStatusReport'
+#        - $ref: '#/components/schemas/CnTypeChangeReport'
+#        - $ref: '#/components/schemas/CmInfoReport'
+#        - $ref: '#/components/schemas/LossConnectivityReport'
+#        - $ref: '#/components/schemas/LocationReport'
+#        - $ref: '#/components/schemas/PdnConnectivityStatReport'
+#
+      type: object
+      properties:
+        newPei:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Pei'
+        roaming:
+          type: boolean
+        newServingPlmn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/PlmnId'
+        accessType:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/AccessType'
+        newCnType:
+          $ref: '#/components/schemas/CnType'
+        oldCnType:
+          $ref: '#/components/schemas/CnType'
+        oldCmInfoList:
+          type: array
+          items:
+            $ref: 'TS29518_Namf_EventExposure.yaml#/components/schemas/CmInfo'
+          minItems: 1
+          maxItems: 2
+        newCmInfoList:
+          type: array
+          items:
+            $ref: 'TS29518_Namf_EventExposure.yaml#/components/schemas/CmInfo'
+          minItems: 1
+          maxItems: 2
+        lossOfConnectReason:
+          $ref: 'TS29518_Namf_EventExposure.yaml#/components/schemas/LossOfConnectivityReason'
+        location:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/UserLocation'
+        pdnConnStat:
+          $ref: '#/components/schemas/PdnConnectivityStatus'
+        dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+        pduSeId:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/PduSessionId'
+        ipv4Addr:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv4Addr'
+        ipv6Prefixes:
+          type: array
+          items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv6Prefix'
+          minItems: 1
+        ipv6Addrs:
+          type: array
+          items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Ipv6Addr'
+          minItems: 1
+        pduSessType:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/PduSessionType'
     ReachabilityForSmsReport:
       type: object
       required:
@@ -665,111 +715,121 @@ components:
 # ENUMS:
 
     ReachabilityForSmsConfiguration:
-      anyOf:
-        - type: string
-          enum:
-          - REACHABILITY_FOR_SMS_OVER_NAS
-          - REACHABILITY_FOR_SMS_OVER_IP
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - REACHABILITY_FOR_SMS_OVER_NAS
+      - REACHABILITY_FOR_SMS_OVER_IP
+#        - type: string
+#
     EventType:
-      anyOf:
-        - type: string
-          enum:
-          - LOSS_OF_CONNECTIVITY
-          - UE_REACHABILITY_FOR_DATA
-          - UE_REACHABILITY_FOR_SMS
-          - LOCATION_REPORTING
-          - CHANGE_OF_SUPI_PEI_ASSOCIATION
-          - ROAMING_STATUS
-          - COMMUNICATION_FAILURE
-          - AVAILABILITY_AFTER_DDN_FAILURE
-          - CN_TYPE_CHANGE
-          - DL_DATA_DELIVERY_STATUS
-          - PDN_CONNECTIVITY_STATUS
-          - UE_CONNECTION_MANAGEMENT_STATE
-          - ACCESS_TYPE_REPORT
-          - REGISTRATION_STATE_REPORT
-          - CONNECTIVITY_STATE_REPORT
-          - TYPE_ALLOCATION_CODE_REPORT
-          - FREQUENT_MOBILITY_REGISTRATION_REPORT
-          - PDU_SES_REL
-          - PDU_SES_EST
-          - UE_MEMORY_AVAILABLE_FOR_SMS
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - LOSS_OF_CONNECTIVITY
+      - UE_REACHABILITY_FOR_DATA
+      - UE_REACHABILITY_FOR_SMS
+      - LOCATION_REPORTING
+      - CHANGE_OF_SUPI_PEI_ASSOCIATION
+      - ROAMING_STATUS
+      - COMMUNICATION_FAILURE
+      - AVAILABILITY_AFTER_DDN_FAILURE
+      - CN_TYPE_CHANGE
+      - DL_DATA_DELIVERY_STATUS
+      - PDN_CONNECTIVITY_STATUS
+      - UE_CONNECTION_MANAGEMENT_STATE
+      - ACCESS_TYPE_REPORT
+      - REGISTRATION_STATE_REPORT
+      - CONNECTIVITY_STATE_REPORT
+      - TYPE_ALLOCATION_CODE_REPORT
+      - FREQUENT_MOBILITY_REGISTRATION_REPORT
+      - PDU_SES_REL
+      - PDU_SES_EST
+      - UE_MEMORY_AVAILABLE_FOR_SMS
+#        - type: string
+#
     LocationAccuracy:
-      anyOf:
-        - type: string
-          enum:
-          - CELL_LEVEL
-          - RAN_NODE_LEVEL
-          - TA_LEVEL
-          - N3IWF_LEVEL
-          - UE_IP
-          - UE_PORT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - CELL_LEVEL
+      - RAN_NODE_LEVEL
+      - TA_LEVEL
+      - N3IWF_LEVEL
+      - UE_IP
+      - UE_PORT
+#        - type: string
+#
     CnType:
-      anyOf:
-        - type: string
-          enum:
-          - SINGLE_4G
-          - SINGLE_5G
-          - DUAL_4G5G
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - SINGLE_4G
+      - SINGLE_5G
+      - DUAL_4G5G
+#        - type: string
+#
     AssociationType:
-      anyOf:
-        - type: string
-          enum:
-          - IMEI_CHANGE
-          - IMEISV_CHANGE
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - IMEI_CHANGE
+      - IMEISV_CHANGE
+#        - type: string
+#
     EventReportMode:
-      anyOf:
-        - type: string
-          enum:
-          - PERIODIC
-          - ON_EVENT_DETECTION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - PERIODIC
+      - ON_EVENT_DETECTION
+#        - type: string
+#
     ReachabilityForDataReportConfig:
-      anyOf:
-        - type: string
-          enum:
-          - DIRECT_REPORT
-          - INDIRECT_REPORT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - DIRECT_REPORT
+      - INDIRECT_REPORT
+#        - type: string
+#
     RevokedCause:
-      anyOf:
-        - type: string
-          enum:
-          - NOT_ALLOWED
-          - EXCLUDED_FROM_GROUP
-          - GPSI_REMOVED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - NOT_ALLOWED
+      - EXCLUDED_FROM_GROUP
+      - GPSI_REMOVED
+#        - type: string
+#
     FailedCause:
-      anyOf:
-        - type: string
-          enum:
-          - AF_NOT_ALLOWED
-          - MTC_PROVIDER_NOT_ALLOWED
-          - MONITORING_NOT_ALLOWED
-          - UNSUPPORTED_MONITORING_EVENT_TYPE
-          - UNSUPPORTED_MONITORING_REPORT_OPTIONS
-          - UNSPECIFIED
-        - type: string
-      description: Indicates the Failed cause of the failed Monitoring Configuration in the EE subscription
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - AF_NOT_ALLOWED
+      - MTC_PROVIDER_NOT_ALLOWED
+      - MONITORING_NOT_ALLOWED
+      - UNSUPPORTED_MONITORING_EVENT_TYPE
+      - UNSUPPORTED_MONITORING_REPORT_OPTIONS
+      - UNSPECIFIED
+#        - type: string
+#      description: Indicates the Failed cause of the failed Monitoring Configuration in the EE subscription
+#
     PdnConnectivityStatus:
-      anyOf:
-        - type: string
-          enum:
-          - ESTABLISHED
-          - RELEASED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - ESTABLISHED
+      - RELEASED
+#        - type: string
+#

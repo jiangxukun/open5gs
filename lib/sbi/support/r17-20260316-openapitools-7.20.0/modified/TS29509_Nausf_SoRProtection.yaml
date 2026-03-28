@@ -106,13 +106,22 @@ components:
 
     SteeringContainer:
       description: Contains the information sent to UE.
-      oneOf:
-        - type: array
+#      oneOf:
+#        - type: array
+#          items:
+#            $ref: '#/components/schemas/SteeringInfo'
+#          minItems: 1
+#        - $ref: '#/components/schemas/SecuredPacket'
+#
+      type: object
+      properties:
+        SteeringInfoList:
+          type: array
           items:
             $ref: '#/components/schemas/SteeringInfo'
           minItems: 1
-        - $ref: '#/components/schemas/SecuredPacket'
-
+        SecuredPacket:
+          $ref: '#/components/schemas/SecuredPacket'
     SteeringInfo:
       description: Contains a combination of one PLMN identity and zero or more access technologies.
       type: object
@@ -161,19 +170,20 @@ components:
 
     AccessTech:
       description: Represents the access technology
-      anyOf:
-      - type: string
-        enum:
-        - NR
-        - EUTRAN_IN_WBS1_MODE_AND_NBS1_MODE
-        - EUTRAN_IN_NBS1_MODE_ONLY
-        - EUTRAN_IN_WBS1_MODE_ONLY
-        - UTRAN
-        - GSM_AND_ECGSM_IoT
-        - GSM_WITHOUT_ECGSM_IoT
-        - ECGSM_IoT_ONLY
-        - CDMA_1xRTT
-        - CDMA_HRPD
-        - GSM_COMPACT
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+      - NR
+      - EUTRAN_IN_WBS1_MODE_AND_NBS1_MODE
+      - EUTRAN_IN_NBS1_MODE_ONLY
+      - EUTRAN_IN_WBS1_MODE_ONLY
+      - UTRAN
+      - GSM_AND_ECGSM_IoT
+      - GSM_WITHOUT_ECGSM_IoT
+      - ECGSM_IoT_ONLY
+      - CDMA_1xRTT
+      - CDMA_HRPD
+      - GSM_COMPACT
+#      - type: string
+#

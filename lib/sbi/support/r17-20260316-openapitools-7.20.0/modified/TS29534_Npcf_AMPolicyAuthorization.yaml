@@ -678,31 +678,33 @@ components:
 #
     AmTerminationCause:
       description: It represents the cause values that the PCF should report when requesting to an NF service consumer the deletion of an "AF application AM context" resource.
-      anyOf:
-        - type: string
-          enum:
-            - UE_DEREGISTERED
-            - UNSPECIFIED
-            - INSUFFICIENT_RESOURCES
-        - type: string
-          description: >
-            This string provides forward-compatibility with future extensions to the enumeration but
-            is not used to encode content defined in the present version of this API.
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - UE_DEREGISTERED
+        - UNSPECIFIED
+        - INSUFFICIENT_RESOURCES
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future extensions to the enumeration but
+#            is not used to encode content defined in the present version of this API.
 #
     AmEvent:
-      anyOf:
-      - type: string
-        enum:
-          - SAC_CH
-          - PDUID_CH
-      - type: string
-        description: >
-          This string provides forward-compatibility with future extensions to the enumeration but
-          is not used to encode content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - SAC_CH: Service Area Coverage Change
-        - PDUID_CH: The PDUID assigned to a UE for the UE ProSe Policies changed
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SAC_CH
+        - PDUID_CH
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future extensions to the enumeration but
+#          is not used to encode content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - SAC_CH: Service Area Coverage Change
+#        - PDUID_CH: The PDUID assigned to a UE for the UE ProSe Policies changed
 #
 #
     AppAmContextRespData:

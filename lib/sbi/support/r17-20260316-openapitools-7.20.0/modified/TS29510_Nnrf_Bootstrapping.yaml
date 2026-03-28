@@ -114,9 +114,10 @@ components:
 
     Status:
       description: Overal status of the NRF
-      anyOf:
-        - type: string
-          enum:
-            - OPERATIVE
-            - NON_OPERATIVE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - OPERATIVE
+        - NON_OPERATIVE
+#        - type: string

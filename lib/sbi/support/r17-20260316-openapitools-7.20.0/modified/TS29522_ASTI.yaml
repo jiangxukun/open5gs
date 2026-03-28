@@ -359,10 +359,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
       required:
         - asTimeDisParam
-      oneOf:
-        - required: [gpsis]
-        - required: [interGrpId]
-
+#      oneOf:
+#        - required: [gpsis]
+#        - required: [interGrpId]
+#
     StatusRequestData:
       description: >
         Contains the parameters for retrieval of the status of the access stratum time distribution

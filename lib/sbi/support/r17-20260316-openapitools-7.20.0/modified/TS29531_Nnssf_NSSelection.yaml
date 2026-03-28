@@ -412,13 +412,14 @@ components:
           minItems: 1
 
     RoamingIndication:
-#      description: Contains the indication on roaming
+      description: Contains the indication on roaming
 #      anyOf:
 #        - type: string
-          enum:
-            - NON_ROAMING
-            - LOCAL_BREAKOUT
-            - HOME_ROUTED_ROAMING
+      type: string
+      enum:
+        - NON_ROAMING
+        - LOCAL_BREAKOUT
+        - HOME_ROUTED_ROAMING
 #        - type: string
     NsiId:
       description: Contains the Identifier of the selected Network Slice instance

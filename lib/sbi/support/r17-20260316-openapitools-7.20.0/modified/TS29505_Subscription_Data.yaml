@@ -2510,11 +2510,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier
@@ -2567,11 +2568,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier
@@ -2605,11 +2607,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: afInstanceId
           in: path
           description: Application Function Instance Identifier
@@ -2653,11 +2656,12 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
-              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
-              - type: string
-                pattern: '^anyUE$'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+#              - $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/ExtGroupId'
+#              - type: string
+#                pattern: '^anyUE$'
         - name: supported-features
           in: query
           description: Features required to be supported by the target NF
@@ -4372,9 +4376,39 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
-                  - $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+#                oneOf:
+#                  - $ref: 'TS29571_CommonData.yaml#/components/schemas/PatchResult'
+#                  - $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+                type: object
+                properties:
+                  report:
+                    type: array
+                    items:
+                      $ref: 'TS29571_CommonData.yaml#/components/schemas/ReportItem'
+                    minItems: 1
+                    description: The execution report contains an array of report items. Each report item indicates one  failed modification.
+                  ueId:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+                  callbackReference:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                  originalCallbackReference:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                  monitoredResourceUris:
+                    type: array
+                    items:
+                      $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
+                  expiry:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/DateTime'
+                  sdmSubscription:
+                    $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/SdmSubscription'
+                  hssSubscriptionInfo:
+                    $ref: '#/components/schemas/HssSubscriptionInfo'
+                  subscriptionId:
+                    type: string
+                  uniqueSubscription:
+                    type: boolean
+                  supportedFeatures:
+                    $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
         '403':
           $ref: 'TS29571_CommonData.yaml#/components/responses/403'
         '404':
@@ -6600,13 +6634,14 @@ components:
           $ref: '#/components/schemas/Sign'
 
     SqnScheme:
-#      description: Scheme for generation of Sequence Numbers.
+      description: Scheme for generation of Sequence Numbers.
 #      anyOf:
 #        - type: string
-          enum:
-            - GENERAL
-            - NON_TIME_BASED
-            - TIME_BASED
+      type: string
+      enum:
+        - GENERAL
+        - NON_TIME_BASED
+        - TIME_BASED
 #        - type: string
     Sign:
       description: Sign of the DIF value.
@@ -6626,27 +6661,28 @@ components:
       minItems: 1
       uniqueItems: true
     DataSetName:
-#      description: The name of data set.
+      description: The name of data set.
 #      anyOf:
 #      - type: string
-        enum:
-        - AM
-        - SMF_SEL
-        - SMS_SUB
-        - SM
-        - TRACE
-        - SMS_MNG
-        - LCS_PRIVACY
-        - LCS_MO
-        - LCS_BCA
-        - V2X
-        - PROSE
-        - ODB
-        - EE_PROF
-        - PP_PROF
-        - NIDD_AUTH
-        - USER_CONSENT
-        - MBS
+      type: string
+      enum:
+      - AM
+      - SMF_SEL
+      - SMS_SUB
+      - SM
+      - TRACE
+      - SMS_MNG
+      - LCS_PRIVACY
+      - LCS_MO
+      - LCS_BCA
+      - V2X
+      - PROSE
+      - ODB
+      - EE_PROF
+      - PP_PROF
+      - NIDD_AUTH
+      - USER_CONSENT
+      - MBS
 #      - type: string
     ProvisionedDataSets:
       description: Contains the provisioned data sets.
@@ -6727,10 +6763,10 @@ components:
         allowedDnnList:
           type: array
           items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            anyOf:
 #              - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #              - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-               $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
         allowedSnssaiList:
           type: array
           items:
@@ -6786,15 +6822,16 @@ components:
           minItems: 1
 
     AuthMethod:
-#      description: Contains the Authentication Method.
+      description: Contains the Authentication Method.
 #      anyOf:
 #        - type: string
-          enum:
-            - 5G_AKA
-            - EAP_AKA_PRIME
-            - EAP_TLS
-            - EAP_TTLS
-            - NONE
+      type: string
+      enum:
+        - 5G_AKA
+        - EAP_AKA_PRIME
+        - EAP_TLS
+        - EAP_TTLS
+        - NONE
 #        - type: string
     PpData:
       $ref: 'TS29503_Nudm_PP.yaml#/components/schemas/PpData'
@@ -7016,18 +7053,19 @@ components:
     ContextDataSetName:
 #      anyOf:
 #      - type: string
-        enum:
-        - AMF_3GPP
-        - AMF_NON_3GPP
-        - SDM_SUBSCRIPTIONS
-        - EE_SUBSCRIPTIONS
-        - SMSF_3GPP
-        - SMSF_NON_3GPP
-        - SUBS_TO_NOTIFY
-        - SMF_REG
-        - IP_SM_GW
-        - ROAMING_INFO
-        - PEI_INFO
+      type: string
+      enum:
+      - AMF_3GPP
+      - AMF_NON_3GPP
+      - SDM_SUBSCRIPTIONS
+      - EE_SUBSCRIPTIONS
+      - SMSF_3GPP
+      - SMSF_NON_3GPP
+      - SUBS_TO_NOTIFY
+      - SMF_REG
+      - IP_SM_GW
+      - ROAMING_INFO
+      - PEI_INFO
 #      - type: string
     ContextDataSets:
       description: Contains the context data sets.
@@ -7219,17 +7257,18 @@ components:
     PpDataType:
 #      anyOf:
 #      - type: string
-        enum:
-        - COMMUNICATION_CHARACTERISTICS
-        - EXPECTED_UE_BEHAVIOUR
-        - EC_RESTRICTION
-        - ACS_INFO
-        - TRACE
-        - STN_SR
-        - LCS_PRIVACY
-        - SOR_INFO
+      type: string
+      enum:
+      - COMMUNICATION_CHARACTERISTICS
+      - EXPECTED_UE_BEHAVIOUR
+      - EC_RESTRICTION
+      - ACS_INFO
+      - TRACE
+      - STN_SR
+      - LCS_PRIVACY
+      - SOR_INFO
 #      - type: string
-
+#
     GroupIdentifiers:
       description: External or Internal Group Identifier with a list of group members
       type: object

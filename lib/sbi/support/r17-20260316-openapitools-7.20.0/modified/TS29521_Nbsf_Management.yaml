@@ -1285,9 +1285,10 @@ components:
     BindingLevel:
 #      anyOf:
 #      - type: string
-        enum:
-          - NF_SET
-          - NF_INSTANCE
+      type: string
+      enum:
+        - NF_SET
+        - NF_INSTANCE
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -1297,20 +1298,21 @@ components:
 #        Possible values are:
 #        - "NF_SET"
 #        - "NF_INSTANCE"
-
+#
     BsfEvent:
-#      description: Represents an event to be notified by the BSF.
+      description: Represents an event to be notified by the BSF.
 #      anyOf:
 #      - type: string
-        enum:
-          - PCF_PDU_SESSION_BINDING_REGISTRATION
-          - PCF_PDU_SESSION_BINDING_DEREGISTRATION
-          - PCF_UE_BINDING_REGISTRATION
-          - PCF_UE_BINDING_DEREGISTRATION
-          - SNSSAI_DNN_BINDING_REGISTRATION
-          - SNSSAI_DNN_BINDING_DEREGISTRATION
+      type: string
+      enum:
+        - PCF_PDU_SESSION_BINDING_REGISTRATION
+        - PCF_PDU_SESSION_BINDING_DEREGISTRATION
+        - PCF_UE_BINDING_REGISTRATION
+        - PCF_UE_BINDING_DEREGISTRATION
+        - SNSSAI_DNN_BINDING_REGISTRATION
+        - SNSSAI_DNN_BINDING_DEREGISTRATION
 #      - type: string
-
+#
     BsfSubscriptionResp:
       description: >
         It represents a response to a modification or creation request of an Individual Binding 

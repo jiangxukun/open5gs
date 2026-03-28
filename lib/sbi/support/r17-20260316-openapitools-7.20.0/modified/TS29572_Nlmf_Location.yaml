@@ -565,11 +565,11 @@ components:
     UeAreaIndication:
       description: Indicates area (country, area in a country or international area) where UE is located
       type: object
-      oneOf:
-        - required:
-          - country
-        - required:
-          - internationalAreaInd
+#      oneOf:
+#        - required:
+#          - country
+#        - required:
+#          - internationalAreaInd
       properties:
         country:
           description: Indicates country or area in a country where UE is located
@@ -808,12 +808,26 @@ components:
 
     VelocityEstimate:
       description: Velocity estimate.
-      oneOf:
-        - $ref: '#/components/schemas/HorizontalVelocity'
-        - $ref: '#/components/schemas/HorizontalWithVerticalVelocity'
-        - $ref: '#/components/schemas/HorizontalVelocityWithUncertainty'
-        - $ref: '#/components/schemas/HorizontalWithVerticalVelocityAndUncertainty'
-
+#      oneOf:
+#        - $ref: '#/components/schemas/HorizontalVelocity'
+#        - $ref: '#/components/schemas/HorizontalWithVerticalVelocity'
+#        - $ref: '#/components/schemas/HorizontalVelocityWithUncertainty'
+#        - $ref: '#/components/schemas/HorizontalWithVerticalVelocityAndUncertainty'
+#
+      type: object
+      properties:
+        hSpeed:
+          $ref: '#/components/schemas/HorizontalSpeed'
+        bearing:
+          $ref: '#/components/schemas/Angle'
+        vSpeed:
+          $ref: '#/components/schemas/VerticalSpeed'
+        vDirection:
+          $ref: '#/components/schemas/VerticalDirection'
+        hUncertainty:
+          $ref: '#/components/schemas/SpeedUncertainty'
+        vUncertainty:
+          $ref: '#/components/schemas/SpeedUncertainty'
     HorizontalVelocity:
       description: Horizontal velocity.
       type: object
@@ -1315,131 +1329,141 @@ components:
 #
     ExternalClientType:
       description: Indicates types of External Clients.
-      anyOf:
-        - type: string
-          enum:
-            - EMERGENCY_SERVICES
-            - VALUE_ADDED_SERVICES
-            - PLMN_OPERATOR_SERVICES
-            - LAWFUL_INTERCEPT_SERVICES
-            - PLMN_OPERATOR_BROADCAST_SERVICES
-            - PLMN_OPERATOR_OM
-            - PLMN_OPERATOR_ANONYMOUS_STATISTICS
-            - PLMN_OPERATOR_TARGET_MS_SERVICE_SUPPORT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - EMERGENCY_SERVICES
+        - VALUE_ADDED_SERVICES
+        - PLMN_OPERATOR_SERVICES
+        - LAWFUL_INTERCEPT_SERVICES
+        - PLMN_OPERATOR_BROADCAST_SERVICES
+        - PLMN_OPERATOR_OM
+        - PLMN_OPERATOR_ANONYMOUS_STATISTICS
+        - PLMN_OPERATOR_TARGET_MS_SERVICE_SUPPORT
+#        - type: string
+#
     SupportedGADShapes:
       description: Indicates supported GAD shapes.
-      anyOf:
-        - type: string
-          enum:
-            - POINT
-            - POINT_UNCERTAINTY_CIRCLE
-            - POINT_UNCERTAINTY_ELLIPSE
-            - POLYGON
-            - POINT_ALTITUDE
-            - POINT_ALTITUDE_UNCERTAINTY
-            - ELLIPSOID_ARC
-            - LOCAL_2D_POINT_UNCERTAINTY_ELLIPSE
-            - LOCAL_3D_POINT_UNCERTAINTY_ELLIPSOID
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - POINT
+        - POINT_UNCERTAINTY_CIRCLE
+        - POINT_UNCERTAINTY_ELLIPSE
+        - POLYGON
+        - POINT_ALTITUDE
+        - POINT_ALTITUDE_UNCERTAINTY
+        - ELLIPSOID_ARC
+        - LOCAL_2D_POINT_UNCERTAINTY_ELLIPSE
+        - LOCAL_3D_POINT_UNCERTAINTY_ELLIPSOID
+#        - type: string
+#
     ResponseTime:
       description: Indicates acceptable delay of location request.
-      anyOf:
-        - type: string
-          enum:
-            - LOW_DELAY
-            - DELAY_TOLERANT
-            - NO_DELAY
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - LOW_DELAY
+        - DELAY_TOLERANT
+        - NO_DELAY
+#        - type: string
+#
     PositioningMethod:
       description: Indicates supported positioning methods.
-      anyOf:
-        - type: string
-          enum:
-            - CELLID
-            - ECID
-            - OTDOA
-            - BAROMETRIC_PRESSURE
-            - WLAN
-            - BLUETOOTH
-            - MBS
-            - MOTION_SENSOR
-            - DL_TDOA
-            - DL_AOD
-            - MULTI-RTT
-            - NR_ECID
-            - UL_TDOA
-            - UL_AOA
-            - NETWORK_SPECIFIC
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - CELLID
+        - ECID
+        - OTDOA
+        - BAROMETRIC_PRESSURE
+        - WLAN
+        - BLUETOOTH
+        - MBS
+        - MOTION_SENSOR
+        - DL_TDOA
+        - DL_AOD
+        - MULTI-RTT
+        - NR_ECID
+        - UL_TDOA
+        - UL_AOA
+        - NETWORK_SPECIFIC
+#        - type: string
+#
     PositioningMode:
       description: Indicates supported modes used for positioning method.
-      anyOf:
-        - type: string
-          enum:
-            - UE_BASED
-            - UE_ASSISTED
-            - CONVENTIONAL
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - UE_BASED
+        - UE_ASSISTED
+        - CONVENTIONAL
+#        - type: string
+#
     GnssId:
       description: Global Navigation Satellite System (GNSS) ID.
-      anyOf:
-        - type: string
-          enum:
-            - GPS
-            - GALILEO
-            - SBAS
-            - MODERNIZED_GPS
-            - QZSS
-            - GLONASS
-            - BDS
-            - NAVIC
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - GPS
+        - GALILEO
+        - SBAS
+        - MODERNIZED_GPS
+        - QZSS
+        - GLONASS
+        - BDS
+        - NAVIC
+#        - type: string
+#
     Usage:
       description: Indicates usage made of the location measurement.
-      anyOf:
-        - type: string
-          enum:
-            - UNSUCCESS
-            - SUCCESS_RESULTS_NOT_USED
-            - SUCCESS_RESULTS_USED_TO_VERIFY_LOCATION
-            - SUCCESS_RESULTS_USED_TO_GENERATE_LOCATION
-            - SUCCESS_METHOD_NOT_DETERMINED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - UNSUCCESS
+        - SUCCESS_RESULTS_NOT_USED
+        - SUCCESS_RESULTS_USED_TO_VERIFY_LOCATION
+        - SUCCESS_RESULTS_USED_TO_GENERATE_LOCATION
+        - SUCCESS_METHOD_NOT_DETERMINED
+#        - type: string
+#
     LcsPriority:
       description: Indicates priority of the LCS client.
-      anyOf:
-        - type: string
-          enum:
-            - HIGHEST_PRIORITY
-            - NORMAL_PRIORITY
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - HIGHEST_PRIORITY
+        - NORMAL_PRIORITY
+#        - type: string
+#
     VelocityRequested:
       description: Indicates velocity requirement.
-      anyOf:
-        - type: string
-          enum:
-            - VELOCITY_IS_NOT_REQUESTED
-            - VELOCITY_IS_REQUESTED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - VELOCITY_IS_NOT_REQUESTED
+        - VELOCITY_IS_REQUESTED
+#        - type: string
+#
     AccuracyFulfilmentIndicator:
       description: Indicates fulfilment of requested accuracy.
-      anyOf:
-        - type: string
-          enum:
-            - REQUESTED_ACCURACY_FULFILLED
-            - REQUESTED_ACCURACY_NOT_FULFILLED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - REQUESTED_ACCURACY_FULFILLED
+        - REQUESTED_ACCURACY_NOT_FULFILLED
+#        - type: string
+#
     VerticalDirection:
       description: Indicates direction of vertical speed.
       type: string
@@ -1449,98 +1473,107 @@ components:
 
     LdrType:
       description: Indicates LDR types.
-      anyOf:
-        - type: string
-          enum:
-            - UE_AVAILABLE
-            - PERIODIC
-            - ENTERING_INTO_AREA
-            - LEAVING_FROM_AREA
-            - BEING_INSIDE_AREA
-            - MOTION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - UE_AVAILABLE
+        - PERIODIC
+        - ENTERING_INTO_AREA
+        - LEAVING_FROM_AREA
+        - BEING_INSIDE_AREA
+        - MOTION
+#        - type: string
+#
     ReportingAreaType:
       description: Indicates type of event reporting area.
-      anyOf:
-        - type: string
-          enum:
-            - EPS_TRACKING_AREA_IDENTITY
-            - E-UTRAN_CELL_GLOBAL_IDENTIFICATION
-            - 5GS_TRACKING_AREA_IDENTITY
-            - NR_CELL_GLOBAL_IDENTITY
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - EPS_TRACKING_AREA_IDENTITY
+        - E-UTRAN_CELL_GLOBAL_IDENTIFICATION
+        - 5GS_TRACKING_AREA_IDENTITY
+        - NR_CELL_GLOBAL_IDENTITY
+#        - type: string
+#
     OccurrenceInfo:
       description: Specifies occurrence of event reporting.
-      anyOf:
-        - type: string
-          enum:
-            - ONE_TIME_EVENT
-            - MULTIPLE_TIME_EVENT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - ONE_TIME_EVENT
+        - MULTIPLE_TIME_EVENT
+#        - type: string
+#
     ReportingAccessType:
       description: Specifies access types of event reporting.
-      anyOf:
-        - type: string
-          enum:
-            - NR
-            - EUTRA_CONNECTED_TO_5GC
-            - NON_3GPP_CONNECTED_TO_5GC
-            - NR_LEO
-            - NR_MEO
-            - NR_GEO
-            - NR_OTHER_SAT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - NR
+        - EUTRA_CONNECTED_TO_5GC
+        - NON_3GPP_CONNECTED_TO_5GC
+        - NR_LEO
+        - NR_MEO
+        - NR_GEO
+        - NR_OTHER_SAT
+#        - type: string
+#
     EventClass:
       description: Specifies event classes.
-      anyOf:
-        - type: string
-          enum:
-            - SUPPLEMENTARY_SERVICES
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SUPPLEMENTARY_SERVICES
+#        - type: string
+#
     ReportedEventType:
       description: Specifies type of event reporting.
-      anyOf:
-        - type: string
-          enum:
-            - PERIODIC_EVENT
-            - ENTERING_AREA_EVENT
-            - LEAVING_AREA_EVENT
-            - BEING_INSIDE_AREA_EVENT
-            - MOTION_EVENT
-            - MAXIMUM_INTERVAL_EXPIRATION_EVENT
-            - LOCATION_CANCELLATION_EVENT
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - PERIODIC_EVENT
+        - ENTERING_AREA_EVENT
+        - LEAVING_AREA_EVENT
+        - BEING_INSIDE_AREA_EVENT
+        - MOTION_EVENT
+        - MAXIMUM_INTERVAL_EXPIRATION_EVENT
+        - LOCATION_CANCELLATION_EVENT
+#        - type: string
+#
     TerminationCause:
       description: Specifies causes of event reporting termination.
-      anyOf:
-        - type: string
-          enum:
-            - TERMINATION_BY_UE
-            - TERMINATION_BY_NETWORK
-            - NORMAL_TERMINATION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - TERMINATION_BY_UE
+        - TERMINATION_BY_NETWORK
+        - NORMAL_TERMINATION
+#        - type: string
+#
     LcsQosClass:
       description: Specifies LCS QoS class.
-      anyOf:
-        - type: string
-          enum:
-            - BEST_EFFORT
-            - ASSURED
-            - MULTIPLE_QOS
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - BEST_EFFORT
+        - ASSURED
+        - MULTIPLE_QOS
+#        - type: string
+#
     UeLocationServiceInd:
       description: Specifies location service types requested by UE.
-      anyOf:
-        - type: string
-          enum:
-            - LOCATION_ESTIMATE
-            - LOCATION_ASSISTANCE_DATA
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - LOCATION_ESTIMATE
+        - LOCATION_ASSISTANCE_DATA
+#        - type: string

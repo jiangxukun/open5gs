@@ -377,8 +377,9 @@ components:
 
     UeContextInfoClass:
       description: Indicates the UE Context information class
-      anyOf:
-      - type: string
-        enum:
-          - TADS
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - TADS
+#      - type: string

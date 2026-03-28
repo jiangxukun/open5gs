@@ -662,11 +662,12 @@ components:
             $ref: '#/components/schemas/AuthorizedNssaiAvailabilityData'
     NssfEventType:
       description: This contains the event for the subscription
-      anyOf:
-        - type: string
-          enum:
-            - SNSSAI_STATUS_CHANGE_REPORT
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SNSSAI_STATUS_CHANGE_REPORT
+#        - type: string
     PatchDocument:
       description: This contains the JSON Patch instructions for updating the Nssai availability data information at the NSSF
       type: array

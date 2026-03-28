@@ -1457,68 +1457,69 @@ components:
           $ref: '#/components/schemas/PlmnOauth2'
 
     NFType:
-#      description: NF types known to NRF
+      description: NF types known to NRF
 #      anyOf:
 #        - type: string
-          enum:
-            - NRF
-            - UDM
-            - AMF
-            - SMF
-            - AUSF
-            - NEF
-            - PCF
-            - SMSF
-            - NSSF
-            - UDR
-            - LMF
-            - GMLC
-            - 5G_EIR
-            - SEPP
-            - UPF
-            - N3IWF
-            - AF
-            - UDSF
-            - BSF
-            - CHF
-            - NWDAF
-            - PCSCF
-            - CBCF
-            - HSS
-            - UCMF
-            - SOR_AF
-            - SPAF
-            - MME
-            - SCSAS
-            - SCEF
-            - SCP
-            - NSSAAF
-            - ICSCF
-            - SCSCF
-            - DRA
-            - IMS_AS
-            - AANF
-            - 5G_DDNMF
-            - NSACF
-            - MFAF
-            - EASDF
-            - DCCF
-            - MB_SMF
-            - TSCTSF
-            - ADRF
-            - GBA_BSF
-            - CEF
-            - MB_UPF
-            - NSWOF
-            - PKMF
-            - MNPF
-            - SMS_GMSC
-            - SMS_IWMSC
-            - MBSF
-            - MBSTF
-            - PANF
+      type: string
+      enum:
+        - NRF
+        - UDM
+        - AMF
+        - SMF
+        - AUSF
+        - NEF
+        - PCF
+        - SMSF
+        - NSSF
+        - UDR
+        - LMF
+        - GMLC
+        - 5G_EIR
+        - SEPP
+        - UPF
+        - N3IWF
+        - AF
+        - UDSF
+        - BSF
+        - CHF
+        - NWDAF
+        - PCSCF
+        - CBCF
+        - HSS
+        - UCMF
+        - SOR_AF
+        - SPAF
+        - MME
+        - SCSAS
+        - SCEF
+        - SCP
+        - NSSAAF
+        - ICSCF
+        - SCSCF
+        - DRA
+        - IMS_AS
+        - AANF
+        - 5G_DDNMF
+        - NSACF
+        - MFAF
+        - EASDF
+        - DCCF
+        - MB_SMF
+        - TSCTSF
+        - ADRF
+        - GBA_BSF
+        - CEF
+        - MB_UPF
+        - NSWOF
+        - PKMF
+        - MNPF
+        - SMS_GMSC
+        - SMS_IWMSC
+        - MBSF
+        - MBSTF
+        - PANF
 #        - type: string
-
+#
     NefId:
       description: Identity of the NEF
       type: string
@@ -1602,15 +1603,15 @@ components:
             type: string
           minItems: 1
         requesterFeatures:
-#          writeOnly: true
+          writeOnly: true
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
 #          allOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
         nrfSupportedFeatures:
-#          readOnly: true
+          readOnly: true
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
 #          allOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
         hnrfUri:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
         onboardingCapability:
@@ -1642,22 +1643,29 @@ components:
 #        - $ref: '#/components/schemas/NwdafCond'
 #        - $ref: '#/components/schemas/NefCond'
 #        - $ref: '#/components/schemas/DccfCond'
+#
       type: object
       properties:
         nfInstanceId:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
-        nfInstanceList:
+        nfInstanceIdList:
           type: array
           items:
             $ref: 'TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+          minItems: 1
         nfType:
           $ref: '#/components/schemas/NFType'
         serviceName:
           $ref: '#/components/schemas/ServiceName'
+        conditionType:
+          type: string
+          enum:
+            - SERVICE_NAME_LIST_COND
         serviceNameList:
           type: array
           items:
             $ref: '#/components/schemas/ServiceName'
+          minItems: 1
         amfSetId:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/AmfSetId'
         amfRegionId:
@@ -1676,6 +1684,11 @@ components:
             type: string
         nfGroupId:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/NfGroupId'
+        nfGroupIdList:
+          type: array
+          items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/NfGroupId'
+          minItems: 1
         nfSetId:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/NfSetId'
         nfServiceSetId:
@@ -1690,7 +1703,63 @@ components:
           items:
             $ref: 'TS29571_CommonData.yaml#/components/schemas/Tai'
           minItems: 1
-
+        scpDomains:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        nfTypeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/NFType'
+          minItems: 1
+        analyticsIds:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        taiRangeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaiRange'
+          minItems: 1
+        servingNfTypeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/NFType'
+          minItems: 1
+        servingNfSetIdList:
+          type: array
+          items:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/NfSetId'
+          minItems: 1
+        mlAnalyticsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/MlAnalyticsInfo'
+          minItems: 1
+        afEvents:
+          type: array
+          items:
+            $ref: 'TS29517_Naf_EventExposure.yaml#/components/schemas/AfEvent'
+          minItems: 1
+        pfdData:
+          $ref: '#/components/schemas/PfdData'
+        gpsiRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityRange'
+          minItems: 1
+        externalGroupIdentifiersRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityRange'
+          minItems: 1
+        servedFqdnList:
+          type: array
+          items:
+            type: string
+          minItems: 1
     NfInstanceIdCond:
       description: Subscription to a given NF Instance Id
       type: object
@@ -1935,28 +2004,29 @@ components:
           type: string
 
     DataSetId:
-#      description: Types of data sets and subsets stored in UDR
+      description: Types of data sets and subsets stored in UDR
 #      anyOf:
 #        - type: string
-          enum:
-            - SUBSCRIPTION
-            - POLICY
-            - EXPOSURE
-            - APPLICATION
-            - A_PFD
-            - A_AFTI
-            - A_IPTV
-            - A_BDT
-            - A_SPD
-            - A_EASD
-            - A_AMI
-            - P_UE
-            - P_SCD
-            - P_BDT
-            - P_PLMNUE
-            - P_NSSCD
+      type: string
+      enum:
+        - SUBSCRIPTION
+        - POLICY
+        - EXPOSURE
+        - APPLICATION
+        - A_PFD
+        - A_AFTI
+        - A_IPTV
+        - A_BDT
+        - A_SPD
+        - A_EASD
+        - A_AMI
+        - P_UE
+        - P_SCD
+        - P_BDT
+        - P_PLMNUE
+        - P_NSSCD
 #        - type: string
-
+#
     UdmInfo:
       description: Information of an UDM NF Instance
       type: object
@@ -2137,16 +2207,17 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
         dnaiList:
           type: array
           items:
-            anyOf:
-              - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnai'
-              - $ref: '#/components/schemas/WildcardDnai'
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnai'
+#            anyOf:
+#              - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnai'
+#              - $ref: '#/components/schemas/WildcardDnai'
           minItems: 1
 
     UpfInfo:
@@ -2305,20 +2376,21 @@ components:
           type: string
 
     UPInterfaceType:
-#      description: Types of User-Plane interfaces of the UPF
+      description: Types of User-Plane interfaces of the UPF
 #      anyOf:
 #        - type: string
-          enum:
-            - N3
-            - N6
-            - N9
-            - DATA_FORWARDING
-            - N3MB
-            - N6MB
-            - N19MB
-            - NMB9
+      type: string
+      enum:
+        - N3
+        - N6
+        - N9
+        - DATA_FORWARDING
+        - N3MB
+        - N6MB
+        - N19MB
+        - NMB9
 #        - type: string
-
+#
     WAgfInfo:
       description: Information of the W-AGF end-points
       type: object
@@ -2644,43 +2716,46 @@ components:
           minItems: 1
 
     NotificationType:
-#      description: >
-#        Types of notifications used in Default Notification URIs in the NF Profile of an NF Instance
+      description: >
+        Types of notifications used in Default Notification URIs in the NF Profile of an NF Instance
 #      anyOf:
 #        - type: string
-          enum:
-            - N1_MESSAGES
-            - N2_INFORMATION
-            - LOCATION_NOTIFICATION
-            - DATA_REMOVAL_NOTIFICATION
-            - DATA_CHANGE_NOTIFICATION
-            - LOCATION_UPDATE_NOTIFICATION
-            - NSSAA_REAUTH_NOTIFICATION
-            - NSSAA_REVOC_NOTIFICATION
-            - MATCH_INFO_NOTIFICATION
-            - DATA_RESTORATION_NOTIFICATION
-            - TSCTS_NOTIFICATION
-            - LCS_KEY_DELIVERY_NOTIFICATION
+      type: string
+      enum:
+        - N1_MESSAGES
+        - N2_INFORMATION
+        - LOCATION_NOTIFICATION
+        - DATA_REMOVAL_NOTIFICATION
+        - DATA_CHANGE_NOTIFICATION
+        - LOCATION_UPDATE_NOTIFICATION
+        - NSSAA_REAUTH_NOTIFICATION
+        - NSSAA_REVOC_NOTIFICATION
+        - MATCH_INFO_NOTIFICATION
+        - DATA_RESTORATION_NOTIFICATION
+        - TSCTS_NOTIFICATION
+        - LCS_KEY_DELIVERY_NOTIFICATION
 #        - type: string
-
+#
     TransportProtocol:
-#      description: Types of transport protocol used in a given IP endpoint of an NF Service Instance
+      description: Types of transport protocol used in a given IP endpoint of an NF Service Instance
 #      anyOf:
 #        - type: string
-          enum:
-            - TCP
+      type: string
+      enum:
+        - TCP
 #        - type: string
-
+#
     NotificationEventType:
-#      description: Types of events sent in notifications from NRF to subscribed NF Instances
+      description: Types of events sent in notifications from NRF to subscribed NF Instances
 #      anyOf:
 #        - type: string
-          enum:
-            - NF_REGISTERED
-            - NF_DEREGISTERED
-            - NF_PROFILE_CHANGED
+      type: string
+      enum:
+        - NF_REGISTERED
+        - NF_DEREGISTERED
+        - NF_PROFILE_CHANGED
 #        - type: string
-
+#
     NotificationData:
       description: Data sent in notifications from NRF to subscribed NF Instances
       type: object
@@ -2720,6 +2795,7 @@ components:
         nfInstanceUri:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
         nfProfile:
+          $ref: '#/components/schemas/NFProfile'
 #          allOf:
 #            - $ref: '#/components/schemas/NFProfile'
 #            - not:
@@ -2752,7 +2828,6 @@ components:
 #                          required: [ allowedNfDomains ]
 #                      - not:
 #                          required: [ allowedNssais ]
-          $ref: '#/components/schemas/NFProfile'
         profileChanges:
           type: array
           items:
@@ -2764,15 +2839,16 @@ components:
           $ref: '#/components/schemas/SubscriptionContext'
 
     NFStatus:
-#      description: Status of a given NF Instance stored in NRF
+      description: Status of a given NF Instance stored in NRF
 #      anyOf:
 #        - type: string
-          enum:
-            - REGISTERED
-            - SUSPENDED
-            - UNDISCOVERABLE
+      type: string
+      enum:
+        - REGISTERED
+        - SUSPENDED
+        - UNDISCOVERABLE
 #        - type: string
-
+#
     NFServiceVersion:
       description: Contains the version details of an NF service
       type: object
@@ -2932,15 +3008,16 @@ components:
             $ref: 'TS29571_CommonData.yaml#/components/schemas/AmfName'
 
     NFServiceStatus:
-#      description: Status of a given NF Service Instance of an NF Instance stored in NRF
+      description: Status of a given NF Service Instance of an NF Instance stored in NRF
 #      anyOf:
 #        - type: string
-          enum:
-            - REGISTERED
-            - SUSPENDED
-            - UNDISCOVERABLE
+      type: string
+      enum:
+        - REGISTERED
+        - SUSPENDED
+        - UNDISCOVERABLE
 #        - type: string
-
+#
     TaiRange:
       description: Range of TAIs (Tracking Area Identities)
       type: object
@@ -3703,14 +3780,15 @@ components:
           type: string
 
     AnNodeType:
-#      description: Access Network Node Type (gNB, ng-eNB...)
+      description: Access Network Node Type (gNB, ng-eNB...)
 #      anyOf:
 #        - type: string
-          enum:
-            - GNB
-            - NG_ENB
+      type: string
+      enum:
+        - GNB
+        - NG_ENB
 #        - type: string
-
+#
     UdsfInfo:
       description: Information related to UDSF
       type: object
@@ -3853,16 +3931,17 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
 
     ConditionEventType:
-#      description: >
-#        Indicates whether a notification is due to the NF Instance to start or stop
-#        being part of a condition for a subscription to a set of NFs
+      description: >
+        Indicates whether a notification is due to the NF Instance to start or stop
+        being part of a condition for a subscription to a set of NFs
 #      anyOf:
 #        - type: string
-          enum:
-            - NF_ADDED
-            - NF_REMOVED
+      type: string
+      enum:
+        - NF_ADDED
+        - NF_REMOVED
 #        - type: string
-
+#
     SuciInfo:
       description: SUCI information containing Routing Indicator and Home Network Public Key ID
       type: object
@@ -3906,15 +3985,16 @@ components:
           minItems: 1
 
     IpReachability:
-#      description: Indicates the type(s) of IP addresses reachable via an SCP
+      description: Indicates the type(s) of IP addresses reachable via an SCP
 #      anyOf:
 #        - type: string
-          enum:
-            - IPV4
-            - IPV6
-            - IPV4V6
+      type: string
+      enum:
+        - IPV4
+        - IPV6
+        - IPV4V6
 #        - type: string
-
+#
     UriList:
       description: >
         Represents a set of URIs following the 3GPP hypermedia format
@@ -4035,10 +4115,10 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
         dnaiList:
           type: array
           items:
@@ -4071,13 +4151,14 @@ components:
           minItems: 1
 
     ScpCapability:
-#      description: Indicates the capabilities supported by an SCP
+      description: Indicates the capabilities supported by an SCP
 #      anyOf:
 #        - type: string
-          enum:
-            - INDIRECT_COM_WITH_DELEG_DISC
+      type: string
+      enum:
+        - INDIRECT_COM_WITH_DELEG_DISC
 #        - type: string
-
+#
     NsacfInfo:
       description: Information of a NSACF NF Instance
       type: object
@@ -4257,11 +4338,11 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-
+#
     TsctsfInfo:
       description: Information of a TSCTSF NF Instance
       type: object
@@ -4314,11 +4395,11 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-
+#
     MbUpfInfo:
       description: Information of an MB-UPF NF Instance
       type: object
@@ -4426,11 +4507,11 @@ components:
         - dnn
       properties:
         dnn:
+          $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #          anyOf:
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
 #            - $ref: 'TS29571_CommonData.yaml#/components/schemas/WildcardDnn'
-             $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
-
+#
     CollocatedNfInstance:
       description: Information of an collocated NF Instance registered in the NRF
       type: object
@@ -4444,16 +4525,17 @@ components:
           $ref: '#/components/schemas/CollocatedNfType'
 
     CollocatedNfType:
-#      description: NF types for a collocated NF
+      description: NF types for a collocated NF
 #      anyOf:
 #        - type: string
-          enum:
-            - UPF
-            - SMF
-            - MB_UPF
-            - MB_SMF
+      type: string
+      enum:
+        - UPF
+        - SMF
+        - MB_UPF
+        - MB_SMF
 #        - type: string
-
+#
     PlmnOauth2:
       description: Oauth2.0 required indication for a given PLMN ID
       type: object

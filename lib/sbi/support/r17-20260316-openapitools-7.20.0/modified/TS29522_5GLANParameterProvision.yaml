@@ -468,16 +468,17 @@ components:
             Identifies applications that are running on the UE's operating system.
             Any string value can be used as a key of the map.
     AaaUsage:
-      anyOf:
-      - type: string
-        enum:
-          - AUTH
-          - IP_ALLOC
-      - type: string
-        description: >
-          This string identifies the usage of secondary authentication/authorization,
-          and/or UE IP address allocation from the DN-AAA server.
-      description: |
-        Possible values are:
-        - AUTH: secondary authentication/authorization needed from DN-AAA server
-        - IP_ALLOC: UE IP address allocation needed from DN-AAA server
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AUTH
+        - IP_ALLOC
+#      - type: string
+#        description: >
+#          This string identifies the usage of secondary authentication/authorization,
+#          and/or UE IP address allocation from the DN-AAA server.
+#      description: |
+#        Possible values are:
+#        - AUTH: secondary authentication/authorization needed from DN-AAA server
+#        - IP_ALLOC: UE IP address allocation needed from DN-AAA server

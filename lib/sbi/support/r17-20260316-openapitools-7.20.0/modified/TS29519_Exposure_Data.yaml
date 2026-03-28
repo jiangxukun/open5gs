@@ -817,9 +817,10 @@ components:
     PduSessionStatus:
 #      anyOf:
 #      - type: string
-        enum:
-          - "ACTIVE"
-          - "RELEASED"
+      type: string
+      enum:
+        - "ACTIVE"
+        - "RELEASED"
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future

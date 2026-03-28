@@ -277,9 +277,9 @@ components:
           $ref: '#/components/schemas/ResultReason'
       required:
         - resultReason
-      oneOf:
-        - required: [externalIds]
-        - required: [msisdns]
+#      oneOf:
+#        - required: [externalIds]
+#        - required: [msisdns]
     Bandwidth:
       type: integer
       minimum: 0
@@ -426,43 +426,45 @@ components:
       required:
         - flowId
     Event:
-      anyOf:
-      - type: string
-        enum:
-          - SESSION_TERMINATION
-          - LOSS_OF_BEARER 
-          - RECOVERY_OF_BEARER
-          - RELEASE_OF_BEARER
-          - USAGE_REPORT
-          - FAILED_RESOURCES_ALLOCATION
-          - SUCCESSFUL_RESOURCES_ALLOCATION
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SESSION_TERMINATION: Indicates that Rx session is terminated.
-        - LOSS_OF_BEARER : Indicates a loss of a bearer.
-        - RECOVERY_OF_BEARER: Indicates a recovery of a bearer.
-        - RELEASE_OF_BEARER: Indicates a release of a bearer.
-        - USAGE_REPORT: Indicates the usage report event. 
-        - FAILED_RESOURCES_ALLOCATION: Indicates the resource allocation is failed.
-        - SUCCESSFUL_RESOURCES_ALLOCATION: Indicates the resource allocation is successful.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SESSION_TERMINATION
+        - LOSS_OF_BEARER 
+        - RECOVERY_OF_BEARER
+        - RELEASE_OF_BEARER
+        - USAGE_REPORT
+        - FAILED_RESOURCES_ALLOCATION
+        - SUCCESSFUL_RESOURCES_ALLOCATION
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SESSION_TERMINATION: Indicates that Rx session is terminated.
+#        - LOSS_OF_BEARER : Indicates a loss of a bearer.
+#        - RECOVERY_OF_BEARER: Indicates a recovery of a bearer.
+#        - RELEASE_OF_BEARER: Indicates a release of a bearer.
+#        - USAGE_REPORT: Indicates the usage report event. 
+#        - FAILED_RESOURCES_ALLOCATION: Indicates the resource allocation is failed.
+#        - SUCCESSFUL_RESOURCES_ALLOCATION: Indicates the resource allocation is successful.
     ResultReason:
-      anyOf:
-      - type: string
-        enum:
-          - ROAMING_NOT_ALLOWED
-          - OTHER_REASON
-      - type: string
-        description: >
-          This string provides a failure reason.
-      description: >
-        Possible values are
-        - ROAMING_NOT_ALLOWED: Identifies the configuration parameters are not allowed by roaming agreement.
-        - OTHER_REASON: Identifies the configuration parameters are not configured due to other reason.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - ROAMING_NOT_ALLOWED
+        - OTHER_REASON
+#      - type: string
+#        description: >
+#          This string provides a failure reason.
+#      description: >
+#        Possible values are
+#        - ROAMING_NOT_ALLOWED: Identifies the configuration parameters are not allowed by roaming agreement.
+#        - OTHER_REASON: Identifies the configuration parameters are not configured due to other reason.
 #
 # HTTP responses
 #

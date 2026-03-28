@@ -564,15 +564,16 @@ components:
 
     PfdOperation:
       description: Indicates the operation to be applied on PFD(s).
-      anyOf:
-      - type: string
-        enum:
-          - RETRIEVE
-          - FULLPULL
-          - PARTIALPULL
-          - REMOVE
-      - type: string
-
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - RETRIEVE
+        - FULLPULL
+        - PARTIALPULL
+        - REMOVE
+#      - type: string
+#
     ApplicationForPfdRequest:
       description: Contains the application identifier(s) for the PFD(s) request.
       type: object

@@ -434,10 +434,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/IpAddr'
         ueMacAddr:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/MacAddr48'
-      oneOf:
-        - required: [externalId]
-        - required: [msisdn]
-        - required: [externalGroupId]
+#      oneOf:
+#        - required: [externalId]
+#        - required: [msisdn]
+#        - required: [externalGroupId]
     NpConfigurationPatch:
       description: Represents parameters used to request the modification of a network parameters configuration resource.
       type: object

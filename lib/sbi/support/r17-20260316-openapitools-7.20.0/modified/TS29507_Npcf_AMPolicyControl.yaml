@@ -742,18 +742,19 @@ components:
     RequestTrigger:
 #      anyOf:
 #      - type: string
-        enum:
-          - LOC_CH
-          - PRA_CH
-          - SERV_AREA_CH
-          - RFSP_CH
-          - ALLOWED_NSSAI_CH
-          - UE_AMBR_CH
-          - UE_SLICE_MBR_CH
-          - SMF_SELECT_CH
-          - ACCESS_TYPE_CH
-          - NWDAF_DATA_CH
-          - TARGET_NSSAI
+      type: string
+      enum:
+        - LOC_CH
+        - PRA_CH
+        - SERV_AREA_CH
+        - RFSP_CH
+        - ALLOWED_NSSAI_CH
+        - UE_AMBR_CH
+        - UE_SLICE_MBR_CH
+        - SMF_SELECT_CH
+        - ACCESS_TYPE_CH
+        - NWDAF_DATA_CH
+        - TARGET_NSSAI
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -790,10 +791,11 @@ components:
     PolicyAssociationReleaseCause:
 #      anyOf:
 #      - type: string
-        enum:
-          - UNSPECIFIED
-          - UE_SUBSCRIPTION
-          - INSUFFICIENT_RES
+      type: string
+      enum:
+        - UNSPECIFIED
+        - UE_SUBSCRIPTION
+        - INSUFFICIENT_RES
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future
@@ -806,4 +808,4 @@ components:
 #          terminated because the subscription of UE has changed (e.g. was removed).
 #        - INSUFFICIENT_RES: This value is used to indicate that the server is overloaded and
 #          needs to abort the session.
-
+#

@@ -344,12 +344,12 @@ components:
           $ref: 'TS29562_Nhss_imsSDM.yaml#/components/schemas/ScscfSelectionAssistanceInformation'
       required:
         - authorizationResult
-      oneOf:
-        - required:
-          - cscfServerName
-        - required:
-          - scscfSelectionAssistanceInfo
-
+#      oneOf:
+#        - required:
+#          - cscfServerName
+#        - required:
+#          - scscfSelectionAssistanceInfo
+#
     ScscfRegistration:
       description: Scscf Registration
       type: object
@@ -586,53 +586,58 @@ components:
 
     AuthorizationType:
       description: Represents the type of authorization requested by the UE
-      anyOf:
-        - type: string
-          enum:
-          - REGISTRATION
-          - DEREGISTRATION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - REGISTRATION
+      - DEREGISTRATION
+#        - type: string
+#
     AuthorizationResult:
       description: Represents the details of the granted authorization to the UE
-      anyOf:
-        - type: string
-          enum:
-          - FIRST_REGISTRATION
-          - SUBSEQUENT_REGISTRATION
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - FIRST_REGISTRATION
+      - SUBSEQUENT_REGISTRATION
+#        - type: string
+#
     ImsRegistrationType:
       description: Represents the type of registration associated to the REGISTER request
-      anyOf:
-        - type: string
-          enum:
-          - INITIAL_REGISTRATION
-          - RE_REGISTRATION
-          - TIMEOUT_DEREGISTRATION
-          - USER_DEREGISTRATION
-          - ADMINISTRATIVE_DEREGISTRATION
-          - AUTHENTICATION_FAILURE
-          - AUTHENTICATION_TIMEOUT
-          - UNREGISTERED_USER
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - INITIAL_REGISTRATION
+      - RE_REGISTRATION
+      - TIMEOUT_DEREGISTRATION
+      - USER_DEREGISTRATION
+      - ADMINISTRATIVE_DEREGISTRATION
+      - AUTHENTICATION_FAILURE
+      - AUTHENTICATION_TIMEOUT
+      - UNREGISTERED_USER
+#        - type: string
+#
     LooseRouteIndication:
       description: Indicates whether the loose routing mechanism is required to serve the user
-      anyOf:
-        - type: string
-          enum:
-          - LOOSE_ROUTE_NOT_REQUIRED
-          - LOOSE_ROUTE_REQUIRED
-        - type: string
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - LOOSE_ROUTE_NOT_REQUIRED
+      - LOOSE_ROUTE_REQUIRED
+#        - type: string
+#
     DeregistrationReasonCode:
       description: Indicates the reason for the network-initiated deregistration
-      anyOf:
-        - type: string
-          enum:
-          - PERMANENT_TERMINATION
-          - NEW_SERVER_ASSIGNED
-          - REMOVE_S-CSCF
-          - SERVER_CHANGE
-        - type: string
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+      - PERMANENT_TERMINATION
+      - NEW_SERVER_ASSIGNED
+      - REMOVE_S-CSCF
+      - SERVER_CHANGE
+#        - type: string

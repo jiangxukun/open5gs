@@ -673,34 +673,36 @@ components:
       required:
         - ackResult
     SubscribedEvent:
-      anyOf:
-      - type: string
-        enum:
-          - UP_PATH_CHANGE
-      - type: string
-        description: >
-          This string provides forward-compatibility with future extensions to the enumeration but
-          is not used to encode content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - UP_PATH_CHANGE: The AF requests to be notified when the UP path changes for the PDU session.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UP_PATH_CHANGE
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future extensions to the enumeration but
+#          is not used to encode content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - UP_PATH_CHANGE: The AF requests to be notified when the UP path changes for the PDU session.
     AfResultStatus:
-      anyOf:
-        - type: string
-          enum:
-            - SUCCESS
-            - TEMPORARY_CONGESTION
-            - RELOC_NO_ALLOWED
-            - OTHER
-        - type: string
-          description: >
-            This string provides forward-compatibility with future extensions to the enumeration but
-            is not used to encode content defined in the present version of this API.
-      description: |
-        Possible values are:
-        - SUCCESS: The application layer is ready or the relocation is completed.
-        - TEMPORARY_CONGESTION: The application relocation fails due to temporary congestion.
-        - RELOC_NO_ALLOWED: The application relocation fails because application relocation is not allowed.
-        - OTHER: The application relocation fails due to other reason.
-
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - SUCCESS
+        - TEMPORARY_CONGESTION
+        - RELOC_NO_ALLOWED
+        - OTHER
+#        - type: string
+#          description: >
+#            This string provides forward-compatibility with future extensions to the enumeration but
+#            is not used to encode content defined in the present version of this API.
+#      description: |
+#        Possible values are:
+#        - SUCCESS: The application layer is ready or the relocation is completed.
+#        - TEMPORARY_CONGESTION: The application relocation fails due to temporary congestion.
+#        - RELOC_NO_ALLOWED: The application relocation fails because application relocation is not allowed.
+#        - OTHER: The application relocation fails due to other reason.
+#
+#

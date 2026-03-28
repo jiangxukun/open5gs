@@ -98,9 +98,9 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/MacAddr48'
       required:
         - afId
-      oneOf:
-        - required: [ueIpAddr]
-        - required: [ueMacAddr]
+#      oneOf:
+#        - required: [ueIpAddr]
+#        - required: [ueMacAddr]
     UeIdInfo:
       description: Represents UE ID information.
       type: object

@@ -519,10 +519,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/MacAddr48'
       required:
         - cpParameterSets
-      oneOf:
-        - required: [externalId]
-        - required: [msisdn]
-        - required: [externalGroupId]
+#      oneOf:
+#        - required: [externalId]
+#        - required: [msisdn]
+#        - required: [externalGroupId]
     CpParameterSet:
       description: Represents an offered communication pattern parameter set.
       type: object
@@ -603,108 +603,114 @@ components:
             umtDuration:
               $ref: 'TS29122_CommonData.yaml#/components/schemas/DurationSec'
     CommunicationIndicator:
-      anyOf:
-      - type: string
-        enum:
-          - PERIODICALLY
-          - ON_DEMAND
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - PERIODICALLY: Identifies the UE communicates periodically
-        - ON_DEMAND: Identifies the UE communicates on demand
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - PERIODICALLY
+        - ON_DEMAND
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - PERIODICALLY: Identifies the UE communicates periodically
+#        - ON_DEMAND: Identifies the UE communicates on demand
     StationaryIndication:
-      anyOf:
-      - type: string
-        enum:
-          - STATIONARY
-          - MOBILE
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - STATIONARY: Identifies the UE is stationary
-        - MOBILE: Identifies the UE is mobile
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - STATIONARY
+        - MOBILE
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - STATIONARY: Identifies the UE is stationary
+#        - MOBILE: Identifies the UE is mobile
     CpFailureCode:
-      anyOf:
-      - type: string
-        enum:
-          - MALFUNCTION
-          - SET_ID_DUPLICATED
-          - OTHER_REASON
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - MALFUNCTION: This value indicates that something functions wrongly in CP parameter provisioning or the CP parameter provisioning does not function at all.
-        - SET_ID_DUPLICATED: The received CP set identifier(s) are already provisioned.
-        - OTHER_REASON: Other reason unspecified.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - MALFUNCTION
+        - SET_ID_DUPLICATED
+        - OTHER_REASON
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - MALFUNCTION: This value indicates that something functions wrongly in CP parameter provisioning or the CP parameter provisioning does not function at all.
+#        - SET_ID_DUPLICATED: The received CP set identifier(s) are already provisioned.
+#        - OTHER_REASON: Other reason unspecified.
     BatteryIndication:
-      anyOf:
-      - type: string
-        enum:
-          - BATTERY_RECHARGE
-          - BATTERY_REPLACE
-          - BATTERY_NO_RECHARGE
-          - BATTERY_NO_REPLACE
-          - NO_BATTERY
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - BATTERY_RECHARGE: UE powered with rechargeable battery.
-        - BATTERY_REPLACE: UE powered with replaceable battery.
-        - BATTERY_NO_RECHARGE: UE powered with no rechargeable battery.
-        - BATTERY_NO_REPLACE: UE powered with no replaceable battery.
-        - NO_BATTERY: UE not battery powered.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - BATTERY_RECHARGE
+        - BATTERY_REPLACE
+        - BATTERY_NO_RECHARGE
+        - BATTERY_NO_REPLACE
+        - NO_BATTERY
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - BATTERY_RECHARGE: UE powered with rechargeable battery.
+#        - BATTERY_REPLACE: UE powered with replaceable battery.
+#        - BATTERY_NO_RECHARGE: UE powered with no rechargeable battery.
+#        - BATTERY_NO_REPLACE: UE powered with no replaceable battery.
+#        - NO_BATTERY: UE not battery powered.
     TrafficProfile:
-      anyOf:
-      - type: string
-        enum:
-          - SINGLE_TRANS_UL
-          - SINGLE_TRANS_DL
-          - DUAL_TRANS_UL_FIRST
-          - DUAL_TRANS_DL_FIRST
-          - MULTI_TRANS
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - SINGLE_TRANS_UL: Uplink single packet transmission.
-        - SINGLE_TRANS_DL: Downlink single packet transmission.
-        - DUAL_TRANS_UL_FIRST: Dual packet transmission, firstly uplink packet transmission with subsequent downlink packet transmission.
-        - DUAL_TRANS_DL_FIRST: Dual packet transmission, firstly downlink packet transmission with subsequent uplink packet transmission.
-        - MULTI_TRANS: Multiple packet transmission.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - SINGLE_TRANS_UL
+        - SINGLE_TRANS_DL
+        - DUAL_TRANS_UL_FIRST
+        - DUAL_TRANS_DL_FIRST
+        - MULTI_TRANS
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - SINGLE_TRANS_UL: Uplink single packet transmission.
+#        - SINGLE_TRANS_DL: Downlink single packet transmission.
+#        - DUAL_TRANS_UL_FIRST: Dual packet transmission, firstly uplink packet transmission with subsequent downlink packet transmission.
+#        - DUAL_TRANS_DL_FIRST: Dual packet transmission, firstly downlink packet transmission with subsequent uplink packet transmission.
+#        - MULTI_TRANS: Multiple packet transmission.
     ScheduledCommunicationType:
-      anyOf:
-      - type: string
-        enum:
-          - DOWNLINK
-          - UPLINK
-          - BIDIRECTIONAL
-      - type: string
-        description: >
-          This string provides forward-compatibility with future
-          extensions to the enumeration but is not used to encode
-          content defined in the present version of this API.
-      description: >
-        Possible values are
-        - DOWNLINK: Downlink only.
-        - UPLINK: Uplink only.
-        - BIDIRECTIONAL: Bi-directional.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - DOWNLINK
+        - UPLINK
+        - BIDIRECTIONAL
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future
+#          extensions to the enumeration but is not used to encode
+#          content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - DOWNLINK: Downlink only.
+#        - UPLINK: Uplink only.
+#        - BIDIRECTIONAL: Bi-directional.

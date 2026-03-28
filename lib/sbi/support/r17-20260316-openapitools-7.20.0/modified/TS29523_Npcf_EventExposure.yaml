@@ -486,13 +486,14 @@ components:
 
     PcEvent:
       description: Represents the policy control events that can be subscribed.
-      anyOf:
-      - type: string
-        enum:
-          - AC_TY_CH
-          - PLMN_CH
-          - SAC_CH
-          - SAT_CATEGORY_CH
-          - SUCCESS_UE_POL_DEL_SP
-          - UNSUCCESS_UE_POL_DEL_SP
-      - type: string
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - AC_TY_CH
+        - PLMN_CH
+        - SAC_CH
+        - SAT_CATEGORY_CH
+        - SUCCESS_UE_POL_DEL_SP
+        - UNSUCCESS_UE_POL_DEL_SP
+#      - type: string

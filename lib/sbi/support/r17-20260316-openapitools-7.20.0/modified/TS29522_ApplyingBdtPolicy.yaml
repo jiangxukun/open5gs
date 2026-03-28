@@ -265,9 +265,9 @@ components:
       required:
         - bdtRefId
         - suppFeat
-      oneOf:
-        - required: [gpsi]
-        - required: [externalGroupId]
+#      oneOf:
+#        - required: [gpsi]
+#        - required: [externalGroupId]
     AppliedBdtPolicyPatch:
       description: >
         Represents the parameters to request the modification of a subscription to

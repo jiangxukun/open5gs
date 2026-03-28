@@ -319,22 +319,23 @@ components:
         mlFileFqdn:
           type: string
           description: The FQDN of the ML Model file.
-      oneOf:
-          - required: [mLModelUrl]
-          - required: [mlFileFqdn]
-
+#      oneOf:
+#          - required: [mLModelUrl]
+#          - required: [mlFileFqdn]
+#
 #
 # ENUMERATIONS DATA TYPES
 #
     FailureCode:
-      anyOf:
-      - type: string
-        enum:
-          - UNAVAILABLE_ML_MODEL
-      - type: string
-        description: >
-          This string provides forward-compatibility with future extensions to the enumeration but
-          is not used to encode content defined in the present version of this API.
-      description: >
-        Possible values are
-        - UNAVAILABLE_ML_MODEL: Indicates the requested ML model for the event is unavailable.
+#      anyOf:
+#      - type: string
+      type: string
+      enum:
+        - UNAVAILABLE_ML_MODEL
+#      - type: string
+#        description: >
+#          This string provides forward-compatibility with future extensions to the enumeration but
+#          is not used to encode content defined in the present version of this API.
+#      description: >
+#        Possible values are
+#        - UNAVAILABLE_ML_MODEL: Indicates the requested ML model for the event is unavailable.

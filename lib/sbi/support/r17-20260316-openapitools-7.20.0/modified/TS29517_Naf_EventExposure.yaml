@@ -563,9 +563,9 @@ components:
           minItems: 1
       required:
         - exceps
-      oneOf:
-        - required: [ipTrafficFilter]
-        - required: [ethTrafficFilter]
+#      oneOf:
+#        - required: [ipTrafficFilter]
+#        - required: [ethTrafficFilter]
     UserDataCongestionCollection:
       description: Contains User Data Congestion Analytics related information collection.
       type: object
@@ -584,9 +584,9 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/BitRate'
         thrputPkDl:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/BitRate'
-      oneOf:
-        - required: [appId]
-        - required: [ipTrafficFilter]
+#      oneOf:
+#        - required: [appId]
+#        - required: [ipTrafficFilter]
     PerformanceDataCollection:
       description: Contains Performance Data Analytics related information collection.
       type: object
@@ -659,10 +659,10 @@ components:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/DurationSec'
       required:
         - dataUsage
-      oneOf:
-        - required: [gpsi]
-        - required: [supi]
-        - required: [ueAddr]
+#      oneOf:
+#        - required: [gpsi]
+#        - required: [supi]
+#        - required: [ueAddr]
     CollectiveBehaviourFilter:
       description: Contains the collective behaviour filter information to be collected from UE.
       type: object
@@ -711,9 +711,9 @@ components:
           minItems: 1
       required:
         - colAttrib
-      oneOf:
-        - required: [extUeIds]
-        - required: [ueIds]
+#      oneOf:
+#        - required: [extUeIds]
+#        - required: [ueIds]
     PerUeAttribute:
       description: UE application data collected per UE.
       type: object
@@ -794,34 +794,36 @@ components:
 # Simple data types and Enumerations
 
     AfEvent:
-#      description: Represents Application Events.
+      description: Represents Application Events.
 #      anyOf:
 #      - type: string
-        enum:
-          - SVC_EXPERIENCE
-          - UE_MOBILITY
-          - UE_COMM
-          - EXCEPTIONS
-          - USER_DATA_CONGESTION
-          - PERF_DATA
-          - DISPERSION
-          - COLLECTIVE_BEHAVIOUR
-          - MS_QOE_METRICS
-          - MS_CONSUMPTION
-          - MS_NET_ASSIST_INVOCATION
-          - MS_DYN_POLICY_INVOCATION
-          - MS_ACCESS_ACTIVITY
+      type: string
+      enum:
+        - SVC_EXPERIENCE
+        - UE_MOBILITY
+        - UE_COMM
+        - EXCEPTIONS
+        - USER_DATA_CONGESTION
+        - PERF_DATA
+        - DISPERSION
+        - COLLECTIVE_BEHAVIOUR
+        - MS_QOE_METRICS
+        - MS_CONSUMPTION
+        - MS_NET_ASSIST_INVOCATION
+        - MS_DYN_POLICY_INVOCATION
+        - MS_ACCESS_ACTIVITY
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future extensions to the enumeration but
 #          is not used to encode content defined in the present version of this API.
     CollectiveBehaviourFilterType:
-#      description: Represents collective behaviour parameter type.
+      description: Represents collective behaviour parameter type.
 #      anyOf:
 #      - type: string
-        enum:
-          - COLLECTIVE_ATTRIBUTE
-          - DATA_PROCESSING
+      type: string
+      enum:
+        - COLLECTIVE_ATTRIBUTE
+        - DATA_PROCESSING
 #      - type: string
 #        description: >
 #          This string provides forward-compatibility with future extensions to the enumeration but
