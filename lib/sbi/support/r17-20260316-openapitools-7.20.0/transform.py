@@ -1716,230 +1716,7 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
 
 
 # ---------------------------------------------------------------------------
-# Category H: oneOf catch-all — promote first item for composed types
-# ---------------------------------------------------------------------------
-
-def try_transform_category_h(lines, start_idx, eol="\n"):
-    """
-    Category H — oneOf catch-all for remaining composed types.
-
-    Promote the first oneOf item to replace the entire oneOf block.
-    Also comment out any discriminator: block that follows at the same indent.
-
-    Handles patterns like:
-
-      oneOf:                                    oneOf:
-        - type: array                             - $ref: '#/.../AvEapAkaPrime'
-          items:                                  - $ref: '#/.../Av5GHeAka'
-            $ref: '#/.../AvEpsAka'              discriminator:
-          minItems: 1                             propertyName: avType
-          maxItems: 5                             mapping: ...
-        - type: array
-          items:
-            $ref: '#/.../AvImsGbaEapAka'
-          ...
-
-    The first item is promoted; the rest (including discriminator) is
-    commented out.
-    """
-    if lines[start_idx].strip() != "oneOf:":
-        return None
-
-    oneof_line = lines[start_idx]
-    oneof_indent = leading_spaces(oneof_line)
-    j = start_idx + 1
-
-    # Skip blank lines to find first item
-    while j < len(lines) and is_blank(lines[j]):
-        j += 1
-    if j >= len(lines):
-        return None
-
-    # First non-blank must be "- ..."
-    if not lines[j].lstrip(" ").startswith("- "):
-        return None
-
-    first_item_indent = leading_spaces(lines[j])
-    if first_item_indent < oneof_indent:
-        return None
-
-    # Detect compact style (items at same indent as oneOf:)
-    compact = (first_item_indent == oneof_indent)
-
-    # Collect entire oneOf body
-    body_start = start_idx + 1
-    k = body_start
-    while k < len(lines):
-        if is_blank(lines[k]):
-            k += 1
-            continue
-        indent = leading_spaces(lines[k])
-        stripped = lines[k].lstrip(" ")
-        if compact:
-            if indent > oneof_indent:
-                k += 1
-                continue
-            if indent == oneof_indent and stripped.startswith("- "):
-                k += 1
-                continue
-            break
-        else:
-            if indent <= oneof_indent:
-                break
-            k += 1
-    body_end = k
-    body_lines = lines[body_start:body_end]
-
-    if not body_lines:
-        return None
-
-    # Parse items
-    items = []
-    current_item = None
-    item_base_indent = None
-
-    for line in body_lines:
-        if is_blank(line):
-            if current_item is not None:
-                current_item.append(line)
-            continue
-        indent = leading_spaces(line)
-        stripped = line.lstrip(" ")
-        if stripped.startswith("- "):
-            if item_base_indent is None:
-                item_base_indent = indent
-            if indent == item_base_indent:
-                if current_item is not None:
-                    items.append(current_item)
-                current_item = [line]
-                continue
-        if current_item is not None:
-            current_item.append(line)
-
-    if current_item is not None:
-        items.append(current_item)
-
-    if not items:
-        return None
-
-    # --- Promote first item ---
-    first_item = items[0]
-    first_line = first_item[0]
-    content_start = leading_spaces(first_line) + 2   # column after "- "
-
-    promoted = []
-    # First line: strip "- " prefix, reindent to oneof_indent
-    first_content = first_line.lstrip(" ")[2:]        # remove "- "
-    promoted.append(" " * oneof_indent + first_content)
-
-    # Remaining lines: shift by (content_start → oneof_indent)
-    for line in first_item[1:]:
-        if is_blank(line):
-            promoted.append(line)
-            continue
-        old_indent = leading_spaces(line)
-        new_indent = max(0, old_indent - content_start + oneof_indent)
-        promoted.append(" " * new_indent + line.lstrip(" "))
-
-    # Strip trailing blank lines from promoted block
-    while promoted and is_blank(promoted[-1]):
-        promoted.pop()
-
-    # --- Check sibling key conflict ---
-    # Extract keys the promoted content would introduce at oneof_indent
-    promoted_keys = set()
-    for line in promoted:
-        if is_blank(line):
-            continue
-        if leading_spaces(line) == oneof_indent:
-            key_part = line.strip().split(":")[0].strip()
-            if key_part and not key_part.startswith("#"):
-                promoted_keys.add(key_part)
-
-    # Scan backward to collect existing sibling keys at same indent
-    sibling_keys = set()
-    scan = start_idx - 1
-    while scan >= 0:
-        line = lines[scan]
-        if is_blank(line):
-            scan -= 1
-            continue
-        indent = leading_spaces(line)
-        if indent < oneof_indent:
-            break  # reached parent level
-        if indent == oneof_indent:
-            stripped = line.strip()
-            if stripped.startswith("#"):
-                scan -= 1
-                continue
-            key_part = stripped.split(":")[0].strip()
-            if key_part:
-                sibling_keys.add(key_part)
-        scan -= 1
-
-    # Scan forward to collect sibling keys after oneOf body
-    scan = body_end
-    while scan < len(lines):
-        line = lines[scan]
-        if is_blank(line):
-            scan += 1
-            continue
-        indent = leading_spaces(line)
-        if indent < oneof_indent:
-            break  # reached parent level
-        if indent == oneof_indent:
-            stripped = line.strip()
-            if stripped.startswith("#"):
-                scan += 1
-                continue
-            key_part = stripped.split(":")[0].strip()
-            if key_part:
-                sibling_keys.add(key_part)
-        scan += 1
-
-    # If any promoted key already exists as a sibling, skip
-    if promoted_keys & sibling_keys:
-        return None
-
-    # If promoted content has no $ref or properties at top level, promoting
-    # would turn the schema into a bare type alias (e.g. type: array),
-    # causing the code generator to skip model file generation. Skip.
-    if "$ref" not in promoted_keys and "properties" not in promoted_keys:
-        return None
-
-    # --- Detect discriminator: at same indent after oneOf body ---
-    disc_end = body_end
-    tmp = disc_end
-    while tmp < len(lines) and is_blank(lines[tmp]):
-        tmp += 1
-    if (tmp < len(lines)
-            and lines[tmp].strip().startswith("discriminator:")
-            and leading_spaces(lines[tmp]) == oneof_indent):
-        disc_indent = oneof_indent
-        disc_end = tmp + 1
-        while disc_end < len(lines):
-            if is_blank(lines[disc_end]):
-                disc_end += 1
-                continue
-            if leading_spaces(lines[disc_end]) > disc_indent:
-                disc_end += 1
-                continue
-            break
-
-    # --- Build output ---
-    out = []
-    out.extend(promoted)
-    out.append(comment_exact(oneof_line))
-    for line in body_lines:
-        out.append(comment_exact(line))
-    for line in lines[body_end:disc_end]:
-        out.append(comment_exact(line))
-
-    return out, disc_end
-
-
-# ---------------------------------------------------------------------------
-# Main transform pass (A/B/D/E/F/G/H)
+# Main transform pass (A/B/D/E/F/G/I)
 # ---------------------------------------------------------------------------
 
 def transform_lines(lines, string_schemas=None, all_schemas=None,
@@ -1947,7 +1724,8 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = changed_i = changed_im = 0
+    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_i = changed_im = 0
+    unhandled_oneof = []
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -1999,17 +1777,7 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                     changed_i += 1
                     continue
 
-            # H: oneOf catch-all (composed types — promote first item)
-            transformed = try_transform_category_h(lines, i, eol=eol)
-            if transformed is not None:
-                new_lines, next_i = transformed
-                out.extend(new_lines)
-                i = next_i
-                changed_h += 1
-                continue
-
             # I-mixed: oneOf[mixed inline + $ref] → object with derived props
-            # (only reached when H skips — e.g. bare type alias)
             if all_schemas is not None:
                 transformed = try_transform_category_i_mixed(
                     lines, i, all_schemas, current_file, eol=eol)
@@ -2042,9 +1810,11 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                     continue
 
         out.append(lines[i])
+        if lines[i].strip() == "oneOf:":
+            unhandled_oneof.append(i + 1)  # 1-based line number
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h, changed_i, changed_im
+    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_i, changed_im, unhandled_oneof
 
 
 # ---------------------------------------------------------------------------
@@ -2058,7 +1828,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce, cf, cg, ch, ci, cim = transform_lines(
+    new_lines, cb, cd, ca, ce, cf, cg, ci, cim, unhandled = transform_lines(
         lines, string_schemas=string_schemas, all_schemas=all_schemas,
         current_file=in_file.name)
     new_text = "".join(new_lines)
@@ -2067,7 +1837,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce, cf, cg, ch, ci, cim
+    return cb, cd, ca, ce, cf, cg, ci, cim, unhandled
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -2113,7 +1883,8 @@ def main():
 
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = total_i = total_im = 0
+    total_b = total_d = total_allof = total_e = total_f = total_g = total_i = total_im = 0
+    total_unhandled = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -2123,7 +1894,7 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce, cf, cg, ch, ci, cim = process_yaml_file(
+            cb, cd, ca, ce, cf, cg, ci, cim, unhandled = process_yaml_file(
                 in_file, out_file, string_schemas=string_schemas,
                 all_schemas=all_schemas)
             total_b += cb
@@ -2132,10 +1903,12 @@ def main():
             total_e += ce
             total_f += cf
             total_g += cg
-            total_h += ch
             total_i += ci
             total_im += cim
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch}, i={ci}, im={cim})")
+            total_unhandled += len(unhandled)
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, i={ci}, im={cim})")
+            for ln in unhandled:
+                print(f"  [WARN] unhandled oneOf at line {ln}")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -2148,9 +1921,9 @@ def main():
     print(f"Changed E blocks       : {total_e}")
     print(f"Changed F blocks       : {total_f}")
     print(f"Changed G blocks       : {total_g}")
-    print(f"Changed H blocks       : {total_h}")
     print(f"Changed I blocks       : {total_i}")
     print(f"Changed I-mixed blocks : {total_im}")
+    print(f"Unhandled oneOf blocks : {total_unhandled}")
 
 
 
