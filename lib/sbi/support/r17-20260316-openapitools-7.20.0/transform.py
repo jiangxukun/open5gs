@@ -1634,6 +1634,27 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
     if not has_inline_item:
         return None
 
+    # --- Detect "array of X or single X" pattern ---
+    # If an inline array's items.$ref target matches a sibling $ref target,
+    # this is "array or single object" — not a true union. Skip.
+    ref_targets = set()
+    array_items_targets = set()
+    for item in items:
+        first = item[0].strip()
+        if first.startswith("- $ref:"):
+            ref_val = first.removeprefix("- $ref:").strip()
+            name = _extract_schema_name_from_ref(ref_val)
+            if name:
+                ref_targets.add(name)
+        elif first == "- type: array":
+            items_ref = _find_items_ref_in_lines(item)
+            if items_ref:
+                name = _extract_schema_name_from_ref(items_ref)
+                if name:
+                    array_items_targets.add(name)
+    if ref_targets & array_items_targets:
+        return None
+
     # --- Check sibling key conflict ---
     new_keys = {"type", "properties"}
     sibling_keys = set()
@@ -1713,6 +1734,7 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
         out.extend(value_lines)
 
     return out, disc_end
+
 
 
 # ---------------------------------------------------------------------------
