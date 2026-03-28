@@ -7,7 +7,7 @@
 OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     OpenAPI_steer_mode_value_e steer_mode_value,
     OpenAPI_access_type_e active,
-    OpenAPI_access_type_rm_t *standby,
+    OpenAPI_access_type_e standby,
     bool is__3g_load,
     int _3g_load,
     OpenAPI_access_type_e prio_acc,
@@ -38,10 +38,6 @@ void OpenAPI_steering_mode_free(OpenAPI_steering_mode_t *steering_mode)
 
     if (NULL == steering_mode) {
         return;
-    }
-    if (steering_mode->standby) {
-        OpenAPI_access_type_rm_free(steering_mode->standby);
-        steering_mode->standby = NULL;
     }
     if (steering_mode->thres_value) {
         OpenAPI_threshold_value_free(steering_mode->thres_value);
@@ -77,14 +73,8 @@ cJSON *OpenAPI_steering_mode_convertToJSON(OpenAPI_steering_mode_t *steering_mod
     }
     }
 
-    if (steering_mode->standby) {
-    cJSON *standby_local_JSON = OpenAPI_access_type_rm_convertToJSON(steering_mode->standby);
-    if (standby_local_JSON == NULL) {
-        ogs_error("OpenAPI_steering_mode_convertToJSON() failed [standby]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "standby", standby_local_JSON);
-    if (item->child == NULL) {
+    if (steering_mode->standby != OpenAPI_access_type_NULL) {
+    if (cJSON_AddStringToObject(item, "standby", OpenAPI_access_type_ToString(steering_mode->standby)) == NULL) {
         ogs_error("OpenAPI_steering_mode_convertToJSON() failed [standby]");
         goto end;
     }
@@ -142,7 +132,7 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
     cJSON *active = NULL;
     OpenAPI_access_type_e activeVariable = 0;
     cJSON *standby = NULL;
-    OpenAPI_access_type_rm_t *standby_local_nonprim = NULL;
+    OpenAPI_access_type_e standbyVariable = 0;
     cJSON *_3g_load = NULL;
     cJSON *prio_acc = NULL;
     OpenAPI_access_type_e prio_accVariable = 0;
@@ -172,11 +162,11 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
 
     standby = cJSON_GetObjectItemCaseSensitive(steering_modeJSON, "standby");
     if (standby) {
-    standby_local_nonprim = OpenAPI_access_type_rm_parseFromJSON(standby);
-    if (!standby_local_nonprim) {
-        ogs_error("OpenAPI_access_type_rm_parseFromJSON failed [standby]");
+    if (!cJSON_IsString(standby)) {
+        ogs_error("OpenAPI_steering_mode_parseFromJSON() failed [standby]");
         goto end;
     }
+    standbyVariable = OpenAPI_access_type_FromString(standby->valuestring);
     }
 
     _3g_load = cJSON_GetObjectItemCaseSensitive(steering_modeJSON, "3gLoad");
@@ -219,7 +209,7 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
     steering_mode_local_var = OpenAPI_steering_mode_create (
         steer_mode_valueVariable,
         active ? activeVariable : 0,
-        standby ? standby_local_nonprim : NULL,
+        standby ? standbyVariable : 0,
         _3g_load ? true : false,
         _3g_load ? _3g_load->valuedouble : 0,
         prio_acc ? prio_accVariable : 0,
@@ -230,10 +220,6 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
 
     return steering_mode_local_var;
 end:
-    if (standby_local_nonprim) {
-        OpenAPI_access_type_rm_free(standby_local_nonprim);
-        standby_local_nonprim = NULL;
-    }
     if (thres_value_local_nonprim) {
         OpenAPI_threshold_value_free(thres_value_local_nonprim);
         thres_value_local_nonprim = NULL;

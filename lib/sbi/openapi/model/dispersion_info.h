@@ -24,14 +24,14 @@ typedef struct OpenAPI_dispersion_info_s {
     char *ts_start;
     int ts_duration;
     OpenAPI_list_t *disper_collects;
-    struct OpenAPI_dispersion_type_s *disper_type;
+    OpenAPI_dispersion_type_e disper_type;
 } OpenAPI_dispersion_info_t;
 
 OpenAPI_dispersion_info_t *OpenAPI_dispersion_info_create(
     char *ts_start,
     int ts_duration,
     OpenAPI_list_t *disper_collects,
-    OpenAPI_dispersion_type_t *disper_type
+    OpenAPI_dispersion_type_e disper_type
 );
 void OpenAPI_dispersion_info_free(OpenAPI_dispersion_info_t *dispersion_info);
 OpenAPI_dispersion_info_t *OpenAPI_dispersion_info_parseFromJSON(cJSON *dispersion_infoJSON);

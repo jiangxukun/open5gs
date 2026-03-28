@@ -6,7 +6,7 @@
 
 OpenAPI_bdt_data_patch_t *OpenAPI_bdt_data_patch_create(
     OpenAPI_transfer_policy_t *trans_policy,
-    OpenAPI_bdt_policy_status_t *bdtp_status
+    OpenAPI_bdt_policy_status_e bdtp_status
 )
 {
     OpenAPI_bdt_data_patch_t *bdt_data_patch_local_var = ogs_malloc(sizeof(OpenAPI_bdt_data_patch_t));
@@ -28,10 +28,6 @@ void OpenAPI_bdt_data_patch_free(OpenAPI_bdt_data_patch_t *bdt_data_patch)
     if (bdt_data_patch->trans_policy) {
         OpenAPI_transfer_policy_free(bdt_data_patch->trans_policy);
         bdt_data_patch->trans_policy = NULL;
-    }
-    if (bdt_data_patch->bdtp_status) {
-        OpenAPI_bdt_policy_status_free(bdt_data_patch->bdtp_status);
-        bdt_data_patch->bdtp_status = NULL;
     }
     ogs_free(bdt_data_patch);
 }
@@ -60,14 +56,8 @@ cJSON *OpenAPI_bdt_data_patch_convertToJSON(OpenAPI_bdt_data_patch_t *bdt_data_p
     }
     }
 
-    if (bdt_data_patch->bdtp_status) {
-    cJSON *bdtp_status_local_JSON = OpenAPI_bdt_policy_status_convertToJSON(bdt_data_patch->bdtp_status);
-    if (bdtp_status_local_JSON == NULL) {
-        ogs_error("OpenAPI_bdt_data_patch_convertToJSON() failed [bdtp_status]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "bdtpStatus", bdtp_status_local_JSON);
-    if (item->child == NULL) {
+    if (bdt_data_patch->bdtp_status != OpenAPI_bdt_policy_status_NULL) {
+    if (cJSON_AddStringToObject(item, "bdtpStatus", OpenAPI_bdt_policy_status_ToString(bdt_data_patch->bdtp_status)) == NULL) {
         ogs_error("OpenAPI_bdt_data_patch_convertToJSON() failed [bdtp_status]");
         goto end;
     }
@@ -84,7 +74,7 @@ OpenAPI_bdt_data_patch_t *OpenAPI_bdt_data_patch_parseFromJSON(cJSON *bdt_data_p
     cJSON *trans_policy = NULL;
     OpenAPI_transfer_policy_t *trans_policy_local_nonprim = NULL;
     cJSON *bdtp_status = NULL;
-    OpenAPI_bdt_policy_status_t *bdtp_status_local_nonprim = NULL;
+    OpenAPI_bdt_policy_status_e bdtp_statusVariable = 0;
     trans_policy = cJSON_GetObjectItemCaseSensitive(bdt_data_patchJSON, "transPolicy");
     if (trans_policy) {
     trans_policy_local_nonprim = OpenAPI_transfer_policy_parseFromJSON(trans_policy);
@@ -96,16 +86,16 @@ OpenAPI_bdt_data_patch_t *OpenAPI_bdt_data_patch_parseFromJSON(cJSON *bdt_data_p
 
     bdtp_status = cJSON_GetObjectItemCaseSensitive(bdt_data_patchJSON, "bdtpStatus");
     if (bdtp_status) {
-    bdtp_status_local_nonprim = OpenAPI_bdt_policy_status_parseFromJSON(bdtp_status);
-    if (!bdtp_status_local_nonprim) {
-        ogs_error("OpenAPI_bdt_policy_status_parseFromJSON failed [bdtp_status]");
+    if (!cJSON_IsString(bdtp_status)) {
+        ogs_error("OpenAPI_bdt_data_patch_parseFromJSON() failed [bdtp_status]");
         goto end;
     }
+    bdtp_statusVariable = OpenAPI_bdt_policy_status_FromString(bdtp_status->valuestring);
     }
 
     bdt_data_patch_local_var = OpenAPI_bdt_data_patch_create (
         trans_policy ? trans_policy_local_nonprim : NULL,
-        bdtp_status ? bdtp_status_local_nonprim : NULL
+        bdtp_status ? bdtp_statusVariable : 0
     );
 
     return bdt_data_patch_local_var;
@@ -113,10 +103,6 @@ end:
     if (trans_policy_local_nonprim) {
         OpenAPI_transfer_policy_free(trans_policy_local_nonprim);
         trans_policy_local_nonprim = NULL;
-    }
-    if (bdtp_status_local_nonprim) {
-        OpenAPI_bdt_policy_status_free(bdtp_status_local_nonprim);
-        bdtp_status_local_nonprim = NULL;
     }
     return NULL;
 }

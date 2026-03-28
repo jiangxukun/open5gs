@@ -4,29 +4,6 @@
 #include <stdio.h>
 #include "hsmf_update_data.h"
 
-char *OpenAPI_sm_policy_notify_indhsmf_update_data_ToString(OpenAPI_hsmf_update_data_sm_policy_notify_ind_e sm_policy_notify_ind)
-{
-    const char *sm_policy_notify_indArray[] =  { "NULL", "true" };
-    size_t sizeofArray = sizeof(sm_policy_notify_indArray) / sizeof(sm_policy_notify_indArray[0]);
-    if (sm_policy_notify_ind < sizeofArray)
-        return (char *)sm_policy_notify_indArray[sm_policy_notify_ind];
-    else
-        return (char *)"Unknown";
-}
-
-OpenAPI_hsmf_update_data_sm_policy_notify_ind_e OpenAPI_sm_policy_notify_indhsmf_update_data_FromString(char* sm_policy_notify_ind)
-{
-    int stringToReturn = 0;
-    const char *sm_policy_notify_indArray[] =  { "NULL", "true" };
-    size_t sizeofArray = sizeof(sm_policy_notify_indArray) / sizeof(sm_policy_notify_indArray[0]);
-    while (stringToReturn < sizeofArray) {
-        if (strcmp(sm_policy_notify_ind, sm_policy_notify_indArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_create(
     OpenAPI_request_indication_e request_indication,
     char *pei,
@@ -95,7 +72,8 @@ OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_create(
     char *amf_nf_id,
     OpenAPI_guami_t *guami,
     OpenAPI_list_t *secondary_rat_usage_data_report_container,
-    OpenAPI_hsmf_update_data_sm_policy_notify_ind_e sm_policy_notify_ind,
+    bool is_sm_policy_notify_ind,
+    int sm_policy_notify_ind,
     bool is_pcf_ue_callback_info_null,
     OpenAPI_pcf_ue_callback_info_t *pcf_ue_callback_info,
     OpenAPI_satellite_backhaul_category_e satellite_backhaul_cat,
@@ -174,6 +152,7 @@ OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_create(
     hsmf_update_data_local_var->amf_nf_id = amf_nf_id;
     hsmf_update_data_local_var->guami = guami;
     hsmf_update_data_local_var->secondary_rat_usage_data_report_container = secondary_rat_usage_data_report_container;
+    hsmf_update_data_local_var->is_sm_policy_notify_ind = is_sm_policy_notify_ind;
     hsmf_update_data_local_var->sm_policy_notify_ind = sm_policy_notify_ind;
     hsmf_update_data_local_var->is_pcf_ue_callback_info_null = is_pcf_ue_callback_info_null;
     hsmf_update_data_local_var->pcf_ue_callback_info = pcf_ue_callback_info;
@@ -1006,8 +985,8 @@ cJSON *OpenAPI_hsmf_update_data_convertToJSON(OpenAPI_hsmf_update_data_t *hsmf_u
     }
     }
 
-    if (hsmf_update_data->sm_policy_notify_ind != OpenAPI_hsmf_update_data_SMPOLICYNOTIFYIND_NULL) {
-    if (cJSON_AddStringToObject(item, "smPolicyNotifyInd", OpenAPI_sm_policy_notify_indhsmf_update_data_ToString(hsmf_update_data->sm_policy_notify_ind)) == NULL) {
+    if (hsmf_update_data->is_sm_policy_notify_ind) {
+    if (cJSON_AddBoolToObject(item, "smPolicyNotifyInd", hsmf_update_data->sm_policy_notify_ind) == NULL) {
         ogs_error("OpenAPI_hsmf_update_data_convertToJSON() failed [sm_policy_notify_ind]");
         goto end;
     }
@@ -1163,7 +1142,6 @@ OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_parseFromJSON(cJSON *hsmf_u
     cJSON *secondary_rat_usage_data_report_container = NULL;
     OpenAPI_list_t *secondary_rat_usage_data_report_containerList = NULL;
     cJSON *sm_policy_notify_ind = NULL;
-    OpenAPI_hsmf_update_data_sm_policy_notify_ind_e sm_policy_notify_indVariable = 0;
     cJSON *pcf_ue_callback_info = NULL;
     OpenAPI_pcf_ue_callback_info_t *pcf_ue_callback_info_local_nonprim = NULL;
     cJSON *satellite_backhaul_cat = NULL;
@@ -1824,11 +1802,10 @@ OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_parseFromJSON(cJSON *hsmf_u
 
     sm_policy_notify_ind = cJSON_GetObjectItemCaseSensitive(hsmf_update_dataJSON, "smPolicyNotifyInd");
     if (sm_policy_notify_ind) {
-    if (!cJSON_IsString(sm_policy_notify_ind)) {
+    if (!cJSON_IsBool(sm_policy_notify_ind)) {
         ogs_error("OpenAPI_hsmf_update_data_parseFromJSON() failed [sm_policy_notify_ind]");
         goto end;
     }
-    sm_policy_notify_indVariable = OpenAPI_sm_policy_notify_indhsmf_update_data_FromString(sm_policy_notify_ind->valuestring);
     }
 
     pcf_ue_callback_info = cJSON_GetObjectItemCaseSensitive(hsmf_update_dataJSON, "pcfUeCallbackInfo");
@@ -1946,7 +1923,8 @@ OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_parseFromJSON(cJSON *hsmf_u
         amf_nf_id && !cJSON_IsNull(amf_nf_id) ? ogs_strdup(amf_nf_id->valuestring) : NULL,
         guami ? guami_local_nonprim : NULL,
         secondary_rat_usage_data_report_container ? secondary_rat_usage_data_report_containerList : NULL,
-        sm_policy_notify_ind ? sm_policy_notify_indVariable : 0,
+        sm_policy_notify_ind ? true : false,
+        sm_policy_notify_ind ? sm_policy_notify_ind->valueint : 0,
         pcf_ue_callback_info && cJSON_IsNull(pcf_ue_callback_info) ? true : false,
         pcf_ue_callback_info ? pcf_ue_callback_info_local_nonprim : NULL,
         satellite_backhaul_cat ? satellite_backhaul_catVariable : 0,

@@ -80,9 +80,6 @@ void OpenAPI_am_influ_data_free(OpenAPI_am_influ_data_t *am_influ_data)
         am_influ_data->supi = NULL;
     }
     if (am_influ_data->ev_subs) {
-        OpenAPI_list_for_each(am_influ_data->ev_subs, node) {
-            OpenAPI_am_influ_event_free(node->data);
-        }
         OpenAPI_list_free(am_influ_data->ev_subs);
         am_influ_data->ev_subs = NULL;
     }
@@ -195,19 +192,17 @@ cJSON *OpenAPI_am_influ_data_convertToJSON(OpenAPI_am_influ_data_t *am_influ_dat
     }
     }
 
-    if (am_influ_data->ev_subs) {
+    if (am_influ_data->ev_subs != OpenAPI_am_influ_event_NULL) {
     cJSON *ev_subsList = cJSON_AddArrayToObject(item, "evSubs");
     if (ev_subsList == NULL) {
         ogs_error("OpenAPI_am_influ_data_convertToJSON() failed [ev_subs]");
         goto end;
     }
     OpenAPI_list_for_each(am_influ_data->ev_subs, node) {
-        cJSON *itemLocal = OpenAPI_am_influ_event_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(ev_subsList, "", OpenAPI_am_influ_event_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_am_influ_data_convertToJSON() failed [ev_subs]");
             goto end;
         }
-        cJSON_AddItemToArray(ev_subsList, itemLocal);
     }
     }
 
@@ -407,16 +402,22 @@ OpenAPI_am_influ_data_t *OpenAPI_am_influ_data_parseFromJSON(cJSON *am_influ_dat
         ev_subsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(ev_subs_local, ev_subs) {
-            if (!cJSON_IsObject(ev_subs_local)) {
+            OpenAPI_am_influ_event_e localEnum = OpenAPI_am_influ_event_NULL;
+            if (!cJSON_IsString(ev_subs_local)) {
                 ogs_error("OpenAPI_am_influ_data_parseFromJSON() failed [ev_subs]");
                 goto end;
             }
-            OpenAPI_am_influ_event_t *ev_subsItem = OpenAPI_am_influ_event_parseFromJSON(ev_subs_local);
-            if (!ev_subsItem) {
-                ogs_error("No ev_subsItem");
-                goto end;
+            localEnum = OpenAPI_am_influ_event_FromString(ev_subs_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"ev_subs\" is not supported. Ignoring it ...",
+                         ev_subs_local->valuestring);
+            } else {
+                OpenAPI_list_add(ev_subsList, (void *)localEnum);
             }
-            OpenAPI_list_add(ev_subsList, ev_subsItem);
+        }
+        if (ev_subsList->count == 0) {
+            ogs_error("OpenAPI_am_influ_data_parseFromJSON() failed: Expected ev_subsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -564,9 +565,6 @@ end:
         dnn_snssai_infosList = NULL;
     }
     if (ev_subsList) {
-        OpenAPI_list_for_each(ev_subsList, node) {
-            OpenAPI_am_influ_event_free(node->data);
-        }
         OpenAPI_list_free(ev_subsList);
         ev_subsList = NULL;
     }

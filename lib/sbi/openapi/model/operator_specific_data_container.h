@@ -12,7 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "operator_specific_data_container_value.h"
+#include "any_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +27,7 @@ OpenAPI_operator_specific_data_container_data_type_e OpenAPI_operator_specific_d
 typedef struct OpenAPI_operator_specific_data_container_s {
     OpenAPI_operator_specific_data_container_data_type_e data_type;
     char *data_type_definition;
-    struct OpenAPI_operator_specific_data_container_value_s *value;
+    OpenAPI_any_type_t *value;
     char *supported_features;
     OpenAPI_list_t *reset_ids;
 } OpenAPI_operator_specific_data_container_t;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_operator_specific_data_container_s {
 OpenAPI_operator_specific_data_container_t *OpenAPI_operator_specific_data_container_create(
     OpenAPI_operator_specific_data_container_data_type_e data_type,
     char *data_type_definition,
-    OpenAPI_operator_specific_data_container_value_t *value,
+    OpenAPI_any_type_t *value,
     char *supported_features,
     OpenAPI_list_t *reset_ids
 );

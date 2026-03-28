@@ -43,8 +43,10 @@ typedef struct OpenAPI_events_notification_s {
     OpenAPI_access_type_e access_type;
     struct OpenAPI_additional_access_info_s *add_access_info;
     struct OpenAPI_additional_access_info_s *rel_access_info;
+    bool is_an_charg_addr_null;
     struct OpenAPI_acc_net_charging_address_s *an_charg_addr;
     OpenAPI_list_t *an_charg_ids;
+    bool is_an_gw_addr_null;
     struct OpenAPI_an_gw_address_s *an_gw_addr;
     char *ev_subs_uri;
     OpenAPI_list_t *ev_notifs;
@@ -72,8 +74,10 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_create(
     OpenAPI_access_type_e access_type,
     OpenAPI_additional_access_info_t *add_access_info,
     OpenAPI_additional_access_info_t *rel_access_info,
+    bool is_an_charg_addr_null,
     OpenAPI_acc_net_charging_address_t *an_charg_addr,
     OpenAPI_list_t *an_charg_ids,
+    bool is_an_gw_addr_null,
     OpenAPI_an_gw_address_t *an_gw_addr,
     char *ev_subs_uri,
     OpenAPI_list_t *ev_notifs,

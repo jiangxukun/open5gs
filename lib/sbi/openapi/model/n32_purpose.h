@@ -1,7 +1,7 @@
 /*
  * n32_purpose.h
  *
- * 
+ * Usage purpose of establishing N32 connectivity
  */
 
 #ifndef _OpenAPI_n32_purpose_H_

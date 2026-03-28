@@ -1,7 +1,7 @@
 /*
  * required_access_info.h
  *
- * 
+ * Indicates the access network information required for an AF session.
  */
 
 #ifndef _OpenAPI_required_access_info_H_

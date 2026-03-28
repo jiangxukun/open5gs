@@ -1,7 +1,7 @@
 /*
  * dispersion_collection.h
  *
- * Dispersion collection per UE location or per slice.
+ * 
  */
 
 #ifndef _OpenAPI_dispersion_collection_H_
@@ -30,7 +30,7 @@ typedef struct OpenAPI_dispersion_collection_s {
     OpenAPI_list_t *app_volumes;
     bool is_disper_amount;
     int disper_amount;
-    struct OpenAPI_dispersion_class_s *disper_class;
+    OpenAPI_dispersion_class_e disper_class;
     bool is_usage_rank;
     int usage_rank;
     bool is_percentile_rank;
@@ -49,7 +49,7 @@ OpenAPI_dispersion_collection_t *OpenAPI_dispersion_collection_create(
     OpenAPI_list_t *app_volumes,
     bool is_disper_amount,
     int disper_amount,
-    OpenAPI_dispersion_class_t *disper_class,
+    OpenAPI_dispersion_class_e disper_class,
     bool is_usage_rank,
     int usage_rank,
     bool is_percentile_rank,

@@ -1,7 +1,7 @@
 /*
  * n32f_error_type.h
  *
- * 
+ * Type of error while processing N32-f message
  */
 
 #ifndef _OpenAPI_n32f_error_type_H_

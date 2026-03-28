@@ -22,12 +22,12 @@ extern "C" {
 
 typedef struct OpenAPI_point_s OpenAPI_point_t;
 typedef struct OpenAPI_point_s {
-    struct OpenAPI_supported_gad_shapes_s *shape;
+    OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_geographical_coordinates_s *point;
 } OpenAPI_point_t;
 
 OpenAPI_point_t *OpenAPI_point_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_geographical_coordinates_t *point
 );
 void OpenAPI_point_free(OpenAPI_point_t *point);

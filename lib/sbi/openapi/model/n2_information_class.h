@@ -1,7 +1,7 @@
 /*
  * n2_information_class.h
  *
- * 
+ * Enumeration for N2 Information Class
  */
 
 #ifndef _OpenAPI_n2_information_class_H_

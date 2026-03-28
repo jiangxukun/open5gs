@@ -20,11 +20,11 @@ extern "C" {
 
 typedef struct OpenAPI_gad_shape_s OpenAPI_gad_shape_t;
 typedef struct OpenAPI_gad_shape_s {
-    struct OpenAPI_supported_gad_shapes_s *shape;
+    OpenAPI_supported_gad_shapes_e shape;
 } OpenAPI_gad_shape_t;
 
 OpenAPI_gad_shape_t *OpenAPI_gad_shape_create(
-    OpenAPI_supported_gad_shapes_t *shape
+    OpenAPI_supported_gad_shapes_e shape
 );
 void OpenAPI_gad_shape_free(OpenAPI_gad_shape_t *gad_shape);
 OpenAPI_gad_shape_t *OpenAPI_gad_shape_parseFromJSON(cJSON *gad_shapeJSON);

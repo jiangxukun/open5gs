@@ -12,7 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "steering_container.h"
+#include "steering_container_1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +20,7 @@ extern "C" {
 
 typedef struct OpenAPI_sor_info_1_s OpenAPI_sor_info_1_t;
 typedef struct OpenAPI_sor_info_1_s {
-    struct OpenAPI_steering_container_s *steering_container;
+    struct OpenAPI_steering_container_1_s *steering_container;
     int ack_ind;
     char *sor_mac_iausf;
     char *countersor;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_sor_info_1_s {
 } OpenAPI_sor_info_1_t;
 
 OpenAPI_sor_info_1_t *OpenAPI_sor_info_1_create(
-    OpenAPI_steering_container_t *steering_container,
+    OpenAPI_steering_container_1_t *steering_container,
     int ack_ind,
     char *sor_mac_iausf,
     char *countersor,

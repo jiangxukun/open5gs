@@ -1,7 +1,7 @@
 /*
  * reporting_frequency.h
  *
- * 
+ * Indicates the frequency for the reporting.
  */
 
 #ifndef _OpenAPI_reporting_frequency_H_

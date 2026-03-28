@@ -30,7 +30,7 @@ typedef struct OpenAPI_rat_freq_information_s {
     int freq;
     OpenAPI_rat_type_e rat_type;
     struct OpenAPI_threshold_level_s *svc_exp_threshold;
-    struct OpenAPI_matching_direction_s *matching_dir;
+    OpenAPI_matching_direction_e matching_dir;
 } OpenAPI_rat_freq_information_t;
 
 OpenAPI_rat_freq_information_t *OpenAPI_rat_freq_information_create(
@@ -42,7 +42,7 @@ OpenAPI_rat_freq_information_t *OpenAPI_rat_freq_information_create(
     int freq,
     OpenAPI_rat_type_e rat_type,
     OpenAPI_threshold_level_t *svc_exp_threshold,
-    OpenAPI_matching_direction_t *matching_dir
+    OpenAPI_matching_direction_e matching_dir
 );
 void OpenAPI_rat_freq_information_free(OpenAPI_rat_freq_information_t *rat_freq_information);
 OpenAPI_rat_freq_information_t *OpenAPI_rat_freq_information_parseFromJSON(cJSON *rat_freq_informationJSON);

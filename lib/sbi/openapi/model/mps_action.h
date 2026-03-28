@@ -1,7 +1,7 @@
 /*
  * mps_action.h
  *
- * 
+ * Indicates whether it is an invocation, a revocation or an invocation with authorization of the MPS for DTS service.
  */
 
 #ifndef _OpenAPI_mps_action_H_

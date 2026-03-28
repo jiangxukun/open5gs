@@ -5,7 +5,7 @@
 #include "geographic_area.h"
 
 OpenAPI_geographic_area_t *OpenAPI_geographic_area_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_geographical_coordinates_t *point,
     float uncertainty,
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse,
@@ -45,10 +45,6 @@ void OpenAPI_geographic_area_free(OpenAPI_geographic_area_t *geographic_area)
     if (NULL == geographic_area) {
         return;
     }
-    if (geographic_area->shape) {
-        OpenAPI_supported_gad_shapes_free(geographic_area->shape);
-        geographic_area->shape = NULL;
-    }
     if (geographic_area->point) {
         OpenAPI_geographical_coordinates_free(geographic_area->point);
         geographic_area->point = NULL;
@@ -78,17 +74,11 @@ cJSON *OpenAPI_geographic_area_convertToJSON(OpenAPI_geographic_area_t *geograph
     }
 
     item = cJSON_CreateObject();
-    if (!geographic_area->shape) {
+    if (geographic_area->shape == OpenAPI_supported_gad_shapes_NULL) {
         ogs_error("OpenAPI_geographic_area_convertToJSON() failed [shape]");
         return NULL;
     }
-    cJSON *shape_local_JSON = OpenAPI_supported_gad_shapes_convertToJSON(geographic_area->shape);
-    if (shape_local_JSON == NULL) {
-        ogs_error("OpenAPI_geographic_area_convertToJSON() failed [shape]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "shape", shape_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "shape", OpenAPI_supported_gad_shapes_ToString(geographic_area->shape)) == NULL) {
         ogs_error("OpenAPI_geographic_area_convertToJSON() failed [shape]");
         goto end;
     }
@@ -190,7 +180,7 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
     OpenAPI_geographic_area_t *geographic_area_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *shape = NULL;
-    OpenAPI_supported_gad_shapes_t *shape_local_nonprim = NULL;
+    OpenAPI_supported_gad_shapes_e shapeVariable = 0;
     cJSON *point = NULL;
     OpenAPI_geographical_coordinates_t *point_local_nonprim = NULL;
     cJSON *uncertainty = NULL;
@@ -210,11 +200,11 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
         ogs_error("OpenAPI_geographic_area_parseFromJSON() failed [shape]");
         goto end;
     }
-    shape_local_nonprim = OpenAPI_supported_gad_shapes_parseFromJSON(shape);
-    if (!shape_local_nonprim) {
-        ogs_error("OpenAPI_supported_gad_shapes_parseFromJSON failed [shape]");
+    if (!cJSON_IsString(shape)) {
+        ogs_error("OpenAPI_geographic_area_parseFromJSON() failed [shape]");
         goto end;
     }
+    shapeVariable = OpenAPI_supported_gad_shapes_FromString(shape->valuestring);
 
     point = cJSON_GetObjectItemCaseSensitive(geographic_areaJSON, "point");
     if (!point) {
@@ -345,7 +335,7 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
     }
 
     geographic_area_local_var = OpenAPI_geographic_area_create (
-        shape_local_nonprim,
+        shapeVariable,
         point_local_nonprim,
         
         uncertainty->valuedouble,
@@ -369,10 +359,6 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
 
     return geographic_area_local_var;
 end:
-    if (shape_local_nonprim) {
-        OpenAPI_supported_gad_shapes_free(shape_local_nonprim);
-        shape_local_nonprim = NULL;
-    }
     if (point_local_nonprim) {
         OpenAPI_geographical_coordinates_free(point_local_nonprim);
         point_local_nonprim = NULL;

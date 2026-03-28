@@ -628,7 +628,7 @@ OpenAPI_ee_subscription_ext_t *OpenAPI_ee_subscription_ext_parseFromJSON(cJSON *
 end:
     if (monitoring_configurationsList) {
         OpenAPI_list_for_each(monitoring_configurationsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_monitoring_configuration_1_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

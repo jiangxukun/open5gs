@@ -1,7 +1,7 @@
 /*
  * app_descriptor_1.h
  *
- * Represents an operation system and the corresponding applications.
+ * 
  */
 
 #ifndef _OpenAPI_app_descriptor_1_H_
@@ -20,12 +20,12 @@ extern "C" {
 typedef struct OpenAPI_app_descriptor_1_s OpenAPI_app_descriptor_1_t;
 typedef struct OpenAPI_app_descriptor_1_s {
     char *os_id;
-    OpenAPI_list_t* app_ids;
+    char *app_id;
 } OpenAPI_app_descriptor_1_t;
 
 OpenAPI_app_descriptor_1_t *OpenAPI_app_descriptor_1_create(
     char *os_id,
-    OpenAPI_list_t* app_ids
+    char *app_id
 );
 void OpenAPI_app_descriptor_1_free(OpenAPI_app_descriptor_1_t *app_descriptor_1);
 OpenAPI_app_descriptor_1_t *OpenAPI_app_descriptor_1_parseFromJSON(cJSON *app_descriptor_1JSON);

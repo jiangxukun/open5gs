@@ -519,7 +519,7 @@ OpenAPI_ue_policy_set_t *OpenAPI_ue_policy_set_parseFromJSON(cJSON *ue_policy_se
 end:
     if (pra_infosList) {
         OpenAPI_list_for_each(pra_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -536,7 +536,7 @@ end:
     }
     if (ue_policy_sectionsList) {
         OpenAPI_list_for_each(ue_policy_sectionsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_ue_policy_section_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -553,7 +553,7 @@ end:
     }
     if (allowed_route_sel_descsList) {
         OpenAPI_list_for_each(allowed_route_sel_descsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_plmn_route_selection_descriptor_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

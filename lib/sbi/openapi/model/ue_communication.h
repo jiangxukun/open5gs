@@ -1,7 +1,7 @@
 /*
  * ue_communication.h
  *
- * Represents UE communication information.
+ * 
  */
 
 #ifndef _OpenAPI_ue_communication_H_
@@ -35,6 +35,7 @@ typedef struct OpenAPI_ue_communication_s {
     bool is_ts_variance;
     float ts_variance;
     struct OpenAPI_scheduled_communication_time_1_s *recurring_time;
+    bool is_traf_char_null;
     struct OpenAPI_traffic_characterization_s *traf_char;
     bool is_ratio;
     int ratio;
@@ -59,6 +60,7 @@ OpenAPI_ue_communication_t *OpenAPI_ue_communication_create(
     bool is_ts_variance,
     float ts_variance,
     OpenAPI_scheduled_communication_time_1_t *recurring_time,
+    bool is_traf_char_null,
     OpenAPI_traffic_characterization_t *traf_char,
     bool is_ratio,
     int ratio,

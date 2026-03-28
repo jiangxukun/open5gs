@@ -167,7 +167,7 @@ OpenAPI_acceptable_service_info_t *OpenAPI_acceptable_service_info_parseFromJSON
 end:
     if (acc_bw_med_compsList) {
         OpenAPI_list_for_each(acc_bw_med_compsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_media_component_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

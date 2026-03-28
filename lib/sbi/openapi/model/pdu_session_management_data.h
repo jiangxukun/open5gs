@@ -14,7 +14,7 @@
 #include "../include/binary.h"
 #include "pdu_session_status.h"
 #include "pdu_session_type.h"
-#include "route_to_location.h"
+#include "route_to_location_1.h"
 
 #ifdef __cplusplus
 extern "C" {

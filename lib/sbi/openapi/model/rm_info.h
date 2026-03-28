@@ -21,12 +21,12 @@ extern "C" {
 
 typedef struct OpenAPI_rm_info_s OpenAPI_rm_info_t;
 typedef struct OpenAPI_rm_info_s {
-    struct OpenAPI_rm_state_s *rm_state;
+    OpenAPI_rm_state_e rm_state;
     OpenAPI_access_type_e access_type;
 } OpenAPI_rm_info_t;
 
 OpenAPI_rm_info_t *OpenAPI_rm_info_create(
-    OpenAPI_rm_state_t *rm_state,
+    OpenAPI_rm_state_e rm_state,
     OpenAPI_access_type_e access_type
 );
 void OpenAPI_rm_info_free(OpenAPI_rm_info_t *rm_info);

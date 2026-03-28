@@ -8,14 +8,14 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_create(
     char *asp_id,
     OpenAPI_transfer_policy_t *trans_policy,
     char *bdt_ref_id,
-    OpenAPI_network_area_info_2_t *nw_area_info,
+    OpenAPI_network_area_info_3_t *nw_area_info,
     bool is_num_of_ues,
     int num_of_ues,
     OpenAPI_usage_threshold_t *vol_per_ue,
     char *dnn,
     OpenAPI_snssai_t *snssai,
     char *traffic_des,
-    OpenAPI_bdt_policy_status_t *bdtp_status,
+    OpenAPI_bdt_policy_status_e bdtp_status,
     char *supp_feat,
     OpenAPI_list_t *reset_ids
 )
@@ -60,7 +60,7 @@ void OpenAPI_bdt_data_free(OpenAPI_bdt_data_t *bdt_data)
         bdt_data->bdt_ref_id = NULL;
     }
     if (bdt_data->nw_area_info) {
-        OpenAPI_network_area_info_2_free(bdt_data->nw_area_info);
+        OpenAPI_network_area_info_3_free(bdt_data->nw_area_info);
         bdt_data->nw_area_info = NULL;
     }
     if (bdt_data->vol_per_ue) {
@@ -78,10 +78,6 @@ void OpenAPI_bdt_data_free(OpenAPI_bdt_data_t *bdt_data)
     if (bdt_data->traffic_des) {
         ogs_free(bdt_data->traffic_des);
         bdt_data->traffic_des = NULL;
-    }
-    if (bdt_data->bdtp_status) {
-        OpenAPI_bdt_policy_status_free(bdt_data->bdtp_status);
-        bdt_data->bdtp_status = NULL;
     }
     if (bdt_data->supp_feat) {
         ogs_free(bdt_data->supp_feat);
@@ -140,7 +136,7 @@ cJSON *OpenAPI_bdt_data_convertToJSON(OpenAPI_bdt_data_t *bdt_data)
     }
 
     if (bdt_data->nw_area_info) {
-    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_2_convertToJSON(bdt_data->nw_area_info);
+    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_3_convertToJSON(bdt_data->nw_area_info);
     if (nw_area_info_local_JSON == NULL) {
         ogs_error("OpenAPI_bdt_data_convertToJSON() failed [nw_area_info]");
         goto end;
@@ -199,14 +195,8 @@ cJSON *OpenAPI_bdt_data_convertToJSON(OpenAPI_bdt_data_t *bdt_data)
     }
     }
 
-    if (bdt_data->bdtp_status) {
-    cJSON *bdtp_status_local_JSON = OpenAPI_bdt_policy_status_convertToJSON(bdt_data->bdtp_status);
-    if (bdtp_status_local_JSON == NULL) {
-        ogs_error("OpenAPI_bdt_data_convertToJSON() failed [bdtp_status]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "bdtpStatus", bdtp_status_local_JSON);
-    if (item->child == NULL) {
+    if (bdt_data->bdtp_status != OpenAPI_bdt_policy_status_NULL) {
+    if (cJSON_AddStringToObject(item, "bdtpStatus", OpenAPI_bdt_policy_status_ToString(bdt_data->bdtp_status)) == NULL) {
         ogs_error("OpenAPI_bdt_data_convertToJSON() failed [bdtp_status]");
         goto end;
     }
@@ -246,7 +236,7 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
     OpenAPI_transfer_policy_t *trans_policy_local_nonprim = NULL;
     cJSON *bdt_ref_id = NULL;
     cJSON *nw_area_info = NULL;
-    OpenAPI_network_area_info_2_t *nw_area_info_local_nonprim = NULL;
+    OpenAPI_network_area_info_3_t *nw_area_info_local_nonprim = NULL;
     cJSON *num_of_ues = NULL;
     cJSON *vol_per_ue = NULL;
     OpenAPI_usage_threshold_t *vol_per_ue_local_nonprim = NULL;
@@ -255,7 +245,7 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
     OpenAPI_snssai_t *snssai_local_nonprim = NULL;
     cJSON *traffic_des = NULL;
     cJSON *bdtp_status = NULL;
-    OpenAPI_bdt_policy_status_t *bdtp_status_local_nonprim = NULL;
+    OpenAPI_bdt_policy_status_e bdtp_statusVariable = 0;
     cJSON *supp_feat = NULL;
     cJSON *reset_ids = NULL;
     OpenAPI_list_t *reset_idsList = NULL;
@@ -290,9 +280,9 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
 
     nw_area_info = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "nwAreaInfo");
     if (nw_area_info) {
-    nw_area_info_local_nonprim = OpenAPI_network_area_info_2_parseFromJSON(nw_area_info);
+    nw_area_info_local_nonprim = OpenAPI_network_area_info_3_parseFromJSON(nw_area_info);
     if (!nw_area_info_local_nonprim) {
-        ogs_error("OpenAPI_network_area_info_2_parseFromJSON failed [nw_area_info]");
+        ogs_error("OpenAPI_network_area_info_3_parseFromJSON failed [nw_area_info]");
         goto end;
     }
     }
@@ -341,11 +331,11 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
 
     bdtp_status = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "bdtpStatus");
     if (bdtp_status) {
-    bdtp_status_local_nonprim = OpenAPI_bdt_policy_status_parseFromJSON(bdtp_status);
-    if (!bdtp_status_local_nonprim) {
-        ogs_error("OpenAPI_bdt_policy_status_parseFromJSON failed [bdtp_status]");
+    if (!cJSON_IsString(bdtp_status)) {
+        ogs_error("OpenAPI_bdt_data_parseFromJSON() failed [bdtp_status]");
         goto end;
     }
+    bdtp_statusVariable = OpenAPI_bdt_policy_status_FromString(bdtp_status->valuestring);
     }
 
     supp_feat = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "suppFeat");
@@ -388,7 +378,7 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,
         snssai ? snssai_local_nonprim : NULL,
         traffic_des && !cJSON_IsNull(traffic_des) ? ogs_strdup(traffic_des->valuestring) : NULL,
-        bdtp_status ? bdtp_status_local_nonprim : NULL,
+        bdtp_status ? bdtp_statusVariable : 0,
         supp_feat && !cJSON_IsNull(supp_feat) ? ogs_strdup(supp_feat->valuestring) : NULL,
         reset_ids ? reset_idsList : NULL
     );
@@ -400,7 +390,7 @@ end:
         trans_policy_local_nonprim = NULL;
     }
     if (nw_area_info_local_nonprim) {
-        OpenAPI_network_area_info_2_free(nw_area_info_local_nonprim);
+        OpenAPI_network_area_info_3_free(nw_area_info_local_nonprim);
         nw_area_info_local_nonprim = NULL;
     }
     if (vol_per_ue_local_nonprim) {
@@ -410,10 +400,6 @@ end:
     if (snssai_local_nonprim) {
         OpenAPI_snssai_free(snssai_local_nonprim);
         snssai_local_nonprim = NULL;
-    }
-    if (bdtp_status_local_nonprim) {
-        OpenAPI_bdt_policy_status_free(bdtp_status_local_nonprim);
-        bdtp_status_local_nonprim = NULL;
     }
     if (reset_idsList) {
         OpenAPI_list_for_each(reset_idsList, node) {

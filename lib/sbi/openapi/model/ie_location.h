@@ -1,7 +1,7 @@
 /*
  * ie_location.h
  *
- * 
+ * Location of the IE in a HTTP message
  */
 
 #ifndef _OpenAPI_ie_location_H_

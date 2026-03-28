@@ -9,8 +9,10 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_create(
     OpenAPI_access_type_e access_type,
     OpenAPI_additional_access_info_t *add_access_info,
     OpenAPI_additional_access_info_t *rel_access_info,
+    bool is_an_charg_addr_null,
     OpenAPI_acc_net_charging_address_t *an_charg_addr,
     OpenAPI_list_t *an_charg_ids,
+    bool is_an_gw_addr_null,
     OpenAPI_an_gw_address_t *an_gw_addr,
     char *ev_subs_uri,
     OpenAPI_list_t *ev_notifs,
@@ -40,8 +42,10 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_create(
     events_notification_local_var->access_type = access_type;
     events_notification_local_var->add_access_info = add_access_info;
     events_notification_local_var->rel_access_info = rel_access_info;
+    events_notification_local_var->is_an_charg_addr_null = is_an_charg_addr_null;
     events_notification_local_var->an_charg_addr = an_charg_addr;
     events_notification_local_var->an_charg_ids = an_charg_ids;
+    events_notification_local_var->is_an_gw_addr_null = is_an_gw_addr_null;
     events_notification_local_var->an_gw_addr = an_gw_addr;
     events_notification_local_var->ev_subs_uri = ev_subs_uri;
     events_notification_local_var->ev_notifs = ev_notifs;
@@ -265,6 +269,11 @@ cJSON *OpenAPI_events_notification_convertToJSON(OpenAPI_events_notification_t *
         ogs_error("OpenAPI_events_notification_convertToJSON() failed [an_charg_addr]");
         goto end;
     }
+    } else if (events_notification->is_an_charg_addr_null) {
+        if (cJSON_AddNullToObject(item, "anChargAddr") == NULL) {
+            ogs_error("OpenAPI_events_notification_convertToJSON() failed [an_charg_addr]");
+            goto end;
+        }
     }
 
     if (events_notification->an_charg_ids) {
@@ -294,6 +303,11 @@ cJSON *OpenAPI_events_notification_convertToJSON(OpenAPI_events_notification_t *
         ogs_error("OpenAPI_events_notification_convertToJSON() failed [an_gw_addr]");
         goto end;
     }
+    } else if (events_notification->is_an_gw_addr_null) {
+        if (cJSON_AddNullToObject(item, "anGwAddr") == NULL) {
+            ogs_error("OpenAPI_events_notification_convertToJSON() failed [an_gw_addr]");
+            goto end;
+        }
     }
 
     if (!events_notification->ev_subs_uri) {
@@ -645,10 +659,12 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_parseFromJSON(cJSON *
 
     an_charg_addr = cJSON_GetObjectItemCaseSensitive(events_notificationJSON, "anChargAddr");
     if (an_charg_addr) {
+    if (!cJSON_IsNull(an_charg_addr)) {
     an_charg_addr_local_nonprim = OpenAPI_acc_net_charging_address_parseFromJSON(an_charg_addr);
     if (!an_charg_addr_local_nonprim) {
         ogs_error("OpenAPI_acc_net_charging_address_parseFromJSON failed [an_charg_addr]");
         goto end;
+    }
     }
     }
 
@@ -678,10 +694,12 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_parseFromJSON(cJSON *
 
     an_gw_addr = cJSON_GetObjectItemCaseSensitive(events_notificationJSON, "anGwAddr");
     if (an_gw_addr) {
+    if (!cJSON_IsNull(an_gw_addr)) {
     an_gw_addr_local_nonprim = OpenAPI_an_gw_address_parseFromJSON(an_gw_addr);
     if (!an_gw_addr_local_nonprim) {
         ogs_error("OpenAPI_an_gw_address_parseFromJSON failed [an_gw_addr]");
         goto end;
+    }
     }
     }
 
@@ -982,8 +1000,10 @@ OpenAPI_events_notification_t *OpenAPI_events_notification_parseFromJSON(cJSON *
         access_type ? access_typeVariable : 0,
         add_access_info ? add_access_info_local_nonprim : NULL,
         rel_access_info ? rel_access_info_local_nonprim : NULL,
+        an_charg_addr && cJSON_IsNull(an_charg_addr) ? true : false,
         an_charg_addr ? an_charg_addr_local_nonprim : NULL,
         an_charg_ids ? an_charg_idsList : NULL,
+        an_gw_addr && cJSON_IsNull(an_gw_addr) ? true : false,
         an_gw_addr ? an_gw_addr_local_nonprim : NULL,
         ogs_strdup(ev_subs_uri->valuestring),
         ev_notifsList,

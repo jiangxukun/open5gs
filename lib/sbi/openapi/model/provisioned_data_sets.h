@@ -15,7 +15,7 @@
 #include "access_and_mobility_subscription_data.h"
 #include "authorization_data.h"
 #include "ee_profile_data.h"
-#include "lcs_broadcast_assistance_types_data.h"
+#include "lcs_broadcast_assistance_types_data_1.h"
 #include "lcs_mo_data.h"
 #include "lcs_privacy_data.h"
 #include "mbs_subscription_data_1.h"
@@ -44,7 +44,7 @@ typedef struct OpenAPI_provisioned_data_sets_s {
     struct OpenAPI_sms_management_subscription_data_s *sms_mng_data;
     struct OpenAPI_lcs_privacy_data_s *lcs_privacy_data;
     struct OpenAPI_lcs_mo_data_s *lcs_mo_data;
-    struct OpenAPI_lcs_broadcast_assistance_types_data_s *lcs_bca_data;
+    struct OpenAPI_lcs_broadcast_assistance_types_data_1_s *lcs_bca_data;
     struct OpenAPI_v2x_subscription_data_s *v2x_data;
     struct OpenAPI_prose_subscription_data_s *prose_data;
     struct OpenAPI_odb_data_s *odb_data;
@@ -64,7 +64,7 @@ OpenAPI_provisioned_data_sets_t *OpenAPI_provisioned_data_sets_create(
     OpenAPI_sms_management_subscription_data_t *sms_mng_data,
     OpenAPI_lcs_privacy_data_t *lcs_privacy_data,
     OpenAPI_lcs_mo_data_t *lcs_mo_data,
-    OpenAPI_lcs_broadcast_assistance_types_data_t *lcs_bca_data,
+    OpenAPI_lcs_broadcast_assistance_types_data_1_t *lcs_bca_data,
     OpenAPI_v2x_subscription_data_t *v2x_data,
     OpenAPI_prose_subscription_data_t *prose_data,
     OpenAPI_odb_data_t *odb_data,

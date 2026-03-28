@@ -24,7 +24,7 @@ extern "C" {
 
 typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s OpenAPI_local3d_point_uncertainty_ellipsoid_t;
 typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s {
-    struct OpenAPI_supported_gad_shapes_s *shape;
+    OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_local_origin_s *local_origin;
     struct OpenAPI_relative_cartesian_location_s *point;
     struct OpenAPI_uncertainty_ellipsoid_s *uncertainty_ellipsoid;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s {
 } OpenAPI_local3d_point_uncertainty_ellipsoid_t;
 
 OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty_ellipsoid_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_local_origin_t *local_origin,
     OpenAPI_relative_cartesian_location_t *point,
     OpenAPI_uncertainty_ellipsoid_t *uncertainty_ellipsoid,

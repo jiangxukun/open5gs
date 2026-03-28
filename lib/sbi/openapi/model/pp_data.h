@@ -33,6 +33,7 @@ typedef struct OpenAPI_pp_data_s {
     struct OpenAPI_expected_ue_behaviour_s *expected_ue_behaviour_parameters;
     bool is_ec_restriction_null;
     struct OpenAPI_ec_restriction_s *ec_restriction;
+    bool is_acs_info_null;
     struct OpenAPI_acs_info_rm_s *acs_info;
     bool is_stn_sr_null;
     char *stn_sr;
@@ -51,6 +52,7 @@ OpenAPI_pp_data_t *OpenAPI_pp_data_create(
     OpenAPI_expected_ue_behaviour_t *expected_ue_behaviour_parameters,
     bool is_ec_restriction_null,
     OpenAPI_ec_restriction_t *ec_restriction,
+    bool is_acs_info_null,
     OpenAPI_acs_info_rm_t *acs_info,
     bool is_stn_sr_null,
     char *stn_sr,

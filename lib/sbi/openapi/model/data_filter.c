@@ -5,7 +5,7 @@
 #include "data_filter.h"
 
 OpenAPI_data_filter_t *OpenAPI_data_filter_create(
-    OpenAPI_data_ind_t *data_ind,
+    OpenAPI_data_ind_e data_ind,
     OpenAPI_list_t *dnns,
     OpenAPI_list_t *snssais,
     OpenAPI_list_t *internal_group_ids,
@@ -44,10 +44,6 @@ void OpenAPI_data_filter_free(OpenAPI_data_filter_t *data_filter)
 
     if (NULL == data_filter) {
         return;
-    }
-    if (data_filter->data_ind) {
-        OpenAPI_data_ind_free(data_filter->data_ind);
-        data_filter->data_ind = NULL;
     }
     if (data_filter->dnns) {
         OpenAPI_list_for_each(data_filter->dnns, node) {
@@ -126,17 +122,11 @@ cJSON *OpenAPI_data_filter_convertToJSON(OpenAPI_data_filter_t *data_filter)
     }
 
     item = cJSON_CreateObject();
-    if (!data_filter->data_ind) {
+    if (data_filter->data_ind == OpenAPI_data_ind_NULL) {
         ogs_error("OpenAPI_data_filter_convertToJSON() failed [data_ind]");
         return NULL;
     }
-    cJSON *data_ind_local_JSON = OpenAPI_data_ind_convertToJSON(data_filter->data_ind);
-    if (data_ind_local_JSON == NULL) {
-        ogs_error("OpenAPI_data_filter_convertToJSON() failed [data_ind]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "dataInd", data_ind_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "dataInd", OpenAPI_data_ind_ToString(data_filter->data_ind)) == NULL) {
         ogs_error("OpenAPI_data_filter_convertToJSON() failed [data_ind]");
         goto end;
     }
@@ -287,7 +277,7 @@ OpenAPI_data_filter_t *OpenAPI_data_filter_parseFromJSON(cJSON *data_filterJSON)
     OpenAPI_data_filter_t *data_filter_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *data_ind = NULL;
-    OpenAPI_data_ind_t *data_ind_local_nonprim = NULL;
+    OpenAPI_data_ind_e data_indVariable = 0;
     cJSON *dnns = NULL;
     OpenAPI_list_t *dnnsList = NULL;
     cJSON *snssais = NULL;
@@ -312,11 +302,11 @@ OpenAPI_data_filter_t *OpenAPI_data_filter_parseFromJSON(cJSON *data_filterJSON)
         ogs_error("OpenAPI_data_filter_parseFromJSON() failed [data_ind]");
         goto end;
     }
-    data_ind_local_nonprim = OpenAPI_data_ind_parseFromJSON(data_ind);
-    if (!data_ind_local_nonprim) {
-        ogs_error("OpenAPI_data_ind_parseFromJSON failed [data_ind]");
+    if (!cJSON_IsString(data_ind)) {
+        ogs_error("OpenAPI_data_filter_parseFromJSON() failed [data_ind]");
         goto end;
     }
+    data_indVariable = OpenAPI_data_ind_FromString(data_ind->valuestring);
 
     dnns = cJSON_GetObjectItemCaseSensitive(data_filterJSON, "dnns");
     if (dnns) {
@@ -522,7 +512,7 @@ OpenAPI_data_filter_t *OpenAPI_data_filter_parseFromJSON(cJSON *data_filterJSON)
     }
 
     data_filter_local_var = OpenAPI_data_filter_create (
-        data_ind_local_nonprim,
+        data_indVariable,
         dnns ? dnnsList : NULL,
         snssais ? snssaisList : NULL,
         internal_group_ids ? internal_group_idsList : NULL,
@@ -538,10 +528,6 @@ OpenAPI_data_filter_t *OpenAPI_data_filter_parseFromJSON(cJSON *data_filterJSON)
 
     return data_filter_local_var;
 end:
-    if (data_ind_local_nonprim) {
-        OpenAPI_data_ind_free(data_ind_local_nonprim);
-        data_ind_local_nonprim = NULL;
-    }
     if (dnnsList) {
         OpenAPI_list_for_each(dnnsList, node) {
             ogs_free(node->data);

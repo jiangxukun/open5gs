@@ -133,9 +133,6 @@ void OpenAPI_service_parameter_data_free(OpenAPI_service_parameter_data_t *servi
         service_parameter_data->ursp_guidance = NULL;
     }
     if (service_parameter_data->delivery_events) {
-        OpenAPI_list_for_each(service_parameter_data->delivery_events, node) {
-            OpenAPI_event_free(node->data);
-        }
         OpenAPI_list_free(service_parameter_data->delivery_events);
         service_parameter_data->delivery_events = NULL;
     }
@@ -310,19 +307,17 @@ cJSON *OpenAPI_service_parameter_data_convertToJSON(OpenAPI_service_parameter_da
     }
     }
 
-    if (service_parameter_data->delivery_events) {
+    if (service_parameter_data->delivery_events != OpenAPI_event_NULL) {
     cJSON *delivery_eventsList = cJSON_AddArrayToObject(item, "deliveryEvents");
     if (delivery_eventsList == NULL) {
         ogs_error("OpenAPI_service_parameter_data_convertToJSON() failed [delivery_events]");
         goto end;
     }
     OpenAPI_list_for_each(service_parameter_data->delivery_events, node) {
-        cJSON *itemLocal = OpenAPI_event_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(delivery_eventsList, "", OpenAPI_event_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_service_parameter_data_convertToJSON() failed [delivery_events]");
             goto end;
         }
-        cJSON_AddItemToArray(delivery_eventsList, itemLocal);
     }
     }
 
@@ -574,16 +569,22 @@ OpenAPI_service_parameter_data_t *OpenAPI_service_parameter_data_parseFromJSON(c
         delivery_eventsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(delivery_events_local, delivery_events) {
-            if (!cJSON_IsObject(delivery_events_local)) {
+            OpenAPI_event_e localEnum = OpenAPI_event_NULL;
+            if (!cJSON_IsString(delivery_events_local)) {
                 ogs_error("OpenAPI_service_parameter_data_parseFromJSON() failed [delivery_events]");
                 goto end;
             }
-            OpenAPI_event_t *delivery_eventsItem = OpenAPI_event_parseFromJSON(delivery_events_local);
-            if (!delivery_eventsItem) {
-                ogs_error("No delivery_eventsItem");
-                goto end;
+            localEnum = OpenAPI_event_FromString(delivery_events_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"delivery_events\" is not supported. Ignoring it ...",
+                         delivery_events_local->valuestring);
+            } else {
+                OpenAPI_list_add(delivery_eventsList, (void *)localEnum);
             }
-            OpenAPI_list_add(delivery_eventsList, delivery_eventsItem);
+        }
+        if (delivery_eventsList->count == 0) {
+            ogs_error("OpenAPI_service_parameter_data_parseFromJSON() failed: Expected delivery_eventsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -702,9 +703,6 @@ end:
         ursp_guidanceList = NULL;
     }
     if (delivery_eventsList) {
-        OpenAPI_list_for_each(delivery_eventsList, node) {
-            OpenAPI_event_free(node->data);
-        }
         OpenAPI_list_free(delivery_eventsList);
         delivery_eventsList = NULL;
     }

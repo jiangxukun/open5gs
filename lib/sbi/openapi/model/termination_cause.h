@@ -1,7 +1,7 @@
 /*
  * termination_cause.h
  *
- * 
+ * Indicates the cause behind requesting the deletion of the Individual Application Session Context resource.
  */
 
 #ifndef _OpenAPI_termination_cause_H_

@@ -13,7 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 #include "context_info.h"
-#include "immediate_report.h"
+#include "immediate_report_1.h"
 #include "plmn_id_1.h"
 #include "snssai.h"
 #include "ue_context_in_smf_data_sub_filter_1.h"
@@ -37,7 +37,7 @@ typedef struct OpenAPI_sdm_subscription_1_s {
     struct OpenAPI_plmn_id_1_s *plmn_id;
     bool is_immediate_report;
     int immediate_report;
-    struct OpenAPI_immediate_report_s *report;
+    struct OpenAPI_immediate_report_1_s *report;
     char *supported_features;
     struct OpenAPI_context_info_s *context_info;
     bool is_nf_change_filter;
@@ -62,7 +62,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_create(
     OpenAPI_plmn_id_1_t *plmn_id,
     bool is_immediate_report,
     int immediate_report,
-    OpenAPI_immediate_report_t *report,
+    OpenAPI_immediate_report_1_t *report,
     char *supported_features,
     OpenAPI_context_info_t *context_info,
     bool is_nf_change_filter,

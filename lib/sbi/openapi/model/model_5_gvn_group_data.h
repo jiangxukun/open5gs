@@ -12,7 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "app_descriptor.h"
+#include "app_descriptor_1.h"
 #include "ip_address_1.h"
 #include "pdu_session_type.h"
 #include "snssai.h"

@@ -21,11 +21,13 @@ extern "C" {
 typedef struct OpenAPI_trigger_request_s OpenAPI_trigger_request_t;
 typedef struct OpenAPI_trigger_request_s {
     char *supi;
+    bool is_failed_pcscf_null;
     struct OpenAPI_pcscf_address_s *failed_pcscf;
 } OpenAPI_trigger_request_t;
 
 OpenAPI_trigger_request_t *OpenAPI_trigger_request_create(
     char *supi,
+    bool is_failed_pcscf_null,
     OpenAPI_pcscf_address_t *failed_pcscf
 );
 void OpenAPI_trigger_request_free(OpenAPI_trigger_request_t *trigger_request);

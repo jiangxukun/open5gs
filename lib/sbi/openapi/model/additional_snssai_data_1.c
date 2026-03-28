@@ -7,6 +7,7 @@
 OpenAPI_additional_snssai_data_1_t *OpenAPI_additional_snssai_data_1_create(
     bool is_required_authn_authz,
     int required_authn_authz,
+    bool is_subscribed_ue_slice_mbr_null,
     OpenAPI_slice_mbr_rm_t *subscribed_ue_slice_mbr,
     OpenAPI_list_t *subscribed_ns_srg_list
 )
@@ -16,6 +17,7 @@ OpenAPI_additional_snssai_data_1_t *OpenAPI_additional_snssai_data_1_create(
 
     additional_snssai_data_1_local_var->is_required_authn_authz = is_required_authn_authz;
     additional_snssai_data_1_local_var->required_authn_authz = required_authn_authz;
+    additional_snssai_data_1_local_var->is_subscribed_ue_slice_mbr_null = is_subscribed_ue_slice_mbr_null;
     additional_snssai_data_1_local_var->subscribed_ue_slice_mbr = subscribed_ue_slice_mbr;
     additional_snssai_data_1_local_var->subscribed_ns_srg_list = subscribed_ns_srg_list;
 
@@ -72,6 +74,11 @@ cJSON *OpenAPI_additional_snssai_data_1_convertToJSON(OpenAPI_additional_snssai_
         ogs_error("OpenAPI_additional_snssai_data_1_convertToJSON() failed [subscribed_ue_slice_mbr]");
         goto end;
     }
+    } else if (additional_snssai_data_1->is_subscribed_ue_slice_mbr_null) {
+        if (cJSON_AddNullToObject(item, "subscribedUeSliceMbr") == NULL) {
+            ogs_error("OpenAPI_additional_snssai_data_1_convertToJSON() failed [subscribed_ue_slice_mbr]");
+            goto end;
+        }
     }
 
     if (additional_snssai_data_1->subscribed_ns_srg_list) {
@@ -111,10 +118,12 @@ OpenAPI_additional_snssai_data_1_t *OpenAPI_additional_snssai_data_1_parseFromJS
 
     subscribed_ue_slice_mbr = cJSON_GetObjectItemCaseSensitive(additional_snssai_data_1JSON, "subscribedUeSliceMbr");
     if (subscribed_ue_slice_mbr) {
+    if (!cJSON_IsNull(subscribed_ue_slice_mbr)) {
     subscribed_ue_slice_mbr_local_nonprim = OpenAPI_slice_mbr_rm_parseFromJSON(subscribed_ue_slice_mbr);
     if (!subscribed_ue_slice_mbr_local_nonprim) {
         ogs_error("OpenAPI_slice_mbr_rm_parseFromJSON failed [subscribed_ue_slice_mbr]");
         goto end;
+    }
     }
     }
 
@@ -142,6 +151,7 @@ OpenAPI_additional_snssai_data_1_t *OpenAPI_additional_snssai_data_1_parseFromJS
     additional_snssai_data_1_local_var = OpenAPI_additional_snssai_data_1_create (
         required_authn_authz ? true : false,
         required_authn_authz ? required_authn_authz->valueint : 0,
+        subscribed_ue_slice_mbr && cJSON_IsNull(subscribed_ue_slice_mbr) ? true : false,
         subscribed_ue_slice_mbr ? subscribed_ue_slice_mbr_local_nonprim : NULL,
         subscribed_ns_srg_list ? subscribed_ns_srg_listList : NULL
     );

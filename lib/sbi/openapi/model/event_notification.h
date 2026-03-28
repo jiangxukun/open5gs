@@ -37,11 +37,11 @@ extern "C" {
 
 typedef struct OpenAPI_event_notification_s OpenAPI_event_notification_t;
 typedef struct OpenAPI_event_notification_s {
-    struct OpenAPI_nwdaf_event_s *event;
+    OpenAPI_nwdaf_event_e event;
     char *start;
     char *expiry;
     char *time_stamp_gen;
-    struct OpenAPI_nwdaf_failure_code_s *fail_notify_code;
+    OpenAPI_nwdaf_failure_code_e fail_notify_code;
     bool is_rv_wait_time;
     int rv_wait_time;
     struct OpenAPI_analytics_metadata_info_s *ana_meta_info;
@@ -63,11 +63,11 @@ typedef struct OpenAPI_event_notification_s {
 } OpenAPI_event_notification_t;
 
 OpenAPI_event_notification_t *OpenAPI_event_notification_create(
-    OpenAPI_nwdaf_event_t *event,
+    OpenAPI_nwdaf_event_e event,
     char *start,
     char *expiry,
     char *time_stamp_gen,
-    OpenAPI_nwdaf_failure_code_t *fail_notify_code,
+    OpenAPI_nwdaf_failure_code_e fail_notify_code,
     bool is_rv_wait_time,
     int rv_wait_time,
     OpenAPI_analytics_metadata_info_t *ana_meta_info,

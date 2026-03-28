@@ -10,10 +10,11 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
     char *hss_group_id,
     OpenAPI_list_t *internal_group_ids,
     OpenAPI_list_t* shared_vn_group_data_ids,
+    bool is_subscribed_ue_ambr_null,
     OpenAPI_ambr_rm_t *subscribed_ue_ambr,
     bool is_nssai_null,
     OpenAPI_nssai_t *nssai,
-    OpenAPI_set_t *rat_restrictions,
+    OpenAPI_list_t *rat_restrictions,
     OpenAPI_list_t *forbidden_areas,
     OpenAPI_service_area_restriction_t *service_area_restriction,
     OpenAPI_list_t *core_network_type_restrictions,
@@ -59,12 +60,13 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
     bool is_nssai_inclusion_allowed,
     int nssai_inclusion_allowed,
     char *rg_wireline_characteristics,
+    bool is_ec_restriction_data_wb_null,
     OpenAPI_ec_restriction_data_wb_t *ec_restriction_data_wb,
     bool is_ec_restriction_data_nb,
     int ec_restriction_data_nb,
     OpenAPI_expected_ue_behaviour_data_t *expected_ue_behaviour_list,
-    OpenAPI_set_t *primary_rat_restrictions,
-    OpenAPI_set_t *secondary_rat_restrictions,
+    OpenAPI_list_t *primary_rat_restrictions,
+    OpenAPI_list_t *secondary_rat_restrictions,
     OpenAPI_list_t *edrx_parameters_list,
     OpenAPI_list_t *ptw_parameters_list,
     bool is_iab_operation_allowed,
@@ -87,6 +89,7 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
     access_and_mobility_subscription_data_local_var->hss_group_id = hss_group_id;
     access_and_mobility_subscription_data_local_var->internal_group_ids = internal_group_ids;
     access_and_mobility_subscription_data_local_var->shared_vn_group_data_ids = shared_vn_group_data_ids;
+    access_and_mobility_subscription_data_local_var->is_subscribed_ue_ambr_null = is_subscribed_ue_ambr_null;
     access_and_mobility_subscription_data_local_var->subscribed_ue_ambr = subscribed_ue_ambr;
     access_and_mobility_subscription_data_local_var->is_nssai_null = is_nssai_null;
     access_and_mobility_subscription_data_local_var->nssai = nssai;
@@ -136,6 +139,7 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
     access_and_mobility_subscription_data_local_var->is_nssai_inclusion_allowed = is_nssai_inclusion_allowed;
     access_and_mobility_subscription_data_local_var->nssai_inclusion_allowed = nssai_inclusion_allowed;
     access_and_mobility_subscription_data_local_var->rg_wireline_characteristics = rg_wireline_characteristics;
+    access_and_mobility_subscription_data_local_var->is_ec_restriction_data_wb_null = is_ec_restriction_data_wb_null;
     access_and_mobility_subscription_data_local_var->ec_restriction_data_wb = ec_restriction_data_wb;
     access_and_mobility_subscription_data_local_var->is_ec_restriction_data_nb = is_ec_restriction_data_nb;
     access_and_mobility_subscription_data_local_var->ec_restriction_data_nb = ec_restriction_data_nb;
@@ -437,6 +441,11 @@ cJSON *OpenAPI_access_and_mobility_subscription_data_convertToJSON(OpenAPI_acces
         ogs_error("OpenAPI_access_and_mobility_subscription_data_convertToJSON() failed [subscribed_ue_ambr]");
         goto end;
     }
+    } else if (access_and_mobility_subscription_data->is_subscribed_ue_ambr_null) {
+        if (cJSON_AddNullToObject(item, "subscribedUeAmbr") == NULL) {
+            ogs_error("OpenAPI_access_and_mobility_subscription_data_convertToJSON() failed [subscribed_ue_ambr]");
+            goto end;
+        }
     }
 
     if (access_and_mobility_subscription_data->nssai) {
@@ -778,6 +787,11 @@ cJSON *OpenAPI_access_and_mobility_subscription_data_convertToJSON(OpenAPI_acces
         ogs_error("OpenAPI_access_and_mobility_subscription_data_convertToJSON() failed [ec_restriction_data_wb]");
         goto end;
     }
+    } else if (access_and_mobility_subscription_data->is_ec_restriction_data_wb_null) {
+        if (cJSON_AddNullToObject(item, "ecRestrictionDataWb") == NULL) {
+            ogs_error("OpenAPI_access_and_mobility_subscription_data_convertToJSON() failed [ec_restriction_data_wb]");
+            goto end;
+        }
     }
 
     if (access_and_mobility_subscription_data->is_ec_restriction_data_nb) {
@@ -1150,10 +1164,12 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
 
     subscribed_ue_ambr = cJSON_GetObjectItemCaseSensitive(access_and_mobility_subscription_dataJSON, "subscribedUeAmbr");
     if (subscribed_ue_ambr) {
+    if (!cJSON_IsNull(subscribed_ue_ambr)) {
     subscribed_ue_ambr_local_nonprim = OpenAPI_ambr_rm_parseFromJSON(subscribed_ue_ambr);
     if (!subscribed_ue_ambr_local_nonprim) {
         ogs_error("OpenAPI_ambr_rm_parseFromJSON failed [subscribed_ue_ambr]");
         goto end;
+    }
     }
     }
 
@@ -1534,10 +1550,12 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
 
     ec_restriction_data_wb = cJSON_GetObjectItemCaseSensitive(access_and_mobility_subscription_dataJSON, "ecRestrictionDataWb");
     if (ec_restriction_data_wb) {
+    if (!cJSON_IsNull(ec_restriction_data_wb)) {
     ec_restriction_data_wb_local_nonprim = OpenAPI_ec_restriction_data_wb_parseFromJSON(ec_restriction_data_wb);
     if (!ec_restriction_data_wb_local_nonprim) {
         ogs_error("OpenAPI_ec_restriction_data_wb_parseFromJSON failed [ec_restriction_data_wb]");
         goto end;
+    }
     }
     }
 
@@ -1789,6 +1807,7 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
         hss_group_id && !cJSON_IsNull(hss_group_id) ? ogs_strdup(hss_group_id->valuestring) : NULL,
         internal_group_ids ? internal_group_idsList : NULL,
         shared_vn_group_data_ids ? shared_vn_group_data_idsList : NULL,
+        subscribed_ue_ambr && cJSON_IsNull(subscribed_ue_ambr) ? true : false,
         subscribed_ue_ambr ? subscribed_ue_ambr_local_nonprim : NULL,
         nssai && cJSON_IsNull(nssai) ? true : false,
         nssai ? nssai_local_nonprim : NULL,
@@ -1838,6 +1857,7 @@ OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_sub
         nssai_inclusion_allowed ? true : false,
         nssai_inclusion_allowed ? nssai_inclusion_allowed->valueint : 0,
         rg_wireline_characteristics && !cJSON_IsNull(rg_wireline_characteristics) ? ogs_strdup(rg_wireline_characteristics->valuestring) : NULL,
+        ec_restriction_data_wb && cJSON_IsNull(ec_restriction_data_wb) ? true : false,
         ec_restriction_data_wb ? ec_restriction_data_wb_local_nonprim : NULL,
         ec_restriction_data_nb ? true : false,
         ec_restriction_data_nb ? ec_restriction_data_nb->valueint : 0,
@@ -1876,7 +1896,7 @@ end:
     }
     if (shared_vn_group_data_idsList) {
         OpenAPI_list_for_each(shared_vn_group_data_idsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1981,7 +2001,7 @@ end:
     }
     if (adjacent_plmn_restrictionsList) {
         OpenAPI_list_for_each(adjacent_plmn_restrictionsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_plmn_restriction_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

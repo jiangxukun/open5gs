@@ -13,10 +13,8 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 #include "hss_subscription_info.h"
-#include "patch_result.h"
 #include "report_item.h"
 #include "sdm_subscription_1.h"
-#include "subscription_data_subscriptions.h"
 
 #ifdef __cplusplus
 extern "C" {

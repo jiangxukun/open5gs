@@ -36,7 +36,7 @@ typedef struct OpenAPI_access_and_mobility_data_s {
     char *reg_states_ts;
     OpenAPI_list_t *conn_states;
     char *conn_states_ts;
-    struct OpenAPI_ue_reachability_s *reachability_status;
+    OpenAPI_ue_reachability_e reachability_status;
     char *reachability_status_ts;
     OpenAPI_sms_support_e sms_over_nas_status;
     char *sms_over_nas_status_ts;
@@ -61,7 +61,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_create(
     char *reg_states_ts,
     OpenAPI_list_t *conn_states,
     char *conn_states_ts,
-    OpenAPI_ue_reachability_t *reachability_status,
+    OpenAPI_ue_reachability_e reachability_status,
     char *reachability_status_ts,
     OpenAPI_sms_support_e sms_over_nas_status,
     char *sms_over_nas_status_ts,

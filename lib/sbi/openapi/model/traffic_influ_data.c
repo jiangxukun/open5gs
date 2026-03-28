@@ -21,7 +21,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_create(
     char *valid_start_time,
     char *valid_end_time,
     OpenAPI_list_t *temp_validities,
-    OpenAPI_network_area_info_2_t *nw_area_info,
+    OpenAPI_network_area_info_3_t *nw_area_info,
     char *up_path_chg_notif_uri,
     OpenAPI_list_t *headers,
     OpenAPI_list_t *subscribed_events,
@@ -103,7 +103,7 @@ void OpenAPI_traffic_influ_data_free(OpenAPI_traffic_influ_data_t *traffic_influ
     }
     if (traffic_influ_data->eth_traffic_filters) {
         OpenAPI_list_for_each(traffic_influ_data->eth_traffic_filters, node) {
-            OpenAPI_eth_flow_description_free(node->data);
+            OpenAPI_eth_flow_description_1_free(node->data);
         }
         OpenAPI_list_free(traffic_influ_data->eth_traffic_filters);
         traffic_influ_data->eth_traffic_filters = NULL;
@@ -129,7 +129,7 @@ void OpenAPI_traffic_influ_data_free(OpenAPI_traffic_influ_data_t *traffic_influ
     }
     if (traffic_influ_data->traffic_routes) {
         OpenAPI_list_for_each(traffic_influ_data->traffic_routes, node) {
-            OpenAPI_route_to_location_free(node->data);
+            OpenAPI_route_to_location_1_free(node->data);
         }
         OpenAPI_list_free(traffic_influ_data->traffic_routes);
         traffic_influ_data->traffic_routes = NULL;
@@ -144,13 +144,13 @@ void OpenAPI_traffic_influ_data_free(OpenAPI_traffic_influ_data_t *traffic_influ
     }
     if (traffic_influ_data->temp_validities) {
         OpenAPI_list_for_each(traffic_influ_data->temp_validities, node) {
-            OpenAPI_temporal_validity_free(node->data);
+            OpenAPI_temporal_validity_1_free(node->data);
         }
         OpenAPI_list_free(traffic_influ_data->temp_validities);
         traffic_influ_data->temp_validities = NULL;
     }
     if (traffic_influ_data->nw_area_info) {
-        OpenAPI_network_area_info_2_free(traffic_influ_data->nw_area_info);
+        OpenAPI_network_area_info_3_free(traffic_influ_data->nw_area_info);
         traffic_influ_data->nw_area_info = NULL;
     }
     if (traffic_influ_data->up_path_chg_notif_uri) {
@@ -165,9 +165,6 @@ void OpenAPI_traffic_influ_data_free(OpenAPI_traffic_influ_data_t *traffic_influ
         traffic_influ_data->headers = NULL;
     }
     if (traffic_influ_data->subscribed_events) {
-        OpenAPI_list_for_each(traffic_influ_data->subscribed_events, node) {
-            OpenAPI_subscribed_event_free(node->data);
-        }
         OpenAPI_list_free(traffic_influ_data->subscribed_events);
         traffic_influ_data->subscribed_events = NULL;
     }
@@ -235,7 +232,7 @@ cJSON *OpenAPI_traffic_influ_data_convertToJSON(OpenAPI_traffic_influ_data_t *tr
         goto end;
     }
     OpenAPI_list_for_each(traffic_influ_data->eth_traffic_filters, node) {
-        cJSON *itemLocal = OpenAPI_eth_flow_description_convertToJSON(node->data);
+        cJSON *itemLocal = OpenAPI_eth_flow_description_1_convertToJSON(node->data);
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [eth_traffic_filters]");
             goto end;
@@ -294,7 +291,7 @@ cJSON *OpenAPI_traffic_influ_data_convertToJSON(OpenAPI_traffic_influ_data_t *tr
         goto end;
     }
     OpenAPI_list_for_each(traffic_influ_data->traffic_routes, node) {
-        cJSON *itemLocal = OpenAPI_route_to_location_convertToJSON(node->data);
+        cJSON *itemLocal = OpenAPI_route_to_location_1_convertToJSON(node->data);
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [traffic_routes]");
             goto end;
@@ -331,7 +328,7 @@ cJSON *OpenAPI_traffic_influ_data_convertToJSON(OpenAPI_traffic_influ_data_t *tr
         goto end;
     }
     OpenAPI_list_for_each(traffic_influ_data->temp_validities, node) {
-        cJSON *itemLocal = OpenAPI_temporal_validity_convertToJSON(node->data);
+        cJSON *itemLocal = OpenAPI_temporal_validity_1_convertToJSON(node->data);
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [temp_validities]");
             goto end;
@@ -341,7 +338,7 @@ cJSON *OpenAPI_traffic_influ_data_convertToJSON(OpenAPI_traffic_influ_data_t *tr
     }
 
     if (traffic_influ_data->nw_area_info) {
-    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_2_convertToJSON(traffic_influ_data->nw_area_info);
+    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_3_convertToJSON(traffic_influ_data->nw_area_info);
     if (nw_area_info_local_JSON == NULL) {
         ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [nw_area_info]");
         goto end;
@@ -374,19 +371,17 @@ cJSON *OpenAPI_traffic_influ_data_convertToJSON(OpenAPI_traffic_influ_data_t *tr
     }
     }
 
-    if (traffic_influ_data->subscribed_events) {
+    if (traffic_influ_data->subscribed_events != OpenAPI_subscribed_event_NULL) {
     cJSON *subscribed_eventsList = cJSON_AddArrayToObject(item, "subscribedEvents");
     if (subscribed_eventsList == NULL) {
         ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [subscribed_events]");
         goto end;
     }
     OpenAPI_list_for_each(traffic_influ_data->subscribed_events, node) {
-        cJSON *itemLocal = OpenAPI_subscribed_event_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(subscribed_eventsList, "", OpenAPI_subscribed_event_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_traffic_influ_data_convertToJSON() failed [subscribed_events]");
             goto end;
         }
-        cJSON_AddItemToArray(subscribed_eventsList, itemLocal);
     }
     }
 
@@ -488,7 +483,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
     cJSON *temp_validities = NULL;
     OpenAPI_list_t *temp_validitiesList = NULL;
     cJSON *nw_area_info = NULL;
-    OpenAPI_network_area_info_2_t *nw_area_info_local_nonprim = NULL;
+    OpenAPI_network_area_info_3_t *nw_area_info_local_nonprim = NULL;
     cJSON *up_path_chg_notif_uri = NULL;
     cJSON *headers = NULL;
     OpenAPI_list_t *headersList = NULL;
@@ -552,7 +547,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
                 ogs_error("OpenAPI_traffic_influ_data_parseFromJSON() failed [eth_traffic_filters]");
                 goto end;
             }
-            OpenAPI_eth_flow_description_t *eth_traffic_filtersItem = OpenAPI_eth_flow_description_parseFromJSON(eth_traffic_filters_local);
+            OpenAPI_eth_flow_description_1_t *eth_traffic_filtersItem = OpenAPI_eth_flow_description_1_parseFromJSON(eth_traffic_filters_local);
             if (!eth_traffic_filtersItem) {
                 ogs_error("No eth_traffic_filtersItem");
                 goto end;
@@ -625,7 +620,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
                 ogs_error("OpenAPI_traffic_influ_data_parseFromJSON() failed [traffic_routes]");
                 goto end;
             }
-            OpenAPI_route_to_location_t *traffic_routesItem = OpenAPI_route_to_location_parseFromJSON(traffic_routes_local);
+            OpenAPI_route_to_location_1_t *traffic_routesItem = OpenAPI_route_to_location_1_parseFromJSON(traffic_routes_local);
             if (!traffic_routesItem) {
                 ogs_error("No traffic_routesItem");
                 goto end;
@@ -673,7 +668,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
                 ogs_error("OpenAPI_traffic_influ_data_parseFromJSON() failed [temp_validities]");
                 goto end;
             }
-            OpenAPI_temporal_validity_t *temp_validitiesItem = OpenAPI_temporal_validity_parseFromJSON(temp_validities_local);
+            OpenAPI_temporal_validity_1_t *temp_validitiesItem = OpenAPI_temporal_validity_1_parseFromJSON(temp_validities_local);
             if (!temp_validitiesItem) {
                 ogs_error("No temp_validitiesItem");
                 goto end;
@@ -684,9 +679,9 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
 
     nw_area_info = cJSON_GetObjectItemCaseSensitive(traffic_influ_dataJSON, "nwAreaInfo");
     if (nw_area_info) {
-    nw_area_info_local_nonprim = OpenAPI_network_area_info_2_parseFromJSON(nw_area_info);
+    nw_area_info_local_nonprim = OpenAPI_network_area_info_3_parseFromJSON(nw_area_info);
     if (!nw_area_info_local_nonprim) {
-        ogs_error("OpenAPI_network_area_info_2_parseFromJSON failed [nw_area_info]");
+        ogs_error("OpenAPI_network_area_info_3_parseFromJSON failed [nw_area_info]");
         goto end;
     }
     }
@@ -731,16 +726,22 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
         subscribed_eventsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(subscribed_events_local, subscribed_events) {
-            if (!cJSON_IsObject(subscribed_events_local)) {
+            OpenAPI_subscribed_event_e localEnum = OpenAPI_subscribed_event_NULL;
+            if (!cJSON_IsString(subscribed_events_local)) {
                 ogs_error("OpenAPI_traffic_influ_data_parseFromJSON() failed [subscribed_events]");
                 goto end;
             }
-            OpenAPI_subscribed_event_t *subscribed_eventsItem = OpenAPI_subscribed_event_parseFromJSON(subscribed_events_local);
-            if (!subscribed_eventsItem) {
-                ogs_error("No subscribed_eventsItem");
-                goto end;
+            localEnum = OpenAPI_subscribed_event_FromString(subscribed_events_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"subscribed_events\" is not supported. Ignoring it ...",
+                         subscribed_events_local->valuestring);
+            } else {
+                OpenAPI_list_add(subscribed_eventsList, (void *)localEnum);
             }
-            OpenAPI_list_add(subscribed_eventsList, subscribed_eventsItem);
+        }
+        if (subscribed_eventsList->count == 0) {
+            ogs_error("OpenAPI_traffic_influ_data_parseFromJSON() failed: Expected subscribed_eventsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -871,7 +872,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_parseFromJSON(cJSON *tr
 end:
     if (eth_traffic_filtersList) {
         OpenAPI_list_for_each(eth_traffic_filtersList, node) {
-            OpenAPI_eth_flow_description_free(node->data);
+            OpenAPI_eth_flow_description_1_free(node->data);
         }
         OpenAPI_list_free(eth_traffic_filtersList);
         eth_traffic_filtersList = NULL;
@@ -889,20 +890,20 @@ end:
     }
     if (traffic_routesList) {
         OpenAPI_list_for_each(traffic_routesList, node) {
-            OpenAPI_route_to_location_free(node->data);
+            OpenAPI_route_to_location_1_free(node->data);
         }
         OpenAPI_list_free(traffic_routesList);
         traffic_routesList = NULL;
     }
     if (temp_validitiesList) {
         OpenAPI_list_for_each(temp_validitiesList, node) {
-            OpenAPI_temporal_validity_free(node->data);
+            OpenAPI_temporal_validity_1_free(node->data);
         }
         OpenAPI_list_free(temp_validitiesList);
         temp_validitiesList = NULL;
     }
     if (nw_area_info_local_nonprim) {
-        OpenAPI_network_area_info_2_free(nw_area_info_local_nonprim);
+        OpenAPI_network_area_info_3_free(nw_area_info_local_nonprim);
         nw_area_info_local_nonprim = NULL;
     }
     if (headersList) {
@@ -913,9 +914,6 @@ end:
         headersList = NULL;
     }
     if (subscribed_eventsList) {
-        OpenAPI_list_for_each(subscribed_eventsList, node) {
-            OpenAPI_subscribed_event_free(node->data);
-        }
         OpenAPI_list_free(subscribed_eventsList);
         subscribed_eventsList = NULL;
     }

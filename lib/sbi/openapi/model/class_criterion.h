@@ -21,15 +21,15 @@ extern "C" {
 
 typedef struct OpenAPI_class_criterion_s OpenAPI_class_criterion_t;
 typedef struct OpenAPI_class_criterion_s {
-    struct OpenAPI_dispersion_class_s *disper_class;
+    OpenAPI_dispersion_class_e disper_class;
     int class_threshold;
-    struct OpenAPI_matching_direction_s *thres_match;
+    OpenAPI_matching_direction_e thres_match;
 } OpenAPI_class_criterion_t;
 
 OpenAPI_class_criterion_t *OpenAPI_class_criterion_create(
-    OpenAPI_dispersion_class_t *disper_class,
+    OpenAPI_dispersion_class_e disper_class,
     int class_threshold,
-    OpenAPI_matching_direction_t *thres_match
+    OpenAPI_matching_direction_e thres_match
 );
 void OpenAPI_class_criterion_free(OpenAPI_class_criterion_t *class_criterion);
 OpenAPI_class_criterion_t *OpenAPI_class_criterion_parseFromJSON(cJSON *class_criterionJSON);

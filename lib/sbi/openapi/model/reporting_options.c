@@ -5,7 +5,7 @@
 #include "reporting_options.h"
 
 OpenAPI_reporting_options_t *OpenAPI_reporting_options_create(
-    OpenAPI_event_report_mode_t *report_mode,
+    OpenAPI_event_report_mode_e report_mode,
     bool is_max_num_of_reports,
     int max_num_of_reports,
     char *expiry,
@@ -43,10 +43,6 @@ void OpenAPI_reporting_options_free(OpenAPI_reporting_options_t *reporting_optio
     if (NULL == reporting_options) {
         return;
     }
-    if (reporting_options->report_mode) {
-        OpenAPI_event_report_mode_free(reporting_options->report_mode);
-        reporting_options->report_mode = NULL;
-    }
     if (reporting_options->expiry) {
         ogs_free(reporting_options->expiry);
         reporting_options->expiry = NULL;
@@ -65,14 +61,8 @@ cJSON *OpenAPI_reporting_options_convertToJSON(OpenAPI_reporting_options_t *repo
     }
 
     item = cJSON_CreateObject();
-    if (reporting_options->report_mode) {
-    cJSON *report_mode_local_JSON = OpenAPI_event_report_mode_convertToJSON(reporting_options->report_mode);
-    if (report_mode_local_JSON == NULL) {
-        ogs_error("OpenAPI_reporting_options_convertToJSON() failed [report_mode]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "reportMode", report_mode_local_JSON);
-    if (item->child == NULL) {
+    if (reporting_options->report_mode != OpenAPI_event_report_mode_NULL) {
+    if (cJSON_AddStringToObject(item, "reportMode", OpenAPI_event_report_mode_ToString(reporting_options->report_mode)) == NULL) {
         ogs_error("OpenAPI_reporting_options_convertToJSON() failed [report_mode]");
         goto end;
     }
@@ -129,7 +119,7 @@ OpenAPI_reporting_options_t *OpenAPI_reporting_options_parseFromJSON(cJSON *repo
     OpenAPI_reporting_options_t *reporting_options_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *report_mode = NULL;
-    OpenAPI_event_report_mode_t *report_mode_local_nonprim = NULL;
+    OpenAPI_event_report_mode_e report_modeVariable = 0;
     cJSON *max_num_of_reports = NULL;
     cJSON *expiry = NULL;
     cJSON *sampling_ratio = NULL;
@@ -139,11 +129,11 @@ OpenAPI_reporting_options_t *OpenAPI_reporting_options_parseFromJSON(cJSON *repo
     OpenAPI_notification_flag_e notif_flagVariable = 0;
     report_mode = cJSON_GetObjectItemCaseSensitive(reporting_optionsJSON, "reportMode");
     if (report_mode) {
-    report_mode_local_nonprim = OpenAPI_event_report_mode_parseFromJSON(report_mode);
-    if (!report_mode_local_nonprim) {
-        ogs_error("OpenAPI_event_report_mode_parseFromJSON failed [report_mode]");
+    if (!cJSON_IsString(report_mode)) {
+        ogs_error("OpenAPI_reporting_options_parseFromJSON() failed [report_mode]");
         goto end;
     }
+    report_modeVariable = OpenAPI_event_report_mode_FromString(report_mode->valuestring);
     }
 
     max_num_of_reports = cJSON_GetObjectItemCaseSensitive(reporting_optionsJSON, "maxNumOfReports");
@@ -196,7 +186,7 @@ OpenAPI_reporting_options_t *OpenAPI_reporting_options_parseFromJSON(cJSON *repo
     }
 
     reporting_options_local_var = OpenAPI_reporting_options_create (
-        report_mode ? report_mode_local_nonprim : NULL,
+        report_mode ? report_modeVariable : 0,
         max_num_of_reports ? true : false,
         max_num_of_reports ? max_num_of_reports->valuedouble : 0,
         expiry && !cJSON_IsNull(expiry) ? ogs_strdup(expiry->valuestring) : NULL,
@@ -211,10 +201,6 @@ OpenAPI_reporting_options_t *OpenAPI_reporting_options_parseFromJSON(cJSON *repo
 
     return reporting_options_local_var;
 end:
-    if (report_mode_local_nonprim) {
-        OpenAPI_event_report_mode_free(report_mode_local_nonprim);
-        report_mode_local_nonprim = NULL;
-    }
     return NULL;
 }
 

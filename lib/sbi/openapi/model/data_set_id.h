@@ -1,7 +1,7 @@
 /*
  * data_set_id.h
  *
- * 
+ * Types of data sets and subsets stored in UDR
  */
 
 #ifndef _OpenAPI_data_set_id_H_

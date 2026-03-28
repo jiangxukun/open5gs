@@ -1,7 +1,7 @@
 /*
  * nf_status.h
  *
- * 
+ * Status of a given NF Instance stored in NRF
  */
 
 #ifndef _OpenAPI_nf_status_H_

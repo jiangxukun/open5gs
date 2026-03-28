@@ -13,6 +13,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_create(
     OpenAPI_smsf_registration_t *smsf_non3_gpp_access,
     OpenAPI_list_t *subscription_data_subscriptions,
     OpenAPI_list_t *smf_registrations,
+    bool is_ip_sm_gw_null,
     OpenAPI_ip_sm_gw_registration_t *ip_sm_gw,
     OpenAPI_roaming_info_update_t *roaming_info,
     OpenAPI_pei_update_info_t *pei_info
@@ -29,6 +30,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_create(
     context_data_sets_local_var->smsf_non3_gpp_access = smsf_non3_gpp_access;
     context_data_sets_local_var->subscription_data_subscriptions = subscription_data_subscriptions;
     context_data_sets_local_var->smf_registrations = smf_registrations;
+    context_data_sets_local_var->is_ip_sm_gw_null = is_ip_sm_gw_null;
     context_data_sets_local_var->ip_sm_gw = ip_sm_gw;
     context_data_sets_local_var->roaming_info = roaming_info;
     context_data_sets_local_var->pei_info = pei_info;
@@ -240,6 +242,11 @@ cJSON *OpenAPI_context_data_sets_convertToJSON(OpenAPI_context_data_sets_t *cont
         ogs_error("OpenAPI_context_data_sets_convertToJSON() failed [ip_sm_gw]");
         goto end;
     }
+    } else if (context_data_sets->is_ip_sm_gw_null) {
+        if (cJSON_AddNullToObject(item, "ipSmGw") == NULL) {
+            ogs_error("OpenAPI_context_data_sets_convertToJSON() failed [ip_sm_gw]");
+            goto end;
+        }
     }
 
     if (context_data_sets->roaming_info) {
@@ -432,10 +439,12 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_parseFromJSON(cJSON *cont
 
     ip_sm_gw = cJSON_GetObjectItemCaseSensitive(context_data_setsJSON, "ipSmGw");
     if (ip_sm_gw) {
+    if (!cJSON_IsNull(ip_sm_gw)) {
     ip_sm_gw_local_nonprim = OpenAPI_ip_sm_gw_registration_parseFromJSON(ip_sm_gw);
     if (!ip_sm_gw_local_nonprim) {
         ogs_error("OpenAPI_ip_sm_gw_registration_parseFromJSON failed [ip_sm_gw]");
         goto end;
+    }
     }
     }
 
@@ -466,6 +475,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_parseFromJSON(cJSON *cont
         smsf_non3_gpp_access ? smsf_non3_gpp_access_local_nonprim : NULL,
         subscription_data_subscriptions ? subscription_data_subscriptionsList : NULL,
         smf_registrations ? smf_registrationsList : NULL,
+        ip_sm_gw && cJSON_IsNull(ip_sm_gw) ? true : false,
         ip_sm_gw ? ip_sm_gw_local_nonprim : NULL,
         roaming_info ? roaming_info_local_nonprim : NULL,
         pei_info ? pei_info_local_nonprim : NULL

@@ -37,7 +37,7 @@ void OpenAPI_traffic_descriptor_components_free(OpenAPI_traffic_descriptor_compo
         OpenAPI_list_for_each(traffic_descriptor_components->app_descs, node) {
             OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            OpenAPI_app_descriptor_1_free(localKeyValue->value);
+            OpenAPI_app_descriptor_2_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(traffic_descriptor_components->app_descs);
@@ -59,7 +59,7 @@ void OpenAPI_traffic_descriptor_components_free(OpenAPI_traffic_descriptor_compo
     }
     if (traffic_descriptor_components->eth_flow_descs) {
         OpenAPI_list_for_each(traffic_descriptor_components->eth_flow_descs, node) {
-            OpenAPI_eth_flow_description_free(node->data);
+            OpenAPI_eth_flow_description_1_free(node->data);
         }
         OpenAPI_list_free(traffic_descriptor_components->eth_flow_descs);
         traffic_descriptor_components->eth_flow_descs = NULL;
@@ -72,9 +72,6 @@ void OpenAPI_traffic_descriptor_components_free(OpenAPI_traffic_descriptor_compo
         traffic_descriptor_components->dnns = NULL;
     }
     if (traffic_descriptor_components->conn_caps) {
-        OpenAPI_list_for_each(traffic_descriptor_components->conn_caps, node) {
-            OpenAPI_connection_capabilities_free(node->data);
-        }
         OpenAPI_list_free(traffic_descriptor_components->conn_caps);
         traffic_descriptor_components->conn_caps = NULL;
     }
@@ -111,7 +108,7 @@ cJSON *OpenAPI_traffic_descriptor_components_convertToJSON(OpenAPI_traffic_descr
                 goto end;
             }
             cJSON *itemLocal = localKeyValue->value ?
-                OpenAPI_app_descriptor_1_convertToJSON(localKeyValue->value) :
+                OpenAPI_app_descriptor_2_convertToJSON(localKeyValue->value) :
                 cJSON_CreateNull();
             if (itemLocal == NULL) {
                 ogs_error("OpenAPI_traffic_descriptor_components_convertToJSON() failed [inner]");
@@ -157,7 +154,7 @@ cJSON *OpenAPI_traffic_descriptor_components_convertToJSON(OpenAPI_traffic_descr
         goto end;
     }
     OpenAPI_list_for_each(traffic_descriptor_components->eth_flow_descs, node) {
-        cJSON *itemLocal = OpenAPI_eth_flow_description_convertToJSON(node->data);
+        cJSON *itemLocal = OpenAPI_eth_flow_description_1_convertToJSON(node->data);
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_traffic_descriptor_components_convertToJSON() failed [eth_flow_descs]");
             goto end;
@@ -180,19 +177,17 @@ cJSON *OpenAPI_traffic_descriptor_components_convertToJSON(OpenAPI_traffic_descr
     }
     }
 
-    if (traffic_descriptor_components->conn_caps) {
+    if (traffic_descriptor_components->conn_caps != OpenAPI_connection_capabilities_NULL) {
     cJSON *conn_capsList = cJSON_AddArrayToObject(item, "connCaps");
     if (conn_capsList == NULL) {
         ogs_error("OpenAPI_traffic_descriptor_components_convertToJSON() failed [conn_caps]");
         goto end;
     }
     OpenAPI_list_for_each(traffic_descriptor_components->conn_caps, node) {
-        cJSON *itemLocal = OpenAPI_connection_capabilities_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(conn_capsList, "", OpenAPI_connection_capabilities_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_traffic_descriptor_components_convertToJSON() failed [conn_caps]");
             goto end;
         }
-        cJSON_AddItemToArray(conn_capsList, itemLocal);
     }
     }
 
@@ -230,7 +225,7 @@ OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_p
                 cJSON *localMapObject = app_descs_local_map;
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
-                        ogs_strdup(localMapObject->string), OpenAPI_app_descriptor_1_parseFromJSON(localMapObject));
+                        ogs_strdup(localMapObject->string), OpenAPI_app_descriptor_2_parseFromJSON(localMapObject));
                 } else if (cJSON_IsNull(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), NULL);
                 } else {
@@ -299,7 +294,7 @@ OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_p
                 ogs_error("OpenAPI_traffic_descriptor_components_parseFromJSON() failed [eth_flow_descs]");
                 goto end;
             }
-            OpenAPI_eth_flow_description_t *eth_flow_descsItem = OpenAPI_eth_flow_description_parseFromJSON(eth_flow_descs_local);
+            OpenAPI_eth_flow_description_1_t *eth_flow_descsItem = OpenAPI_eth_flow_description_1_parseFromJSON(eth_flow_descs_local);
             if (!eth_flow_descsItem) {
                 ogs_error("No eth_flow_descsItem");
                 goto end;
@@ -340,16 +335,22 @@ OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_p
         conn_capsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(conn_caps_local, conn_caps) {
-            if (!cJSON_IsObject(conn_caps_local)) {
+            OpenAPI_connection_capabilities_e localEnum = OpenAPI_connection_capabilities_NULL;
+            if (!cJSON_IsString(conn_caps_local)) {
                 ogs_error("OpenAPI_traffic_descriptor_components_parseFromJSON() failed [conn_caps]");
                 goto end;
             }
-            OpenAPI_connection_capabilities_t *conn_capsItem = OpenAPI_connection_capabilities_parseFromJSON(conn_caps_local);
-            if (!conn_capsItem) {
-                ogs_error("No conn_capsItem");
-                goto end;
+            localEnum = OpenAPI_connection_capabilities_FromString(conn_caps_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"conn_caps\" is not supported. Ignoring it ...",
+                         conn_caps_local->valuestring);
+            } else {
+                OpenAPI_list_add(conn_capsList, (void *)localEnum);
             }
-            OpenAPI_list_add(conn_capsList, conn_capsItem);
+        }
+        if (conn_capsList->count == 0) {
+            ogs_error("OpenAPI_traffic_descriptor_components_parseFromJSON() failed: Expected conn_capsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -366,9 +367,9 @@ OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_p
 end:
     if (app_descsList) {
         OpenAPI_list_for_each(app_descsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
-            OpenAPI_app_descriptor_1_free(localKeyValue->value);
+            OpenAPI_app_descriptor_2_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(app_descsList);
@@ -390,7 +391,7 @@ end:
     }
     if (eth_flow_descsList) {
         OpenAPI_list_for_each(eth_flow_descsList, node) {
-            OpenAPI_eth_flow_description_free(node->data);
+            OpenAPI_eth_flow_description_1_free(node->data);
         }
         OpenAPI_list_free(eth_flow_descsList);
         eth_flow_descsList = NULL;
@@ -403,9 +404,6 @@ end:
         dnnsList = NULL;
     }
     if (conn_capsList) {
-        OpenAPI_list_for_each(conn_capsList, node) {
-            OpenAPI_connection_capabilities_free(node->data);
-        }
         OpenAPI_list_free(conn_capsList);
         conn_capsList = NULL;
     }

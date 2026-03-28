@@ -24,7 +24,7 @@ typedef struct OpenAPI_reporting_information_s OpenAPI_reporting_information_t;
 typedef struct OpenAPI_reporting_information_s {
     bool is_imm_rep;
     int imm_rep;
-    struct OpenAPI_notification_method_1_s *notif_method;
+    OpenAPI_notification_method_1_e notif_method;
     bool is_max_report_nbr;
     int max_report_nbr;
     char *mon_dur;
@@ -41,7 +41,7 @@ typedef struct OpenAPI_reporting_information_s {
 OpenAPI_reporting_information_t *OpenAPI_reporting_information_create(
     bool is_imm_rep,
     int imm_rep,
-    OpenAPI_notification_method_1_t *notif_method,
+    OpenAPI_notification_method_1_e notif_method,
     bool is_max_report_nbr,
     int max_report_nbr,
     char *mon_dur,

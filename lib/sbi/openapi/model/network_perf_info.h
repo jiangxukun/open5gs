@@ -1,7 +1,7 @@
 /*
  * network_perf_info.h
  *
- * Represents the network performance information.
+ * 
  */
 
 #ifndef _OpenAPI_network_perf_info_H_
@@ -22,7 +22,7 @@ extern "C" {
 typedef struct OpenAPI_network_perf_info_s OpenAPI_network_perf_info_t;
 typedef struct OpenAPI_network_perf_info_s {
     struct OpenAPI_network_area_info_s *network_area;
-    struct OpenAPI_network_perf_type_s *nw_perf_type;
+    OpenAPI_network_perf_type_e nw_perf_type;
     bool is_relative_ratio;
     int relative_ratio;
     bool is_absolute_num;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_network_perf_info_s {
 
 OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_create(
     OpenAPI_network_area_info_t *network_area,
-    OpenAPI_network_perf_type_t *nw_perf_type,
+    OpenAPI_network_perf_type_e nw_perf_type,
     bool is_relative_ratio,
     int relative_ratio,
     bool is_absolute_num,

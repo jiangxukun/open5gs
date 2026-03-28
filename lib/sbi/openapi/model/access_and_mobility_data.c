@@ -14,7 +14,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_create(
     char *reg_states_ts,
     OpenAPI_list_t *conn_states,
     char *conn_states_ts,
-    OpenAPI_ue_reachability_t *reachability_status,
+    OpenAPI_ue_reachability_e reachability_status,
     char *reachability_status_ts,
     OpenAPI_sms_support_e sms_over_nas_status,
     char *sms_over_nas_status_ts,
@@ -102,10 +102,6 @@ void OpenAPI_access_and_mobility_data_free(OpenAPI_access_and_mobility_data_t *a
     if (access_and_mobility_data->conn_states_ts) {
         ogs_free(access_and_mobility_data->conn_states_ts);
         access_and_mobility_data->conn_states_ts = NULL;
-    }
-    if (access_and_mobility_data->reachability_status) {
-        OpenAPI_ue_reachability_free(access_and_mobility_data->reachability_status);
-        access_and_mobility_data->reachability_status = NULL;
     }
     if (access_and_mobility_data->reachability_status_ts) {
         ogs_free(access_and_mobility_data->reachability_status_ts);
@@ -247,14 +243,8 @@ cJSON *OpenAPI_access_and_mobility_data_convertToJSON(OpenAPI_access_and_mobilit
     }
     }
 
-    if (access_and_mobility_data->reachability_status) {
-    cJSON *reachability_status_local_JSON = OpenAPI_ue_reachability_convertToJSON(access_and_mobility_data->reachability_status);
-    if (reachability_status_local_JSON == NULL) {
-        ogs_error("OpenAPI_access_and_mobility_data_convertToJSON() failed [reachability_status]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "reachabilityStatus", reachability_status_local_JSON);
-    if (item->child == NULL) {
+    if (access_and_mobility_data->reachability_status != OpenAPI_ue_reachability_NULL) {
+    if (cJSON_AddStringToObject(item, "reachabilityStatus", OpenAPI_ue_reachability_ToString(access_and_mobility_data->reachability_status)) == NULL) {
         ogs_error("OpenAPI_access_and_mobility_data_convertToJSON() failed [reachability_status]");
         goto end;
     }
@@ -379,7 +369,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_parseFromJS
     OpenAPI_list_t *conn_statesList = NULL;
     cJSON *conn_states_ts = NULL;
     cJSON *reachability_status = NULL;
-    OpenAPI_ue_reachability_t *reachability_status_local_nonprim = NULL;
+    OpenAPI_ue_reachability_e reachability_statusVariable = 0;
     cJSON *reachability_status_ts = NULL;
     cJSON *sms_over_nas_status = NULL;
     OpenAPI_sms_support_e sms_over_nas_statusVariable = 0;
@@ -503,11 +493,11 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_parseFromJS
 
     reachability_status = cJSON_GetObjectItemCaseSensitive(access_and_mobility_dataJSON, "reachabilityStatus");
     if (reachability_status) {
-    reachability_status_local_nonprim = OpenAPI_ue_reachability_parseFromJSON(reachability_status);
-    if (!reachability_status_local_nonprim) {
-        ogs_error("OpenAPI_ue_reachability_parseFromJSON failed [reachability_status]");
+    if (!cJSON_IsString(reachability_status)) {
+        ogs_error("OpenAPI_access_and_mobility_data_parseFromJSON() failed [reachability_status]");
         goto end;
     }
+    reachability_statusVariable = OpenAPI_ue_reachability_FromString(reachability_status->valuestring);
     }
 
     reachability_status_ts = cJSON_GetObjectItemCaseSensitive(access_and_mobility_dataJSON, "reachabilityStatusTs");
@@ -645,7 +635,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_parseFromJS
         reg_states_ts && !cJSON_IsNull(reg_states_ts) ? ogs_strdup(reg_states_ts->valuestring) : NULL,
         conn_states ? conn_statesList : NULL,
         conn_states_ts && !cJSON_IsNull(conn_states_ts) ? ogs_strdup(conn_states_ts->valuestring) : NULL,
-        reachability_status ? reachability_status_local_nonprim : NULL,
+        reachability_status ? reachability_statusVariable : 0,
         reachability_status_ts && !cJSON_IsNull(reachability_status_ts) ? ogs_strdup(reachability_status_ts->valuestring) : NULL,
         sms_over_nas_status ? sms_over_nas_statusVariable : 0,
         sms_over_nas_status_ts && !cJSON_IsNull(sms_over_nas_status_ts) ? ogs_strdup(sms_over_nas_status_ts->valuestring) : NULL,
@@ -679,10 +669,6 @@ end:
         }
         OpenAPI_list_free(conn_statesList);
         conn_statesList = NULL;
-    }
-    if (reachability_status_local_nonprim) {
-        OpenAPI_ue_reachability_free(reachability_status_local_nonprim);
-        reachability_status_local_nonprim = NULL;
     }
     if (current_plmn_local_nonprim) {
         OpenAPI_plmn_id_1_free(current_plmn_local_nonprim);

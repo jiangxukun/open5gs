@@ -5,11 +5,11 @@
 #include "event_notification.h"
 
 OpenAPI_event_notification_t *OpenAPI_event_notification_create(
-    OpenAPI_nwdaf_event_t *event,
+    OpenAPI_nwdaf_event_e event,
     char *start,
     char *expiry,
     char *time_stamp_gen,
-    OpenAPI_nwdaf_failure_code_t *fail_notify_code,
+    OpenAPI_nwdaf_failure_code_e fail_notify_code,
     bool is_rv_wait_time,
     int rv_wait_time,
     OpenAPI_analytics_metadata_info_t *ana_meta_info,
@@ -67,10 +67,6 @@ void OpenAPI_event_notification_free(OpenAPI_event_notification_t *event_notific
     if (NULL == event_notification) {
         return;
     }
-    if (event_notification->event) {
-        OpenAPI_nwdaf_event_free(event_notification->event);
-        event_notification->event = NULL;
-    }
     if (event_notification->start) {
         ogs_free(event_notification->start);
         event_notification->start = NULL;
@@ -82,10 +78,6 @@ void OpenAPI_event_notification_free(OpenAPI_event_notification_t *event_notific
     if (event_notification->time_stamp_gen) {
         ogs_free(event_notification->time_stamp_gen);
         event_notification->time_stamp_gen = NULL;
-    }
-    if (event_notification->fail_notify_code) {
-        OpenAPI_nwdaf_failure_code_free(event_notification->fail_notify_code);
-        event_notification->fail_notify_code = NULL;
     }
     if (event_notification->ana_meta_info) {
         OpenAPI_analytics_metadata_info_free(event_notification->ana_meta_info);
@@ -207,17 +199,11 @@ cJSON *OpenAPI_event_notification_convertToJSON(OpenAPI_event_notification_t *ev
     }
 
     item = cJSON_CreateObject();
-    if (!event_notification->event) {
+    if (event_notification->event == OpenAPI_nwdaf_event_NULL) {
         ogs_error("OpenAPI_event_notification_convertToJSON() failed [event]");
         return NULL;
     }
-    cJSON *event_local_JSON = OpenAPI_nwdaf_event_convertToJSON(event_notification->event);
-    if (event_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_notification_convertToJSON() failed [event]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "event", event_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "event", OpenAPI_nwdaf_event_ToString(event_notification->event)) == NULL) {
         ogs_error("OpenAPI_event_notification_convertToJSON() failed [event]");
         goto end;
     }
@@ -243,14 +229,8 @@ cJSON *OpenAPI_event_notification_convertToJSON(OpenAPI_event_notification_t *ev
     }
     }
 
-    if (event_notification->fail_notify_code) {
-    cJSON *fail_notify_code_local_JSON = OpenAPI_nwdaf_failure_code_convertToJSON(event_notification->fail_notify_code);
-    if (fail_notify_code_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_notification_convertToJSON() failed [fail_notify_code]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "failNotifyCode", fail_notify_code_local_JSON);
-    if (item->child == NULL) {
+    if (event_notification->fail_notify_code != OpenAPI_nwdaf_failure_code_NULL) {
+    if (cJSON_AddStringToObject(item, "failNotifyCode", OpenAPI_nwdaf_failure_code_ToString(event_notification->fail_notify_code)) == NULL) {
         ogs_error("OpenAPI_event_notification_convertToJSON() failed [fail_notify_code]");
         goto end;
     }
@@ -522,12 +502,12 @@ OpenAPI_event_notification_t *OpenAPI_event_notification_parseFromJSON(cJSON *ev
     OpenAPI_event_notification_t *event_notification_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *event = NULL;
-    OpenAPI_nwdaf_event_t *event_local_nonprim = NULL;
+    OpenAPI_nwdaf_event_e eventVariable = 0;
     cJSON *start = NULL;
     cJSON *expiry = NULL;
     cJSON *time_stamp_gen = NULL;
     cJSON *fail_notify_code = NULL;
-    OpenAPI_nwdaf_failure_code_t *fail_notify_code_local_nonprim = NULL;
+    OpenAPI_nwdaf_failure_code_e fail_notify_codeVariable = 0;
     cJSON *rv_wait_time = NULL;
     cJSON *ana_meta_info = NULL;
     OpenAPI_analytics_metadata_info_t *ana_meta_info_local_nonprim = NULL;
@@ -566,11 +546,11 @@ OpenAPI_event_notification_t *OpenAPI_event_notification_parseFromJSON(cJSON *ev
         ogs_error("OpenAPI_event_notification_parseFromJSON() failed [event]");
         goto end;
     }
-    event_local_nonprim = OpenAPI_nwdaf_event_parseFromJSON(event);
-    if (!event_local_nonprim) {
-        ogs_error("OpenAPI_nwdaf_event_parseFromJSON failed [event]");
+    if (!cJSON_IsString(event)) {
+        ogs_error("OpenAPI_event_notification_parseFromJSON() failed [event]");
         goto end;
     }
+    eventVariable = OpenAPI_nwdaf_event_FromString(event->valuestring);
 
     start = cJSON_GetObjectItemCaseSensitive(event_notificationJSON, "start");
     if (start) {
@@ -598,11 +578,11 @@ OpenAPI_event_notification_t *OpenAPI_event_notification_parseFromJSON(cJSON *ev
 
     fail_notify_code = cJSON_GetObjectItemCaseSensitive(event_notificationJSON, "failNotifyCode");
     if (fail_notify_code) {
-    fail_notify_code_local_nonprim = OpenAPI_nwdaf_failure_code_parseFromJSON(fail_notify_code);
-    if (!fail_notify_code_local_nonprim) {
-        ogs_error("OpenAPI_nwdaf_failure_code_parseFromJSON failed [fail_notify_code]");
+    if (!cJSON_IsString(fail_notify_code)) {
+        ogs_error("OpenAPI_event_notification_parseFromJSON() failed [fail_notify_code]");
         goto end;
     }
+    fail_notify_codeVariable = OpenAPI_nwdaf_failure_code_FromString(fail_notify_code->valuestring);
     }
 
     rv_wait_time = cJSON_GetObjectItemCaseSensitive(event_notificationJSON, "rvWaitTime");
@@ -968,11 +948,11 @@ OpenAPI_event_notification_t *OpenAPI_event_notification_parseFromJSON(cJSON *ev
     }
 
     event_notification_local_var = OpenAPI_event_notification_create (
-        event_local_nonprim,
+        eventVariable,
         start && !cJSON_IsNull(start) ? ogs_strdup(start->valuestring) : NULL,
         expiry && !cJSON_IsNull(expiry) ? ogs_strdup(expiry->valuestring) : NULL,
         time_stamp_gen && !cJSON_IsNull(time_stamp_gen) ? ogs_strdup(time_stamp_gen->valuestring) : NULL,
-        fail_notify_code ? fail_notify_code_local_nonprim : NULL,
+        fail_notify_code ? fail_notify_codeVariable : 0,
         rv_wait_time ? true : false,
         rv_wait_time ? rv_wait_time->valuedouble : 0,
         ana_meta_info ? ana_meta_info_local_nonprim : NULL,
@@ -995,14 +975,6 @@ OpenAPI_event_notification_t *OpenAPI_event_notification_parseFromJSON(cJSON *ev
 
     return event_notification_local_var;
 end:
-    if (event_local_nonprim) {
-        OpenAPI_nwdaf_event_free(event_local_nonprim);
-        event_local_nonprim = NULL;
-    }
-    if (fail_notify_code_local_nonprim) {
-        OpenAPI_nwdaf_failure_code_free(fail_notify_code_local_nonprim);
-        fail_notify_code_local_nonprim = NULL;
-    }
     if (ana_meta_info_local_nonprim) {
         OpenAPI_analytics_metadata_info_free(ana_meta_info_local_nonprim);
         ana_meta_info_local_nonprim = NULL;

@@ -29,7 +29,7 @@ extern "C" {
 
 typedef struct OpenAPI_amf_event_s OpenAPI_amf_event_t;
 typedef struct OpenAPI_amf_event_s {
-    struct OpenAPI_amf_event_type_s *type;
+    OpenAPI_amf_event_type_e type;
     bool is_immediate_flag;
     int immediate_flag;
     OpenAPI_list_t *area_list;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_amf_event_s {
     OpenAPI_list_t *traffic_descriptor_list;
     bool is_report_ue_reachable;
     int report_ue_reachable;
-    struct OpenAPI_reachability_filter_s *reachability_filter;
+    OpenAPI_reachability_filter_e reachability_filter;
     bool is_udm_detect_ind;
     int udm_detect_ind;
     bool is_max_reports;
@@ -59,7 +59,7 @@ typedef struct OpenAPI_amf_event_s {
 } OpenAPI_amf_event_t;
 
 OpenAPI_amf_event_t *OpenAPI_amf_event_create(
-    OpenAPI_amf_event_type_t *type,
+    OpenAPI_amf_event_type_e type,
     bool is_immediate_flag,
     int immediate_flag,
     OpenAPI_list_t *area_list,
@@ -69,7 +69,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_create(
     OpenAPI_list_t *traffic_descriptor_list,
     bool is_report_ue_reachable,
     int report_ue_reachable,
-    OpenAPI_reachability_filter_t *reachability_filter,
+    OpenAPI_reachability_filter_e reachability_filter,
     bool is_udm_detect_ind,
     int udm_detect_ind,
     bool is_max_reports,

@@ -28,9 +28,6 @@ void OpenAPI_ml_analytics_info_free(OpenAPI_ml_analytics_info_t *ml_analytics_in
         return;
     }
     if (ml_analytics_info->ml_analytics_ids) {
-        OpenAPI_list_for_each(ml_analytics_info->ml_analytics_ids, node) {
-            OpenAPI_nwdaf_event_free(node->data);
-        }
         OpenAPI_list_free(ml_analytics_info->ml_analytics_ids);
         ml_analytics_info->ml_analytics_ids = NULL;
     }
@@ -62,19 +59,17 @@ cJSON *OpenAPI_ml_analytics_info_convertToJSON(OpenAPI_ml_analytics_info_t *ml_a
     }
 
     item = cJSON_CreateObject();
-    if (ml_analytics_info->ml_analytics_ids) {
+    if (ml_analytics_info->ml_analytics_ids != OpenAPI_nwdaf_event_NULL) {
     cJSON *ml_analytics_idsList = cJSON_AddArrayToObject(item, "mlAnalyticsIds");
     if (ml_analytics_idsList == NULL) {
         ogs_error("OpenAPI_ml_analytics_info_convertToJSON() failed [ml_analytics_ids]");
         goto end;
     }
     OpenAPI_list_for_each(ml_analytics_info->ml_analytics_ids, node) {
-        cJSON *itemLocal = OpenAPI_nwdaf_event_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(ml_analytics_idsList, "", OpenAPI_nwdaf_event_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_ml_analytics_info_convertToJSON() failed [ml_analytics_ids]");
             goto end;
         }
-        cJSON_AddItemToArray(ml_analytics_idsList, itemLocal);
     }
     }
 
@@ -135,16 +130,22 @@ OpenAPI_ml_analytics_info_t *OpenAPI_ml_analytics_info_parseFromJSON(cJSON *ml_a
         ml_analytics_idsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(ml_analytics_ids_local, ml_analytics_ids) {
-            if (!cJSON_IsObject(ml_analytics_ids_local)) {
+            OpenAPI_nwdaf_event_e localEnum = OpenAPI_nwdaf_event_NULL;
+            if (!cJSON_IsString(ml_analytics_ids_local)) {
                 ogs_error("OpenAPI_ml_analytics_info_parseFromJSON() failed [ml_analytics_ids]");
                 goto end;
             }
-            OpenAPI_nwdaf_event_t *ml_analytics_idsItem = OpenAPI_nwdaf_event_parseFromJSON(ml_analytics_ids_local);
-            if (!ml_analytics_idsItem) {
-                ogs_error("No ml_analytics_idsItem");
-                goto end;
+            localEnum = OpenAPI_nwdaf_event_FromString(ml_analytics_ids_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"ml_analytics_ids\" is not supported. Ignoring it ...",
+                         ml_analytics_ids_local->valuestring);
+            } else {
+                OpenAPI_list_add(ml_analytics_idsList, (void *)localEnum);
             }
-            OpenAPI_list_add(ml_analytics_idsList, ml_analytics_idsItem);
+        }
+        if (ml_analytics_idsList->count == 0) {
+            ogs_error("OpenAPI_ml_analytics_info_parseFromJSON() failed: Expected ml_analytics_idsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -205,9 +206,6 @@ OpenAPI_ml_analytics_info_t *OpenAPI_ml_analytics_info_parseFromJSON(cJSON *ml_a
     return ml_analytics_info_local_var;
 end:
     if (ml_analytics_idsList) {
-        OpenAPI_list_for_each(ml_analytics_idsList, node) {
-            OpenAPI_nwdaf_event_free(node->data);
-        }
         OpenAPI_list_free(ml_analytics_idsList);
         ml_analytics_idsList = NULL;
     }

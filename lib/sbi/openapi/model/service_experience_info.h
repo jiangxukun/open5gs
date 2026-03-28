@@ -33,7 +33,7 @@ typedef struct OpenAPI_service_experience_info_s {
     OpenAPI_list_t *supis;
     struct OpenAPI_snssai_s *snssai;
     char *app_id;
-    struct OpenAPI_service_experience_type_s *srv_expc_type;
+    OpenAPI_service_experience_type_e srv_expc_type;
     OpenAPI_list_t *ue_locs;
     struct OpenAPI_upf_information_s *upf_info;
     char *dnai;
@@ -55,7 +55,7 @@ OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_create(
     OpenAPI_list_t *supis,
     OpenAPI_snssai_t *snssai,
     char *app_id,
-    OpenAPI_service_experience_type_t *srv_expc_type,
+    OpenAPI_service_experience_type_e srv_expc_type,
     OpenAPI_list_t *ue_locs,
     OpenAPI_upf_information_t *upf_info,
     char *dnai,

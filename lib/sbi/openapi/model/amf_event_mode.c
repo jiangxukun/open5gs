@@ -5,7 +5,7 @@
 #include "amf_event_mode.h"
 
 OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_create(
-    OpenAPI_amf_event_trigger_t *trigger,
+    OpenAPI_amf_event_trigger_e trigger,
     bool is_max_reports,
     int max_reports,
     char *expiry,
@@ -41,10 +41,6 @@ void OpenAPI_amf_event_mode_free(OpenAPI_amf_event_mode_t *amf_event_mode)
     if (NULL == amf_event_mode) {
         return;
     }
-    if (amf_event_mode->trigger) {
-        OpenAPI_amf_event_trigger_free(amf_event_mode->trigger);
-        amf_event_mode->trigger = NULL;
-    }
     if (amf_event_mode->expiry) {
         ogs_free(amf_event_mode->expiry);
         amf_event_mode->expiry = NULL;
@@ -67,17 +63,11 @@ cJSON *OpenAPI_amf_event_mode_convertToJSON(OpenAPI_amf_event_mode_t *amf_event_
     }
 
     item = cJSON_CreateObject();
-    if (!amf_event_mode->trigger) {
+    if (amf_event_mode->trigger == OpenAPI_amf_event_trigger_NULL) {
         ogs_error("OpenAPI_amf_event_mode_convertToJSON() failed [trigger]");
         return NULL;
     }
-    cJSON *trigger_local_JSON = OpenAPI_amf_event_trigger_convertToJSON(amf_event_mode->trigger);
-    if (trigger_local_JSON == NULL) {
-        ogs_error("OpenAPI_amf_event_mode_convertToJSON() failed [trigger]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "trigger", trigger_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "trigger", OpenAPI_amf_event_trigger_ToString(amf_event_mode->trigger)) == NULL) {
         ogs_error("OpenAPI_amf_event_mode_convertToJSON() failed [trigger]");
         goto end;
     }
@@ -140,7 +130,7 @@ OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_parseFromJSON(cJSON *amf_event_
     OpenAPI_amf_event_mode_t *amf_event_mode_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *trigger = NULL;
-    OpenAPI_amf_event_trigger_t *trigger_local_nonprim = NULL;
+    OpenAPI_amf_event_trigger_e triggerVariable = 0;
     cJSON *max_reports = NULL;
     cJSON *expiry = NULL;
     cJSON *rep_period = NULL;
@@ -154,11 +144,11 @@ OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_parseFromJSON(cJSON *amf_event_
         ogs_error("OpenAPI_amf_event_mode_parseFromJSON() failed [trigger]");
         goto end;
     }
-    trigger_local_nonprim = OpenAPI_amf_event_trigger_parseFromJSON(trigger);
-    if (!trigger_local_nonprim) {
-        ogs_error("OpenAPI_amf_event_trigger_parseFromJSON failed [trigger]");
+    if (!cJSON_IsString(trigger)) {
+        ogs_error("OpenAPI_amf_event_mode_parseFromJSON() failed [trigger]");
         goto end;
     }
+    triggerVariable = OpenAPI_amf_event_trigger_FromString(trigger->valuestring);
 
     max_reports = cJSON_GetObjectItemCaseSensitive(amf_event_modeJSON, "maxReports");
     if (max_reports) {
@@ -232,7 +222,7 @@ OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_parseFromJSON(cJSON *amf_event_
     }
 
     amf_event_mode_local_var = OpenAPI_amf_event_mode_create (
-        trigger_local_nonprim,
+        triggerVariable,
         max_reports ? true : false,
         max_reports ? max_reports->valuedouble : 0,
         expiry && !cJSON_IsNull(expiry) ? ogs_strdup(expiry->valuestring) : NULL,
@@ -246,10 +236,6 @@ OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_parseFromJSON(cJSON *amf_event_
 
     return amf_event_mode_local_var;
 end:
-    if (trigger_local_nonprim) {
-        OpenAPI_amf_event_trigger_free(trigger_local_nonprim);
-        trigger_local_nonprim = NULL;
-    }
     if (partitioning_criteriaList) {
         OpenAPI_list_free(partitioning_criteriaList);
         partitioning_criteriaList = NULL;

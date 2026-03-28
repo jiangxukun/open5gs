@@ -272,7 +272,7 @@ end:
     }
     if (aoi_state_listList) {
         OpenAPI_list_for_each(aoi_state_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_area_of_interest_event_state_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

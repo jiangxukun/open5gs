@@ -747,7 +747,7 @@ end:
     }
     if (ref_um_data_limit_idsList) {
         OpenAPI_list_for_each(ref_um_data_limit_idsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_limit_id_to_monitoring_key_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -757,7 +757,7 @@ end:
     }
     if (pra_infosList) {
         OpenAPI_list_for_each(pra_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -767,7 +767,7 @@ end:
     }
     if (bdt_ref_idsList) {
         OpenAPI_list_for_each(bdt_ref_idsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

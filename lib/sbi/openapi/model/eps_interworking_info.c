@@ -121,7 +121,7 @@ OpenAPI_eps_interworking_info_t *OpenAPI_eps_interworking_info_parseFromJSON(cJS
 end:
     if (eps_iwk_pgwsList) {
         OpenAPI_list_for_each(eps_iwk_pgwsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_eps_iwk_pgw_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

@@ -5,7 +5,7 @@
 #include "network_perf_requirement.h"
 
 OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_create(
-    OpenAPI_network_perf_type_t *nw_perf_type,
+    OpenAPI_network_perf_type_e nw_perf_type,
     bool is_relative_ratio,
     int relative_ratio,
     bool is_absolute_num,
@@ -31,10 +31,6 @@ void OpenAPI_network_perf_requirement_free(OpenAPI_network_perf_requirement_t *n
     if (NULL == network_perf_requirement) {
         return;
     }
-    if (network_perf_requirement->nw_perf_type) {
-        OpenAPI_network_perf_type_free(network_perf_requirement->nw_perf_type);
-        network_perf_requirement->nw_perf_type = NULL;
-    }
     ogs_free(network_perf_requirement);
 }
 
@@ -49,17 +45,11 @@ cJSON *OpenAPI_network_perf_requirement_convertToJSON(OpenAPI_network_perf_requi
     }
 
     item = cJSON_CreateObject();
-    if (!network_perf_requirement->nw_perf_type) {
+    if (network_perf_requirement->nw_perf_type == OpenAPI_network_perf_type_NULL) {
         ogs_error("OpenAPI_network_perf_requirement_convertToJSON() failed [nw_perf_type]");
         return NULL;
     }
-    cJSON *nw_perf_type_local_JSON = OpenAPI_network_perf_type_convertToJSON(network_perf_requirement->nw_perf_type);
-    if (nw_perf_type_local_JSON == NULL) {
-        ogs_error("OpenAPI_network_perf_requirement_convertToJSON() failed [nw_perf_type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "nwPerfType", nw_perf_type_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "nwPerfType", OpenAPI_network_perf_type_ToString(network_perf_requirement->nw_perf_type)) == NULL) {
         ogs_error("OpenAPI_network_perf_requirement_convertToJSON() failed [nw_perf_type]");
         goto end;
     }
@@ -87,7 +77,7 @@ OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_parseFromJS
     OpenAPI_network_perf_requirement_t *network_perf_requirement_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *nw_perf_type = NULL;
-    OpenAPI_network_perf_type_t *nw_perf_type_local_nonprim = NULL;
+    OpenAPI_network_perf_type_e nw_perf_typeVariable = 0;
     cJSON *relative_ratio = NULL;
     cJSON *absolute_num = NULL;
     nw_perf_type = cJSON_GetObjectItemCaseSensitive(network_perf_requirementJSON, "nwPerfType");
@@ -95,11 +85,11 @@ OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_parseFromJS
         ogs_error("OpenAPI_network_perf_requirement_parseFromJSON() failed [nw_perf_type]");
         goto end;
     }
-    nw_perf_type_local_nonprim = OpenAPI_network_perf_type_parseFromJSON(nw_perf_type);
-    if (!nw_perf_type_local_nonprim) {
-        ogs_error("OpenAPI_network_perf_type_parseFromJSON failed [nw_perf_type]");
+    if (!cJSON_IsString(nw_perf_type)) {
+        ogs_error("OpenAPI_network_perf_requirement_parseFromJSON() failed [nw_perf_type]");
         goto end;
     }
+    nw_perf_typeVariable = OpenAPI_network_perf_type_FromString(nw_perf_type->valuestring);
 
     relative_ratio = cJSON_GetObjectItemCaseSensitive(network_perf_requirementJSON, "relativeRatio");
     if (relative_ratio) {
@@ -118,7 +108,7 @@ OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_parseFromJS
     }
 
     network_perf_requirement_local_var = OpenAPI_network_perf_requirement_create (
-        nw_perf_type_local_nonprim,
+        nw_perf_typeVariable,
         relative_ratio ? true : false,
         relative_ratio ? relative_ratio->valuedouble : 0,
         absolute_num ? true : false,
@@ -127,10 +117,6 @@ OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_parseFromJS
 
     return network_perf_requirement_local_var;
 end:
-    if (nw_perf_type_local_nonprim) {
-        OpenAPI_network_perf_type_free(nw_perf_type_local_nonprim);
-        nw_perf_type_local_nonprim = NULL;
-    }
     return NULL;
 }
 

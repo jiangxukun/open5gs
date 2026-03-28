@@ -1,7 +1,7 @@
 /*
  * serv_auth_info.h
  *
- * 
+ * Indicates the result of the Policy Authorization service request from the AF.
  */
 
 #ifndef _OpenAPI_serv_auth_info_H_

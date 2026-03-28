@@ -5,6 +5,7 @@
 #include "ursp_rule_request.h"
 
 OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_create(
+    bool is_traffic_desc_null,
     OpenAPI_traffic_descriptor_components_t *traffic_desc,
     bool is_relat_precedence,
     int relat_precedence,
@@ -14,6 +15,7 @@ OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_create(
     OpenAPI_ursp_rule_request_t *ursp_rule_request_local_var = ogs_malloc(sizeof(OpenAPI_ursp_rule_request_t));
     ogs_assert(ursp_rule_request_local_var);
 
+    ursp_rule_request_local_var->is_traffic_desc_null = is_traffic_desc_null;
     ursp_rule_request_local_var->traffic_desc = traffic_desc;
     ursp_rule_request_local_var->is_relat_precedence = is_relat_precedence;
     ursp_rule_request_local_var->relat_precedence = relat_precedence;
@@ -65,6 +67,11 @@ cJSON *OpenAPI_ursp_rule_request_convertToJSON(OpenAPI_ursp_rule_request_t *ursp
         ogs_error("OpenAPI_ursp_rule_request_convertToJSON() failed [traffic_desc]");
         goto end;
     }
+    } else if (ursp_rule_request->is_traffic_desc_null) {
+        if (cJSON_AddNullToObject(item, "trafficDesc") == NULL) {
+            ogs_error("OpenAPI_ursp_rule_request_convertToJSON() failed [traffic_desc]");
+            goto end;
+        }
     }
 
     if (ursp_rule_request->is_relat_precedence) {
@@ -105,10 +112,12 @@ OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_parseFromJSON(cJSON *ursp
     OpenAPI_list_t *route_sel_param_setsList = NULL;
     traffic_desc = cJSON_GetObjectItemCaseSensitive(ursp_rule_requestJSON, "trafficDesc");
     if (traffic_desc) {
+    if (!cJSON_IsNull(traffic_desc)) {
     traffic_desc_local_nonprim = OpenAPI_traffic_descriptor_components_parseFromJSON(traffic_desc);
     if (!traffic_desc_local_nonprim) {
         ogs_error("OpenAPI_traffic_descriptor_components_parseFromJSON failed [traffic_desc]");
         goto end;
+    }
     }
     }
 
@@ -145,6 +154,7 @@ OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_parseFromJSON(cJSON *ursp
     }
 
     ursp_rule_request_local_var = OpenAPI_ursp_rule_request_create (
+        traffic_desc && cJSON_IsNull(traffic_desc) ? true : false,
         traffic_desc ? traffic_desc_local_nonprim : NULL,
         relat_precedence ? true : false,
         relat_precedence ? relat_precedence->valuedouble : 0,

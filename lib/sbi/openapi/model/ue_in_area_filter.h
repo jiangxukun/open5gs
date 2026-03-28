@@ -20,13 +20,13 @@ extern "C" {
 
 typedef struct OpenAPI_ue_in_area_filter_s OpenAPI_ue_in_area_filter_t;
 typedef struct OpenAPI_ue_in_area_filter_s {
-    struct OpenAPI_ue_type_s *ue_type;
+    OpenAPI_ue_type_e ue_type;
     bool is_aerial_srv_dnn_ind;
     int aerial_srv_dnn_ind;
 } OpenAPI_ue_in_area_filter_t;
 
 OpenAPI_ue_in_area_filter_t *OpenAPI_ue_in_area_filter_create(
-    OpenAPI_ue_type_t *ue_type,
+    OpenAPI_ue_type_e ue_type,
     bool is_aerial_srv_dnn_ind,
     int aerial_srv_dnn_ind
 );

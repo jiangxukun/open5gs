@@ -42,16 +42,10 @@ void OpenAPI_nrf_info_served_nwdaf_info_value_free(OpenAPI_nrf_info_served_nwdaf
         return;
     }
     if (nrf_info_served_nwdaf_info_value->event_ids) {
-        OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->event_ids, node) {
-            OpenAPI_event_id_free(node->data);
-        }
         OpenAPI_list_free(nrf_info_served_nwdaf_info_value->event_ids);
         nrf_info_served_nwdaf_info_value->event_ids = NULL;
     }
     if (nrf_info_served_nwdaf_info_value->nwdaf_events) {
-        OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->nwdaf_events, node) {
-            OpenAPI_nwdaf_event_free(node->data);
-        }
         OpenAPI_list_free(nrf_info_served_nwdaf_info_value->nwdaf_events);
         nrf_info_served_nwdaf_info_value->nwdaf_events = NULL;
     }
@@ -105,35 +99,31 @@ cJSON *OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON(OpenAPI_nrf_info_s
     }
 
     item = cJSON_CreateObject();
-    if (nrf_info_served_nwdaf_info_value->event_ids) {
+    if (nrf_info_served_nwdaf_info_value->event_ids != OpenAPI_event_id_NULL) {
     cJSON *event_idsList = cJSON_AddArrayToObject(item, "eventIds");
     if (event_idsList == NULL) {
         ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [event_ids]");
         goto end;
     }
     OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->event_ids, node) {
-        cJSON *itemLocal = OpenAPI_event_id_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(event_idsList, "", OpenAPI_event_id_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [event_ids]");
             goto end;
         }
-        cJSON_AddItemToArray(event_idsList, itemLocal);
     }
     }
 
-    if (nrf_info_served_nwdaf_info_value->nwdaf_events) {
+    if (nrf_info_served_nwdaf_info_value->nwdaf_events != OpenAPI_nwdaf_event_NULL) {
     cJSON *nwdaf_eventsList = cJSON_AddArrayToObject(item, "nwdafEvents");
     if (nwdaf_eventsList == NULL) {
         ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [nwdaf_events]");
         goto end;
     }
     OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->nwdaf_events, node) {
-        cJSON *itemLocal = OpenAPI_nwdaf_event_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(nwdaf_eventsList, "", OpenAPI_nwdaf_event_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [nwdaf_events]");
             goto end;
         }
-        cJSON_AddItemToArray(nwdaf_eventsList, itemLocal);
     }
     }
 
@@ -269,16 +259,22 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
         event_idsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(event_ids_local, event_ids) {
-            if (!cJSON_IsObject(event_ids_local)) {
+            OpenAPI_event_id_e localEnum = OpenAPI_event_id_NULL;
+            if (!cJSON_IsString(event_ids_local)) {
                 ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [event_ids]");
                 goto end;
             }
-            OpenAPI_event_id_t *event_idsItem = OpenAPI_event_id_parseFromJSON(event_ids_local);
-            if (!event_idsItem) {
-                ogs_error("No event_idsItem");
-                goto end;
+            localEnum = OpenAPI_event_id_FromString(event_ids_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"event_ids\" is not supported. Ignoring it ...",
+                         event_ids_local->valuestring);
+            } else {
+                OpenAPI_list_add(event_idsList, (void *)localEnum);
             }
-            OpenAPI_list_add(event_idsList, event_idsItem);
+        }
+        if (event_idsList->count == 0) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed: Expected event_idsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -293,16 +289,22 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
         nwdaf_eventsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(nwdaf_events_local, nwdaf_events) {
-            if (!cJSON_IsObject(nwdaf_events_local)) {
+            OpenAPI_nwdaf_event_e localEnum = OpenAPI_nwdaf_event_NULL;
+            if (!cJSON_IsString(nwdaf_events_local)) {
                 ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [nwdaf_events]");
                 goto end;
             }
-            OpenAPI_nwdaf_event_t *nwdaf_eventsItem = OpenAPI_nwdaf_event_parseFromJSON(nwdaf_events_local);
-            if (!nwdaf_eventsItem) {
-                ogs_error("No nwdaf_eventsItem");
-                goto end;
+            localEnum = OpenAPI_nwdaf_event_FromString(nwdaf_events_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"nwdaf_events\" is not supported. Ignoring it ...",
+                         nwdaf_events_local->valuestring);
+            } else {
+                OpenAPI_list_add(nwdaf_eventsList, (void *)localEnum);
             }
-            OpenAPI_list_add(nwdaf_eventsList, nwdaf_eventsItem);
+        }
+        if (nwdaf_eventsList->count == 0) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed: Expected nwdaf_eventsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -462,16 +464,10 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     return nrf_info_served_nwdaf_info_value_local_var;
 end:
     if (event_idsList) {
-        OpenAPI_list_for_each(event_idsList, node) {
-            OpenAPI_event_id_free(node->data);
-        }
         OpenAPI_list_free(event_idsList);
         event_idsList = NULL;
     }
     if (nwdaf_eventsList) {
-        OpenAPI_list_for_each(nwdaf_eventsList, node) {
-            OpenAPI_nwdaf_event_free(node->data);
-        }
         OpenAPI_list_free(nwdaf_eventsList);
         nwdaf_eventsList = NULL;
     }

@@ -12,8 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "av5_ghe_aka.h"
-#include "av_eap_aka_prime.h"
 #include "av_type.h"
 
 #ifdef __cplusplus

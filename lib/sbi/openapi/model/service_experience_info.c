@@ -11,7 +11,7 @@ OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_create(
     OpenAPI_list_t *supis,
     OpenAPI_snssai_t *snssai,
     char *app_id,
-    OpenAPI_service_experience_type_t *srv_expc_type,
+    OpenAPI_service_experience_type_e srv_expc_type,
     OpenAPI_list_t *ue_locs,
     OpenAPI_upf_information_t *upf_info,
     char *dnai,
@@ -77,10 +77,6 @@ void OpenAPI_service_experience_info_free(OpenAPI_service_experience_info_t *ser
     if (service_experience_info->app_id) {
         ogs_free(service_experience_info->app_id);
         service_experience_info->app_id = NULL;
-    }
-    if (service_experience_info->srv_expc_type) {
-        OpenAPI_service_experience_type_free(service_experience_info->srv_expc_type);
-        service_experience_info->srv_expc_type = NULL;
     }
     if (service_experience_info->ue_locs) {
         OpenAPI_list_for_each(service_experience_info->ue_locs, node) {
@@ -187,14 +183,8 @@ cJSON *OpenAPI_service_experience_info_convertToJSON(OpenAPI_service_experience_
     }
     }
 
-    if (service_experience_info->srv_expc_type) {
-    cJSON *srv_expc_type_local_JSON = OpenAPI_service_experience_type_convertToJSON(service_experience_info->srv_expc_type);
-    if (srv_expc_type_local_JSON == NULL) {
-        ogs_error("OpenAPI_service_experience_info_convertToJSON() failed [srv_expc_type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "srvExpcType", srv_expc_type_local_JSON);
-    if (item->child == NULL) {
+    if (service_experience_info->srv_expc_type != OpenAPI_service_experience_type_NULL) {
+    if (cJSON_AddStringToObject(item, "srvExpcType", OpenAPI_service_experience_type_ToString(service_experience_info->srv_expc_type)) == NULL) {
         ogs_error("OpenAPI_service_experience_info_convertToJSON() failed [srv_expc_type]");
         goto end;
     }
@@ -320,7 +310,7 @@ OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_parseFromJSON
     OpenAPI_snssai_t *snssai_local_nonprim = NULL;
     cJSON *app_id = NULL;
     cJSON *srv_expc_type = NULL;
-    OpenAPI_service_experience_type_t *srv_expc_type_local_nonprim = NULL;
+    OpenAPI_service_experience_type_e srv_expc_typeVariable = 0;
     cJSON *ue_locs = NULL;
     OpenAPI_list_t *ue_locsList = NULL;
     cJSON *upf_info = NULL;
@@ -395,11 +385,11 @@ OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_parseFromJSON
 
     srv_expc_type = cJSON_GetObjectItemCaseSensitive(service_experience_infoJSON, "srvExpcType");
     if (srv_expc_type) {
-    srv_expc_type_local_nonprim = OpenAPI_service_experience_type_parseFromJSON(srv_expc_type);
-    if (!srv_expc_type_local_nonprim) {
-        ogs_error("OpenAPI_service_experience_type_parseFromJSON failed [srv_expc_type]");
+    if (!cJSON_IsString(srv_expc_type)) {
+        ogs_error("OpenAPI_service_experience_info_parseFromJSON() failed [srv_expc_type]");
         goto end;
     }
+    srv_expc_typeVariable = OpenAPI_service_experience_type_FromString(srv_expc_type->valuestring);
     }
 
     ue_locs = cJSON_GetObjectItemCaseSensitive(service_experience_infoJSON, "ueLocs");
@@ -509,7 +499,7 @@ OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_parseFromJSON
         supis ? supisList : NULL,
         snssai ? snssai_local_nonprim : NULL,
         app_id && !cJSON_IsNull(app_id) ? ogs_strdup(app_id->valuestring) : NULL,
-        srv_expc_type ? srv_expc_type_local_nonprim : NULL,
+        srv_expc_type ? srv_expc_typeVariable : 0,
         ue_locs ? ue_locsList : NULL,
         upf_info ? upf_info_local_nonprim : NULL,
         dnai && !cJSON_IsNull(dnai) ? ogs_strdup(dnai->valuestring) : NULL,
@@ -540,10 +530,6 @@ end:
     if (snssai_local_nonprim) {
         OpenAPI_snssai_free(snssai_local_nonprim);
         snssai_local_nonprim = NULL;
-    }
-    if (srv_expc_type_local_nonprim) {
-        OpenAPI_service_experience_type_free(srv_expc_type_local_nonprim);
-        srv_expc_type_local_nonprim = NULL;
     }
     if (ue_locsList) {
         OpenAPI_list_for_each(ue_locsList, node) {

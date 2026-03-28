@@ -5,7 +5,7 @@
 #include "sor_info_1.h"
 
 OpenAPI_sor_info_1_t *OpenAPI_sor_info_1_create(
-    OpenAPI_steering_container_t *steering_container,
+    OpenAPI_steering_container_1_t *steering_container,
     int ack_ind,
     char *sor_mac_iausf,
     char *countersor,
@@ -44,7 +44,7 @@ void OpenAPI_sor_info_1_free(OpenAPI_sor_info_1_t *sor_info_1)
         return;
     }
     if (sor_info_1->steering_container) {
-        OpenAPI_steering_container_free(sor_info_1->steering_container);
+        OpenAPI_steering_container_1_free(sor_info_1->steering_container);
         sor_info_1->steering_container = NULL;
     }
     if (sor_info_1->sor_mac_iausf) {
@@ -82,7 +82,7 @@ cJSON *OpenAPI_sor_info_1_convertToJSON(OpenAPI_sor_info_1_t *sor_info_1)
 
     item = cJSON_CreateObject();
     if (sor_info_1->steering_container) {
-    cJSON *steering_container_local_JSON = OpenAPI_steering_container_convertToJSON(sor_info_1->steering_container);
+    cJSON *steering_container_local_JSON = OpenAPI_steering_container_1_convertToJSON(sor_info_1->steering_container);
     if (steering_container_local_JSON == NULL) {
         ogs_error("OpenAPI_sor_info_1_convertToJSON() failed [steering_container]");
         goto end;
@@ -159,7 +159,7 @@ OpenAPI_sor_info_1_t *OpenAPI_sor_info_1_parseFromJSON(cJSON *sor_info_1JSON)
     OpenAPI_sor_info_1_t *sor_info_1_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *steering_container = NULL;
-    OpenAPI_steering_container_t *steering_container_local_nonprim = NULL;
+    OpenAPI_steering_container_1_t *steering_container_local_nonprim = NULL;
     cJSON *ack_ind = NULL;
     cJSON *sor_mac_iausf = NULL;
     cJSON *countersor = NULL;
@@ -170,9 +170,9 @@ OpenAPI_sor_info_1_t *OpenAPI_sor_info_1_parseFromJSON(cJSON *sor_info_1JSON)
     cJSON *usim_support_of_sor_cmci = NULL;
     steering_container = cJSON_GetObjectItemCaseSensitive(sor_info_1JSON, "steeringContainer");
     if (steering_container) {
-    steering_container_local_nonprim = OpenAPI_steering_container_parseFromJSON(steering_container);
+    steering_container_local_nonprim = OpenAPI_steering_container_1_parseFromJSON(steering_container);
     if (!steering_container_local_nonprim) {
-        ogs_error("OpenAPI_steering_container_parseFromJSON failed [steering_container]");
+        ogs_error("OpenAPI_steering_container_1_parseFromJSON failed [steering_container]");
         goto end;
     }
     }
@@ -263,7 +263,7 @@ OpenAPI_sor_info_1_t *OpenAPI_sor_info_1_parseFromJSON(cJSON *sor_info_1JSON)
     return sor_info_1_local_var;
 end:
     if (steering_container_local_nonprim) {
-        OpenAPI_steering_container_free(steering_container_local_nonprim);
+        OpenAPI_steering_container_1_free(steering_container_local_nonprim);
         steering_container_local_nonprim = NULL;
     }
     return NULL;

@@ -18,7 +18,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_create(
     OpenAPI_plmn_id_1_t *plmn_id,
     bool is_immediate_report,
     int immediate_report,
-    OpenAPI_immediate_report_t *report,
+    OpenAPI_immediate_report_1_t *report,
     char *supported_features,
     OpenAPI_context_info_t *context_info,
     bool is_nf_change_filter,
@@ -105,7 +105,7 @@ void OpenAPI_sdm_subscription_1_free(OpenAPI_sdm_subscription_1_t *sdm_subscript
         sdm_subscription_1->plmn_id = NULL;
     }
     if (sdm_subscription_1->report) {
-        OpenAPI_immediate_report_free(sdm_subscription_1->report);
+        OpenAPI_immediate_report_1_free(sdm_subscription_1->report);
         sdm_subscription_1->report = NULL;
     }
     if (sdm_subscription_1->supported_features) {
@@ -244,7 +244,7 @@ cJSON *OpenAPI_sdm_subscription_1_convertToJSON(OpenAPI_sdm_subscription_1_t *sd
     }
 
     if (sdm_subscription_1->report) {
-    cJSON *report_local_JSON = OpenAPI_immediate_report_convertToJSON(sdm_subscription_1->report);
+    cJSON *report_local_JSON = OpenAPI_immediate_report_1_convertToJSON(sdm_subscription_1->report);
     if (report_local_JSON == NULL) {
         ogs_error("OpenAPI_sdm_subscription_1_convertToJSON() failed [report]");
         goto end;
@@ -340,7 +340,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_parseFromJSON(cJSON *sd
     OpenAPI_plmn_id_1_t *plmn_id_local_nonprim = NULL;
     cJSON *immediate_report = NULL;
     cJSON *report = NULL;
-    OpenAPI_immediate_report_t *report_local_nonprim = NULL;
+    OpenAPI_immediate_report_1_t *report_local_nonprim = NULL;
     cJSON *supported_features = NULL;
     cJSON *context_info = NULL;
     OpenAPI_context_info_t *context_info_local_nonprim = NULL;
@@ -461,9 +461,9 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_parseFromJSON(cJSON *sd
 
     report = cJSON_GetObjectItemCaseSensitive(sdm_subscription_1JSON, "report");
     if (report) {
-    report_local_nonprim = OpenAPI_immediate_report_parseFromJSON(report);
+    report_local_nonprim = OpenAPI_immediate_report_1_parseFromJSON(report);
     if (!report_local_nonprim) {
-        ogs_error("OpenAPI_immediate_report_parseFromJSON failed [report]");
+        ogs_error("OpenAPI_immediate_report_1_parseFromJSON failed [report]");
         goto end;
     }
     }
@@ -574,7 +574,7 @@ end:
         plmn_id_local_nonprim = NULL;
     }
     if (report_local_nonprim) {
-        OpenAPI_immediate_report_free(report_local_nonprim);
+        OpenAPI_immediate_report_1_free(report_local_nonprim);
         report_local_nonprim = NULL;
     }
     if (context_info_local_nonprim) {

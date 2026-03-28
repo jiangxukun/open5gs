@@ -21,12 +21,12 @@ extern "C" {
 
 typedef struct OpenAPI_no_profile_match_info_s OpenAPI_no_profile_match_info_t;
 typedef struct OpenAPI_no_profile_match_info_s {
-    struct OpenAPI_no_profile_match_reason_s *reason;
+    OpenAPI_no_profile_match_reason_e reason;
     OpenAPI_list_t *query_param_combination_list;
 } OpenAPI_no_profile_match_info_t;
 
 OpenAPI_no_profile_match_info_t *OpenAPI_no_profile_match_info_create(
-    OpenAPI_no_profile_match_reason_t *reason,
+    OpenAPI_no_profile_match_reason_e reason,
     OpenAPI_list_t *query_param_combination_list
 );
 void OpenAPI_no_profile_match_info_free(OpenAPI_no_profile_match_info_t *no_profile_match_info);

@@ -1,7 +1,7 @@
 /*
  * nf_type.h
  *
- * 
+ * NF types known to NRF
  */
 
 #ifndef _OpenAPI_nf_type_H_

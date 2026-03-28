@@ -24,7 +24,7 @@ typedef struct OpenAPI_pfd_content_s {
     OpenAPI_list_t *flow_descriptions;
     OpenAPI_list_t *urls;
     OpenAPI_list_t *domain_names;
-    struct OpenAPI_domain_name_protocol_s *dn_protocol;
+    OpenAPI_domain_name_protocol_e dn_protocol;
 } OpenAPI_pfd_content_t;
 
 OpenAPI_pfd_content_t *OpenAPI_pfd_content_create(
@@ -32,7 +32,7 @@ OpenAPI_pfd_content_t *OpenAPI_pfd_content_create(
     OpenAPI_list_t *flow_descriptions,
     OpenAPI_list_t *urls,
     OpenAPI_list_t *domain_names,
-    OpenAPI_domain_name_protocol_t *dn_protocol
+    OpenAPI_domain_name_protocol_e dn_protocol
 );
 void OpenAPI_pfd_content_free(OpenAPI_pfd_content_t *pfd_content);
 OpenAPI_pfd_content_t *OpenAPI_pfd_content_parseFromJSON(cJSON *pfd_contentJSON);

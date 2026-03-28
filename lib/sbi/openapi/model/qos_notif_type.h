@@ -1,7 +1,7 @@
 /*
  * qos_notif_type.h
  *
- * 
+ * Indicates the notification type for QoS Notification Control.
  */
 
 #ifndef _OpenAPI_qos_notif_type_H_

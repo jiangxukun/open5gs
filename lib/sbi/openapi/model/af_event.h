@@ -1,7 +1,7 @@
 /*
  * af_event.h
  *
- * 
+ * Represents Application Events.
  */
 
 #ifndef _OpenAPI_af_event_H_

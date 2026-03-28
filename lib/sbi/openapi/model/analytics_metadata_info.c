@@ -9,8 +9,8 @@ OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_create(
     int num_samples,
     OpenAPI_time_window_t *data_window,
     OpenAPI_list_t *data_stat_props,
-    OpenAPI_output_strategy_t *strategy,
-    OpenAPI_accuracy_t *accuracy
+    OpenAPI_output_strategy_e strategy,
+    OpenAPI_accuracy_e accuracy
 )
 {
     OpenAPI_analytics_metadata_info_t *analytics_metadata_info_local_var = ogs_malloc(sizeof(OpenAPI_analytics_metadata_info_t));
@@ -38,19 +38,8 @@ void OpenAPI_analytics_metadata_info_free(OpenAPI_analytics_metadata_info_t *ana
         analytics_metadata_info->data_window = NULL;
     }
     if (analytics_metadata_info->data_stat_props) {
-        OpenAPI_list_for_each(analytics_metadata_info->data_stat_props, node) {
-            OpenAPI_dataset_statistical_property_free(node->data);
-        }
         OpenAPI_list_free(analytics_metadata_info->data_stat_props);
         analytics_metadata_info->data_stat_props = NULL;
-    }
-    if (analytics_metadata_info->strategy) {
-        OpenAPI_output_strategy_free(analytics_metadata_info->strategy);
-        analytics_metadata_info->strategy = NULL;
-    }
-    if (analytics_metadata_info->accuracy) {
-        OpenAPI_accuracy_free(analytics_metadata_info->accuracy);
-        analytics_metadata_info->accuracy = NULL;
     }
     ogs_free(analytics_metadata_info);
 }
@@ -86,43 +75,29 @@ cJSON *OpenAPI_analytics_metadata_info_convertToJSON(OpenAPI_analytics_metadata_
     }
     }
 
-    if (analytics_metadata_info->data_stat_props) {
+    if (analytics_metadata_info->data_stat_props != OpenAPI_dataset_statistical_property_NULL) {
     cJSON *data_stat_propsList = cJSON_AddArrayToObject(item, "dataStatProps");
     if (data_stat_propsList == NULL) {
         ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [data_stat_props]");
         goto end;
     }
     OpenAPI_list_for_each(analytics_metadata_info->data_stat_props, node) {
-        cJSON *itemLocal = OpenAPI_dataset_statistical_property_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(data_stat_propsList, "", OpenAPI_dataset_statistical_property_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [data_stat_props]");
             goto end;
         }
-        cJSON_AddItemToArray(data_stat_propsList, itemLocal);
     }
     }
 
-    if (analytics_metadata_info->strategy) {
-    cJSON *strategy_local_JSON = OpenAPI_output_strategy_convertToJSON(analytics_metadata_info->strategy);
-    if (strategy_local_JSON == NULL) {
-        ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [strategy]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "strategy", strategy_local_JSON);
-    if (item->child == NULL) {
+    if (analytics_metadata_info->strategy != OpenAPI_output_strategy_NULL) {
+    if (cJSON_AddStringToObject(item, "strategy", OpenAPI_output_strategy_ToString(analytics_metadata_info->strategy)) == NULL) {
         ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [strategy]");
         goto end;
     }
     }
 
-    if (analytics_metadata_info->accuracy) {
-    cJSON *accuracy_local_JSON = OpenAPI_accuracy_convertToJSON(analytics_metadata_info->accuracy);
-    if (accuracy_local_JSON == NULL) {
-        ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [accuracy]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "accuracy", accuracy_local_JSON);
-    if (item->child == NULL) {
+    if (analytics_metadata_info->accuracy != OpenAPI_accuracy_NULL) {
+    if (cJSON_AddStringToObject(item, "accuracy", OpenAPI_accuracy_ToString(analytics_metadata_info->accuracy)) == NULL) {
         ogs_error("OpenAPI_analytics_metadata_info_convertToJSON() failed [accuracy]");
         goto end;
     }
@@ -142,9 +117,9 @@ OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_parseFromJSON
     cJSON *data_stat_props = NULL;
     OpenAPI_list_t *data_stat_propsList = NULL;
     cJSON *strategy = NULL;
-    OpenAPI_output_strategy_t *strategy_local_nonprim = NULL;
+    OpenAPI_output_strategy_e strategyVariable = 0;
     cJSON *accuracy = NULL;
-    OpenAPI_accuracy_t *accuracy_local_nonprim = NULL;
+    OpenAPI_accuracy_e accuracyVariable = 0;
     num_samples = cJSON_GetObjectItemCaseSensitive(analytics_metadata_infoJSON, "numSamples");
     if (num_samples) {
     if (!cJSON_IsNumber(num_samples)) {
@@ -173,35 +148,41 @@ OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_parseFromJSON
         data_stat_propsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(data_stat_props_local, data_stat_props) {
-            if (!cJSON_IsObject(data_stat_props_local)) {
+            OpenAPI_dataset_statistical_property_e localEnum = OpenAPI_dataset_statistical_property_NULL;
+            if (!cJSON_IsString(data_stat_props_local)) {
                 ogs_error("OpenAPI_analytics_metadata_info_parseFromJSON() failed [data_stat_props]");
                 goto end;
             }
-            OpenAPI_dataset_statistical_property_t *data_stat_propsItem = OpenAPI_dataset_statistical_property_parseFromJSON(data_stat_props_local);
-            if (!data_stat_propsItem) {
-                ogs_error("No data_stat_propsItem");
-                goto end;
+            localEnum = OpenAPI_dataset_statistical_property_FromString(data_stat_props_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"data_stat_props\" is not supported. Ignoring it ...",
+                         data_stat_props_local->valuestring);
+            } else {
+                OpenAPI_list_add(data_stat_propsList, (void *)localEnum);
             }
-            OpenAPI_list_add(data_stat_propsList, data_stat_propsItem);
+        }
+        if (data_stat_propsList->count == 0) {
+            ogs_error("OpenAPI_analytics_metadata_info_parseFromJSON() failed: Expected data_stat_propsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
     strategy = cJSON_GetObjectItemCaseSensitive(analytics_metadata_infoJSON, "strategy");
     if (strategy) {
-    strategy_local_nonprim = OpenAPI_output_strategy_parseFromJSON(strategy);
-    if (!strategy_local_nonprim) {
-        ogs_error("OpenAPI_output_strategy_parseFromJSON failed [strategy]");
+    if (!cJSON_IsString(strategy)) {
+        ogs_error("OpenAPI_analytics_metadata_info_parseFromJSON() failed [strategy]");
         goto end;
     }
+    strategyVariable = OpenAPI_output_strategy_FromString(strategy->valuestring);
     }
 
     accuracy = cJSON_GetObjectItemCaseSensitive(analytics_metadata_infoJSON, "accuracy");
     if (accuracy) {
-    accuracy_local_nonprim = OpenAPI_accuracy_parseFromJSON(accuracy);
-    if (!accuracy_local_nonprim) {
-        ogs_error("OpenAPI_accuracy_parseFromJSON failed [accuracy]");
+    if (!cJSON_IsString(accuracy)) {
+        ogs_error("OpenAPI_analytics_metadata_info_parseFromJSON() failed [accuracy]");
         goto end;
     }
+    accuracyVariable = OpenAPI_accuracy_FromString(accuracy->valuestring);
     }
 
     analytics_metadata_info_local_var = OpenAPI_analytics_metadata_info_create (
@@ -209,8 +190,8 @@ OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_parseFromJSON
         num_samples ? num_samples->valuedouble : 0,
         data_window ? data_window_local_nonprim : NULL,
         data_stat_props ? data_stat_propsList : NULL,
-        strategy ? strategy_local_nonprim : NULL,
-        accuracy ? accuracy_local_nonprim : NULL
+        strategy ? strategyVariable : 0,
+        accuracy ? accuracyVariable : 0
     );
 
     return analytics_metadata_info_local_var;
@@ -220,19 +201,8 @@ end:
         data_window_local_nonprim = NULL;
     }
     if (data_stat_propsList) {
-        OpenAPI_list_for_each(data_stat_propsList, node) {
-            OpenAPI_dataset_statistical_property_free(node->data);
-        }
         OpenAPI_list_free(data_stat_propsList);
         data_stat_propsList = NULL;
-    }
-    if (strategy_local_nonprim) {
-        OpenAPI_output_strategy_free(strategy_local_nonprim);
-        strategy_local_nonprim = NULL;
-    }
-    if (accuracy_local_nonprim) {
-        OpenAPI_accuracy_free(accuracy_local_nonprim);
-        accuracy_local_nonprim = NULL;
     }
     return NULL;
 }

@@ -1375,7 +1375,7 @@ OpenAPI_sm_policy_decision_t *OpenAPI_sm_policy_decision_parseFromJSON(cJSON *sm
 end:
     if (sess_rulesList) {
         OpenAPI_list_for_each(sess_rulesList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_session_rule_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1385,7 +1385,7 @@ end:
     }
     if (pcc_rulesList) {
         OpenAPI_list_for_each(pcc_rulesList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_pcc_rule_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1395,7 +1395,7 @@ end:
     }
     if (qos_decsList) {
         OpenAPI_list_for_each(qos_decsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_qos_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1405,7 +1405,7 @@ end:
     }
     if (chg_decsList) {
         OpenAPI_list_for_each(chg_decsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_charging_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1419,7 +1419,7 @@ end:
     }
     if (traff_cont_decsList) {
         OpenAPI_list_for_each(traff_cont_decsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_traffic_control_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1429,7 +1429,7 @@ end:
     }
     if (um_decsList) {
         OpenAPI_list_for_each(um_decsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_usage_monitoring_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1439,7 +1439,7 @@ end:
     }
     if (qos_charsList) {
         OpenAPI_list_for_each(qos_charsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_qos_characteristics_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1449,7 +1449,7 @@ end:
     }
     if (qos_mon_decsList) {
         OpenAPI_list_for_each(qos_mon_decsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_qos_monitoring_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1459,7 +1459,7 @@ end:
     }
     if (condsList) {
         OpenAPI_list_for_each(condsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_condition_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -1484,7 +1484,7 @@ end:
     }
     if (pra_infosList) {
         OpenAPI_list_for_each(pra_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_rm_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

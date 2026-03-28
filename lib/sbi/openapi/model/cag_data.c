@@ -148,7 +148,7 @@ OpenAPI_cag_data_t *OpenAPI_cag_data_parseFromJSON(cJSON *cag_dataJSON)
 end:
     if (cag_infosList) {
         OpenAPI_list_for_each(cag_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_cag_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

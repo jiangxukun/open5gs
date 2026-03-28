@@ -12,8 +12,8 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+#include "amf_info.h"
 #include "eps_interworking_info.h"
-#include "nudm_amf_info.h"
 
 #ifdef __cplusplus
 extern "C" {

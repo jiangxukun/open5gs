@@ -30,7 +30,6 @@
 #include "rat_type.h"
 #include "roaming_restrictions.h"
 #include "service_area_restriction_1.h"
-#include "set.h"
 #include "sor_info_1.h"
 #include "sor_update_indicator.h"
 #include "trace_data.h"
@@ -49,10 +48,11 @@ typedef struct OpenAPI_access_and_mobility_subscription_data_1_s {
     char *hss_group_id;
     OpenAPI_list_t *internal_group_ids;
     OpenAPI_list_t* shared_vn_group_data_ids;
+    bool is_subscribed_ue_ambr_null;
     struct OpenAPI_ambr_rm_s *subscribed_ue_ambr;
     bool is_nssai_null;
     struct OpenAPI_nssai_1_s *nssai;
-    OpenAPI_set_t *rat_restrictions;
+    OpenAPI_list_t *rat_restrictions;
     OpenAPI_list_t *forbidden_areas;
     struct OpenAPI_service_area_restriction_1_s *service_area_restriction;
     OpenAPI_list_t *core_network_type_restrictions;
@@ -98,12 +98,13 @@ typedef struct OpenAPI_access_and_mobility_subscription_data_1_s {
     bool is_nssai_inclusion_allowed;
     int nssai_inclusion_allowed;
     char *rg_wireline_characteristics;
+    bool is_ec_restriction_data_wb_null;
     struct OpenAPI_ec_restriction_data_wb_s *ec_restriction_data_wb;
     bool is_ec_restriction_data_nb;
     int ec_restriction_data_nb;
     struct OpenAPI_expected_ue_behaviour_data_1_s *expected_ue_behaviour_list;
-    OpenAPI_set_t *primary_rat_restrictions;
-    OpenAPI_set_t *secondary_rat_restrictions;
+    OpenAPI_list_t *primary_rat_restrictions;
+    OpenAPI_list_t *secondary_rat_restrictions;
     OpenAPI_list_t *edrx_parameters_list;
     OpenAPI_list_t *ptw_parameters_list;
     bool is_iab_operation_allowed;
@@ -124,10 +125,11 @@ OpenAPI_access_and_mobility_subscription_data_1_t *OpenAPI_access_and_mobility_s
     char *hss_group_id,
     OpenAPI_list_t *internal_group_ids,
     OpenAPI_list_t* shared_vn_group_data_ids,
+    bool is_subscribed_ue_ambr_null,
     OpenAPI_ambr_rm_t *subscribed_ue_ambr,
     bool is_nssai_null,
     OpenAPI_nssai_1_t *nssai,
-    OpenAPI_set_t *rat_restrictions,
+    OpenAPI_list_t *rat_restrictions,
     OpenAPI_list_t *forbidden_areas,
     OpenAPI_service_area_restriction_1_t *service_area_restriction,
     OpenAPI_list_t *core_network_type_restrictions,
@@ -173,12 +175,13 @@ OpenAPI_access_and_mobility_subscription_data_1_t *OpenAPI_access_and_mobility_s
     bool is_nssai_inclusion_allowed,
     int nssai_inclusion_allowed,
     char *rg_wireline_characteristics,
+    bool is_ec_restriction_data_wb_null,
     OpenAPI_ec_restriction_data_wb_t *ec_restriction_data_wb,
     bool is_ec_restriction_data_nb,
     int ec_restriction_data_nb,
     OpenAPI_expected_ue_behaviour_data_1_t *expected_ue_behaviour_list,
-    OpenAPI_set_t *primary_rat_restrictions,
-    OpenAPI_set_t *secondary_rat_restrictions,
+    OpenAPI_list_t *primary_rat_restrictions,
+    OpenAPI_list_t *secondary_rat_restrictions,
     OpenAPI_list_t *edrx_parameters_list,
     OpenAPI_list_t *ptw_parameters_list,
     bool is_iab_operation_allowed,

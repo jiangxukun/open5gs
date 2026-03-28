@@ -13,8 +13,8 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 #include "af_event_notification.h"
-#include "npcf_pdu_session_status.h"
 #include "pcf_addressing_info.h"
+#include "pdu_session_status.h"
 #include "snssai.h"
 
 #ifdef __cplusplus
@@ -28,7 +28,7 @@ typedef struct OpenAPI_pdu_session_event_notification_s {
     char *ue_ipv4;
     char *ue_ipv6;
     char *ue_mac;
-    OpenAPI_npcf_pdu_session_status_e status;
+    OpenAPI_pdu_session_status_e status;
     struct OpenAPI_pcf_addressing_info_s *pcf_info;
     char *dnn;
     struct OpenAPI_snssai_s *snssai;
@@ -41,7 +41,7 @@ OpenAPI_pdu_session_event_notification_t *OpenAPI_pdu_session_event_notification
     char *ue_ipv4,
     char *ue_ipv6,
     char *ue_mac,
-    OpenAPI_npcf_pdu_session_status_e status,
+    OpenAPI_pdu_session_status_e status,
     OpenAPI_pcf_addressing_info_t *pcf_info,
     char *dnn,
     OpenAPI_snssai_t *snssai,

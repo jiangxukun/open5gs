@@ -5,7 +5,7 @@
 #include "event_reporting_requirement.h"
 
 OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_create(
-    OpenAPI_accuracy_t *accuracy,
+    OpenAPI_accuracy_e accuracy,
     OpenAPI_list_t *acc_per_subset,
     char *start_ts,
     char *end_ts,
@@ -51,14 +51,7 @@ void OpenAPI_event_reporting_requirement_free(OpenAPI_event_reporting_requiremen
     if (NULL == event_reporting_requirement) {
         return;
     }
-    if (event_reporting_requirement->accuracy) {
-        OpenAPI_accuracy_free(event_reporting_requirement->accuracy);
-        event_reporting_requirement->accuracy = NULL;
-    }
     if (event_reporting_requirement->acc_per_subset) {
-        OpenAPI_list_for_each(event_reporting_requirement->acc_per_subset, node) {
-            OpenAPI_accuracy_free(node->data);
-        }
         OpenAPI_list_free(event_reporting_requirement->acc_per_subset);
         event_reporting_requirement->acc_per_subset = NULL;
     }
@@ -75,9 +68,6 @@ void OpenAPI_event_reporting_requirement_free(OpenAPI_event_reporting_requiremen
         event_reporting_requirement->time_ana_needed = NULL;
     }
     if (event_reporting_requirement->ana_meta) {
-        OpenAPI_list_for_each(event_reporting_requirement->ana_meta, node) {
-            OpenAPI_analytics_metadata_free(node->data);
-        }
         OpenAPI_list_free(event_reporting_requirement->ana_meta);
         event_reporting_requirement->ana_meta = NULL;
     }
@@ -99,32 +89,24 @@ cJSON *OpenAPI_event_reporting_requirement_convertToJSON(OpenAPI_event_reporting
     }
 
     item = cJSON_CreateObject();
-    if (event_reporting_requirement->accuracy) {
-    cJSON *accuracy_local_JSON = OpenAPI_accuracy_convertToJSON(event_reporting_requirement->accuracy);
-    if (accuracy_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [accuracy]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "accuracy", accuracy_local_JSON);
-    if (item->child == NULL) {
+    if (event_reporting_requirement->accuracy != OpenAPI_accuracy_NULL) {
+    if (cJSON_AddStringToObject(item, "accuracy", OpenAPI_accuracy_ToString(event_reporting_requirement->accuracy)) == NULL) {
         ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [accuracy]");
         goto end;
     }
     }
 
-    if (event_reporting_requirement->acc_per_subset) {
+    if (event_reporting_requirement->acc_per_subset != OpenAPI_accuracy_NULL) {
     cJSON *acc_per_subsetList = cJSON_AddArrayToObject(item, "accPerSubset");
     if (acc_per_subsetList == NULL) {
         ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [acc_per_subset]");
         goto end;
     }
     OpenAPI_list_for_each(event_reporting_requirement->acc_per_subset, node) {
-        cJSON *itemLocal = OpenAPI_accuracy_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(acc_per_subsetList, "", OpenAPI_accuracy_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [acc_per_subset]");
             goto end;
         }
-        cJSON_AddItemToArray(acc_per_subsetList, itemLocal);
     }
     }
 
@@ -177,19 +159,17 @@ cJSON *OpenAPI_event_reporting_requirement_convertToJSON(OpenAPI_event_reporting
     }
     }
 
-    if (event_reporting_requirement->ana_meta) {
+    if (event_reporting_requirement->ana_meta != OpenAPI_analytics_metadata_NULL) {
     cJSON *ana_metaList = cJSON_AddArrayToObject(item, "anaMeta");
     if (ana_metaList == NULL) {
         ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [ana_meta]");
         goto end;
     }
     OpenAPI_list_for_each(event_reporting_requirement->ana_meta, node) {
-        cJSON *itemLocal = OpenAPI_analytics_metadata_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(ana_metaList, "", OpenAPI_analytics_metadata_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [ana_meta]");
             goto end;
         }
-        cJSON_AddItemToArray(ana_metaList, itemLocal);
     }
     }
 
@@ -215,7 +195,7 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
     OpenAPI_event_reporting_requirement_t *event_reporting_requirement_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *accuracy = NULL;
-    OpenAPI_accuracy_t *accuracy_local_nonprim = NULL;
+    OpenAPI_accuracy_e accuracyVariable = 0;
     cJSON *acc_per_subset = NULL;
     OpenAPI_list_t *acc_per_subsetList = NULL;
     cJSON *start_ts = NULL;
@@ -231,11 +211,11 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
     OpenAPI_analytics_metadata_indication_t *ana_meta_ind_local_nonprim = NULL;
     accuracy = cJSON_GetObjectItemCaseSensitive(event_reporting_requirementJSON, "accuracy");
     if (accuracy) {
-    accuracy_local_nonprim = OpenAPI_accuracy_parseFromJSON(accuracy);
-    if (!accuracy_local_nonprim) {
-        ogs_error("OpenAPI_accuracy_parseFromJSON failed [accuracy]");
+    if (!cJSON_IsString(accuracy)) {
+        ogs_error("OpenAPI_event_reporting_requirement_parseFromJSON() failed [accuracy]");
         goto end;
     }
+    accuracyVariable = OpenAPI_accuracy_FromString(accuracy->valuestring);
     }
 
     acc_per_subset = cJSON_GetObjectItemCaseSensitive(event_reporting_requirementJSON, "accPerSubset");
@@ -249,16 +229,22 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
         acc_per_subsetList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(acc_per_subset_local, acc_per_subset) {
-            if (!cJSON_IsObject(acc_per_subset_local)) {
+            OpenAPI_accuracy_e localEnum = OpenAPI_accuracy_NULL;
+            if (!cJSON_IsString(acc_per_subset_local)) {
                 ogs_error("OpenAPI_event_reporting_requirement_parseFromJSON() failed [acc_per_subset]");
                 goto end;
             }
-            OpenAPI_accuracy_t *acc_per_subsetItem = OpenAPI_accuracy_parseFromJSON(acc_per_subset_local);
-            if (!acc_per_subsetItem) {
-                ogs_error("No acc_per_subsetItem");
-                goto end;
+            localEnum = OpenAPI_accuracy_FromString(acc_per_subset_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"acc_per_subset\" is not supported. Ignoring it ...",
+                         acc_per_subset_local->valuestring);
+            } else {
+                OpenAPI_list_add(acc_per_subsetList, (void *)localEnum);
             }
-            OpenAPI_list_add(acc_per_subsetList, acc_per_subsetItem);
+        }
+        if (acc_per_subsetList->count == 0) {
+            ogs_error("OpenAPI_event_reporting_requirement_parseFromJSON() failed: Expected acc_per_subsetList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -329,16 +315,22 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
         ana_metaList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(ana_meta_local, ana_meta) {
-            if (!cJSON_IsObject(ana_meta_local)) {
+            OpenAPI_analytics_metadata_e localEnum = OpenAPI_analytics_metadata_NULL;
+            if (!cJSON_IsString(ana_meta_local)) {
                 ogs_error("OpenAPI_event_reporting_requirement_parseFromJSON() failed [ana_meta]");
                 goto end;
             }
-            OpenAPI_analytics_metadata_t *ana_metaItem = OpenAPI_analytics_metadata_parseFromJSON(ana_meta_local);
-            if (!ana_metaItem) {
-                ogs_error("No ana_metaItem");
-                goto end;
+            localEnum = OpenAPI_analytics_metadata_FromString(ana_meta_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"ana_meta\" is not supported. Ignoring it ...",
+                         ana_meta_local->valuestring);
+            } else {
+                OpenAPI_list_add(ana_metaList, (void *)localEnum);
             }
-            OpenAPI_list_add(ana_metaList, ana_metaItem);
+        }
+        if (ana_metaList->count == 0) {
+            ogs_error("OpenAPI_event_reporting_requirement_parseFromJSON() failed: Expected ana_metaList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -352,7 +344,7 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
     }
 
     event_reporting_requirement_local_var = OpenAPI_event_reporting_requirement_create (
-        accuracy ? accuracy_local_nonprim : NULL,
+        accuracy ? accuracyVariable : 0,
         acc_per_subset ? acc_per_subsetList : NULL,
         start_ts && !cJSON_IsNull(start_ts) ? ogs_strdup(start_ts->valuestring) : NULL,
         end_ts && !cJSON_IsNull(end_ts) ? ogs_strdup(end_ts->valuestring) : NULL,
@@ -371,21 +363,11 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
 
     return event_reporting_requirement_local_var;
 end:
-    if (accuracy_local_nonprim) {
-        OpenAPI_accuracy_free(accuracy_local_nonprim);
-        accuracy_local_nonprim = NULL;
-    }
     if (acc_per_subsetList) {
-        OpenAPI_list_for_each(acc_per_subsetList, node) {
-            OpenAPI_accuracy_free(node->data);
-        }
         OpenAPI_list_free(acc_per_subsetList);
         acc_per_subsetList = NULL;
     }
     if (ana_metaList) {
-        OpenAPI_list_for_each(ana_metaList, node) {
-            OpenAPI_analytics_metadata_free(node->data);
-        }
         OpenAPI_list_free(ana_metaList);
         ana_metaList = NULL;
     }

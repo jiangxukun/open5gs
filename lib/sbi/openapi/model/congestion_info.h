@@ -23,7 +23,7 @@ extern "C" {
 
 typedef struct OpenAPI_congestion_info_s OpenAPI_congestion_info_t;
 typedef struct OpenAPI_congestion_info_s {
-    struct OpenAPI_congestion_type_s *cong_type;
+    OpenAPI_congestion_type_e cong_type;
     struct OpenAPI_time_window_s *time_intev;
     struct OpenAPI_threshold_level_s *nsi;
     bool is_confidence;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_congestion_info_s {
 } OpenAPI_congestion_info_t;
 
 OpenAPI_congestion_info_t *OpenAPI_congestion_info_create(
-    OpenAPI_congestion_type_t *cong_type,
+    OpenAPI_congestion_type_e cong_type,
     OpenAPI_time_window_t *time_intev,
     OpenAPI_threshold_level_t *nsi,
     bool is_confidence,

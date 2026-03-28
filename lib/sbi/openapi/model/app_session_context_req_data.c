@@ -907,7 +907,7 @@ end:
     }
     if (med_componentsList) {
         OpenAPI_list_for_each(med_componentsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_media_component_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

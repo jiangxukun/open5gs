@@ -12,6 +12,7 @@ OpenAPI_pp_data_t *OpenAPI_pp_data_create(
     OpenAPI_expected_ue_behaviour_t *expected_ue_behaviour_parameters,
     bool is_ec_restriction_null,
     OpenAPI_ec_restriction_t *ec_restriction,
+    bool is_acs_info_null,
     OpenAPI_acs_info_rm_t *acs_info,
     bool is_stn_sr_null,
     char *stn_sr,
@@ -32,6 +33,7 @@ OpenAPI_pp_data_t *OpenAPI_pp_data_create(
     pp_data_local_var->expected_ue_behaviour_parameters = expected_ue_behaviour_parameters;
     pp_data_local_var->is_ec_restriction_null = is_ec_restriction_null;
     pp_data_local_var->ec_restriction = ec_restriction;
+    pp_data_local_var->is_acs_info_null = is_acs_info_null;
     pp_data_local_var->acs_info = acs_info;
     pp_data_local_var->is_stn_sr_null = is_stn_sr_null;
     pp_data_local_var->stn_sr = stn_sr;
@@ -173,6 +175,11 @@ cJSON *OpenAPI_pp_data_convertToJSON(OpenAPI_pp_data_t *pp_data)
         ogs_error("OpenAPI_pp_data_convertToJSON() failed [acs_info]");
         goto end;
     }
+    } else if (pp_data->is_acs_info_null) {
+        if (cJSON_AddNullToObject(item, "acsInfo") == NULL) {
+            ogs_error("OpenAPI_pp_data_convertToJSON() failed [acs_info]");
+            goto end;
+        }
     }
 
     if (pp_data->stn_sr) {
@@ -303,10 +310,12 @@ OpenAPI_pp_data_t *OpenAPI_pp_data_parseFromJSON(cJSON *pp_dataJSON)
 
     acs_info = cJSON_GetObjectItemCaseSensitive(pp_dataJSON, "acsInfo");
     if (acs_info) {
+    if (!cJSON_IsNull(acs_info)) {
     acs_info_local_nonprim = OpenAPI_acs_info_rm_parseFromJSON(acs_info);
     if (!acs_info_local_nonprim) {
         ogs_error("OpenAPI_acs_info_rm_parseFromJSON failed [acs_info]");
         goto end;
+    }
     }
     }
 
@@ -359,6 +368,7 @@ OpenAPI_pp_data_t *OpenAPI_pp_data_parseFromJSON(cJSON *pp_dataJSON)
         expected_ue_behaviour_parameters ? expected_ue_behaviour_parameters_local_nonprim : NULL,
         ec_restriction && cJSON_IsNull(ec_restriction) ? true : false,
         ec_restriction ? ec_restriction_local_nonprim : NULL,
+        acs_info && cJSON_IsNull(acs_info) ? true : false,
         acs_info ? acs_info_local_nonprim : NULL,
         stn_sr && cJSON_IsNull(stn_sr) ? true : false,
         stn_sr && !cJSON_IsNull(stn_sr) ? ogs_strdup(stn_sr->valuestring) : NULL,

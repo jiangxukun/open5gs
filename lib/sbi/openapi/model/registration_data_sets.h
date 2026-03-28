@@ -30,6 +30,7 @@ typedef struct OpenAPI_registration_data_sets_s {
     struct OpenAPI_smf_registration_info_s *smf_registration;
     struct OpenAPI_smsf_registration_s *smsf3_gpp;
     struct OpenAPI_smsf_registration_s *smsf_non3_gpp;
+    bool is_ip_sm_gw_null;
     struct OpenAPI_ip_sm_gw_registration_s *ip_sm_gw;
     struct OpenAPI_nwdaf_registration_info_s *nwdaf_registration;
 } OpenAPI_registration_data_sets_t;
@@ -40,6 +41,7 @@ OpenAPI_registration_data_sets_t *OpenAPI_registration_data_sets_create(
     OpenAPI_smf_registration_info_t *smf_registration,
     OpenAPI_smsf_registration_t *smsf3_gpp,
     OpenAPI_smsf_registration_t *smsf_non3_gpp,
+    bool is_ip_sm_gw_null,
     OpenAPI_ip_sm_gw_registration_t *ip_sm_gw,
     OpenAPI_nwdaf_registration_info_t *nwdaf_registration
 );

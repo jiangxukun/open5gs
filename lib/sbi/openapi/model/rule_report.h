@@ -27,7 +27,7 @@ typedef struct OpenAPI_rule_report_s {
     OpenAPI_rule_status_e rule_status;
     OpenAPI_list_t *cont_vers;
     OpenAPI_failure_code_e failure_code;
-    struct OpenAPI_final_unit_action_s *fin_unit_act;
+    OpenAPI_final_unit_action_e fin_unit_act;
     OpenAPI_list_t *ran_nas_rel_causes;
     char *alt_qos_param_id;
 } OpenAPI_rule_report_t;
@@ -37,7 +37,7 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_create(
     OpenAPI_rule_status_e rule_status,
     OpenAPI_list_t *cont_vers,
     OpenAPI_failure_code_e failure_code,
-    OpenAPI_final_unit_action_t *fin_unit_act,
+    OpenAPI_final_unit_action_e fin_unit_act,
     OpenAPI_list_t *ran_nas_rel_causes,
     char *alt_qos_param_id
 );

@@ -27,8 +27,8 @@ typedef struct OpenAPI_analytics_metadata_info_s {
     int num_samples;
     struct OpenAPI_time_window_s *data_window;
     OpenAPI_list_t *data_stat_props;
-    struct OpenAPI_output_strategy_s *strategy;
-    struct OpenAPI_accuracy_s *accuracy;
+    OpenAPI_output_strategy_e strategy;
+    OpenAPI_accuracy_e accuracy;
 } OpenAPI_analytics_metadata_info_t;
 
 OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_create(
@@ -36,8 +36,8 @@ OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_create(
     int num_samples,
     OpenAPI_time_window_t *data_window,
     OpenAPI_list_t *data_stat_props,
-    OpenAPI_output_strategy_t *strategy,
-    OpenAPI_accuracy_t *accuracy
+    OpenAPI_output_strategy_e strategy,
+    OpenAPI_accuracy_e accuracy
 );
 void OpenAPI_analytics_metadata_info_free(OpenAPI_analytics_metadata_info_t *analytics_metadata_info);
 OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_parseFromJSON(cJSON *analytics_metadata_infoJSON);

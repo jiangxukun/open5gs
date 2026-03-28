@@ -20,7 +20,7 @@ extern "C" {
 
 typedef struct OpenAPI_network_perf_requirement_s OpenAPI_network_perf_requirement_t;
 typedef struct OpenAPI_network_perf_requirement_s {
-    struct OpenAPI_network_perf_type_s *nw_perf_type;
+    OpenAPI_network_perf_type_e nw_perf_type;
     bool is_relative_ratio;
     int relative_ratio;
     bool is_absolute_num;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_network_perf_requirement_s {
 } OpenAPI_network_perf_requirement_t;
 
 OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_create(
-    OpenAPI_network_perf_type_t *nw_perf_type,
+    OpenAPI_network_perf_type_e nw_perf_type,
     bool is_relative_ratio,
     int relative_ratio,
     bool is_absolute_num,

@@ -5,7 +5,7 @@
 #include "amf_event.h"
 
 OpenAPI_amf_event_t *OpenAPI_amf_event_create(
-    OpenAPI_amf_event_type_t *type,
+    OpenAPI_amf_event_type_e type,
     bool is_immediate_flag,
     int immediate_flag,
     OpenAPI_list_t *area_list,
@@ -15,7 +15,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_create(
     OpenAPI_list_t *traffic_descriptor_list,
     bool is_report_ue_reachable,
     int report_ue_reachable,
-    OpenAPI_reachability_filter_t *reachability_filter,
+    OpenAPI_reachability_filter_e reachability_filter,
     bool is_udm_detect_ind,
     int udm_detect_ind,
     bool is_max_reports,
@@ -75,10 +75,6 @@ void OpenAPI_amf_event_free(OpenAPI_amf_event_t *amf_event)
     if (NULL == amf_event) {
         return;
     }
-    if (amf_event->type) {
-        OpenAPI_amf_event_type_free(amf_event->type);
-        amf_event->type = NULL;
-    }
     if (amf_event->area_list) {
         OpenAPI_list_for_each(amf_event->area_list, node) {
             OpenAPI_amf_event_area_free(node->data);
@@ -87,9 +83,6 @@ void OpenAPI_amf_event_free(OpenAPI_amf_event_t *amf_event)
         amf_event->area_list = NULL;
     }
     if (amf_event->location_filter_list) {
-        OpenAPI_list_for_each(amf_event->location_filter_list, node) {
-            OpenAPI_location_filter_free(node->data);
-        }
         OpenAPI_list_free(amf_event->location_filter_list);
         amf_event->location_filter_list = NULL;
     }
@@ -99,10 +92,6 @@ void OpenAPI_amf_event_free(OpenAPI_amf_event_t *amf_event)
         }
         OpenAPI_list_free(amf_event->traffic_descriptor_list);
         amf_event->traffic_descriptor_list = NULL;
-    }
-    if (amf_event->reachability_filter) {
-        OpenAPI_reachability_filter_free(amf_event->reachability_filter);
-        amf_event->reachability_filter = NULL;
     }
     if (amf_event->presence_info_list) {
         OpenAPI_list_for_each(amf_event->presence_info_list, node) {
@@ -151,17 +140,11 @@ cJSON *OpenAPI_amf_event_convertToJSON(OpenAPI_amf_event_t *amf_event)
     }
 
     item = cJSON_CreateObject();
-    if (!amf_event->type) {
+    if (amf_event->type == OpenAPI_amf_event_type_NULL) {
         ogs_error("OpenAPI_amf_event_convertToJSON() failed [type]");
         return NULL;
     }
-    cJSON *type_local_JSON = OpenAPI_amf_event_type_convertToJSON(amf_event->type);
-    if (type_local_JSON == NULL) {
-        ogs_error("OpenAPI_amf_event_convertToJSON() failed [type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "type", type_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "type", OpenAPI_amf_event_type_ToString(amf_event->type)) == NULL) {
         ogs_error("OpenAPI_amf_event_convertToJSON() failed [type]");
         goto end;
     }
@@ -189,19 +172,17 @@ cJSON *OpenAPI_amf_event_convertToJSON(OpenAPI_amf_event_t *amf_event)
     }
     }
 
-    if (amf_event->location_filter_list) {
+    if (amf_event->location_filter_list != OpenAPI_location_filter_NULL) {
     cJSON *location_filter_listList = cJSON_AddArrayToObject(item, "locationFilterList");
     if (location_filter_listList == NULL) {
         ogs_error("OpenAPI_amf_event_convertToJSON() failed [location_filter_list]");
         goto end;
     }
     OpenAPI_list_for_each(amf_event->location_filter_list, node) {
-        cJSON *itemLocal = OpenAPI_location_filter_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(location_filter_listList, "", OpenAPI_location_filter_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_amf_event_convertToJSON() failed [location_filter_list]");
             goto end;
         }
-        cJSON_AddItemToArray(location_filter_listList, itemLocal);
     }
     }
 
@@ -235,14 +216,8 @@ cJSON *OpenAPI_amf_event_convertToJSON(OpenAPI_amf_event_t *amf_event)
     }
     }
 
-    if (amf_event->reachability_filter) {
-    cJSON *reachability_filter_local_JSON = OpenAPI_reachability_filter_convertToJSON(amf_event->reachability_filter);
-    if (reachability_filter_local_JSON == NULL) {
-        ogs_error("OpenAPI_amf_event_convertToJSON() failed [reachability_filter]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "reachabilityFilter", reachability_filter_local_JSON);
-    if (item->child == NULL) {
+    if (amf_event->reachability_filter != OpenAPI_reachability_filter_NULL) {
+    if (cJSON_AddStringToObject(item, "reachabilityFilter", OpenAPI_reachability_filter_ToString(amf_event->reachability_filter)) == NULL) {
         ogs_error("OpenAPI_amf_event_convertToJSON() failed [reachability_filter]");
         goto end;
     }
@@ -384,7 +359,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
     OpenAPI_amf_event_t *amf_event_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *type = NULL;
-    OpenAPI_amf_event_type_t *type_local_nonprim = NULL;
+    OpenAPI_amf_event_type_e typeVariable = 0;
     cJSON *immediate_flag = NULL;
     cJSON *area_list = NULL;
     OpenAPI_list_t *area_listList = NULL;
@@ -395,7 +370,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
     OpenAPI_list_t *traffic_descriptor_listList = NULL;
     cJSON *report_ue_reachable = NULL;
     cJSON *reachability_filter = NULL;
-    OpenAPI_reachability_filter_t *reachability_filter_local_nonprim = NULL;
+    OpenAPI_reachability_filter_e reachability_filterVariable = 0;
     cJSON *udm_detect_ind = NULL;
     cJSON *max_reports = NULL;
     cJSON *presence_info_list = NULL;
@@ -417,11 +392,11 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
         ogs_error("OpenAPI_amf_event_parseFromJSON() failed [type]");
         goto end;
     }
-    type_local_nonprim = OpenAPI_amf_event_type_parseFromJSON(type);
-    if (!type_local_nonprim) {
-        ogs_error("OpenAPI_amf_event_type_parseFromJSON failed [type]");
+    if (!cJSON_IsString(type)) {
+        ogs_error("OpenAPI_amf_event_parseFromJSON() failed [type]");
         goto end;
     }
+    typeVariable = OpenAPI_amf_event_type_FromString(type->valuestring);
 
     immediate_flag = cJSON_GetObjectItemCaseSensitive(amf_eventJSON, "immediateFlag");
     if (immediate_flag) {
@@ -466,16 +441,22 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
         location_filter_listList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(location_filter_list_local, location_filter_list) {
-            if (!cJSON_IsObject(location_filter_list_local)) {
+            OpenAPI_location_filter_e localEnum = OpenAPI_location_filter_NULL;
+            if (!cJSON_IsString(location_filter_list_local)) {
                 ogs_error("OpenAPI_amf_event_parseFromJSON() failed [location_filter_list]");
                 goto end;
             }
-            OpenAPI_location_filter_t *location_filter_listItem = OpenAPI_location_filter_parseFromJSON(location_filter_list_local);
-            if (!location_filter_listItem) {
-                ogs_error("No location_filter_listItem");
-                goto end;
+            localEnum = OpenAPI_location_filter_FromString(location_filter_list_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"location_filter_list\" is not supported. Ignoring it ...",
+                         location_filter_list_local->valuestring);
+            } else {
+                OpenAPI_list_add(location_filter_listList, (void *)localEnum);
             }
-            OpenAPI_list_add(location_filter_listList, location_filter_listItem);
+        }
+        if (location_filter_listList->count == 0) {
+            ogs_error("OpenAPI_amf_event_parseFromJSON() failed: Expected location_filter_listList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -521,11 +502,11 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
 
     reachability_filter = cJSON_GetObjectItemCaseSensitive(amf_eventJSON, "reachabilityFilter");
     if (reachability_filter) {
-    reachability_filter_local_nonprim = OpenAPI_reachability_filter_parseFromJSON(reachability_filter);
-    if (!reachability_filter_local_nonprim) {
-        ogs_error("OpenAPI_reachability_filter_parseFromJSON failed [reachability_filter]");
+    if (!cJSON_IsString(reachability_filter)) {
+        ogs_error("OpenAPI_amf_event_parseFromJSON() failed [reachability_filter]");
         goto end;
     }
+    reachability_filterVariable = OpenAPI_reachability_filter_FromString(reachability_filter->valuestring);
     }
 
     udm_detect_ind = cJSON_GetObjectItemCaseSensitive(amf_eventJSON, "udmDetectInd");
@@ -654,7 +635,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
     }
 
     amf_event_local_var = OpenAPI_amf_event_create (
-        type_local_nonprim,
+        typeVariable,
         immediate_flag ? true : false,
         immediate_flag ? immediate_flag->valueint : 0,
         area_list ? area_listList : NULL,
@@ -664,7 +645,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
         traffic_descriptor_list ? traffic_descriptor_listList : NULL,
         report_ue_reachable ? true : false,
         report_ue_reachable ? report_ue_reachable->valueint : 0,
-        reachability_filter ? reachability_filter_local_nonprim : NULL,
+        reachability_filter ? reachability_filterVariable : 0,
         udm_detect_ind ? true : false,
         udm_detect_ind ? udm_detect_ind->valueint : 0,
         max_reports ? true : false,
@@ -685,10 +666,6 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON)
 
     return amf_event_local_var;
 end:
-    if (type_local_nonprim) {
-        OpenAPI_amf_event_type_free(type_local_nonprim);
-        type_local_nonprim = NULL;
-    }
     if (area_listList) {
         OpenAPI_list_for_each(area_listList, node) {
             OpenAPI_amf_event_area_free(node->data);
@@ -697,9 +674,6 @@ end:
         area_listList = NULL;
     }
     if (location_filter_listList) {
-        OpenAPI_list_for_each(location_filter_listList, node) {
-            OpenAPI_location_filter_free(node->data);
-        }
         OpenAPI_list_free(location_filter_listList);
         location_filter_listList = NULL;
     }
@@ -710,13 +684,9 @@ end:
         OpenAPI_list_free(traffic_descriptor_listList);
         traffic_descriptor_listList = NULL;
     }
-    if (reachability_filter_local_nonprim) {
-        OpenAPI_reachability_filter_free(reachability_filter_local_nonprim);
-        reachability_filter_local_nonprim = NULL;
-    }
     if (presence_info_listList) {
         OpenAPI_list_for_each(presence_info_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

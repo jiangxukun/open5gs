@@ -12,7 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "dnn_smf_info_item_dnai_list_inner.h"
 
 #ifdef __cplusplus
 extern "C" {

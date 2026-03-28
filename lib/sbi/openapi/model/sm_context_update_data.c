@@ -4,29 +4,6 @@
 #include <stdio.h>
 #include "sm_context_update_data.h"
 
-char *OpenAPI_sm_policy_notify_indsm_context_update_data_ToString(OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_ind)
-{
-    const char *sm_policy_notify_indArray[] =  { "NULL", "true" };
-    size_t sizeofArray = sizeof(sm_policy_notify_indArray) / sizeof(sm_policy_notify_indArray[0]);
-    if (sm_policy_notify_ind < sizeofArray)
-        return (char *)sm_policy_notify_indArray[sm_policy_notify_ind];
-    else
-        return (char *)"Unknown";
-}
-
-OpenAPI_sm_context_update_data_sm_policy_notify_ind_e OpenAPI_sm_policy_notify_indsm_context_update_data_FromString(char* sm_policy_notify_ind)
-{
-    int stringToReturn = 0;
-    const char *sm_policy_notify_indArray[] =  { "NULL", "true" };
-    size_t sizeofArray = sizeof(sm_policy_notify_indArray) / sizeof(sm_policy_notify_indArray[0]);
-    while (stringToReturn < sizeofArray) {
-        if (strcmp(sm_policy_notify_ind, sm_policy_notify_indArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_create(
     char *pei,
     char *serving_nf_id,
@@ -94,7 +71,8 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_create(
     bool is_skip_n2_pdu_session_res_rel_ind,
     int skip_n2_pdu_session_res_rel_ind,
     OpenAPI_list_t *secondary_rat_usage_data_report_container,
-    OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_ind,
+    bool is_sm_policy_notify_ind,
+    int sm_policy_notify_ind,
     bool is_pcf_ue_callback_info_null,
     OpenAPI_pcf_ue_callback_info_t *pcf_ue_callback_info,
     OpenAPI_satellite_backhaul_category_e satellite_backhaul_cat
@@ -169,6 +147,7 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_create(
     sm_context_update_data_local_var->is_skip_n2_pdu_session_res_rel_ind = is_skip_n2_pdu_session_res_rel_ind;
     sm_context_update_data_local_var->skip_n2_pdu_session_res_rel_ind = skip_n2_pdu_session_res_rel_ind;
     sm_context_update_data_local_var->secondary_rat_usage_data_report_container = secondary_rat_usage_data_report_container;
+    sm_context_update_data_local_var->is_sm_policy_notify_ind = is_sm_policy_notify_ind;
     sm_context_update_data_local_var->sm_policy_notify_ind = sm_policy_notify_ind;
     sm_context_update_data_local_var->is_pcf_ue_callback_info_null = is_pcf_ue_callback_info_null;
     sm_context_update_data_local_var->pcf_ue_callback_info = pcf_ue_callback_info;
@@ -879,8 +858,8 @@ cJSON *OpenAPI_sm_context_update_data_convertToJSON(OpenAPI_sm_context_update_da
     }
     }
 
-    if (sm_context_update_data->sm_policy_notify_ind != OpenAPI_sm_context_update_data_SMPOLICYNOTIFYIND_NULL) {
-    if (cJSON_AddStringToObject(item, "smPolicyNotifyInd", OpenAPI_sm_policy_notify_indsm_context_update_data_ToString(sm_context_update_data->sm_policy_notify_ind)) == NULL) {
+    if (sm_context_update_data->is_sm_policy_notify_ind) {
+    if (cJSON_AddBoolToObject(item, "smPolicyNotifyInd", sm_context_update_data->sm_policy_notify_ind) == NULL) {
         ogs_error("OpenAPI_sm_context_update_data_convertToJSON() failed [sm_policy_notify_ind]");
         goto end;
     }
@@ -1008,7 +987,6 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_parseFromJSON(c
     cJSON *secondary_rat_usage_data_report_container = NULL;
     OpenAPI_list_t *secondary_rat_usage_data_report_containerList = NULL;
     cJSON *sm_policy_notify_ind = NULL;
-    OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_indVariable = 0;
     cJSON *pcf_ue_callback_info = NULL;
     OpenAPI_pcf_ue_callback_info_t *pcf_ue_callback_info_local_nonprim = NULL;
     cJSON *satellite_backhaul_cat = NULL;
@@ -1577,11 +1555,10 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_parseFromJSON(c
 
     sm_policy_notify_ind = cJSON_GetObjectItemCaseSensitive(sm_context_update_dataJSON, "smPolicyNotifyInd");
     if (sm_policy_notify_ind) {
-    if (!cJSON_IsString(sm_policy_notify_ind)) {
+    if (!cJSON_IsBool(sm_policy_notify_ind)) {
         ogs_error("OpenAPI_sm_context_update_data_parseFromJSON() failed [sm_policy_notify_ind]");
         goto end;
     }
-    sm_policy_notify_indVariable = OpenAPI_sm_policy_notify_indsm_context_update_data_FromString(sm_policy_notify_ind->valuestring);
     }
 
     pcf_ue_callback_info = cJSON_GetObjectItemCaseSensitive(sm_context_update_dataJSON, "pcfUeCallbackInfo");
@@ -1671,7 +1648,8 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_parseFromJSON(c
         skip_n2_pdu_session_res_rel_ind ? true : false,
         skip_n2_pdu_session_res_rel_ind ? skip_n2_pdu_session_res_rel_ind->valueint : 0,
         secondary_rat_usage_data_report_container ? secondary_rat_usage_data_report_containerList : NULL,
-        sm_policy_notify_ind ? sm_policy_notify_indVariable : 0,
+        sm_policy_notify_ind ? true : false,
+        sm_policy_notify_ind ? sm_policy_notify_ind->valueint : 0,
         pcf_ue_callback_info && cJSON_IsNull(pcf_ue_callback_info) ? true : false,
         pcf_ue_callback_info ? pcf_ue_callback_info_local_nonprim : NULL,
         satellite_backhaul_cat ? satellite_backhaul_catVariable : 0

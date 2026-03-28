@@ -57,7 +57,7 @@ void OpenAPI_model_5_gvn_group_data_free(OpenAPI_model_5_gvn_group_data_t *model
     }
     if (model_5_gvn_group_data->app_descriptors) {
         OpenAPI_list_for_each(model_5_gvn_group_data->app_descriptors, node) {
-            OpenAPI_app_descriptor_free(node->data);
+            OpenAPI_app_descriptor_1_free(node->data);
         }
         OpenAPI_list_free(model_5_gvn_group_data->app_descriptors);
         model_5_gvn_group_data->app_descriptors = NULL;
@@ -136,7 +136,7 @@ cJSON *OpenAPI_model_5_gvn_group_data_convertToJSON(OpenAPI_model_5_gvn_group_da
         goto end;
     }
     OpenAPI_list_for_each(model_5_gvn_group_data->app_descriptors, node) {
-        cJSON *itemLocal = OpenAPI_app_descriptor_convertToJSON(node->data);
+        cJSON *itemLocal = OpenAPI_app_descriptor_1_convertToJSON(node->data);
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_model_5_gvn_group_data_convertToJSON() failed [app_descriptors]");
             goto end;
@@ -283,7 +283,7 @@ OpenAPI_model_5_gvn_group_data_t *OpenAPI_model_5_gvn_group_data_parseFromJSON(c
                 ogs_error("OpenAPI_model_5_gvn_group_data_parseFromJSON() failed [app_descriptors]");
                 goto end;
             }
-            OpenAPI_app_descriptor_t *app_descriptorsItem = OpenAPI_app_descriptor_parseFromJSON(app_descriptors_local);
+            OpenAPI_app_descriptor_1_t *app_descriptorsItem = OpenAPI_app_descriptor_1_parseFromJSON(app_descriptors_local);
             if (!app_descriptorsItem) {
                 ogs_error("No app_descriptorsItem");
                 goto end;
@@ -375,7 +375,7 @@ end:
     }
     if (app_descriptorsList) {
         OpenAPI_list_for_each(app_descriptorsList, node) {
-            OpenAPI_app_descriptor_free(node->data);
+            OpenAPI_app_descriptor_1_free(node->data);
         }
         OpenAPI_list_free(app_descriptorsList);
         app_descriptorsList = NULL;

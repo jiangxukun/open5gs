@@ -622,7 +622,7 @@ end:
     }
     if (prasList) {
         OpenAPI_list_for_each(prasList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_rm_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

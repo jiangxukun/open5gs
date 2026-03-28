@@ -1,7 +1,7 @@
 /*
  * requested_qos_monitoring_parameter.h
  *
- * 
+ * Indicates the requested QoS monitoring parameters to be measured.
  */
 
 #ifndef _OpenAPI_requested_qos_monitoring_parameter_H_

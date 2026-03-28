@@ -21,11 +21,13 @@ extern "C" {
 
 typedef struct OpenAPI_ip_sm_gw_info_s OpenAPI_ip_sm_gw_info_t;
 typedef struct OpenAPI_ip_sm_gw_info_s {
+    bool is_ip_sm_gw_registration_null;
     struct OpenAPI_ip_sm_gw_registration_s *ip_sm_gw_registration;
     struct OpenAPI_ip_sm_gw_guidance_s *ip_sm_gw_guidance;
 } OpenAPI_ip_sm_gw_info_t;
 
 OpenAPI_ip_sm_gw_info_t *OpenAPI_ip_sm_gw_info_create(
+    bool is_ip_sm_gw_registration_null,
     OpenAPI_ip_sm_gw_registration_t *ip_sm_gw_registration,
     OpenAPI_ip_sm_gw_guidance_t *ip_sm_gw_guidance
 );

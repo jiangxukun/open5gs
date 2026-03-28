@@ -1,7 +1,7 @@
 /*
  * traffic_influ_data.h
  *
- * Represents the Traffic Influence Data.
+ * 
  */
 
 #ifndef _OpenAPI_traffic_influ_data_H_
@@ -13,13 +13,13 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 #include "dnai_change_type.h"
-#include "eth_flow_description.h"
+#include "eth_flow_description_1.h"
 #include "flow_info.h"
-#include "network_area_info_2.h"
-#include "route_to_location.h"
+#include "network_area_info_3.h"
+#include "route_to_location_1.h"
 #include "snssai.h"
 #include "subscribed_event.h"
-#include "temporal_validity.h"
+#include "temporal_validity_1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,7 +43,7 @@ typedef struct OpenAPI_traffic_influ_data_s {
     char *valid_start_time;
     char *valid_end_time;
     OpenAPI_list_t *temp_validities;
-    struct OpenAPI_network_area_info_2_s *nw_area_info;
+    struct OpenAPI_network_area_info_3_s *nw_area_info;
     char *up_path_chg_notif_uri;
     OpenAPI_list_t *headers;
     OpenAPI_list_t *subscribed_events;
@@ -80,7 +80,7 @@ OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_create(
     char *valid_start_time,
     char *valid_end_time,
     OpenAPI_list_t *temp_validities,
-    OpenAPI_network_area_info_2_t *nw_area_info,
+    OpenAPI_network_area_info_3_t *nw_area_info,
     char *up_path_chg_notif_uri,
     OpenAPI_list_t *headers,
     OpenAPI_list_t *subscribed_events,

@@ -23,7 +23,7 @@ extern "C" {
 
 typedef struct OpenAPI_point_altitude_uncertainty_s OpenAPI_point_altitude_uncertainty_t;
 typedef struct OpenAPI_point_altitude_uncertainty_s {
-    struct OpenAPI_supported_gad_shapes_s *shape;
+    OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_geographical_coordinates_s *point;
     double altitude;
     struct OpenAPI_uncertainty_ellipse_s *uncertainty_ellipse;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_point_altitude_uncertainty_s {
 } OpenAPI_point_altitude_uncertainty_t;
 
 OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_geographical_coordinates_t *point,
     double altitude,
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse,

@@ -21,8 +21,8 @@ extern "C" {
 
 typedef struct OpenAPI_trigger_s OpenAPI_trigger_t;
 typedef struct OpenAPI_trigger_s {
-    struct OpenAPI_trigger_type_s *trigger_type;
-    struct OpenAPI_trigger_category_s *trigger_category;
+    OpenAPI_trigger_type_e trigger_type;
+    OpenAPI_trigger_category_e trigger_category;
     bool is_time_limit;
     int time_limit;
     bool is_volume_limit;
@@ -37,8 +37,8 @@ typedef struct OpenAPI_trigger_s {
 } OpenAPI_trigger_t;
 
 OpenAPI_trigger_t *OpenAPI_trigger_create(
-    OpenAPI_trigger_type_t *trigger_type,
-    OpenAPI_trigger_category_t *trigger_category,
+    OpenAPI_trigger_type_e trigger_type,
+    OpenAPI_trigger_category_e trigger_category,
     bool is_time_limit,
     int time_limit,
     bool is_volume_limit,

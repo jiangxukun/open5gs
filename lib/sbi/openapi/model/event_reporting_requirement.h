@@ -22,7 +22,7 @@ extern "C" {
 
 typedef struct OpenAPI_event_reporting_requirement_s OpenAPI_event_reporting_requirement_t;
 typedef struct OpenAPI_event_reporting_requirement_s {
-    struct OpenAPI_accuracy_s *accuracy;
+    OpenAPI_accuracy_e accuracy;
     OpenAPI_list_t *acc_per_subset;
     char *start_ts;
     char *end_ts;
@@ -40,7 +40,7 @@ typedef struct OpenAPI_event_reporting_requirement_s {
 } OpenAPI_event_reporting_requirement_t;
 
 OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_create(
-    OpenAPI_accuracy_t *accuracy,
+    OpenAPI_accuracy_e accuracy,
     OpenAPI_list_t *acc_per_subset,
     char *start_ts,
     char *end_ts,

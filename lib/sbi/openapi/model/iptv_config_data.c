@@ -367,7 +367,7 @@ end:
     }
     if (multi_acc_ctrlsList) {
         OpenAPI_list_for_each(multi_acc_ctrlsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_multicast_access_control_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

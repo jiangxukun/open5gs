@@ -6,6 +6,7 @@
 
 OpenAPI_pcscf_restoration_notification_t *OpenAPI_pcscf_restoration_notification_create(
     char *supi,
+    bool is_failed_pcscf_null,
     OpenAPI_pcscf_address_t *failed_pcscf
 )
 {
@@ -13,6 +14,7 @@ OpenAPI_pcscf_restoration_notification_t *OpenAPI_pcscf_restoration_notification
     ogs_assert(pcscf_restoration_notification_local_var);
 
     pcscf_restoration_notification_local_var->supi = supi;
+    pcscf_restoration_notification_local_var->is_failed_pcscf_null = is_failed_pcscf_null;
     pcscf_restoration_notification_local_var->failed_pcscf = failed_pcscf;
 
     return pcscf_restoration_notification_local_var;
@@ -67,6 +69,11 @@ cJSON *OpenAPI_pcscf_restoration_notification_convertToJSON(OpenAPI_pcscf_restor
         ogs_error("OpenAPI_pcscf_restoration_notification_convertToJSON() failed [failed_pcscf]");
         goto end;
     }
+    } else if (pcscf_restoration_notification->is_failed_pcscf_null) {
+        if (cJSON_AddNullToObject(item, "failedPcscf") == NULL) {
+            ogs_error("OpenAPI_pcscf_restoration_notification_convertToJSON() failed [failed_pcscf]");
+            goto end;
+        }
     }
 
 end:
@@ -92,15 +99,18 @@ OpenAPI_pcscf_restoration_notification_t *OpenAPI_pcscf_restoration_notification
 
     failed_pcscf = cJSON_GetObjectItemCaseSensitive(pcscf_restoration_notificationJSON, "failedPcscf");
     if (failed_pcscf) {
+    if (!cJSON_IsNull(failed_pcscf)) {
     failed_pcscf_local_nonprim = OpenAPI_pcscf_address_parseFromJSON(failed_pcscf);
     if (!failed_pcscf_local_nonprim) {
         ogs_error("OpenAPI_pcscf_address_parseFromJSON failed [failed_pcscf]");
         goto end;
     }
     }
+    }
 
     pcscf_restoration_notification_local_var = OpenAPI_pcscf_restoration_notification_create (
         ogs_strdup(supi->valuestring),
+        failed_pcscf && cJSON_IsNull(failed_pcscf) ? true : false,
         failed_pcscf ? failed_pcscf_local_nonprim : NULL
     );
 

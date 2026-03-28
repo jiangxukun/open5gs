@@ -21,6 +21,7 @@ extern "C" {
 
 typedef struct OpenAPI_ursp_rule_request_s OpenAPI_ursp_rule_request_t;
 typedef struct OpenAPI_ursp_rule_request_s {
+    bool is_traffic_desc_null;
     struct OpenAPI_traffic_descriptor_components_s *traffic_desc;
     bool is_relat_precedence;
     int relat_precedence;
@@ -28,6 +29,7 @@ typedef struct OpenAPI_ursp_rule_request_s {
 } OpenAPI_ursp_rule_request_t;
 
 OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_create(
+    bool is_traffic_desc_null,
     OpenAPI_traffic_descriptor_components_t *traffic_desc,
     bool is_relat_precedence,
     int relat_precedence,

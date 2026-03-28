@@ -12,11 +12,11 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "eth_flow_description.h"
+#include "eth_flow_description_1.h"
 #include "flow_info.h"
-#include "network_area_info_2.h"
-#include "route_to_location.h"
-#include "temporal_validity.h"
+#include "network_area_info_3.h"
+#include "route_to_location_1.h"
+#include "temporal_validity_1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +36,7 @@ typedef struct OpenAPI_traffic_influ_data_patch_s {
     char *valid_end_time;
     bool is_temp_validities_null;
     OpenAPI_list_t *temp_validities;
-    struct OpenAPI_network_area_info_2_s *nw_area_info;
+    struct OpenAPI_network_area_info_3_s *nw_area_info;
     char *up_path_chg_notif_uri;
     OpenAPI_list_t *headers;
     bool is_af_ack_ind;
@@ -66,7 +66,7 @@ OpenAPI_traffic_influ_data_patch_t *OpenAPI_traffic_influ_data_patch_create(
     char *valid_end_time,
     bool is_temp_validities_null,
     OpenAPI_list_t *temp_validities,
-    OpenAPI_network_area_info_2_t *nw_area_info,
+    OpenAPI_network_area_info_3_t *nw_area_info,
     char *up_path_chg_notif_uri,
     OpenAPI_list_t *headers,
     bool is_af_ack_ind,

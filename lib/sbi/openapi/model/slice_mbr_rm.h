@@ -1,7 +1,7 @@
 /*
  * slice_mbr_rm.h
  *
- * SliceMbr with nullable: true
+ * 
  */
 
 #ifndef _OpenAPI_slice_mbr_rm_H_
@@ -12,8 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "null_value.h"
-#include "slice_mbr.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -14,8 +14,6 @@
 #include "../include/binary.h"
 #include "context_info.h"
 #include "event_id.h"
-#include "nwdaf_registration.h"
-#include "patch_result.h"
 #include "report_item.h"
 
 #ifdef __cplusplus

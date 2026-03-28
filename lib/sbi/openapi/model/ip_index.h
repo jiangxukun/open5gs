@@ -19,9 +19,11 @@ extern "C" {
 
 typedef struct OpenAPI_ip_index_s OpenAPI_ip_index_t;
 typedef struct OpenAPI_ip_index_s {
+    char *value;
 } OpenAPI_ip_index_t;
 
 OpenAPI_ip_index_t *OpenAPI_ip_index_create(
+char *value
 );
 void OpenAPI_ip_index_free(OpenAPI_ip_index_t *ip_index);
 OpenAPI_ip_index_t *OpenAPI_ip_index_parseFromJSON(cJSON *ip_indexJSON);

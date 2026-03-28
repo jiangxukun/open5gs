@@ -49,13 +49,13 @@ typedef struct OpenAPI_event_subscription_s {
     OpenAPI_list_t *app_ids;
     OpenAPI_list_t *dnns;
     OpenAPI_list_t *dnais;
-    struct OpenAPI_nwdaf_event_s *event;
+    OpenAPI_nwdaf_event_e event;
     struct OpenAPI_event_reporting_requirement_s *extra_report_req;
     OpenAPI_list_t *ladn_dnns;
     bool is_load_level_threshold;
     int load_level_threshold;
-    struct OpenAPI_notification_method_s *notification_method;
-    struct OpenAPI_matching_direction_s *matching_dir;
+    OpenAPI_notification_method_e notification_method;
+    OpenAPI_matching_direction_e matching_dir;
     OpenAPI_list_t *nf_load_lvl_thds;
     OpenAPI_list_t *nf_instance_ids;
     OpenAPI_list_t *nf_set_ids;
@@ -79,7 +79,7 @@ typedef struct OpenAPI_event_subscription_s {
     OpenAPI_list_t *nw_perf_requs;
     OpenAPI_list_t *bw_requs;
     OpenAPI_list_t *excep_requs;
-    struct OpenAPI_expected_analytics_type_s *expt_ana_type;
+    OpenAPI_expected_analytics_type_e expt_ana_type;
     struct OpenAPI_expected_ue_behaviour_data_s *expt_ue_behav;
     OpenAPI_list_t *rat_freqs;
     OpenAPI_list_t *list_of_ana_subsets;
@@ -97,13 +97,13 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_create(
     OpenAPI_list_t *app_ids,
     OpenAPI_list_t *dnns,
     OpenAPI_list_t *dnais,
-    OpenAPI_nwdaf_event_t *event,
+    OpenAPI_nwdaf_event_e event,
     OpenAPI_event_reporting_requirement_t *extra_report_req,
     OpenAPI_list_t *ladn_dnns,
     bool is_load_level_threshold,
     int load_level_threshold,
-    OpenAPI_notification_method_t *notification_method,
-    OpenAPI_matching_direction_t *matching_dir,
+    OpenAPI_notification_method_e notification_method,
+    OpenAPI_matching_direction_e matching_dir,
     OpenAPI_list_t *nf_load_lvl_thds,
     OpenAPI_list_t *nf_instance_ids,
     OpenAPI_list_t *nf_set_ids,
@@ -127,7 +127,7 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_create(
     OpenAPI_list_t *nw_perf_requs,
     OpenAPI_list_t *bw_requs,
     OpenAPI_list_t *excep_requs,
-    OpenAPI_expected_analytics_type_t *expt_ana_type,
+    OpenAPI_expected_analytics_type_e expt_ana_type,
     OpenAPI_expected_ue_behaviour_data_t *expt_ue_behav,
     OpenAPI_list_t *rat_freqs,
     OpenAPI_list_t *list_of_ana_subsets,

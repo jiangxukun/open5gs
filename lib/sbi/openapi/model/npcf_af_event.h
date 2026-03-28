@@ -1,7 +1,7 @@
 /*
  * npcf_af_event.h
  *
- * 
+ * Represents an event to notify to the AF.
  */
 
 #ifndef _OpenAPI_npcf_af_event_H_

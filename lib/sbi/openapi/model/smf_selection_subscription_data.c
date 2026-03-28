@@ -190,7 +190,7 @@ OpenAPI_smf_selection_subscription_data_t *OpenAPI_smf_selection_subscription_da
 end:
     if (subscribed_snssai_infosList) {
         OpenAPI_list_for_each(subscribed_snssai_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_snssai_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

@@ -5,7 +5,7 @@
 #include "local3d_point_uncertainty_ellipsoid.h"
 
 OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty_ellipsoid_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_local_origin_t *local_origin,
     OpenAPI_relative_cartesian_location_t *point,
     OpenAPI_uncertainty_ellipsoid_t *uncertainty_ellipsoid,
@@ -30,10 +30,6 @@ void OpenAPI_local3d_point_uncertainty_ellipsoid_free(OpenAPI_local3d_point_unce
 
     if (NULL == local3d_point_uncertainty_ellipsoid) {
         return;
-    }
-    if (local3d_point_uncertainty_ellipsoid->shape) {
-        OpenAPI_supported_gad_shapes_free(local3d_point_uncertainty_ellipsoid->shape);
-        local3d_point_uncertainty_ellipsoid->shape = NULL;
     }
     if (local3d_point_uncertainty_ellipsoid->local_origin) {
         OpenAPI_local_origin_free(local3d_point_uncertainty_ellipsoid->local_origin);
@@ -61,17 +57,11 @@ cJSON *OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON(OpenAPI_local3d
     }
 
     item = cJSON_CreateObject();
-    if (!local3d_point_uncertainty_ellipsoid->shape) {
+    if (local3d_point_uncertainty_ellipsoid->shape == OpenAPI_supported_gad_shapes_NULL) {
         ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON() failed [shape]");
         return NULL;
     }
-    cJSON *shape_local_JSON = OpenAPI_supported_gad_shapes_convertToJSON(local3d_point_uncertainty_ellipsoid->shape);
-    if (shape_local_JSON == NULL) {
-        ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON() failed [shape]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "shape", shape_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "shape", OpenAPI_supported_gad_shapes_ToString(local3d_point_uncertainty_ellipsoid->shape)) == NULL) {
         ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON() failed [shape]");
         goto end;
     }
@@ -135,7 +125,7 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     OpenAPI_local3d_point_uncertainty_ellipsoid_t *local3d_point_uncertainty_ellipsoid_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *shape = NULL;
-    OpenAPI_supported_gad_shapes_t *shape_local_nonprim = NULL;
+    OpenAPI_supported_gad_shapes_e shapeVariable = 0;
     cJSON *local_origin = NULL;
     OpenAPI_local_origin_t *local_origin_local_nonprim = NULL;
     cJSON *point = NULL;
@@ -148,11 +138,11 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
         ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_parseFromJSON() failed [shape]");
         goto end;
     }
-    shape_local_nonprim = OpenAPI_supported_gad_shapes_parseFromJSON(shape);
-    if (!shape_local_nonprim) {
-        ogs_error("OpenAPI_supported_gad_shapes_parseFromJSON failed [shape]");
+    if (!cJSON_IsString(shape)) {
+        ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_parseFromJSON() failed [shape]");
         goto end;
     }
+    shapeVariable = OpenAPI_supported_gad_shapes_FromString(shape->valuestring);
 
     local_origin = cJSON_GetObjectItemCaseSensitive(local3d_point_uncertainty_ellipsoidJSON, "localOrigin");
     if (!local_origin) {
@@ -198,7 +188,7 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     }
 
     local3d_point_uncertainty_ellipsoid_local_var = OpenAPI_local3d_point_uncertainty_ellipsoid_create (
-        shape_local_nonprim,
+        shapeVariable,
         local_origin_local_nonprim,
         point_local_nonprim,
         uncertainty_ellipsoid_local_nonprim,
@@ -208,10 +198,6 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
 
     return local3d_point_uncertainty_ellipsoid_local_var;
 end:
-    if (shape_local_nonprim) {
-        OpenAPI_supported_gad_shapes_free(shape_local_nonprim);
-        shape_local_nonprim = NULL;
-    }
     if (local_origin_local_nonprim) {
         OpenAPI_local_origin_free(local_origin_local_nonprim);
         local_origin_local_nonprim = NULL;

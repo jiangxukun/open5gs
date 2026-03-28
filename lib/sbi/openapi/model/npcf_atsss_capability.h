@@ -1,7 +1,7 @@
 /*
  * npcf_atsss_capability.h
  *
- * 
+ * Contains the ATSSS capability supported for the MA PDU Session.
  */
 
 #ifndef _OpenAPI_npcf_atsss_capability_H_

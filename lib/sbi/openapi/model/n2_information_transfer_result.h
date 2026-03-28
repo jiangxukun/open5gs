@@ -1,7 +1,7 @@
 /*
  * n2_information_transfer_result.h
  *
- * 
+ * Describes the result of N2 information transfer by AMF to the AN
  */
 
 #ifndef _OpenAPI_n2_information_transfer_result_H_

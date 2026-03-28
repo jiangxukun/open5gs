@@ -1,7 +1,7 @@
 /*
  * notification_type.h
  *
- * 
+ * Types of notifications used in Default Notification URIs in the NF Profile of an NF Instance 
  */
 
 #ifndef _OpenAPI_notification_type_H_

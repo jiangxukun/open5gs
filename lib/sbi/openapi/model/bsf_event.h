@@ -1,7 +1,7 @@
 /*
  * bsf_event.h
  *
- * 
+ * Represents an event to be notified by the BSF.
  */
 
 #ifndef _OpenAPI_bsf_event_H_

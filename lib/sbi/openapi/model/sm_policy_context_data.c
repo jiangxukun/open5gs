@@ -6,6 +6,7 @@
 
 OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_create(
     OpenAPI_acc_net_ch_id_t *acc_net_ch_id,
+    bool is_charg_entity_addr_null,
     OpenAPI_acc_net_charging_address_t *charg_entity_addr,
     char *gpsi,
     char *supi,
@@ -67,6 +68,7 @@ OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_create(
     ogs_assert(sm_policy_context_data_local_var);
 
     sm_policy_context_data_local_var->acc_net_ch_id = acc_net_ch_id;
+    sm_policy_context_data_local_var->is_charg_entity_addr_null = is_charg_entity_addr_null;
     sm_policy_context_data_local_var->charg_entity_addr = charg_entity_addr;
     sm_policy_context_data_local_var->gpsi = gpsi;
     sm_policy_context_data_local_var->supi = supi;
@@ -310,6 +312,11 @@ cJSON *OpenAPI_sm_policy_context_data_convertToJSON(OpenAPI_sm_policy_context_da
         ogs_error("OpenAPI_sm_policy_context_data_convertToJSON() failed [charg_entity_addr]");
         goto end;
     }
+    } else if (sm_policy_context_data->is_charg_entity_addr_null) {
+        if (cJSON_AddNullToObject(item, "chargEntityAddr") == NULL) {
+            ogs_error("OpenAPI_sm_policy_context_data_convertToJSON() failed [charg_entity_addr]");
+            goto end;
+        }
     }
 
     if (sm_policy_context_data->gpsi) {
@@ -835,10 +842,12 @@ OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_parseFromJSON(c
 
     charg_entity_addr = cJSON_GetObjectItemCaseSensitive(sm_policy_context_dataJSON, "chargEntityAddr");
     if (charg_entity_addr) {
+    if (!cJSON_IsNull(charg_entity_addr)) {
     charg_entity_addr_local_nonprim = OpenAPI_acc_net_charging_address_parseFromJSON(charg_entity_addr);
     if (!charg_entity_addr_local_nonprim) {
         ogs_error("OpenAPI_acc_net_charging_address_parseFromJSON failed [charg_entity_addr]");
         goto end;
+    }
     }
     }
 
@@ -1309,6 +1318,7 @@ OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_parseFromJSON(c
 
     sm_policy_context_data_local_var = OpenAPI_sm_policy_context_data_create (
         acc_net_ch_id ? acc_net_ch_id_local_nonprim : NULL,
+        charg_entity_addr && cJSON_IsNull(charg_entity_addr) ? true : false,
         charg_entity_addr ? charg_entity_addr_local_nonprim : NULL,
         gpsi && !cJSON_IsNull(gpsi) ? ogs_strdup(gpsi->valuestring) : NULL,
         ogs_strdup(supi->valuestring),

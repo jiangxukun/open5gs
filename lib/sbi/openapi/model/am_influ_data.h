@@ -1,7 +1,7 @@
 /*
  * am_influ_data.h
  *
- * Represents the AM Influence Data.
+ * 
  */
 
 #ifndef _OpenAPI_am_influ_data_H_

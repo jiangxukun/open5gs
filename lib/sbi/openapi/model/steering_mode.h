@@ -13,7 +13,6 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 #include "access_type.h"
-#include "access_type_rm.h"
 #include "steer_mode_indicator.h"
 #include "steer_mode_value.h"
 #include "threshold_value.h"
@@ -26,7 +25,7 @@ typedef struct OpenAPI_steering_mode_s OpenAPI_steering_mode_t;
 typedef struct OpenAPI_steering_mode_s {
     OpenAPI_steer_mode_value_e steer_mode_value;
     OpenAPI_access_type_e active;
-    struct OpenAPI_access_type_rm_s *standby;
+    OpenAPI_access_type_e standby;
     bool is__3g_load;
     int _3g_load;
     OpenAPI_access_type_e prio_acc;
@@ -38,7 +37,7 @@ typedef struct OpenAPI_steering_mode_s {
 OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     OpenAPI_steer_mode_value_e steer_mode_value,
     OpenAPI_access_type_e active,
-    OpenAPI_access_type_rm_t *standby,
+    OpenAPI_access_type_e standby,
     bool is__3g_load,
     int _3g_load,
     OpenAPI_access_type_e prio_acc,

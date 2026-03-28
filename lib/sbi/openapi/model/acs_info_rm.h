@@ -1,7 +1,7 @@
 /*
  * acs_info_rm.h
  *
- * This data type is defined in the same way as the &#39;AcsInfo&#39; data type, but with the  OpenAPI &#39;nullable: true&#39; property. 
+ * 
  */
 
 #ifndef _OpenAPI_acs_info_rm_H_
@@ -12,8 +12,6 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "acs_info.h"
-#include "null_value.h"
 
 #ifdef __cplusplus
 extern "C" {

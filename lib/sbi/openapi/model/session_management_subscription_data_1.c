@@ -568,7 +568,7 @@ end:
     }
     if (dnn_configurationsList) {
         OpenAPI_list_for_each(dnn_configurationsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_dnn_configuration_1_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -585,7 +585,7 @@ end:
     }
     if (shared_vn_group_data_idsList) {
         OpenAPI_list_for_each(shared_vn_group_data_idsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             ogs_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -599,7 +599,7 @@ end:
     }
     if (expected_ue_behaviours_listList) {
         OpenAPI_list_for_each(expected_ue_behaviours_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_expected_ue_behaviour_data_1_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -609,7 +609,7 @@ end:
     }
     if (suggested_packet_num_dl_listList) {
         OpenAPI_list_for_each(suggested_packet_num_dl_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_suggested_packet_num_dl_1_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

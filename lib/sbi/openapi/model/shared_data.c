@@ -570,7 +570,7 @@ end:
     }
     if (shared_dnn_configurationsList) {
         OpenAPI_list_for_each(shared_dnn_configurationsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_dnn_configuration_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -584,7 +584,7 @@ end:
     }
     if (shared_snssai_infosList) {
         OpenAPI_list_for_each(shared_snssai_infosList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_snssai_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -594,7 +594,7 @@ end:
     }
     if (shared_vn_group_datasList) {
         OpenAPI_list_for_each(shared_vn_group_datasList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_vn_group_data_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -604,7 +604,7 @@ end:
     }
     if (treatment_instructionsList) {
         OpenAPI_list_for_each(treatment_instructionsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_map_free(localKeyValue);
         }

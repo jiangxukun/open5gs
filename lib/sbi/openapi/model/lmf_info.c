@@ -38,9 +38,6 @@ void OpenAPI_lmf_info_free(OpenAPI_lmf_info_t *lmf_info)
         return;
     }
     if (lmf_info->serving_client_types) {
-        OpenAPI_list_for_each(lmf_info->serving_client_types, node) {
-            OpenAPI_external_client_type_free(node->data);
-        }
         OpenAPI_list_free(lmf_info->serving_client_types);
         lmf_info->serving_client_types = NULL;
     }
@@ -75,9 +72,6 @@ void OpenAPI_lmf_info_free(OpenAPI_lmf_info_t *lmf_info)
         lmf_info->tai_range_list = NULL;
     }
     if (lmf_info->supported_gad_shapes) {
-        OpenAPI_list_for_each(lmf_info->supported_gad_shapes, node) {
-            OpenAPI_supported_gad_shapes_free(node->data);
-        }
         OpenAPI_list_free(lmf_info->supported_gad_shapes);
         lmf_info->supported_gad_shapes = NULL;
     }
@@ -95,19 +89,17 @@ cJSON *OpenAPI_lmf_info_convertToJSON(OpenAPI_lmf_info_t *lmf_info)
     }
 
     item = cJSON_CreateObject();
-    if (lmf_info->serving_client_types) {
+    if (lmf_info->serving_client_types != OpenAPI_external_client_type_NULL) {
     cJSON *serving_client_typesList = cJSON_AddArrayToObject(item, "servingClientTypes");
     if (serving_client_typesList == NULL) {
         ogs_error("OpenAPI_lmf_info_convertToJSON() failed [serving_client_types]");
         goto end;
     }
     OpenAPI_list_for_each(lmf_info->serving_client_types, node) {
-        cJSON *itemLocal = OpenAPI_external_client_type_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(serving_client_typesList, "", OpenAPI_external_client_type_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_lmf_info_convertToJSON() failed [serving_client_types]");
             goto end;
         }
-        cJSON_AddItemToArray(serving_client_typesList, itemLocal);
     }
     }
 
@@ -192,19 +184,17 @@ cJSON *OpenAPI_lmf_info_convertToJSON(OpenAPI_lmf_info_t *lmf_info)
     }
     }
 
-    if (lmf_info->supported_gad_shapes) {
+    if (lmf_info->supported_gad_shapes != OpenAPI_supported_gad_shapes_NULL) {
     cJSON *supported_gad_shapesList = cJSON_AddArrayToObject(item, "supportedGADShapes");
     if (supported_gad_shapesList == NULL) {
         ogs_error("OpenAPI_lmf_info_convertToJSON() failed [supported_gad_shapes]");
         goto end;
     }
     OpenAPI_list_for_each(lmf_info->supported_gad_shapes, node) {
-        cJSON *itemLocal = OpenAPI_supported_gad_shapes_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(supported_gad_shapesList, "", OpenAPI_supported_gad_shapes_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_lmf_info_convertToJSON() failed [supported_gad_shapes]");
             goto end;
         }
-        cJSON_AddItemToArray(supported_gad_shapesList, itemLocal);
     }
     }
 
@@ -242,16 +232,22 @@ OpenAPI_lmf_info_t *OpenAPI_lmf_info_parseFromJSON(cJSON *lmf_infoJSON)
         serving_client_typesList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(serving_client_types_local, serving_client_types) {
-            if (!cJSON_IsObject(serving_client_types_local)) {
+            OpenAPI_external_client_type_e localEnum = OpenAPI_external_client_type_NULL;
+            if (!cJSON_IsString(serving_client_types_local)) {
                 ogs_error("OpenAPI_lmf_info_parseFromJSON() failed [serving_client_types]");
                 goto end;
             }
-            OpenAPI_external_client_type_t *serving_client_typesItem = OpenAPI_external_client_type_parseFromJSON(serving_client_types_local);
-            if (!serving_client_typesItem) {
-                ogs_error("No serving_client_typesItem");
-                goto end;
+            localEnum = OpenAPI_external_client_type_FromString(serving_client_types_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"serving_client_types\" is not supported. Ignoring it ...",
+                         serving_client_types_local->valuestring);
+            } else {
+                OpenAPI_list_add(serving_client_typesList, (void *)localEnum);
             }
-            OpenAPI_list_add(serving_client_typesList, serving_client_typesItem);
+        }
+        if (serving_client_typesList->count == 0) {
+            ogs_error("OpenAPI_lmf_info_parseFromJSON() failed: Expected serving_client_typesList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -412,16 +408,22 @@ OpenAPI_lmf_info_t *OpenAPI_lmf_info_parseFromJSON(cJSON *lmf_infoJSON)
         supported_gad_shapesList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(supported_gad_shapes_local, supported_gad_shapes) {
-            if (!cJSON_IsObject(supported_gad_shapes_local)) {
+            OpenAPI_supported_gad_shapes_e localEnum = OpenAPI_supported_gad_shapes_NULL;
+            if (!cJSON_IsString(supported_gad_shapes_local)) {
                 ogs_error("OpenAPI_lmf_info_parseFromJSON() failed [supported_gad_shapes]");
                 goto end;
             }
-            OpenAPI_supported_gad_shapes_t *supported_gad_shapesItem = OpenAPI_supported_gad_shapes_parseFromJSON(supported_gad_shapes_local);
-            if (!supported_gad_shapesItem) {
-                ogs_error("No supported_gad_shapesItem");
-                goto end;
+            localEnum = OpenAPI_supported_gad_shapes_FromString(supported_gad_shapes_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"supported_gad_shapes\" is not supported. Ignoring it ...",
+                         supported_gad_shapes_local->valuestring);
+            } else {
+                OpenAPI_list_add(supported_gad_shapesList, (void *)localEnum);
             }
-            OpenAPI_list_add(supported_gad_shapesList, supported_gad_shapesItem);
+        }
+        if (supported_gad_shapesList->count == 0) {
+            ogs_error("OpenAPI_lmf_info_parseFromJSON() failed: Expected supported_gad_shapesList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -439,9 +441,6 @@ OpenAPI_lmf_info_t *OpenAPI_lmf_info_parseFromJSON(cJSON *lmf_infoJSON)
     return lmf_info_local_var;
 end:
     if (serving_client_typesList) {
-        OpenAPI_list_for_each(serving_client_typesList, node) {
-            OpenAPI_external_client_type_free(node->data);
-        }
         OpenAPI_list_free(serving_client_typesList);
         serving_client_typesList = NULL;
     }
@@ -472,9 +471,6 @@ end:
         tai_range_listList = NULL;
     }
     if (supported_gad_shapesList) {
-        OpenAPI_list_for_each(supported_gad_shapesList, node) {
-            OpenAPI_supported_gad_shapes_free(node->data);
-        }
         OpenAPI_list_free(supported_gad_shapesList);
         supported_gad_shapesList = NULL;
     }

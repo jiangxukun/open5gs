@@ -22,7 +22,7 @@ extern "C" {
 
 typedef struct OpenAPI_amf_event_mode_s OpenAPI_amf_event_mode_t;
 typedef struct OpenAPI_amf_event_mode_s {
-    struct OpenAPI_amf_event_trigger_s *trigger;
+    OpenAPI_amf_event_trigger_e trigger;
     bool is_max_reports;
     int max_reports;
     char *expiry;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_amf_event_mode_s {
 } OpenAPI_amf_event_mode_t;
 
 OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_create(
-    OpenAPI_amf_event_trigger_t *trigger,
+    OpenAPI_amf_event_trigger_e trigger,
     bool is_max_reports,
     int max_reports,
     char *expiry,

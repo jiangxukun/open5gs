@@ -5,7 +5,7 @@
 #include "point_altitude_uncertainty.h"
 
 OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
-    OpenAPI_supported_gad_shapes_t *shape,
+    OpenAPI_supported_gad_shapes_e shape,
     OpenAPI_geographical_coordinates_t *point,
     double altitude,
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse,
@@ -33,10 +33,6 @@ void OpenAPI_point_altitude_uncertainty_free(OpenAPI_point_altitude_uncertainty_
     if (NULL == point_altitude_uncertainty) {
         return;
     }
-    if (point_altitude_uncertainty->shape) {
-        OpenAPI_supported_gad_shapes_free(point_altitude_uncertainty->shape);
-        point_altitude_uncertainty->shape = NULL;
-    }
     if (point_altitude_uncertainty->point) {
         OpenAPI_geographical_coordinates_free(point_altitude_uncertainty->point);
         point_altitude_uncertainty->point = NULL;
@@ -59,17 +55,11 @@ cJSON *OpenAPI_point_altitude_uncertainty_convertToJSON(OpenAPI_point_altitude_u
     }
 
     item = cJSON_CreateObject();
-    if (!point_altitude_uncertainty->shape) {
+    if (point_altitude_uncertainty->shape == OpenAPI_supported_gad_shapes_NULL) {
         ogs_error("OpenAPI_point_altitude_uncertainty_convertToJSON() failed [shape]");
         return NULL;
     }
-    cJSON *shape_local_JSON = OpenAPI_supported_gad_shapes_convertToJSON(point_altitude_uncertainty->shape);
-    if (shape_local_JSON == NULL) {
-        ogs_error("OpenAPI_point_altitude_uncertainty_convertToJSON() failed [shape]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "shape", shape_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "shape", OpenAPI_supported_gad_shapes_ToString(point_altitude_uncertainty->shape)) == NULL) {
         ogs_error("OpenAPI_point_altitude_uncertainty_convertToJSON() failed [shape]");
         goto end;
     }
@@ -128,7 +118,7 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
     OpenAPI_point_altitude_uncertainty_t *point_altitude_uncertainty_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *shape = NULL;
-    OpenAPI_supported_gad_shapes_t *shape_local_nonprim = NULL;
+    OpenAPI_supported_gad_shapes_e shapeVariable = 0;
     cJSON *point = NULL;
     OpenAPI_geographical_coordinates_t *point_local_nonprim = NULL;
     cJSON *altitude = NULL;
@@ -141,11 +131,11 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
         ogs_error("OpenAPI_point_altitude_uncertainty_parseFromJSON() failed [shape]");
         goto end;
     }
-    shape_local_nonprim = OpenAPI_supported_gad_shapes_parseFromJSON(shape);
-    if (!shape_local_nonprim) {
-        ogs_error("OpenAPI_supported_gad_shapes_parseFromJSON failed [shape]");
+    if (!cJSON_IsString(shape)) {
+        ogs_error("OpenAPI_point_altitude_uncertainty_parseFromJSON() failed [shape]");
         goto end;
     }
+    shapeVariable = OpenAPI_supported_gad_shapes_FromString(shape->valuestring);
 
     point = cJSON_GetObjectItemCaseSensitive(point_altitude_uncertaintyJSON, "point");
     if (!point) {
@@ -200,7 +190,7 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
     }
 
     point_altitude_uncertainty_local_var = OpenAPI_point_altitude_uncertainty_create (
-        shape_local_nonprim,
+        shapeVariable,
         point_local_nonprim,
         
         altitude->valuedouble,
@@ -213,10 +203,6 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
 
     return point_altitude_uncertainty_local_var;
 end:
-    if (shape_local_nonprim) {
-        OpenAPI_supported_gad_shapes_free(shape_local_nonprim);
-        shape_local_nonprim = NULL;
-    }
     if (point_local_nonprim) {
         OpenAPI_geographical_coordinates_free(point_local_nonprim);
         point_local_nonprim = NULL;

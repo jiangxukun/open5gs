@@ -17,8 +17,8 @@
 #include "flow_status.h"
 #include "media_sub_component_rm.h"
 #include "media_type.h"
-#include "preemption_capability_rm.h"
-#include "preemption_vulnerability_rm.h"
+#include "preemption_capability.h"
+#include "preemption_vulnerability.h"
 #include "priority_sharing_indicator.h"
 #include "reserv_priority.h"
 #include "tscai_input_container.h"
@@ -78,8 +78,8 @@ typedef struct OpenAPI_media_component_rm_s {
     char *mir_bw_dl;
     bool is_mir_bw_ul_null;
     char *mir_bw_ul;
-    struct OpenAPI_preemption_capability_rm_s *preempt_cap;
-    struct OpenAPI_preemption_vulnerability_rm_s *preempt_vuln;
+    OpenAPI_preemption_capability_e preempt_cap;
+    OpenAPI_preemption_vulnerability_e preempt_vuln;
     OpenAPI_priority_sharing_indicator_e prio_sharing_ind;
     OpenAPI_reserv_priority_e res_prio;
     bool is_rr_bw_null;
@@ -151,8 +151,8 @@ OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_create(
     char *mir_bw_dl,
     bool is_mir_bw_ul_null,
     char *mir_bw_ul,
-    OpenAPI_preemption_capability_rm_t *preempt_cap,
-    OpenAPI_preemption_vulnerability_rm_t *preempt_vuln,
+    OpenAPI_preemption_capability_e preempt_cap,
+    OpenAPI_preemption_vulnerability_e preempt_vuln,
     OpenAPI_priority_sharing_indicator_e prio_sharing_ind,
     OpenAPI_reserv_priority_e res_prio,
     bool is_rr_bw_null,

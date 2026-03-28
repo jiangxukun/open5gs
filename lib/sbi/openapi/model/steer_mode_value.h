@@ -1,7 +1,7 @@
 /*
  * steer_mode_value.h
  *
- * 
+ * Indicates the steering mode value determined by the PCF.
  */
 
 #ifndef _OpenAPI_steer_mode_value_H_

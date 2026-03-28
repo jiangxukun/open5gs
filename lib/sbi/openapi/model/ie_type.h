@@ -1,7 +1,7 @@
 /*
  * ie_type.h
  *
- * 
+ * Enumeration of types of IEs (i.e kind of IE) to specify the protection policy
  */
 
 #ifndef _OpenAPI_ie_type_H_

@@ -7,7 +7,7 @@
 OpenAPI_reporting_information_t *OpenAPI_reporting_information_create(
     bool is_imm_rep,
     int imm_rep,
-    OpenAPI_notification_method_1_t *notif_method,
+    OpenAPI_notification_method_1_e notif_method,
     bool is_max_report_nbr,
     int max_report_nbr,
     char *mon_dur,
@@ -49,10 +49,6 @@ void OpenAPI_reporting_information_free(OpenAPI_reporting_information_t *reporti
     if (NULL == reporting_information) {
         return;
     }
-    if (reporting_information->notif_method) {
-        OpenAPI_notification_method_1_free(reporting_information->notif_method);
-        reporting_information->notif_method = NULL;
-    }
     if (reporting_information->mon_dur) {
         ogs_free(reporting_information->mon_dur);
         reporting_information->mon_dur = NULL;
@@ -82,14 +78,8 @@ cJSON *OpenAPI_reporting_information_convertToJSON(OpenAPI_reporting_information
     }
     }
 
-    if (reporting_information->notif_method) {
-    cJSON *notif_method_local_JSON = OpenAPI_notification_method_1_convertToJSON(reporting_information->notif_method);
-    if (notif_method_local_JSON == NULL) {
-        ogs_error("OpenAPI_reporting_information_convertToJSON() failed [notif_method]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "notifMethod", notif_method_local_JSON);
-    if (item->child == NULL) {
+    if (reporting_information->notif_method != OpenAPI_notification_method_1_NULL) {
+    if (cJSON_AddStringToObject(item, "notifMethod", OpenAPI_notification_method_1_ToString(reporting_information->notif_method)) == NULL) {
         ogs_error("OpenAPI_reporting_information_convertToJSON() failed [notif_method]");
         goto end;
     }
@@ -161,7 +151,7 @@ OpenAPI_reporting_information_t *OpenAPI_reporting_information_parseFromJSON(cJS
     OpenAPI_lnode_t *node = NULL;
     cJSON *imm_rep = NULL;
     cJSON *notif_method = NULL;
-    OpenAPI_notification_method_1_t *notif_method_local_nonprim = NULL;
+    OpenAPI_notification_method_1_e notif_methodVariable = 0;
     cJSON *max_report_nbr = NULL;
     cJSON *mon_dur = NULL;
     cJSON *rep_period = NULL;
@@ -181,11 +171,11 @@ OpenAPI_reporting_information_t *OpenAPI_reporting_information_parseFromJSON(cJS
 
     notif_method = cJSON_GetObjectItemCaseSensitive(reporting_informationJSON, "notifMethod");
     if (notif_method) {
-    notif_method_local_nonprim = OpenAPI_notification_method_1_parseFromJSON(notif_method);
-    if (!notif_method_local_nonprim) {
-        ogs_error("OpenAPI_notification_method_1_parseFromJSON failed [notif_method]");
+    if (!cJSON_IsString(notif_method)) {
+        ogs_error("OpenAPI_reporting_information_parseFromJSON() failed [notif_method]");
         goto end;
     }
+    notif_methodVariable = OpenAPI_notification_method_1_FromString(notif_method->valuestring);
     }
 
     max_report_nbr = cJSON_GetObjectItemCaseSensitive(reporting_informationJSON, "maxReportNbr");
@@ -270,7 +260,7 @@ OpenAPI_reporting_information_t *OpenAPI_reporting_information_parseFromJSON(cJS
     reporting_information_local_var = OpenAPI_reporting_information_create (
         imm_rep ? true : false,
         imm_rep ? imm_rep->valueint : 0,
-        notif_method ? notif_method_local_nonprim : NULL,
+        notif_method ? notif_methodVariable : 0,
         max_report_nbr ? true : false,
         max_report_nbr ? max_report_nbr->valuedouble : 0,
         mon_dur && !cJSON_IsNull(mon_dur) ? ogs_strdup(mon_dur->valuestring) : NULL,
@@ -286,10 +276,6 @@ OpenAPI_reporting_information_t *OpenAPI_reporting_information_parseFromJSON(cJS
 
     return reporting_information_local_var;
 end:
-    if (notif_method_local_nonprim) {
-        OpenAPI_notification_method_1_free(notif_method_local_nonprim);
-        notif_method_local_nonprim = NULL;
-    }
     if (partition_criteriaList) {
         OpenAPI_list_free(partition_criteriaList);
         partition_criteriaList = NULL;

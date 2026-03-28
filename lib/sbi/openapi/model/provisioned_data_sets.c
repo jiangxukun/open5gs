@@ -14,7 +14,7 @@ OpenAPI_provisioned_data_sets_t *OpenAPI_provisioned_data_sets_create(
     OpenAPI_sms_management_subscription_data_t *sms_mng_data,
     OpenAPI_lcs_privacy_data_t *lcs_privacy_data,
     OpenAPI_lcs_mo_data_t *lcs_mo_data,
-    OpenAPI_lcs_broadcast_assistance_types_data_t *lcs_bca_data,
+    OpenAPI_lcs_broadcast_assistance_types_data_1_t *lcs_bca_data,
     OpenAPI_v2x_subscription_data_t *v2x_data,
     OpenAPI_prose_subscription_data_t *prose_data,
     OpenAPI_odb_data_t *odb_data,
@@ -88,7 +88,7 @@ void OpenAPI_provisioned_data_sets_free(OpenAPI_provisioned_data_sets_t *provisi
         provisioned_data_sets->lcs_mo_data = NULL;
     }
     if (provisioned_data_sets->lcs_bca_data) {
-        OpenAPI_lcs_broadcast_assistance_types_data_free(provisioned_data_sets->lcs_bca_data);
+        OpenAPI_lcs_broadcast_assistance_types_data_1_free(provisioned_data_sets->lcs_bca_data);
         provisioned_data_sets->lcs_bca_data = NULL;
     }
     if (provisioned_data_sets->v2x_data) {
@@ -243,7 +243,7 @@ cJSON *OpenAPI_provisioned_data_sets_convertToJSON(OpenAPI_provisioned_data_sets
     }
 
     if (provisioned_data_sets->lcs_bca_data) {
-    cJSON *lcs_bca_data_local_JSON = OpenAPI_lcs_broadcast_assistance_types_data_convertToJSON(provisioned_data_sets->lcs_bca_data);
+    cJSON *lcs_bca_data_local_JSON = OpenAPI_lcs_broadcast_assistance_types_data_1_convertToJSON(provisioned_data_sets->lcs_bca_data);
     if (lcs_bca_data_local_JSON == NULL) {
         ogs_error("OpenAPI_provisioned_data_sets_convertToJSON() failed [lcs_bca_data]");
         goto end;
@@ -371,7 +371,7 @@ OpenAPI_provisioned_data_sets_t *OpenAPI_provisioned_data_sets_parseFromJSON(cJS
     cJSON *lcs_mo_data = NULL;
     OpenAPI_lcs_mo_data_t *lcs_mo_data_local_nonprim = NULL;
     cJSON *lcs_bca_data = NULL;
-    OpenAPI_lcs_broadcast_assistance_types_data_t *lcs_bca_data_local_nonprim = NULL;
+    OpenAPI_lcs_broadcast_assistance_types_data_1_t *lcs_bca_data_local_nonprim = NULL;
     cJSON *v2x_data = NULL;
     OpenAPI_v2x_subscription_data_t *v2x_data_local_nonprim = NULL;
     cJSON *prose_data = NULL;
@@ -462,9 +462,9 @@ OpenAPI_provisioned_data_sets_t *OpenAPI_provisioned_data_sets_parseFromJSON(cJS
 
     lcs_bca_data = cJSON_GetObjectItemCaseSensitive(provisioned_data_setsJSON, "lcsBcaData");
     if (lcs_bca_data) {
-    lcs_bca_data_local_nonprim = OpenAPI_lcs_broadcast_assistance_types_data_parseFromJSON(lcs_bca_data);
+    lcs_bca_data_local_nonprim = OpenAPI_lcs_broadcast_assistance_types_data_1_parseFromJSON(lcs_bca_data);
     if (!lcs_bca_data_local_nonprim) {
-        ogs_error("OpenAPI_lcs_broadcast_assistance_types_data_parseFromJSON failed [lcs_bca_data]");
+        ogs_error("OpenAPI_lcs_broadcast_assistance_types_data_1_parseFromJSON failed [lcs_bca_data]");
         goto end;
     }
     }
@@ -587,7 +587,7 @@ end:
         lcs_mo_data_local_nonprim = NULL;
     }
     if (lcs_bca_data_local_nonprim) {
-        OpenAPI_lcs_broadcast_assistance_types_data_free(lcs_bca_data_local_nonprim);
+        OpenAPI_lcs_broadcast_assistance_types_data_1_free(lcs_bca_data_local_nonprim);
         lcs_bca_data_local_nonprim = NULL;
     }
     if (v2x_data_local_nonprim) {

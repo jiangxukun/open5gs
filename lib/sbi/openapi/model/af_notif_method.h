@@ -1,7 +1,7 @@
 /*
  * af_notif_method.h
  *
- * 
+ * Represents the notification methods that can be subscribed for an event.
  */
 
 #ifndef _OpenAPI_af_notif_method_H_

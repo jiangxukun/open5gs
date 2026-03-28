@@ -5,11 +5,11 @@
 #include "monitoring_configuration.h"
 
 OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
-    OpenAPI_event_type_t *event_type,
+    OpenAPI_event_type_e event_type,
     bool is_immediate_flag,
     int immediate_flag,
     OpenAPI_location_reporting_configuration_t *location_reporting_configuration,
-    OpenAPI_association_type_t *association_type,
+    OpenAPI_association_type_e association_type,
     OpenAPI_datalink_reporting_configuration_t *datalink_report_cfg,
     OpenAPI_loss_connectivity_cfg_t *loss_connectivity_cfg,
     bool is_maximum_latency,
@@ -21,7 +21,7 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
     char *dnn,
     OpenAPI_snssai_t *single_nssai,
     OpenAPI_pdu_session_status_cfg_t *pdu_session_status_cfg,
-    OpenAPI_reachability_for_sms_configuration_t *reachability_for_sms_cfg,
+    OpenAPI_reachability_for_sms_configuration_e reachability_for_sms_cfg,
     char *mtc_provider_information,
     char *af_id,
     OpenAPI_reachability_for_data_configuration_t *reachability_for_data_cfg,
@@ -65,17 +65,9 @@ void OpenAPI_monitoring_configuration_free(OpenAPI_monitoring_configuration_t *m
     if (NULL == monitoring_configuration) {
         return;
     }
-    if (monitoring_configuration->event_type) {
-        OpenAPI_event_type_free(monitoring_configuration->event_type);
-        monitoring_configuration->event_type = NULL;
-    }
     if (monitoring_configuration->location_reporting_configuration) {
         OpenAPI_location_reporting_configuration_free(monitoring_configuration->location_reporting_configuration);
         monitoring_configuration->location_reporting_configuration = NULL;
-    }
-    if (monitoring_configuration->association_type) {
-        OpenAPI_association_type_free(monitoring_configuration->association_type);
-        monitoring_configuration->association_type = NULL;
     }
     if (monitoring_configuration->datalink_report_cfg) {
         OpenAPI_datalink_reporting_configuration_free(monitoring_configuration->datalink_report_cfg);
@@ -96,10 +88,6 @@ void OpenAPI_monitoring_configuration_free(OpenAPI_monitoring_configuration_t *m
     if (monitoring_configuration->pdu_session_status_cfg) {
         OpenAPI_pdu_session_status_cfg_free(monitoring_configuration->pdu_session_status_cfg);
         monitoring_configuration->pdu_session_status_cfg = NULL;
-    }
-    if (monitoring_configuration->reachability_for_sms_cfg) {
-        OpenAPI_reachability_for_sms_configuration_free(monitoring_configuration->reachability_for_sms_cfg);
-        monitoring_configuration->reachability_for_sms_cfg = NULL;
     }
     if (monitoring_configuration->mtc_provider_information) {
         ogs_free(monitoring_configuration->mtc_provider_information);
@@ -127,17 +115,11 @@ cJSON *OpenAPI_monitoring_configuration_convertToJSON(OpenAPI_monitoring_configu
     }
 
     item = cJSON_CreateObject();
-    if (!monitoring_configuration->event_type) {
+    if (monitoring_configuration->event_type == OpenAPI_event_type_NULL) {
         ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [event_type]");
         return NULL;
     }
-    cJSON *event_type_local_JSON = OpenAPI_event_type_convertToJSON(monitoring_configuration->event_type);
-    if (event_type_local_JSON == NULL) {
-        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [event_type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "eventType", event_type_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "eventType", OpenAPI_event_type_ToString(monitoring_configuration->event_type)) == NULL) {
         ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [event_type]");
         goto end;
     }
@@ -162,14 +144,8 @@ cJSON *OpenAPI_monitoring_configuration_convertToJSON(OpenAPI_monitoring_configu
     }
     }
 
-    if (monitoring_configuration->association_type) {
-    cJSON *association_type_local_JSON = OpenAPI_association_type_convertToJSON(monitoring_configuration->association_type);
-    if (association_type_local_JSON == NULL) {
-        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [association_type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "associationType", association_type_local_JSON);
-    if (item->child == NULL) {
+    if (monitoring_configuration->association_type != OpenAPI_association_type_NULL) {
+    if (cJSON_AddStringToObject(item, "associationType", OpenAPI_association_type_ToString(monitoring_configuration->association_type)) == NULL) {
         ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [association_type]");
         goto end;
     }
@@ -255,14 +231,8 @@ cJSON *OpenAPI_monitoring_configuration_convertToJSON(OpenAPI_monitoring_configu
     }
     }
 
-    if (monitoring_configuration->reachability_for_sms_cfg) {
-    cJSON *reachability_for_sms_cfg_local_JSON = OpenAPI_reachability_for_sms_configuration_convertToJSON(monitoring_configuration->reachability_for_sms_cfg);
-    if (reachability_for_sms_cfg_local_JSON == NULL) {
-        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [reachability_for_sms_cfg]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "reachabilityForSmsCfg", reachability_for_sms_cfg_local_JSON);
-    if (item->child == NULL) {
+    if (monitoring_configuration->reachability_for_sms_cfg != OpenAPI_reachability_for_sms_configuration_NULL) {
+    if (cJSON_AddStringToObject(item, "reachabilityForSmsCfg", OpenAPI_reachability_for_sms_configuration_ToString(monitoring_configuration->reachability_for_sms_cfg)) == NULL) {
         ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [reachability_for_sms_cfg]");
         goto end;
     }
@@ -311,12 +281,12 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     OpenAPI_monitoring_configuration_t *monitoring_configuration_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *event_type = NULL;
-    OpenAPI_event_type_t *event_type_local_nonprim = NULL;
+    OpenAPI_event_type_e event_typeVariable = 0;
     cJSON *immediate_flag = NULL;
     cJSON *location_reporting_configuration = NULL;
     OpenAPI_location_reporting_configuration_t *location_reporting_configuration_local_nonprim = NULL;
     cJSON *association_type = NULL;
-    OpenAPI_association_type_t *association_type_local_nonprim = NULL;
+    OpenAPI_association_type_e association_typeVariable = 0;
     cJSON *datalink_report_cfg = NULL;
     OpenAPI_datalink_reporting_configuration_t *datalink_report_cfg_local_nonprim = NULL;
     cJSON *loss_connectivity_cfg = NULL;
@@ -330,7 +300,7 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     cJSON *pdu_session_status_cfg = NULL;
     OpenAPI_pdu_session_status_cfg_t *pdu_session_status_cfg_local_nonprim = NULL;
     cJSON *reachability_for_sms_cfg = NULL;
-    OpenAPI_reachability_for_sms_configuration_t *reachability_for_sms_cfg_local_nonprim = NULL;
+    OpenAPI_reachability_for_sms_configuration_e reachability_for_sms_cfgVariable = 0;
     cJSON *mtc_provider_information = NULL;
     cJSON *af_id = NULL;
     cJSON *reachability_for_data_cfg = NULL;
@@ -341,11 +311,11 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
         ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [event_type]");
         goto end;
     }
-    event_type_local_nonprim = OpenAPI_event_type_parseFromJSON(event_type);
-    if (!event_type_local_nonprim) {
-        ogs_error("OpenAPI_event_type_parseFromJSON failed [event_type]");
+    if (!cJSON_IsString(event_type)) {
+        ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [event_type]");
         goto end;
     }
+    event_typeVariable = OpenAPI_event_type_FromString(event_type->valuestring);
 
     immediate_flag = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "immediateFlag");
     if (immediate_flag) {
@@ -366,11 +336,11 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
 
     association_type = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "associationType");
     if (association_type) {
-    association_type_local_nonprim = OpenAPI_association_type_parseFromJSON(association_type);
-    if (!association_type_local_nonprim) {
-        ogs_error("OpenAPI_association_type_parseFromJSON failed [association_type]");
+    if (!cJSON_IsString(association_type)) {
+        ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [association_type]");
         goto end;
     }
+    association_typeVariable = OpenAPI_association_type_FromString(association_type->valuestring);
     }
 
     datalink_report_cfg = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "datalinkReportCfg");
@@ -443,11 +413,11 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
 
     reachability_for_sms_cfg = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "reachabilityForSmsCfg");
     if (reachability_for_sms_cfg) {
-    reachability_for_sms_cfg_local_nonprim = OpenAPI_reachability_for_sms_configuration_parseFromJSON(reachability_for_sms_cfg);
-    if (!reachability_for_sms_cfg_local_nonprim) {
-        ogs_error("OpenAPI_reachability_for_sms_configuration_parseFromJSON failed [reachability_for_sms_cfg]");
+    if (!cJSON_IsString(reachability_for_sms_cfg)) {
+        ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [reachability_for_sms_cfg]");
         goto end;
     }
+    reachability_for_sms_cfgVariable = OpenAPI_reachability_for_sms_configuration_FromString(reachability_for_sms_cfg->valuestring);
     }
 
     mtc_provider_information = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "mtcProviderInformation");
@@ -484,11 +454,11 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     }
 
     monitoring_configuration_local_var = OpenAPI_monitoring_configuration_create (
-        event_type_local_nonprim,
+        event_typeVariable,
         immediate_flag ? true : false,
         immediate_flag ? immediate_flag->valueint : 0,
         location_reporting_configuration ? location_reporting_configuration_local_nonprim : NULL,
-        association_type ? association_type_local_nonprim : NULL,
+        association_type ? association_typeVariable : 0,
         datalink_report_cfg ? datalink_report_cfg_local_nonprim : NULL,
         loss_connectivity_cfg ? loss_connectivity_cfg_local_nonprim : NULL,
         maximum_latency ? true : false,
@@ -500,7 +470,7 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,
         single_nssai ? single_nssai_local_nonprim : NULL,
         pdu_session_status_cfg ? pdu_session_status_cfg_local_nonprim : NULL,
-        reachability_for_sms_cfg ? reachability_for_sms_cfg_local_nonprim : NULL,
+        reachability_for_sms_cfg ? reachability_for_sms_cfgVariable : 0,
         mtc_provider_information && !cJSON_IsNull(mtc_provider_information) ? ogs_strdup(mtc_provider_information->valuestring) : NULL,
         af_id && !cJSON_IsNull(af_id) ? ogs_strdup(af_id->valuestring) : NULL,
         reachability_for_data_cfg ? reachability_for_data_cfg_local_nonprim : NULL,
@@ -510,17 +480,9 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
 
     return monitoring_configuration_local_var;
 end:
-    if (event_type_local_nonprim) {
-        OpenAPI_event_type_free(event_type_local_nonprim);
-        event_type_local_nonprim = NULL;
-    }
     if (location_reporting_configuration_local_nonprim) {
         OpenAPI_location_reporting_configuration_free(location_reporting_configuration_local_nonprim);
         location_reporting_configuration_local_nonprim = NULL;
-    }
-    if (association_type_local_nonprim) {
-        OpenAPI_association_type_free(association_type_local_nonprim);
-        association_type_local_nonprim = NULL;
     }
     if (datalink_report_cfg_local_nonprim) {
         OpenAPI_datalink_reporting_configuration_free(datalink_report_cfg_local_nonprim);
@@ -537,10 +499,6 @@ end:
     if (pdu_session_status_cfg_local_nonprim) {
         OpenAPI_pdu_session_status_cfg_free(pdu_session_status_cfg_local_nonprim);
         pdu_session_status_cfg_local_nonprim = NULL;
-    }
-    if (reachability_for_sms_cfg_local_nonprim) {
-        OpenAPI_reachability_for_sms_configuration_free(reachability_for_sms_cfg_local_nonprim);
-        reachability_for_sms_cfg_local_nonprim = NULL;
     }
     if (reachability_for_data_cfg_local_nonprim) {
         OpenAPI_reachability_for_data_configuration_free(reachability_for_data_cfg_local_nonprim);

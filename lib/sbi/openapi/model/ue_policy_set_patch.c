@@ -260,7 +260,7 @@ OpenAPI_ue_policy_set_patch_t *OpenAPI_ue_policy_set_patch_parseFromJSON(cJSON *
 end:
     if (ue_policy_sectionsList) {
         OpenAPI_list_for_each(ue_policy_sectionsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_ue_policy_section_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

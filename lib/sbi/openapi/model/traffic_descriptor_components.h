@@ -12,9 +12,9 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
-#include "app_descriptor_1.h"
+#include "app_descriptor_2.h"
 #include "connection_capabilities.h"
-#include "eth_flow_description.h"
+#include "eth_flow_description_1.h"
 
 #ifdef __cplusplus
 extern "C" {

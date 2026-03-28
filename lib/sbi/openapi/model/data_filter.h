@@ -22,7 +22,7 @@ extern "C" {
 
 typedef struct OpenAPI_data_filter_s OpenAPI_data_filter_t;
 typedef struct OpenAPI_data_filter_s {
-    struct OpenAPI_data_ind_s *data_ind;
+    OpenAPI_data_ind_e data_ind;
     OpenAPI_list_t *dnns;
     OpenAPI_list_t *snssais;
     OpenAPI_list_t *internal_group_ids;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_data_filter_s {
 } OpenAPI_data_filter_t;
 
 OpenAPI_data_filter_t *OpenAPI_data_filter_create(
-    OpenAPI_data_ind_t *data_ind,
+    OpenAPI_data_ind_e data_ind,
     OpenAPI_list_t *dnns,
     OpenAPI_list_t *snssais,
     OpenAPI_list_t *internal_group_ids,

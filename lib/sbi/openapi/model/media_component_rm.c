@@ -53,8 +53,8 @@ OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_create(
     char *mir_bw_dl,
     bool is_mir_bw_ul_null,
     char *mir_bw_ul,
-    OpenAPI_preemption_capability_rm_t *preempt_cap,
-    OpenAPI_preemption_vulnerability_rm_t *preempt_vuln,
+    OpenAPI_preemption_capability_e preempt_cap,
+    OpenAPI_preemption_vulnerability_e preempt_vuln,
     OpenAPI_priority_sharing_indicator_e prio_sharing_ind,
     OpenAPI_reserv_priority_e res_prio,
     bool is_rr_bw_null,
@@ -239,14 +239,6 @@ void OpenAPI_media_component_rm_free(OpenAPI_media_component_rm_t *media_compone
     if (media_component_rm->mir_bw_ul) {
         ogs_free(media_component_rm->mir_bw_ul);
         media_component_rm->mir_bw_ul = NULL;
-    }
-    if (media_component_rm->preempt_cap) {
-        OpenAPI_preemption_capability_rm_free(media_component_rm->preempt_cap);
-        media_component_rm->preempt_cap = NULL;
-    }
-    if (media_component_rm->preempt_vuln) {
-        OpenAPI_preemption_vulnerability_rm_free(media_component_rm->preempt_vuln);
-        media_component_rm->preempt_vuln = NULL;
     }
     if (media_component_rm->rr_bw) {
         ogs_free(media_component_rm->rr_bw);
@@ -592,27 +584,15 @@ cJSON *OpenAPI_media_component_rm_convertToJSON(OpenAPI_media_component_rm_t *me
         }
     }
 
-    if (media_component_rm->preempt_cap) {
-    cJSON *preempt_cap_local_JSON = OpenAPI_preemption_capability_rm_convertToJSON(media_component_rm->preempt_cap);
-    if (preempt_cap_local_JSON == NULL) {
-        ogs_error("OpenAPI_media_component_rm_convertToJSON() failed [preempt_cap]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "preemptCap", preempt_cap_local_JSON);
-    if (item->child == NULL) {
+    if (media_component_rm->preempt_cap != OpenAPI_preemption_capability_NULL) {
+    if (cJSON_AddStringToObject(item, "preemptCap", OpenAPI_preemption_capability_ToString(media_component_rm->preempt_cap)) == NULL) {
         ogs_error("OpenAPI_media_component_rm_convertToJSON() failed [preempt_cap]");
         goto end;
     }
     }
 
-    if (media_component_rm->preempt_vuln) {
-    cJSON *preempt_vuln_local_JSON = OpenAPI_preemption_vulnerability_rm_convertToJSON(media_component_rm->preempt_vuln);
-    if (preempt_vuln_local_JSON == NULL) {
-        ogs_error("OpenAPI_media_component_rm_convertToJSON() failed [preempt_vuln]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "preemptVuln", preempt_vuln_local_JSON);
-    if (item->child == NULL) {
+    if (media_component_rm->preempt_vuln != OpenAPI_preemption_vulnerability_NULL) {
+    if (cJSON_AddStringToObject(item, "preemptVuln", OpenAPI_preemption_vulnerability_ToString(media_component_rm->preempt_vuln)) == NULL) {
         ogs_error("OpenAPI_media_component_rm_convertToJSON() failed [preempt_vuln]");
         goto end;
     }
@@ -782,9 +762,9 @@ OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_parseFromJSON(cJSON *me
     cJSON *mir_bw_dl = NULL;
     cJSON *mir_bw_ul = NULL;
     cJSON *preempt_cap = NULL;
-    OpenAPI_preemption_capability_rm_t *preempt_cap_local_nonprim = NULL;
+    OpenAPI_preemption_capability_e preempt_capVariable = 0;
     cJSON *preempt_vuln = NULL;
-    OpenAPI_preemption_vulnerability_rm_t *preempt_vuln_local_nonprim = NULL;
+    OpenAPI_preemption_vulnerability_e preempt_vulnVariable = 0;
     cJSON *prio_sharing_ind = NULL;
     OpenAPI_priority_sharing_indicator_e prio_sharing_indVariable = 0;
     cJSON *res_prio = NULL;
@@ -1101,20 +1081,20 @@ OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_parseFromJSON(cJSON *me
 
     preempt_cap = cJSON_GetObjectItemCaseSensitive(media_component_rmJSON, "preemptCap");
     if (preempt_cap) {
-    preempt_cap_local_nonprim = OpenAPI_preemption_capability_rm_parseFromJSON(preempt_cap);
-    if (!preempt_cap_local_nonprim) {
-        ogs_error("OpenAPI_preemption_capability_rm_parseFromJSON failed [preempt_cap]");
+    if (!cJSON_IsString(preempt_cap)) {
+        ogs_error("OpenAPI_media_component_rm_parseFromJSON() failed [preempt_cap]");
         goto end;
     }
+    preempt_capVariable = OpenAPI_preemption_capability_FromString(preempt_cap->valuestring);
     }
 
     preempt_vuln = cJSON_GetObjectItemCaseSensitive(media_component_rmJSON, "preemptVuln");
     if (preempt_vuln) {
-    preempt_vuln_local_nonprim = OpenAPI_preemption_vulnerability_rm_parseFromJSON(preempt_vuln);
-    if (!preempt_vuln_local_nonprim) {
-        ogs_error("OpenAPI_preemption_vulnerability_rm_parseFromJSON failed [preempt_vuln]");
+    if (!cJSON_IsString(preempt_vuln)) {
+        ogs_error("OpenAPI_media_component_rm_parseFromJSON() failed [preempt_vuln]");
         goto end;
     }
+    preempt_vulnVariable = OpenAPI_preemption_vulnerability_FromString(preempt_vuln->valuestring);
     }
 
     prio_sharing_ind = cJSON_GetObjectItemCaseSensitive(media_component_rmJSON, "prioSharingInd");
@@ -1266,8 +1246,8 @@ OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_parseFromJSON(cJSON *me
         mir_bw_dl && !cJSON_IsNull(mir_bw_dl) ? ogs_strdup(mir_bw_dl->valuestring) : NULL,
         mir_bw_ul && cJSON_IsNull(mir_bw_ul) ? true : false,
         mir_bw_ul && !cJSON_IsNull(mir_bw_ul) ? ogs_strdup(mir_bw_ul->valuestring) : NULL,
-        preempt_cap ? preempt_cap_local_nonprim : NULL,
-        preempt_vuln ? preempt_vuln_local_nonprim : NULL,
+        preempt_cap ? preempt_capVariable : 0,
+        preempt_vuln ? preempt_vulnVariable : 0,
         prio_sharing_ind ? prio_sharing_indVariable : 0,
         res_prio ? res_prioVariable : 0,
         rr_bw && cJSON_IsNull(rr_bw) ? true : false,
@@ -1319,21 +1299,13 @@ end:
     }
     if (med_sub_compsList) {
         OpenAPI_list_for_each(med_sub_compsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_media_sub_component_rm_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(med_sub_compsList);
         med_sub_compsList = NULL;
-    }
-    if (preempt_cap_local_nonprim) {
-        OpenAPI_preemption_capability_rm_free(preempt_cap_local_nonprim);
-        preempt_cap_local_nonprim = NULL;
-    }
-    if (preempt_vuln_local_nonprim) {
-        OpenAPI_preemption_vulnerability_rm_free(preempt_vuln_local_nonprim);
-        preempt_vuln_local_nonprim = NULL;
     }
     if (tsn_qos_local_nonprim) {
         OpenAPI_tsn_qos_container_rm_free(tsn_qos_local_nonprim);

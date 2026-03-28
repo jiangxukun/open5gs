@@ -31,7 +31,7 @@ void OpenAPI_dnn_smf_info_item_free(OpenAPI_dnn_smf_info_item_t *dnn_smf_info_it
     }
     if (dnn_smf_info_item->dnai_list) {
         OpenAPI_list_for_each(dnn_smf_info_item->dnai_list, node) {
-            OpenAPI_dnn_smf_info_item_dnai_list_inner_free(node->data);
+            ogs_free(node->data);
         }
         OpenAPI_list_free(dnn_smf_info_item->dnai_list);
         dnn_smf_info_item->dnai_list = NULL;
@@ -66,12 +66,10 @@ cJSON *OpenAPI_dnn_smf_info_item_convertToJSON(OpenAPI_dnn_smf_info_item_t *dnn_
         goto end;
     }
     OpenAPI_list_for_each(dnn_smf_info_item->dnai_list, node) {
-        cJSON *itemLocal = OpenAPI_dnn_smf_info_item_dnai_list_inner_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(dnai_listList, "", (char*)node->data) == NULL) {
             ogs_error("OpenAPI_dnn_smf_info_item_convertToJSON() failed [dnai_list]");
             goto end;
         }
-        cJSON_AddItemToArray(dnai_listList, itemLocal);
     }
     }
 
@@ -107,16 +105,13 @@ OpenAPI_dnn_smf_info_item_t *OpenAPI_dnn_smf_info_item_parseFromJSON(cJSON *dnn_
         dnai_listList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(dnai_list_local, dnai_list) {
-            if (!cJSON_IsObject(dnai_list_local)) {
+            double *localDouble = NULL;
+            int *localInt = NULL;
+            if (!cJSON_IsString(dnai_list_local)) {
                 ogs_error("OpenAPI_dnn_smf_info_item_parseFromJSON() failed [dnai_list]");
                 goto end;
             }
-            OpenAPI_dnn_smf_info_item_dnai_list_inner_t *dnai_listItem = OpenAPI_dnn_smf_info_item_dnai_list_inner_parseFromJSON(dnai_list_local);
-            if (!dnai_listItem) {
-                ogs_error("No dnai_listItem");
-                goto end;
-            }
-            OpenAPI_list_add(dnai_listList, dnai_listItem);
+            OpenAPI_list_add(dnai_listList, ogs_strdup(dnai_list_local->valuestring));
         }
     }
 
@@ -129,7 +124,7 @@ OpenAPI_dnn_smf_info_item_t *OpenAPI_dnn_smf_info_item_parseFromJSON(cJSON *dnn_
 end:
     if (dnai_listList) {
         OpenAPI_list_for_each(dnai_listList, node) {
-            OpenAPI_dnn_smf_info_item_dnai_list_inner_free(node->data);
+            ogs_free(node->data);
         }
         OpenAPI_list_free(dnai_listList);
         dnai_listList = NULL;

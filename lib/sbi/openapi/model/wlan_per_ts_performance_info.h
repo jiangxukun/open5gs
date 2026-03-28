@@ -26,6 +26,7 @@ typedef struct OpenAPI_wlan_per_ts_performance_info_s {
     int rssi;
     bool is_rtt;
     int rtt;
+    bool is_traffic_info_null;
     struct OpenAPI_traffic_information_s *traffic_info;
     bool is_number_of_ues;
     int number_of_ues;
@@ -40,6 +41,7 @@ OpenAPI_wlan_per_ts_performance_info_t *OpenAPI_wlan_per_ts_performance_info_cre
     int rssi,
     bool is_rtt,
     int rtt,
+    bool is_traffic_info_null,
     OpenAPI_traffic_information_t *traffic_info,
     bool is_number_of_ues,
     int number_of_ues,

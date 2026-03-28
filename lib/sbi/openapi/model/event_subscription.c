@@ -10,13 +10,13 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_create(
     OpenAPI_list_t *app_ids,
     OpenAPI_list_t *dnns,
     OpenAPI_list_t *dnais,
-    OpenAPI_nwdaf_event_t *event,
+    OpenAPI_nwdaf_event_e event,
     OpenAPI_event_reporting_requirement_t *extra_report_req,
     OpenAPI_list_t *ladn_dnns,
     bool is_load_level_threshold,
     int load_level_threshold,
-    OpenAPI_notification_method_t *notification_method,
-    OpenAPI_matching_direction_t *matching_dir,
+    OpenAPI_notification_method_e notification_method,
+    OpenAPI_matching_direction_e matching_dir,
     OpenAPI_list_t *nf_load_lvl_thds,
     OpenAPI_list_t *nf_instance_ids,
     OpenAPI_list_t *nf_set_ids,
@@ -40,7 +40,7 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_create(
     OpenAPI_list_t *nw_perf_requs,
     OpenAPI_list_t *bw_requs,
     OpenAPI_list_t *excep_requs,
-    OpenAPI_expected_analytics_type_t *expt_ana_type,
+    OpenAPI_expected_analytics_type_e expt_ana_type,
     OpenAPI_expected_ue_behaviour_data_t *expt_ue_behav,
     OpenAPI_list_t *rat_freqs,
     OpenAPI_list_t *list_of_ana_subsets,
@@ -132,10 +132,6 @@ void OpenAPI_event_subscription_free(OpenAPI_event_subscription_t *event_subscri
         OpenAPI_list_free(event_subscription->dnais);
         event_subscription->dnais = NULL;
     }
-    if (event_subscription->event) {
-        OpenAPI_nwdaf_event_free(event_subscription->event);
-        event_subscription->event = NULL;
-    }
     if (event_subscription->extra_report_req) {
         OpenAPI_event_reporting_requirement_free(event_subscription->extra_report_req);
         event_subscription->extra_report_req = NULL;
@@ -146,14 +142,6 @@ void OpenAPI_event_subscription_free(OpenAPI_event_subscription_t *event_subscri
         }
         OpenAPI_list_free(event_subscription->ladn_dnns);
         event_subscription->ladn_dnns = NULL;
-    }
-    if (event_subscription->notification_method) {
-        OpenAPI_notification_method_free(event_subscription->notification_method);
-        event_subscription->notification_method = NULL;
-    }
-    if (event_subscription->matching_dir) {
-        OpenAPI_matching_direction_free(event_subscription->matching_dir);
-        event_subscription->matching_dir = NULL;
     }
     if (event_subscription->nf_load_lvl_thds) {
         OpenAPI_list_for_each(event_subscription->nf_load_lvl_thds, node) {
@@ -262,10 +250,6 @@ void OpenAPI_event_subscription_free(OpenAPI_event_subscription_t *event_subscri
         OpenAPI_list_free(event_subscription->excep_requs);
         event_subscription->excep_requs = NULL;
     }
-    if (event_subscription->expt_ana_type) {
-        OpenAPI_expected_analytics_type_free(event_subscription->expt_ana_type);
-        event_subscription->expt_ana_type = NULL;
-    }
     if (event_subscription->expt_ue_behav) {
         OpenAPI_expected_ue_behaviour_data_free(event_subscription->expt_ue_behav);
         event_subscription->expt_ue_behav = NULL;
@@ -278,9 +262,6 @@ void OpenAPI_event_subscription_free(OpenAPI_event_subscription_t *event_subscri
         event_subscription->rat_freqs = NULL;
     }
     if (event_subscription->list_of_ana_subsets) {
-        OpenAPI_list_for_each(event_subscription->list_of_ana_subsets, node) {
-            OpenAPI_analytics_subset_free(node->data);
-        }
         OpenAPI_list_free(event_subscription->list_of_ana_subsets);
         event_subscription->list_of_ana_subsets = NULL;
     }
@@ -386,17 +367,11 @@ cJSON *OpenAPI_event_subscription_convertToJSON(OpenAPI_event_subscription_t *ev
     }
     }
 
-    if (!event_subscription->event) {
+    if (event_subscription->event == OpenAPI_nwdaf_event_NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [event]");
         return NULL;
     }
-    cJSON *event_local_JSON = OpenAPI_nwdaf_event_convertToJSON(event_subscription->event);
-    if (event_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_subscription_convertToJSON() failed [event]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "event", event_local_JSON);
-    if (item->child == NULL) {
+    if (cJSON_AddStringToObject(item, "event", OpenAPI_nwdaf_event_ToString(event_subscription->event)) == NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [event]");
         goto end;
     }
@@ -435,27 +410,15 @@ cJSON *OpenAPI_event_subscription_convertToJSON(OpenAPI_event_subscription_t *ev
     }
     }
 
-    if (event_subscription->notification_method) {
-    cJSON *notification_method_local_JSON = OpenAPI_notification_method_convertToJSON(event_subscription->notification_method);
-    if (notification_method_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_subscription_convertToJSON() failed [notification_method]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "notificationMethod", notification_method_local_JSON);
-    if (item->child == NULL) {
+    if (event_subscription->notification_method != OpenAPI_notification_method_NULL) {
+    if (cJSON_AddStringToObject(item, "notificationMethod", OpenAPI_notification_method_ToString(event_subscription->notification_method)) == NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [notification_method]");
         goto end;
     }
     }
 
-    if (event_subscription->matching_dir) {
-    cJSON *matching_dir_local_JSON = OpenAPI_matching_direction_convertToJSON(event_subscription->matching_dir);
-    if (matching_dir_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_subscription_convertToJSON() failed [matching_dir]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "matchingDir", matching_dir_local_JSON);
-    if (item->child == NULL) {
+    if (event_subscription->matching_dir != OpenAPI_matching_direction_NULL) {
+    if (cJSON_AddStringToObject(item, "matchingDir", OpenAPI_matching_direction_ToString(event_subscription->matching_dir)) == NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [matching_dir]");
         goto end;
     }
@@ -739,14 +702,8 @@ cJSON *OpenAPI_event_subscription_convertToJSON(OpenAPI_event_subscription_t *ev
     }
     }
 
-    if (event_subscription->expt_ana_type) {
-    cJSON *expt_ana_type_local_JSON = OpenAPI_expected_analytics_type_convertToJSON(event_subscription->expt_ana_type);
-    if (expt_ana_type_local_JSON == NULL) {
-        ogs_error("OpenAPI_event_subscription_convertToJSON() failed [expt_ana_type]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "exptAnaType", expt_ana_type_local_JSON);
-    if (item->child == NULL) {
+    if (event_subscription->expt_ana_type != OpenAPI_expected_analytics_type_NULL) {
+    if (cJSON_AddStringToObject(item, "exptAnaType", OpenAPI_expected_analytics_type_ToString(event_subscription->expt_ana_type)) == NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [expt_ana_type]");
         goto end;
     }
@@ -781,19 +738,17 @@ cJSON *OpenAPI_event_subscription_convertToJSON(OpenAPI_event_subscription_t *ev
     }
     }
 
-    if (event_subscription->list_of_ana_subsets) {
+    if (event_subscription->list_of_ana_subsets != OpenAPI_analytics_subset_NULL) {
     cJSON *list_of_ana_subsetsList = cJSON_AddArrayToObject(item, "listOfAnaSubsets");
     if (list_of_ana_subsetsList == NULL) {
         ogs_error("OpenAPI_event_subscription_convertToJSON() failed [list_of_ana_subsets]");
         goto end;
     }
     OpenAPI_list_for_each(event_subscription->list_of_ana_subsets, node) {
-        cJSON *itemLocal = OpenAPI_analytics_subset_convertToJSON(node->data);
-        if (itemLocal == NULL) {
+        if (cJSON_AddStringToObject(list_of_ana_subsetsList, "", OpenAPI_analytics_subset_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_event_subscription_convertToJSON() failed [list_of_ana_subsets]");
             goto end;
         }
-        cJSON_AddItemToArray(list_of_ana_subsetsList, itemLocal);
     }
     }
 
@@ -906,16 +861,16 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
     cJSON *dnais = NULL;
     OpenAPI_list_t *dnaisList = NULL;
     cJSON *event = NULL;
-    OpenAPI_nwdaf_event_t *event_local_nonprim = NULL;
+    OpenAPI_nwdaf_event_e eventVariable = 0;
     cJSON *extra_report_req = NULL;
     OpenAPI_event_reporting_requirement_t *extra_report_req_local_nonprim = NULL;
     cJSON *ladn_dnns = NULL;
     OpenAPI_list_t *ladn_dnnsList = NULL;
     cJSON *load_level_threshold = NULL;
     cJSON *notification_method = NULL;
-    OpenAPI_notification_method_t *notification_method_local_nonprim = NULL;
+    OpenAPI_notification_method_e notification_methodVariable = 0;
     cJSON *matching_dir = NULL;
-    OpenAPI_matching_direction_t *matching_dir_local_nonprim = NULL;
+    OpenAPI_matching_direction_e matching_dirVariable = 0;
     cJSON *nf_load_lvl_thds = NULL;
     OpenAPI_list_t *nf_load_lvl_thdsList = NULL;
     cJSON *nf_instance_ids = NULL;
@@ -954,7 +909,7 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
     cJSON *excep_requs = NULL;
     OpenAPI_list_t *excep_requsList = NULL;
     cJSON *expt_ana_type = NULL;
-    OpenAPI_expected_analytics_type_t *expt_ana_type_local_nonprim = NULL;
+    OpenAPI_expected_analytics_type_e expt_ana_typeVariable = 0;
     cJSON *expt_ue_behav = NULL;
     OpenAPI_expected_ue_behaviour_data_t *expt_ue_behav_local_nonprim = NULL;
     cJSON *rat_freqs = NULL;
@@ -1049,11 +1004,11 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
         ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [event]");
         goto end;
     }
-    event_local_nonprim = OpenAPI_nwdaf_event_parseFromJSON(event);
-    if (!event_local_nonprim) {
-        ogs_error("OpenAPI_nwdaf_event_parseFromJSON failed [event]");
+    if (!cJSON_IsString(event)) {
+        ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [event]");
         goto end;
     }
+    eventVariable = OpenAPI_nwdaf_event_FromString(event->valuestring);
 
     extra_report_req = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "extraReportReq");
     if (extra_report_req) {
@@ -1095,20 +1050,20 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
 
     notification_method = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "notificationMethod");
     if (notification_method) {
-    notification_method_local_nonprim = OpenAPI_notification_method_parseFromJSON(notification_method);
-    if (!notification_method_local_nonprim) {
-        ogs_error("OpenAPI_notification_method_parseFromJSON failed [notification_method]");
+    if (!cJSON_IsString(notification_method)) {
+        ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [notification_method]");
         goto end;
     }
+    notification_methodVariable = OpenAPI_notification_method_FromString(notification_method->valuestring);
     }
 
     matching_dir = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "matchingDir");
     if (matching_dir) {
-    matching_dir_local_nonprim = OpenAPI_matching_direction_parseFromJSON(matching_dir);
-    if (!matching_dir_local_nonprim) {
-        ogs_error("OpenAPI_matching_direction_parseFromJSON failed [matching_dir]");
+    if (!cJSON_IsString(matching_dir)) {
+        ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [matching_dir]");
         goto end;
     }
+    matching_dirVariable = OpenAPI_matching_direction_FromString(matching_dir->valuestring);
     }
 
     nf_load_lvl_thds = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "nfLoadLvlThds");
@@ -1500,11 +1455,11 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
 
     expt_ana_type = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "exptAnaType");
     if (expt_ana_type) {
-    expt_ana_type_local_nonprim = OpenAPI_expected_analytics_type_parseFromJSON(expt_ana_type);
-    if (!expt_ana_type_local_nonprim) {
-        ogs_error("OpenAPI_expected_analytics_type_parseFromJSON failed [expt_ana_type]");
+    if (!cJSON_IsString(expt_ana_type)) {
+        ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [expt_ana_type]");
         goto end;
     }
+    expt_ana_typeVariable = OpenAPI_expected_analytics_type_FromString(expt_ana_type->valuestring);
     }
 
     expt_ue_behav = cJSON_GetObjectItemCaseSensitive(event_subscriptionJSON, "exptUeBehav");
@@ -1551,16 +1506,22 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
         list_of_ana_subsetsList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(list_of_ana_subsets_local, list_of_ana_subsets) {
-            if (!cJSON_IsObject(list_of_ana_subsets_local)) {
+            OpenAPI_analytics_subset_e localEnum = OpenAPI_analytics_subset_NULL;
+            if (!cJSON_IsString(list_of_ana_subsets_local)) {
                 ogs_error("OpenAPI_event_subscription_parseFromJSON() failed [list_of_ana_subsets]");
                 goto end;
             }
-            OpenAPI_analytics_subset_t *list_of_ana_subsetsItem = OpenAPI_analytics_subset_parseFromJSON(list_of_ana_subsets_local);
-            if (!list_of_ana_subsetsItem) {
-                ogs_error("No list_of_ana_subsetsItem");
-                goto end;
+            localEnum = OpenAPI_analytics_subset_FromString(list_of_ana_subsets_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"list_of_ana_subsets\" is not supported. Ignoring it ...",
+                         list_of_ana_subsets_local->valuestring);
+            } else {
+                OpenAPI_list_add(list_of_ana_subsetsList, (void *)localEnum);
             }
-            OpenAPI_list_add(list_of_ana_subsetsList, list_of_ana_subsetsItem);
+        }
+        if (list_of_ana_subsetsList->count == 0) {
+            ogs_error("OpenAPI_event_subscription_parseFromJSON() failed: Expected list_of_ana_subsetsList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -1699,13 +1660,13 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
         app_ids ? app_idsList : NULL,
         dnns ? dnnsList : NULL,
         dnais ? dnaisList : NULL,
-        event_local_nonprim,
+        eventVariable,
         extra_report_req ? extra_report_req_local_nonprim : NULL,
         ladn_dnns ? ladn_dnnsList : NULL,
         load_level_threshold ? true : false,
         load_level_threshold ? load_level_threshold->valuedouble : 0,
-        notification_method ? notification_method_local_nonprim : NULL,
-        matching_dir ? matching_dir_local_nonprim : NULL,
+        notification_method ? notification_methodVariable : 0,
+        matching_dir ? matching_dirVariable : 0,
         nf_load_lvl_thds ? nf_load_lvl_thdsList : NULL,
         nf_instance_ids ? nf_instance_idsList : NULL,
         nf_set_ids ? nf_set_idsList : NULL,
@@ -1729,7 +1690,7 @@ OpenAPI_event_subscription_t *OpenAPI_event_subscription_parseFromJSON(cJSON *ev
         nw_perf_requs ? nw_perf_requsList : NULL,
         bw_requs ? bw_requsList : NULL,
         excep_requs ? excep_requsList : NULL,
-        expt_ana_type ? expt_ana_type_local_nonprim : NULL,
+        expt_ana_type ? expt_ana_typeVariable : 0,
         expt_ue_behav ? expt_ue_behav_local_nonprim : NULL,
         rat_freqs ? rat_freqsList : NULL,
         list_of_ana_subsets ? list_of_ana_subsetsList : NULL,
@@ -1764,10 +1725,6 @@ end:
         OpenAPI_list_free(dnaisList);
         dnaisList = NULL;
     }
-    if (event_local_nonprim) {
-        OpenAPI_nwdaf_event_free(event_local_nonprim);
-        event_local_nonprim = NULL;
-    }
     if (extra_report_req_local_nonprim) {
         OpenAPI_event_reporting_requirement_free(extra_report_req_local_nonprim);
         extra_report_req_local_nonprim = NULL;
@@ -1778,14 +1735,6 @@ end:
         }
         OpenAPI_list_free(ladn_dnnsList);
         ladn_dnnsList = NULL;
-    }
-    if (notification_method_local_nonprim) {
-        OpenAPI_notification_method_free(notification_method_local_nonprim);
-        notification_method_local_nonprim = NULL;
-    }
-    if (matching_dir_local_nonprim) {
-        OpenAPI_matching_direction_free(matching_dir_local_nonprim);
-        matching_dir_local_nonprim = NULL;
     }
     if (nf_load_lvl_thdsList) {
         OpenAPI_list_for_each(nf_load_lvl_thdsList, node) {
@@ -1894,10 +1843,6 @@ end:
         OpenAPI_list_free(excep_requsList);
         excep_requsList = NULL;
     }
-    if (expt_ana_type_local_nonprim) {
-        OpenAPI_expected_analytics_type_free(expt_ana_type_local_nonprim);
-        expt_ana_type_local_nonprim = NULL;
-    }
     if (expt_ue_behav_local_nonprim) {
         OpenAPI_expected_ue_behaviour_data_free(expt_ue_behav_local_nonprim);
         expt_ue_behav_local_nonprim = NULL;
@@ -1910,9 +1855,6 @@ end:
         rat_freqsList = NULL;
     }
     if (list_of_ana_subsetsList) {
-        OpenAPI_list_for_each(list_of_ana_subsetsList, node) {
-            OpenAPI_analytics_subset_free(node->data);
-        }
         OpenAPI_list_free(list_of_ana_subsetsList);
         list_of_ana_subsetsList = NULL;
     }

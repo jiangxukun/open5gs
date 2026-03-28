@@ -42,6 +42,7 @@ extern "C" {
 typedef struct OpenAPI_sm_policy_context_data_s OpenAPI_sm_policy_context_data_t;
 typedef struct OpenAPI_sm_policy_context_data_s {
     struct OpenAPI_acc_net_ch_id_s *acc_net_ch_id;
+    bool is_charg_entity_addr_null;
     struct OpenAPI_acc_net_charging_address_s *charg_entity_addr;
     char *gpsi;
     char *supi;
@@ -101,6 +102,7 @@ typedef struct OpenAPI_sm_policy_context_data_s {
 
 OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_create(
     OpenAPI_acc_net_ch_id_t *acc_net_ch_id,
+    bool is_charg_entity_addr_null,
     OpenAPI_acc_net_charging_address_t *charg_entity_addr,
     char *gpsi,
     char *supi,

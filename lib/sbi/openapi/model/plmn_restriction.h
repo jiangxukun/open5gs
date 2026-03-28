@@ -16,7 +16,6 @@
 #include "core_network_type.h"
 #include "rat_type.h"
 #include "service_area_restriction.h"
-#include "set.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,21 +23,21 @@ extern "C" {
 
 typedef struct OpenAPI_plmn_restriction_s OpenAPI_plmn_restriction_t;
 typedef struct OpenAPI_plmn_restriction_s {
-    OpenAPI_set_t *rat_restrictions;
+    OpenAPI_list_t *rat_restrictions;
     OpenAPI_list_t *forbidden_areas;
     struct OpenAPI_service_area_restriction_s *service_area_restriction;
     OpenAPI_list_t *core_network_type_restrictions;
-    OpenAPI_set_t *primary_rat_restrictions;
-    OpenAPI_set_t *secondary_rat_restrictions;
+    OpenAPI_list_t *primary_rat_restrictions;
+    OpenAPI_list_t *secondary_rat_restrictions;
 } OpenAPI_plmn_restriction_t;
 
 OpenAPI_plmn_restriction_t *OpenAPI_plmn_restriction_create(
-    OpenAPI_set_t *rat_restrictions,
+    OpenAPI_list_t *rat_restrictions,
     OpenAPI_list_t *forbidden_areas,
     OpenAPI_service_area_restriction_t *service_area_restriction,
     OpenAPI_list_t *core_network_type_restrictions,
-    OpenAPI_set_t *primary_rat_restrictions,
-    OpenAPI_set_t *secondary_rat_restrictions
+    OpenAPI_list_t *primary_rat_restrictions,
+    OpenAPI_list_t *secondary_rat_restrictions
 );
 void OpenAPI_plmn_restriction_free(OpenAPI_plmn_restriction_t *plmn_restriction);
 OpenAPI_plmn_restriction_t *OpenAPI_plmn_restriction_parseFromJSON(cJSON *plmn_restrictionJSON);

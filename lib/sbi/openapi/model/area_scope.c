@@ -283,7 +283,7 @@ end:
     }
     if (tac_info_per_plmnList) {
         OpenAPI_list_for_each(tac_info_per_plmnList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_tac_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

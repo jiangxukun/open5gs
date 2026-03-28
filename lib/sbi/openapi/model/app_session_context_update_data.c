@@ -18,7 +18,7 @@ OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_da
     OpenAPI_mps_action_e mps_action,
     char *mps_id,
     char *mcs_id,
-    OpenAPI_preemption_control_information_rm_t *preempt_control_info,
+    OpenAPI_preemption_control_information_e preempt_control_info,
     OpenAPI_reserv_priority_e res_prio,
     OpenAPI_service_info_status_e serv_inf_status,
     OpenAPI_sip_forking_indication_e sip_fork_ind,
@@ -110,10 +110,6 @@ void OpenAPI_app_session_context_update_data_free(OpenAPI_app_session_context_up
     if (app_session_context_update_data->mcs_id) {
         ogs_free(app_session_context_update_data->mcs_id);
         app_session_context_update_data->mcs_id = NULL;
-    }
-    if (app_session_context_update_data->preempt_control_info) {
-        OpenAPI_preemption_control_information_rm_free(app_session_context_update_data->preempt_control_info);
-        app_session_context_update_data->preempt_control_info = NULL;
     }
     if (app_session_context_update_data->spon_id) {
         ogs_free(app_session_context_update_data->spon_id);
@@ -270,14 +266,8 @@ cJSON *OpenAPI_app_session_context_update_data_convertToJSON(OpenAPI_app_session
     }
     }
 
-    if (app_session_context_update_data->preempt_control_info) {
-    cJSON *preempt_control_info_local_JSON = OpenAPI_preemption_control_information_rm_convertToJSON(app_session_context_update_data->preempt_control_info);
-    if (preempt_control_info_local_JSON == NULL) {
-        ogs_error("OpenAPI_app_session_context_update_data_convertToJSON() failed [preempt_control_info]");
-        goto end;
-    }
-    cJSON_AddItemToObject(item, "preemptControlInfo", preempt_control_info_local_JSON);
-    if (item->child == NULL) {
+    if (app_session_context_update_data->preempt_control_info != OpenAPI_preemption_control_information_NULL) {
+    if (cJSON_AddStringToObject(item, "preemptControlInfo", OpenAPI_preemption_control_information_ToString(app_session_context_update_data->preempt_control_info)) == NULL) {
         ogs_error("OpenAPI_app_session_context_update_data_convertToJSON() failed [preempt_control_info]");
         goto end;
     }
@@ -384,7 +374,7 @@ OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_da
     cJSON *mps_id = NULL;
     cJSON *mcs_id = NULL;
     cJSON *preempt_control_info = NULL;
-    OpenAPI_preemption_control_information_rm_t *preempt_control_info_local_nonprim = NULL;
+    OpenAPI_preemption_control_information_e preempt_control_infoVariable = 0;
     cJSON *res_prio = NULL;
     OpenAPI_reserv_priority_e res_prioVariable = 0;
     cJSON *serv_inf_status = NULL;
@@ -515,11 +505,11 @@ OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_da
 
     preempt_control_info = cJSON_GetObjectItemCaseSensitive(app_session_context_update_dataJSON, "preemptControlInfo");
     if (preempt_control_info) {
-    preempt_control_info_local_nonprim = OpenAPI_preemption_control_information_rm_parseFromJSON(preempt_control_info);
-    if (!preempt_control_info_local_nonprim) {
-        ogs_error("OpenAPI_preemption_control_information_rm_parseFromJSON failed [preempt_control_info]");
+    if (!cJSON_IsString(preempt_control_info)) {
+        ogs_error("OpenAPI_app_session_context_update_data_parseFromJSON() failed [preempt_control_info]");
         goto end;
     }
+    preempt_control_infoVariable = OpenAPI_preemption_control_information_FromString(preempt_control_info->valuestring);
     }
 
     res_prio = cJSON_GetObjectItemCaseSensitive(app_session_context_update_dataJSON, "resPrio");
@@ -622,7 +612,7 @@ OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_da
         mps_action ? mps_actionVariable : 0,
         mps_id && !cJSON_IsNull(mps_id) ? ogs_strdup(mps_id->valuestring) : NULL,
         mcs_id && !cJSON_IsNull(mcs_id) ? ogs_strdup(mcs_id->valuestring) : NULL,
-        preempt_control_info ? preempt_control_info_local_nonprim : NULL,
+        preempt_control_info ? preempt_control_infoVariable : 0,
         res_prio ? res_prioVariable : 0,
         serv_inf_status ? serv_inf_statusVariable : 0,
         sip_fork_ind ? sip_fork_indVariable : 0,
@@ -645,17 +635,13 @@ end:
     }
     if (med_componentsList) {
         OpenAPI_list_for_each(med_componentsList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_media_component_rm_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
         }
         OpenAPI_list_free(med_componentsList);
         med_componentsList = NULL;
-    }
-    if (preempt_control_info_local_nonprim) {
-        OpenAPI_preemption_control_information_rm_free(preempt_control_info_local_nonprim);
-        preempt_control_info_local_nonprim = NULL;
     }
     if (tsn_bridge_man_cont_local_nonprim) {
         OpenAPI_bridge_management_container_free(tsn_bridge_man_cont_local_nonprim);

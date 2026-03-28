@@ -18,7 +18,7 @@
 #include "media_component_rm.h"
 #include "mps_action.h"
 #include "port_management_container.h"
-#include "preemption_control_information_rm.h"
+#include "preemption_control_information.h"
 #include "reserv_priority.h"
 #include "service_info_status.h"
 #include "sip_forking_indication.h"
@@ -43,7 +43,7 @@ typedef struct OpenAPI_app_session_context_update_data_s {
     OpenAPI_mps_action_e mps_action;
     char *mps_id;
     char *mcs_id;
-    struct OpenAPI_preemption_control_information_rm_s *preempt_control_info;
+    OpenAPI_preemption_control_information_e preempt_control_info;
     OpenAPI_reserv_priority_e res_prio;
     OpenAPI_service_info_status_e serv_inf_status;
     OpenAPI_sip_forking_indication_e sip_fork_ind;
@@ -68,7 +68,7 @@ OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_da
     OpenAPI_mps_action_e mps_action,
     char *mps_id,
     char *mcs_id,
-    OpenAPI_preemption_control_information_rm_t *preempt_control_info,
+    OpenAPI_preemption_control_information_e preempt_control_info,
     OpenAPI_reserv_priority_e res_prio,
     OpenAPI_service_info_status_e serv_inf_status,
     OpenAPI_sip_forking_indication_e sip_fork_ind,

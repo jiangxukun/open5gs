@@ -1,7 +1,7 @@
 /*
  * ue_mobility.h
  *
- * Represents UE mobility information.
+ * 
  */
 
 #ifndef _OpenAPI_ue_mobility_H_

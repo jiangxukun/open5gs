@@ -1,7 +1,7 @@
 /*
  * sms_support.h
  *
- * 
+ * Indicates the supported SMS delivery of a UE
  */
 
 #ifndef _OpenAPI_sms_support_H_

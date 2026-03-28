@@ -18,7 +18,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
     OpenAPI_plmn_id_t *plmn_id,
     bool is_immediate_report,
     int immediate_report,
-    OpenAPI_list_t *report,
+    OpenAPI_immediate_report_t *report,
     char *supported_features,
     OpenAPI_context_info_t *context_info,
     bool is_nf_change_filter,
@@ -105,10 +105,7 @@ void OpenAPI_modify_200_response_free(OpenAPI_modify_200_response_t *modify_200_
         modify_200_response->plmn_id = NULL;
     }
     if (modify_200_response->report) {
-        OpenAPI_list_for_each(modify_200_response->report, node) {
-            OpenAPI_report_item_free(node->data);
-        }
-        OpenAPI_list_free(modify_200_response->report);
+        OpenAPI_immediate_report_free(modify_200_response->report);
         modify_200_response->report = NULL;
     }
     if (modify_200_response->supported_features) {
@@ -144,13 +141,11 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
 
     item = cJSON_CreateObject();
-    if (!modify_200_response->nf_instance_id) {
-        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [nf_instance_id]");
-        return NULL;
-    }
+    if (modify_200_response->nf_instance_id) {
     if (cJSON_AddStringToObject(item, "nfInstanceId", modify_200_response->nf_instance_id) == NULL) {
         ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [nf_instance_id]");
         goto end;
+    }
     }
 
     if (modify_200_response->is_implicit_unsubscribe) {
@@ -167,13 +162,11 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
     }
 
-    if (!modify_200_response->callback_reference) {
-        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [callback_reference]");
-        return NULL;
-    }
+    if (modify_200_response->callback_reference) {
     if (cJSON_AddStringToObject(item, "callbackReference", modify_200_response->callback_reference) == NULL) {
         ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [callback_reference]");
         goto end;
+    }
     }
 
     if (modify_200_response->amf_service_name) {
@@ -183,10 +176,7 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
     }
 
-    if (!modify_200_response->monitored_resource_uris) {
-        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [monitored_resource_uris]");
-        return NULL;
-    }
+    if (modify_200_response->monitored_resource_uris) {
     cJSON *monitored_resource_urisList = cJSON_AddArrayToObject(item, "monitoredResourceUris");
     if (monitored_resource_urisList == NULL) {
         ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [monitored_resource_uris]");
@@ -197,6 +187,7 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
             ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [monitored_resource_uris]");
             goto end;
         }
+    }
     }
 
     if (modify_200_response->single_nssai) {
@@ -246,22 +237,17 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
     }
 
-    if (!modify_200_response->report) {
-        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [report]");
-        return NULL;
-    }
-    cJSON *reportList = cJSON_AddArrayToObject(item, "report");
-    if (reportList == NULL) {
+    if (modify_200_response->report) {
+    cJSON *report_local_JSON = OpenAPI_immediate_report_convertToJSON(modify_200_response->report);
+    if (report_local_JSON == NULL) {
         ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [report]");
         goto end;
     }
-    OpenAPI_list_for_each(modify_200_response->report, node) {
-        cJSON *itemLocal = OpenAPI_report_item_convertToJSON(node->data);
-        if (itemLocal == NULL) {
-            ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [report]");
-            goto end;
-        }
-        cJSON_AddItemToArray(reportList, itemLocal);
+    cJSON_AddItemToObject(item, "report", report_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [report]");
+        goto end;
+    }
     }
 
     if (modify_200_response->supported_features) {
@@ -348,7 +334,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     OpenAPI_plmn_id_t *plmn_id_local_nonprim = NULL;
     cJSON *immediate_report = NULL;
     cJSON *report = NULL;
-    OpenAPI_list_t *reportList = NULL;
+    OpenAPI_immediate_report_t *report_local_nonprim = NULL;
     cJSON *supported_features = NULL;
     cJSON *context_info = NULL;
     OpenAPI_context_info_t *context_info_local_nonprim = NULL;
@@ -359,13 +345,11 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     cJSON *ue_con_smf_data_sub_filter = NULL;
     OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter_local_nonprim = NULL;
     nf_instance_id = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "nfInstanceId");
-    if (!nf_instance_id) {
+    if (nf_instance_id) {
+    if (!cJSON_IsString(nf_instance_id) && !cJSON_IsNull(nf_instance_id)) {
         ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [nf_instance_id]");
         goto end;
     }
-    if (!cJSON_IsString(nf_instance_id)) {
-        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [nf_instance_id]");
-        goto end;
     }
 
     implicit_unsubscribe = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "implicitUnsubscribe");
@@ -385,13 +369,11 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     }
 
     callback_reference = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "callbackReference");
-    if (!callback_reference) {
+    if (callback_reference) {
+    if (!cJSON_IsString(callback_reference) && !cJSON_IsNull(callback_reference)) {
         ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [callback_reference]");
         goto end;
     }
-    if (!cJSON_IsString(callback_reference)) {
-        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [callback_reference]");
-        goto end;
     }
 
     amf_service_name = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "amfServiceName");
@@ -403,10 +385,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     }
 
     monitored_resource_uris = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "monitoredResourceUris");
-    if (!monitored_resource_uris) {
-        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [monitored_resource_uris]");
-        goto end;
-    }
+    if (monitored_resource_uris) {
         cJSON *monitored_resource_uris_local = NULL;
         if (!cJSON_IsArray(monitored_resource_uris)) {
             ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [monitored_resource_uris]");
@@ -424,6 +403,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
             }
             OpenAPI_list_add(monitored_resource_urisList, ogs_strdup(monitored_resource_uris_local->valuestring));
         }
+    }
 
     single_nssai = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "singleNssai");
     if (single_nssai) {
@@ -468,30 +448,13 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     }
 
     report = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "report");
-    if (!report) {
-        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [report]");
+    if (report) {
+    report_local_nonprim = OpenAPI_immediate_report_parseFromJSON(report);
+    if (!report_local_nonprim) {
+        ogs_error("OpenAPI_immediate_report_parseFromJSON failed [report]");
         goto end;
     }
-        cJSON *report_local = NULL;
-        if (!cJSON_IsArray(report)) {
-            ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [report]");
-            goto end;
-        }
-
-        reportList = OpenAPI_list_create();
-
-        cJSON_ArrayForEach(report_local, report) {
-            if (!cJSON_IsObject(report_local)) {
-                ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [report]");
-                goto end;
-            }
-            OpenAPI_report_item_t *reportItem = OpenAPI_report_item_parseFromJSON(report_local);
-            if (!reportItem) {
-                ogs_error("No reportItem");
-                goto end;
-            }
-            OpenAPI_list_add(reportList, reportItem);
-        }
+    }
 
     supported_features = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "supportedFeatures");
     if (supported_features) {
@@ -557,20 +520,20 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     }
 
     modify_200_response_local_var = OpenAPI_modify_200_response_create (
-        ogs_strdup(nf_instance_id->valuestring),
+        nf_instance_id && !cJSON_IsNull(nf_instance_id) ? ogs_strdup(nf_instance_id->valuestring) : NULL,
         implicit_unsubscribe ? true : false,
         implicit_unsubscribe ? implicit_unsubscribe->valueint : 0,
         expires && !cJSON_IsNull(expires) ? ogs_strdup(expires->valuestring) : NULL,
-        ogs_strdup(callback_reference->valuestring),
+        callback_reference && !cJSON_IsNull(callback_reference) ? ogs_strdup(callback_reference->valuestring) : NULL,
         amf_service_name && !cJSON_IsNull(amf_service_name) ? ogs_strdup(amf_service_name->valuestring) : NULL,
-        monitored_resource_urisList,
+        monitored_resource_uris ? monitored_resource_urisList : NULL,
         single_nssai ? single_nssai_local_nonprim : NULL,
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,
         subscription_id && !cJSON_IsNull(subscription_id) ? ogs_strdup(subscription_id->valuestring) : NULL,
         plmn_id ? plmn_id_local_nonprim : NULL,
         immediate_report ? true : false,
         immediate_report ? immediate_report->valueint : 0,
-        reportList,
+        report ? report_local_nonprim : NULL,
         supported_features && !cJSON_IsNull(supported_features) ? ogs_strdup(supported_features->valuestring) : NULL,
         context_info ? context_info_local_nonprim : NULL,
         nf_change_filter ? true : false,
@@ -598,12 +561,9 @@ end:
         OpenAPI_plmn_id_free(plmn_id_local_nonprim);
         plmn_id_local_nonprim = NULL;
     }
-    if (reportList) {
-        OpenAPI_list_for_each(reportList, node) {
-            OpenAPI_report_item_free(node->data);
-        }
-        OpenAPI_list_free(reportList);
-        reportList = NULL;
+    if (report_local_nonprim) {
+        OpenAPI_immediate_report_free(report_local_nonprim);
+        report_local_nonprim = NULL;
     }
     if (context_info_local_nonprim) {
         OpenAPI_context_info_free(context_info_local_nonprim);

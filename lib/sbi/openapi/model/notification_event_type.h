@@ -1,7 +1,7 @@
 /*
  * notification_event_type.h
  *
- * 
+ * Types of events sent in notifications from NRF to subscribed NF Instances
  */
 
 #ifndef _OpenAPI_notification_event_type_H_

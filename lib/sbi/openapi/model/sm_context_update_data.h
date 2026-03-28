@@ -43,11 +43,6 @@ extern "C" {
 #endif
 
 typedef struct OpenAPI_sm_context_update_data_s OpenAPI_sm_context_update_data_t;
-typedef enum { OpenAPI_sm_context_update_data_SMPOLICYNOTIFYIND_NULL = 0, OpenAPI_sm_context_update_data_SMPOLICYNOTIFYIND__true } OpenAPI_sm_context_update_data_sm_policy_notify_ind_e;
-
-char* OpenAPI_sm_context_update_data_sm_policy_notify_ind_ToString(OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_ind);
-
-OpenAPI_sm_context_update_data_sm_policy_notify_ind_e OpenAPI_sm_context_update_data_sm_policy_notify_ind_FromString(char* sm_policy_notify_ind);
 typedef struct OpenAPI_sm_context_update_data_s {
     char *pei;
     char *serving_nf_id;
@@ -115,7 +110,8 @@ typedef struct OpenAPI_sm_context_update_data_s {
     bool is_skip_n2_pdu_session_res_rel_ind;
     int skip_n2_pdu_session_res_rel_ind;
     OpenAPI_list_t *secondary_rat_usage_data_report_container;
-    OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_ind;
+    bool is_sm_policy_notify_ind;
+    int sm_policy_notify_ind;
     bool is_pcf_ue_callback_info_null;
     struct OpenAPI_pcf_ue_callback_info_s *pcf_ue_callback_info;
     OpenAPI_satellite_backhaul_category_e satellite_backhaul_cat;
@@ -188,7 +184,8 @@ OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_create(
     bool is_skip_n2_pdu_session_res_rel_ind,
     int skip_n2_pdu_session_res_rel_ind,
     OpenAPI_list_t *secondary_rat_usage_data_report_container,
-    OpenAPI_sm_context_update_data_sm_policy_notify_ind_e sm_policy_notify_ind,
+    bool is_sm_policy_notify_ind,
+    int sm_policy_notify_ind,
     bool is_pcf_ue_callback_info_null,
     OpenAPI_pcf_ue_callback_info_t *pcf_ue_callback_info,
     OpenAPI_satellite_backhaul_category_e satellite_backhaul_cat

@@ -37,6 +37,7 @@ typedef struct OpenAPI_context_data_sets_s {
     struct OpenAPI_smsf_registration_s *smsf_non3_gpp_access;
     OpenAPI_list_t *subscription_data_subscriptions;
     OpenAPI_list_t *smf_registrations;
+    bool is_ip_sm_gw_null;
     struct OpenAPI_ip_sm_gw_registration_s *ip_sm_gw;
     struct OpenAPI_roaming_info_update_s *roaming_info;
     struct OpenAPI_pei_update_info_s *pei_info;
@@ -51,6 +52,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_create(
     OpenAPI_smsf_registration_t *smsf_non3_gpp_access,
     OpenAPI_list_t *subscription_data_subscriptions,
     OpenAPI_list_t *smf_registrations,
+    bool is_ip_sm_gw_null,
     OpenAPI_ip_sm_gw_registration_t *ip_sm_gw,
     OpenAPI_roaming_info_update_t *roaming_info,
     OpenAPI_pei_update_info_t *pei_info

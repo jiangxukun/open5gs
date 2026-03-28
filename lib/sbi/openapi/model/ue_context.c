@@ -2629,7 +2629,7 @@ end:
     }
     if (sub_ue_slice_mbr_listList) {
         OpenAPI_list_for_each(sub_ue_slice_mbr_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_slice_mbr_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -2756,7 +2756,7 @@ end:
     }
     if (pra_in_am_policyList) {
         OpenAPI_list_for_each(pra_in_am_policyList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -2766,7 +2766,7 @@ end:
     }
     if (pra_in_ue_policyList) {
         OpenAPI_list_for_each(pra_in_ue_policyList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_presence_info_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);
@@ -2795,7 +2795,7 @@ end:
     }
     if (pcf_ue_slice_mbr_listList) {
         OpenAPI_list_for_each(pcf_ue_slice_mbr_listList, node) {
-            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*) node->data;
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
             ogs_free(localKeyValue->key);
             OpenAPI_slice_mbr_free(localKeyValue->value);
             OpenAPI_map_free(localKeyValue);

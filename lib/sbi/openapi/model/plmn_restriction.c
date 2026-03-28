@@ -5,12 +5,12 @@
 #include "plmn_restriction.h"
 
 OpenAPI_plmn_restriction_t *OpenAPI_plmn_restriction_create(
-    OpenAPI_set_t *rat_restrictions,
+    OpenAPI_list_t *rat_restrictions,
     OpenAPI_list_t *forbidden_areas,
     OpenAPI_service_area_restriction_t *service_area_restriction,
     OpenAPI_list_t *core_network_type_restrictions,
-    OpenAPI_set_t *primary_rat_restrictions,
-    OpenAPI_set_t *secondary_rat_restrictions
+    OpenAPI_list_t *primary_rat_restrictions,
+    OpenAPI_list_t *secondary_rat_restrictions
 )
 {
     OpenAPI_plmn_restriction_t *plmn_restriction_local_var = ogs_malloc(sizeof(OpenAPI_plmn_restriction_t));
