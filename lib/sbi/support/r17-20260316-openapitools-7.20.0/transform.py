@@ -1417,6 +1417,305 @@ def try_transform_category_i(lines, start_idx, all_schemas, current_file,
 
 
 # ---------------------------------------------------------------------------
+# Category I-mixed: oneOf with mixed inline + $ref items → flatten to object
+# ---------------------------------------------------------------------------
+
+def _extract_schema_name_from_ref(ref_str):
+    """Extract schema name from $ref like '#/.../Foo' or 'File.yaml#/.../Foo'."""
+    ref_str = ref_str.strip().strip("'\"")
+    if "#" not in ref_str:
+        return None
+    _, path_part = ref_str.split("#", 1)
+    parts = path_part.strip("/").split("/")
+    if len(parts) >= 3 and parts[0] == "components" and parts[1] == "schemas":
+        return parts[2]
+    return None
+
+
+def _find_items_ref_in_lines(item_lines):
+    """Find $ref value under items: in oneOf item lines."""
+    in_items = False
+    items_indent = None
+    for line in item_lines[1:]:  # skip first line (e.g. "- type: array")
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        indent = leading_spaces(line)
+        if stripped.startswith("items:"):
+            in_items = True
+            items_indent = indent
+            # Check inline: "items: \n  $ref: ..." vs "items:\n  $ref: ..."
+            continue
+        if in_items:
+            if indent > items_indent and stripped.startswith("$ref:"):
+                return stripped.removeprefix("$ref:").strip()
+            if indent <= items_indent:
+                in_items = False
+    return None
+
+
+def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
+                                    eol="\n"):
+    """
+    Category I-mixed — oneOf with mixed inline and $ref items.
+
+    When oneOf items are a mix of $ref and inline types, generate a flat
+    type: object with each item as a named property.
+
+    Property naming:
+      - $ref item: property name = schema name from $ref
+      - inline array with items.$ref: property name = schema name + "List"
+
+    Example input:
+        oneOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/SessionManagementSubscriptionData'
+            minItems: 1
+          - $ref: '#/components/schemas/ExtendedSmSubsData'
+
+    Output:
+        #oneOf:
+        #  ...
+        type: object
+        properties:
+          SessionManagementSubscriptionDataList:
+            type: array
+            items:
+              $ref: '#/components/schemas/SessionManagementSubscriptionData'
+            minItems: 1
+          ExtendedSmSubsData:
+            $ref: '#/components/schemas/ExtendedSmSubsData'
+    """
+    if lines[start_idx].strip() != "oneOf:":
+        return None
+
+    oneof_line = lines[start_idx]
+    oneof_indent = leading_spaces(oneof_line)
+    j = start_idx + 1
+
+    # Skip blanks
+    while j < len(lines) and is_blank(lines[j]):
+        j += 1
+    if j >= len(lines):
+        return None
+
+    first_item_indent = leading_spaces(lines[j])
+    compact = (first_item_indent == oneof_indent)
+
+    # Collect body
+    body_start = start_idx + 1
+    k = body_start
+    while k < len(lines):
+        if is_blank(lines[k]):
+            k += 1
+            continue
+        indent = leading_spaces(lines[k])
+        stripped = lines[k].lstrip(" ")
+        if compact:
+            if indent > oneof_indent:
+                k += 1
+                continue
+            if indent == oneof_indent and stripped.startswith("- "):
+                k += 1
+                continue
+            break
+        else:
+            if indent <= oneof_indent:
+                break
+            k += 1
+    body_end = k
+    body_lines = lines[body_start:body_end]
+
+    if not body_lines:
+        return None
+
+    # Parse items
+    items = []
+    current_item = None
+    item_base_indent = None
+
+    for line in body_lines:
+        if is_blank(line):
+            if current_item is not None:
+                current_item.append(line)
+            continue
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
+        if stripped.startswith("- "):
+            if item_base_indent is None:
+                item_base_indent = indent
+            if indent == item_base_indent:
+                if current_item is not None:
+                    items.append(current_item)
+                current_item = [line]
+                continue
+        if current_item is not None:
+            current_item.append(line)
+
+    if current_item is not None:
+        items.append(current_item)
+
+    if len(items) < 2:
+        return None
+
+    # Classify items and derive property names + value lines
+    # Each entry: (property_name, value_lines)
+    has_ref_item = False
+    has_inline_item = False
+    prop_entries = []
+    prop_names_seen = set()
+
+    for item in items:
+        first = item[0].strip()
+
+        if first.startswith("- $ref:"):
+            # $ref item → property name = schema name, value = $ref line
+            ref_val = first.removeprefix("- $ref:").strip()
+            schema_name = _extract_schema_name_from_ref(ref_val)
+            if schema_name is None:
+                return None
+            if schema_name in prop_names_seen:
+                return None  # duplicate property name
+            prop_names_seen.add(schema_name)
+
+            # Value is just the $ref at prop_indent + 2
+            value_lines = [
+                " " * (oneof_indent + 4) + "$ref: " + ref_val + eol
+            ]
+            prop_entries.append((schema_name, value_lines))
+            has_ref_item = True
+
+        elif first == "- type: array":
+            # Inline array → need items.$ref for naming
+            items_ref = _find_items_ref_in_lines(item)
+            if items_ref is None:
+                return None  # can't derive property name
+            schema_name = _extract_schema_name_from_ref(items_ref)
+            if schema_name is None:
+                return None
+            prop_name = schema_name + "List"
+            if prop_name in prop_names_seen:
+                return None
+            prop_names_seen.add(prop_name)
+
+            # Reindent item content (strip "- " prefix) to prop_indent + 2
+            content_start = leading_spaces(item[0]) + 2  # after "- "
+            value_lines = []
+            # First line: strip "- " prefix
+            first_content = item[0].lstrip(" ")[2:]  # remove "- "
+            value_lines.append(
+                " " * (oneof_indent + 4) + first_content)
+            # Remaining lines: shift indent
+            for line in item[1:]:
+                if is_blank(line):
+                    value_lines.append(line)
+                    continue
+                old_indent = leading_spaces(line)
+                new_indent = max(0, old_indent - content_start
+                                 + oneof_indent + 4)
+                value_lines.append(
+                    " " * new_indent + line.lstrip(" "))
+            # Strip trailing blanks
+            while value_lines and is_blank(value_lines[-1]):
+                value_lines.pop()
+            prop_entries.append((prop_name, value_lines))
+            has_inline_item = True
+
+        elif first == "- type: object":
+            # Inline object → check if it has properties we can merge
+            # For now, treat it like a complex item — derive name is hard
+            return None
+
+        else:
+            return None
+
+    # Must have at least one inline item (otherwise category I handles it)
+    if not has_inline_item:
+        return None
+
+    # --- Check sibling key conflict ---
+    new_keys = {"type", "properties"}
+    sibling_keys = set()
+
+    scan = start_idx - 1
+    while scan >= 0:
+        line = lines[scan]
+        if is_blank(line):
+            scan -= 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if not stripped.startswith("#"):
+                key_part = stripped.split(":")[0].strip()
+                if key_part:
+                    sibling_keys.add(key_part)
+        scan -= 1
+
+    scan = body_end
+    while scan < len(lines):
+        line = lines[scan]
+        if is_blank(line):
+            scan += 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if not stripped.startswith("#"):
+                key_part = stripped.split(":")[0].strip()
+                if key_part:
+                    sibling_keys.add(key_part)
+        scan += 1
+
+    if new_keys & sibling_keys:
+        return None
+
+    # --- Detect discriminator ---
+    disc_end = body_end
+    tmp = disc_end
+    while tmp < len(lines) and is_blank(lines[tmp]):
+        tmp += 1
+    if (tmp < len(lines)
+            and lines[tmp].strip().startswith("discriminator:")
+            and leading_spaces(lines[tmp]) == oneof_indent):
+        disc_indent = oneof_indent
+        disc_end = tmp + 1
+        while disc_end < len(lines):
+            if is_blank(lines[disc_end]):
+                disc_end += 1
+                continue
+            if leading_spaces(lines[disc_end]) > disc_indent:
+                disc_end += 1
+                continue
+            break
+
+    # --- Build output ---
+    out = []
+
+    # Comment out oneOf block + discriminator
+    out.append(comment_exact(oneof_line))
+    for line in body_lines:
+        out.append(comment_exact(line))
+    for line in lines[body_end:disc_end]:
+        out.append(comment_exact(line))
+
+    # Generate object with properties
+    out.append(" " * oneof_indent + "type: object" + eol)
+    out.append(" " * oneof_indent + "properties:" + eol)
+    prop_indent = oneof_indent + 2
+    for prop_name, value_lines in prop_entries:
+        out.append(" " * prop_indent + prop_name + ":" + eol)
+        out.extend(value_lines)
+
+    return out, disc_end
+
+
+# ---------------------------------------------------------------------------
 # Category H: oneOf catch-all — promote first item for composed types
 # ---------------------------------------------------------------------------
 
@@ -1602,6 +1901,12 @@ def try_transform_category_h(lines, start_idx, eol="\n"):
     if promoted_keys & sibling_keys:
         return None
 
+    # If promoted content has no $ref or properties at top level, promoting
+    # would turn the schema into a bare type alias (e.g. type: array),
+    # causing the code generator to skip model file generation. Skip.
+    if "$ref" not in promoted_keys and "properties" not in promoted_keys:
+        return None
+
     # --- Detect discriminator: at same indent after oneOf body ---
     disc_end = body_end
     tmp = disc_end
@@ -1642,7 +1947,7 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = changed_i = 0
+    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = changed_i = changed_im = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -1703,6 +2008,18 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                 changed_h += 1
                 continue
 
+            # I-mixed: oneOf[mixed inline + $ref] → object with derived props
+            # (only reached when H skips — e.g. bare type alias)
+            if all_schemas is not None:
+                transformed = try_transform_category_i_mixed(
+                    lines, i, all_schemas, current_file, eol=eol)
+                if transformed is not None:
+                    new_lines, next_i = transformed
+                    out.extend(new_lines)
+                    i = next_i
+                    changed_im += 1
+                    continue
+
         if lines[i].strip() == "anyOf:":
             # B: anyOf[enum + string]  (try first — more specific)
             transformed = try_transform_category_b(lines, i)
@@ -1727,7 +2044,7 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h, changed_i
+    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h, changed_i, changed_im
 
 
 # ---------------------------------------------------------------------------
@@ -1741,7 +2058,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce, cf, cg, ch, ci = transform_lines(
+    new_lines, cb, cd, ca, ce, cf, cg, ch, ci, cim = transform_lines(
         lines, string_schemas=string_schemas, all_schemas=all_schemas,
         current_file=in_file.name)
     new_text = "".join(new_lines)
@@ -1750,7 +2067,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce, cf, cg, ch, ci
+    return cb, cd, ca, ce, cf, cg, ch, ci, cim
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -1796,7 +2113,7 @@ def main():
 
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = total_i = 0
+    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = total_i = total_im = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -1806,7 +2123,7 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce, cf, cg, ch, ci = process_yaml_file(
+            cb, cd, ca, ce, cf, cg, ch, ci, cim = process_yaml_file(
                 in_file, out_file, string_schemas=string_schemas,
                 all_schemas=all_schemas)
             total_b += cb
@@ -1817,7 +2134,8 @@ def main():
             total_g += cg
             total_h += ch
             total_i += ci
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch}, i={ci})")
+            total_im += cim
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch}, i={ci}, im={cim})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -1832,6 +2150,7 @@ def main():
     print(f"Changed G blocks       : {total_g}")
     print(f"Changed H blocks       : {total_h}")
     print(f"Changed I blocks       : {total_i}")
+    print(f"Changed I-mixed blocks : {total_im}")
 
 
 
