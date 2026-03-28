@@ -58,25 +58,20 @@ def reindent_block(block_lines, new_base_indent):
 
 def try_transform_allof_patterns(lines, start_idx):
     """
-    Transform this form:
+    Comment out allOf blocks containing only pattern constraints.
 
+    The C code generator cannot handle pattern constraints inside allOf,
+    so the allOf block is removed while keeping the type: string.
+
+    Before:
       type: string
       allOf:
-        - pattern: ...
-        - pattern: ...
-      example: ...
+        - pattern: '^[0-9]{5,6}$'
 
-    into:
-
+    After:
       type: string
     #      allOf:
-    #        - pattern: ...
-    #        - pattern: ...
-      example: ...
-
-    Returns:
-      (new_lines, next_idx) if matched
-      None otherwise
+    #        - pattern: '^[0-9]{5,6}$'
     """
     if lines[start_idx].strip() != "type: string":
         return None
@@ -129,52 +124,50 @@ def try_transform_allof_patterns(lines, start_idx):
     return out, j
 
 
-def try_transform_category_b(lines, start_idx):
+def try_transform_extensible_enum(lines, start_idx, keyword="anyOf"):
     """
-    Match category B only.
+    Convert 3GPP extensible enum pattern to flat type: string + enum.
 
-    Supported forms:
+    Handles both anyOf and oneOf via the keyword parameter.
+    The C code generator cannot handle anyOf/oneOf composed types,
+    so this flattens the enum values into a simple string enum.
 
-      anyOf:
-        - type: string
-          enum:
-            - ...
-        - type: string
-      description: ...
+    Before (anyOf):                   Before (oneOf):
+      anyOf:                            oneOf:
+        - type: string                    - type: string
+          enum:                             enum:
+            - REGISTERED                      - AMF
+            - DEREGISTERED                    - SMF
+        - type: string                    - type: string
+      description: ...                  description: ...
 
-    and also:
-
-      anyOf:
-      - type: string
-        enum:
-          - ...
-      - type: string
-        description: >
-          ...
-      description: |
-        ...
-
-    Return:
-      (new_lines, next_idx) if matched
-      None otherwise
+    After (same for both):
+    #  anyOf:                          #  oneOf:
+    #    - type: string                #    - type: string
+      type: string                       type: string
+      enum:                              enum:
+        - REGISTERED                       - AMF
+        - DEREGISTERED                     - SMF
+    #    - type: string                #    - type: string
+    #  description: ...                #  description: ...
     """
-    if lines[start_idx].strip() != "anyOf:":
+    if lines[start_idx].strip() != keyword + ":":
         return None
 
-    anyof_line = lines[start_idx]
-    anyof_indent = leading_spaces(anyof_line)
+    kw_line = lines[start_idx]
+    kw_indent = leading_spaces(kw_line)
     j = start_idx + 1
 
-    # 1) first item head: allow indent >= anyOf indent
+    # 1) first item: "- type: string"
     if j >= len(lines) or lines[j].strip() != "- type: string":
         return None
     first_head = lines[j]
     first_indent = leading_spaces(first_head)
-    if first_indent < anyof_indent:
+    if first_indent < kw_indent:
         return None
     j += 1
 
-    # 2) enum header
+    # 2) enum: header
     while j < len(lines) and is_blank(lines[j]):
         return None
 
@@ -185,7 +178,7 @@ def try_transform_category_b(lines, start_idx):
     enum_indent = leading_spaces(lines[j])
     j += 1
 
-    # 3) enum values (comments inside enum block are preserved)
+    # 3) collect enum values (preserve comments inside block)
     saw_enum_value = False
     while j < len(lines):
         line = lines[j]
@@ -195,7 +188,6 @@ def try_transform_category_b(lines, start_idx):
             j += 1
             continue
 
-        # YAML comment lines (possibly at column 0) inside enum block
         stripped_raw = line.strip()
         if stripped_raw.startswith("#"):
             enum_lines.append(line)
@@ -216,16 +208,16 @@ def try_transform_category_b(lines, start_idx):
     if not saw_enum_value:
         return None
 
-    # 4) second item head
+    # 4) second item: "- type: string"
     if j >= len(lines) or lines[j].strip() != "- type: string":
         return None
     second_head = lines[j]
     second_indent = leading_spaces(second_head)
-    if second_indent < anyof_indent:
+    if second_indent < kw_indent:
         return None
     j += 1
 
-    # 5) second item tail: nested description block etc.
+    # 5) trailing lines of second item (description etc.)
     second_tail = []
     while j < len(lines):
         line = lines[j]
@@ -242,12 +234,12 @@ def try_transform_category_b(lines, start_idx):
 
         break
 
-    # 6) sibling description block after anyOf
+    # 6) sibling description block after anyOf/oneOf
     sibling_desc = []
     if j < len(lines) and lines[j].strip().startswith("description:"):
         desc_indent = leading_spaces(lines[j])
 
-        if desc_indent == anyof_indent:
+        if desc_indent == kw_indent:
             sibling_desc.append(lines[j])
             j += 1
 
@@ -266,17 +258,16 @@ def try_transform_category_b(lines, start_idx):
 
                 break
 
-    # 7) build transformed output
-    eol = "\r\n" if anyof_line.endswith("\r\n") else "\n"
+    # 7) build output
+    eol = "\r\n" if kw_line.endswith("\r\n") else "\n"
     out = []
-    out.append(comment_exact(anyof_line))
+    out.append(comment_exact(kw_line))
     out.append(comment_exact(first_head))
 
-    # type: string 삽입 — 제너레이터가 string enum으로 정확히 분류하고
-    # collect_string_enums가 수집할 수 있도록
-    out.append(" " * anyof_indent + "type: string" + eol)
+    # insert type: string so the generator classifies this as a string enum
+    out.append(" " * kw_indent + "type: string" + eol)
 
-    reindented_enum_lines = reindent_block(enum_lines, anyof_indent)
+    reindented_enum_lines = reindent_block(enum_lines, kw_indent)
     for line in reindented_enum_lines:
         out.append(line)
 
@@ -301,10 +292,29 @@ def detect_eol(lines):
 
 
 # ---------------------------------------------------------------------------
-# Category D: allOf whose first item is $ref, rest are not/properties/required
+# allOf with $ref as first item and not/properties/required as rest -> promote $ref
 # ---------------------------------------------------------------------------
 
 def try_transform_category_d(lines, start_idx, eol="\n"):
+    """
+    Promote the $ref from allOf[$ref + validation] and comment out the rest.
+
+    The C code generator does not support allOf composition, so only
+    the base schema ($ref) is kept; additional constraints are removed.
+
+    Before:
+      allOf:
+        - $ref: '#/components/schemas/NfProfile'
+        - not:
+            required: [nfInstanceId]
+
+    After:
+      $ref: '#/components/schemas/NfProfile'
+    #  allOf:
+    #    - $ref: '#/components/schemas/NfProfile'
+    #    - not:
+    #        required: [nfInstanceId]
+    """
     if lines[start_idx].strip() != "allOf:":
         return None
 
@@ -354,21 +364,11 @@ def try_transform_category_d(lines, start_idx, eol="\n"):
 
 
 # ---------------------------------------------------------------------------
-# Category F: oneOf whose ALL items are validation constraints only
-# (required, nested oneOf/allOf with required)
+# oneOf with only validation constraints (required) -> comment out entirely
 # ---------------------------------------------------------------------------
 
 def _is_validation_only_item(item_lines):
-    """
-    Check if a single oneOf item (list of lines starting with "- ") is
-    purely a validation constraint.
-
-    Valid patterns:
-        - required: [field1]
-        - required: [field1, field2]
-        - oneOf:                    (followed by nested required items)
-        - allOf:                    (followed by nested required items)
-    """
+    """Check if a oneOf item is purely a validation constraint (required only)."""
     if not item_lines:
         return False
 
@@ -378,7 +378,7 @@ def _is_validation_only_item(item_lines):
     if first.startswith("- required:"):
         return True
 
-    # Nested oneOf/allOf — check sub-items recursively
+    # Nested oneOf/allOf -- check sub-items recursively
     if first in ("- oneOf:", "- allOf:"):
         # All continuation lines must be required or nested oneOf/allOf
         item_indent = leading_spaces(item_lines[0])
@@ -397,7 +397,7 @@ def _is_validation_only_item(item_lines):
             if s.startswith("- oneOf:") or s.startswith("- allOf:"):
                 continue
             if s.startswith("- "):
-                # Unknown item type — not validation-only
+                # Unknown item type -- not validation-only
                 return False
             # Continuation of a required/oneOf/allOf line (deeper indent) is OK
             continue
@@ -408,16 +408,20 @@ def _is_validation_only_item(item_lines):
 
 def try_transform_category_f(lines, start_idx, eol="\n"):
     """
-    Category F — oneOf where ALL items are validation-only constraints.
+    Comment out oneOf blocks where ALL items are required-only constraints.
 
-    Comment out the entire oneOf block.
+    The C code generator cannot generate required-combination validation,
+    so the entire oneOf block is removed.
 
-    Examples:
-        oneOf:                           oneOf:
-          - required: [appId]              - oneOf:
-          - required: [ipTrafficFilter]      - required: [nfId]
-                                             - required: [nfSetId]
-                                           - required: [taiList]
+    Before:
+      oneOf:
+        - required: [appId]
+        - required: [ipTrafficFilter]
+
+    After:
+    #  oneOf:
+    #    - required: [appId]
+    #    - required: [ipTrafficFilter]
     """
     if lines[start_idx].strip() != "oneOf:":
         return None
@@ -503,7 +507,7 @@ def try_transform_category_f(lines, start_idx, eol="\n"):
 
 
 # ---------------------------------------------------------------------------
-# Category E: anyOf whose ALL items resolve to type: string
+# anyOf where ALL items resolve to type: string -> promote first
 # ---------------------------------------------------------------------------
 
 def _is_extensible_enum(schema: dict) -> bool:
@@ -708,13 +712,22 @@ def _is_inline_extensible_enum(item_lines):
 def try_transform_category_e(lines, start_idx, string_schemas,
                              current_file, eol="\n"):
     """
-    Category E — anyOf where items are a mix of:
-      - type: string schemas ($ref or inline)
-      - NullValue ($ref — 3GPP's nullable pattern)
-      - inline extensible enums (- anyOf: with enum+string sub-items)
+    anyOf where all items resolve to type: string, with optional NullValue.
 
-    At least one non-NullValue item must exist.
-    The first non-NullValue item is promoted; everything else is commented out.
+    Promotes the first non-NullValue string item; comments out the rest.
+    Handles $ref to string schemas, inline type: string, inline extensible
+    enums, and NullValue (3GPP's nullable pattern).
+
+    Before:
+      anyOf:
+        - $ref: '#/components/schemas/Dnn'
+        - $ref: '#/components/schemas/NullValue'
+
+    After:
+      $ref: '#/components/schemas/Dnn'
+    #  anyOf:
+    #    - $ref: '#/components/schemas/Dnn'
+    #    - $ref: '#/components/schemas/NullValue'
     """
     if lines[start_idx].strip() != "anyOf:":
         return None
@@ -756,7 +769,7 @@ def try_transform_category_e(lines, start_idx, string_schemas,
     body_end = j
     body_lines = lines[body_start:body_end]
 
-    # Parse items — new item starts at the same indent as the first "- "
+    # Parse items -- new item starts at the same indent as the first "- "
     items = []          # list of list-of-lines
     current_item = None
     item_base_indent = None
@@ -910,171 +923,7 @@ def try_transform_category_e(lines, start_idx, string_schemas,
 
 
 # ---------------------------------------------------------------------------
-# Category G: oneOf[enum + string]  — mirrors Category B but for oneOf:
-# ---------------------------------------------------------------------------
-
-def try_transform_category_g(lines, start_idx):
-    """
-    Match oneOf extensible enum — same structure as Category B but with oneOf:.
-
-    Supported forms:
-
-      oneOf:
-        - type: string
-          enum:
-            - ...
-        - type: string
-      description: ...
-
-    and also:
-
-      oneOf:
-      - type: string
-        enum:
-          - ...
-      - type: string
-        description: >
-          ...
-      description: |
-        ...
-
-    Return:
-      (new_lines, next_idx) if matched
-      None otherwise
-    """
-    if lines[start_idx].strip() != "oneOf:":
-        return None
-
-    oneof_line = lines[start_idx]
-    oneof_indent = leading_spaces(oneof_line)
-    j = start_idx + 1
-
-    # 1) first item head: allow indent >= oneOf indent
-    if j >= len(lines) or lines[j].strip() != "- type: string":
-        return None
-    first_head = lines[j]
-    first_indent = leading_spaces(first_head)
-    if first_indent < oneof_indent:
-        return None
-    j += 1
-
-    # 2) enum header
-    while j < len(lines) and is_blank(lines[j]):
-        return None
-
-    if j >= len(lines) or lines[j].strip() != "enum:":
-        return None
-
-    enum_lines = [lines[j]]
-    enum_indent = leading_spaces(lines[j])
-    j += 1
-
-    # 3) enum values
-    saw_enum_value = False
-    while j < len(lines):
-        line = lines[j]
-
-        if is_blank(line):
-            enum_lines.append(line)
-            j += 1
-            continue
-
-        stripped_raw = line.strip()
-        if stripped_raw.startswith("#"):
-            enum_lines.append(line)
-            j += 1
-            continue
-
-        indent = leading_spaces(line)
-        stripped = line.lstrip(" ")
-
-        if indent >= enum_indent and stripped.startswith("- "):
-            enum_lines.append(line)
-            saw_enum_value = True
-            j += 1
-            continue
-
-        break
-
-    if not saw_enum_value:
-        return None
-
-    # 4) second item head
-    if j >= len(lines) or lines[j].strip() != "- type: string":
-        return None
-    second_head = lines[j]
-    second_indent = leading_spaces(second_head)
-    if second_indent < oneof_indent:
-        return None
-    j += 1
-
-    # 5) second item tail: nested description block etc.
-    second_tail = []
-    while j < len(lines):
-        line = lines[j]
-
-        if is_blank(line):
-            second_tail.append(line)
-            j += 1
-            continue
-
-        if leading_spaces(line) > second_indent:
-            second_tail.append(line)
-            j += 1
-            continue
-
-        break
-
-    # 6) sibling description block after oneOf
-    sibling_desc = []
-    if j < len(lines) and lines[j].strip().startswith("description:"):
-        desc_indent = leading_spaces(lines[j])
-
-        if desc_indent == oneof_indent:
-            sibling_desc.append(lines[j])
-            j += 1
-
-            while j < len(lines):
-                line = lines[j]
-
-                if is_blank(line):
-                    sibling_desc.append(line)
-                    j += 1
-                    continue
-
-                if leading_spaces(line) > desc_indent:
-                    sibling_desc.append(line)
-                    j += 1
-                    continue
-
-                break
-
-    # 7) build transformed output
-    eol = "\r\n" if oneof_line.endswith("\r\n") else "\n"
-    out = []
-    out.append(comment_exact(oneof_line))
-    out.append(comment_exact(first_head))
-
-    # type: string 삽입 — 제너레이터가 string enum으로 정확히 분류하고
-    # collect_string_enums가 수집할 수 있도록
-    out.append(" " * oneof_indent + "type: string" + eol)
-
-    reindented_enum_lines = reindent_block(enum_lines, oneof_indent)
-    for line in reindented_enum_lines:
-        out.append(line)
-
-    out.append(comment_exact(second_head))
-    for line in second_tail:
-        out.append(comment_exact(line))
-
-    for line in sibling_desc:
-        out.append(comment_exact(line))
-
-    return out, j
-
-
-# ---------------------------------------------------------------------------
-# Category I: oneOf where ALL items are $ref to object schemas → flatten
+# oneOf where ALL items are $ref to object schemas -> flatten into merged object
 # ---------------------------------------------------------------------------
 
 def _format_scalar(value):
@@ -1176,7 +1025,7 @@ def _resolve_ref_to_schema(ref_str, current_filename, all_schemas):
 def _rewrite_local_refs(obj, source_filename, current_filename):
     """
     Recursively walk a parsed schema dict/list and rewrite any local $ref
-    (starting with '#/') to include source_filename — but only when the
+    (starting with '#/') to include source_filename -- but only when the
     source file differs from the file we're generating into.
     """
     if source_filename == current_filename:
@@ -1188,7 +1037,7 @@ def _rewrite_local_refs(obj, source_filename, current_filename):
             if k == "$ref" and isinstance(v, str):
                 ref_val = v.strip().strip("'\"")
                 if ref_val.startswith("#/"):
-                    # Local ref → prepend source filename
+                    # Local ref -> prepend source filename
                     result[k] = source_filename + ref_val
                 else:
                     result[k] = v
@@ -1206,29 +1055,27 @@ def _rewrite_local_refs(obj, source_filename, current_filename):
 def try_transform_category_i(lines, start_idx, all_schemas, current_file,
                               eol="\n"):
     """
-    Category I — oneOf where ALL items are $ref to object schemas.
+    oneOf where ALL items are $ref to object schemas -> flatten.
 
-    Instead of promoting just the first item, flatten all referenced schemas'
-    properties into a single type: object.
+    Resolves each $ref target via yaml.safe_load, merges all their
+    properties into a single flat type: object. Cross-file local $ref
+    values are rewritten to include the source filename.
 
-    Example input:
+    Before:
         oneOf:
           - $ref: '#/components/schemas/NfInstanceIdCond'
           - $ref: '#/components/schemas/NfTypeCond'
-          ...
 
-    Output:
-        #oneOf:
-        #  - $ref: '#/components/schemas/NfInstanceIdCond'
-        #  - $ref: '#/components/schemas/NfTypeCond'
-        #  ...
+    After:
+    #    oneOf:
+    #      - $ref: '#/components/schemas/NfInstanceIdCond'
+    #      - $ref: '#/components/schemas/NfTypeCond'
         type: object
         properties:
           nfInstanceId:
-            $ref: '...'
+            $ref: '...NfInstanceId'
           nfType:
-            $ref: '...'
-          ...
+            $ref: '#/.../NFType'
     """
     if lines[start_idx].strip() != "oneOf:":
         return None
@@ -1417,7 +1264,7 @@ def try_transform_category_i(lines, start_idx, all_schemas, current_file,
 
 
 # ---------------------------------------------------------------------------
-# Category I-mixed: oneOf with mixed inline + $ref items → flatten to object
+# oneOf with mixed inline + $ref items -> convert to named properties
 # ---------------------------------------------------------------------------
 
 def _extract_schema_name_from_ref(ref_str):
@@ -1457,35 +1304,38 @@ def _find_items_ref_in_lines(item_lines):
 def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
                                     eol="\n"):
     """
-    Category I-mixed — oneOf with mixed inline and $ref items.
+    oneOf with mixed inline and $ref items -> named properties.
 
-    When oneOf items are a mix of $ref and inline types, generate a flat
-    type: object with each item as a named property.
+    Each item becomes a property in a type: object. Property names
+    are derived from schema names:
+      - $ref item: schema name (e.g. ExtendedSmSubsData)
+      - inline array with items.$ref: schema name + "List"
 
-    Property naming:
-      - $ref item: property name = schema name from $ref
-      - inline array with items.$ref: property name = schema name + "List"
+    Skips "array or single object" patterns where an inline array's
+    items.$ref and a sibling $ref point to the same schema
+    (e.g. LinksValueSchema).
 
-    Example input:
+    Before:
         oneOf:
           - type: array
             items:
-              $ref: '#/components/schemas/SessionManagementSubscriptionData'
+              $ref: '#/.../SessionManagementSubscriptionData'
             minItems: 1
-          - $ref: '#/components/schemas/ExtendedSmSubsData'
+          - $ref: '#/.../ExtendedSmSubsData'
 
-    Output:
-        #oneOf:
-        #  ...
+    After:
+    #    oneOf:
+    #      - type: array ...
+    #      - $ref: '#/.../ExtendedSmSubsData'
         type: object
         properties:
           SessionManagementSubscriptionDataList:
             type: array
             items:
-              $ref: '#/components/schemas/SessionManagementSubscriptionData'
+              $ref: '#/.../SessionManagementSubscriptionData'
             minItems: 1
           ExtendedSmSubsData:
-            $ref: '#/components/schemas/ExtendedSmSubsData'
+            $ref: '#/.../ExtendedSmSubsData'
     """
     if lines[start_idx].strip() != "oneOf:":
         return None
@@ -1570,7 +1420,7 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
         first = item[0].strip()
 
         if first.startswith("- $ref:"):
-            # $ref item → property name = schema name, value = $ref line
+            # $ref item -> property name = schema name
             ref_val = first.removeprefix("- $ref:").strip()
             schema_name = _extract_schema_name_from_ref(ref_val)
             if schema_name is None:
@@ -1587,7 +1437,7 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
             has_ref_item = True
 
         elif first == "- type: array":
-            # Inline array → need items.$ref for naming
+            # Inline array -> derive name from items.$ref
             items_ref = _find_items_ref_in_lines(item)
             if items_ref is None:
                 return None  # can't derive property name
@@ -1623,8 +1473,8 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
             has_inline_item = True
 
         elif first == "- type: object":
-            # Inline object → check if it has properties we can merge
-            # For now, treat it like a complex item — derive name is hard
+            # Inline object -> not supported, skip
+            # Cannot derive a property name from inline object
             return None
 
         else:
@@ -1636,7 +1486,7 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
 
     # --- Detect "array of X or single X" pattern ---
     # If an inline array's items.$ref target matches a sibling $ref target,
-    # this is "array or single object" — not a true union. Skip.
+    # this is "array or single object" -- not a true union. Skip.
     ref_targets = set()
     array_items_targets = set()
     for item in items:
@@ -1738,19 +1588,22 @@ def try_transform_category_i_mixed(lines, start_idx, all_schemas, current_file,
 
 
 # ---------------------------------------------------------------------------
-# Main transform pass (A/B/D/E/F/G/I)
+# Main transform pass
 # ---------------------------------------------------------------------------
 
 def transform_lines(lines, string_schemas=None, all_schemas=None,
                     current_file=""):
+    """2nd pass: iterate over YAML lines and apply transform rules."""
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_i = changed_im = 0
+    changed_enum = changed_d = changed_allof = changed_e = changed_f = 0
+    changed_i = changed_im = 0
     unhandled_oneof = []
 
     while i < len(lines):
-        # A: type:string + allOf(pattern only)
+
+        # A: type:string + allOf(pattern) -> comment out pattern
         transformed = try_transform_allof_patterns(lines, i)
         if transformed is not None:
             new_lines, next_i = transformed
@@ -1759,8 +1612,8 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
             changed_allof += 1
             continue
 
+        # D: allOf[$ref + not/properties] -> promote $ref
         if lines[i].strip() == "allOf:":
-            # D: allOf[$ref + not/properties]
             transformed = try_transform_category_d(lines, i, eol=eol)
             if transformed is not None:
                 new_lines, next_i = transformed
@@ -1769,17 +1622,20 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                 changed_d += 1
                 continue
 
+        # oneOf handlers (priority: extensible enum -> F -> I -> I-mixed)
         if lines[i].strip() == "oneOf:":
-            # G: oneOf[enum + string]  (try first — more specific)
-            transformed = try_transform_category_g(lines, i)
+
+            # extensible enum: oneOf[string+enum, string]
+            transformed = try_transform_extensible_enum(
+                lines, i, keyword="oneOf")
             if transformed is not None:
                 new_lines, next_i = transformed
                 out.extend(new_lines)
                 i = next_i
-                changed_g += 1
+                changed_enum += 1
                 continue
 
-            # F: oneOf[validation-only constraints]
+            # F: validation-only (required-only oneOf) -> comment out
             transformed = try_transform_category_f(lines, i, eol=eol)
             if transformed is not None:
                 new_lines, next_i = transformed
@@ -1788,7 +1644,7 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                 changed_f += 1
                 continue
 
-            # I: oneOf[all $ref → object schemas] → flatten to merged object
+            # I: all-$ref -> flatten properties into flat object
             if all_schemas is not None:
                 transformed = try_transform_category_i(
                     lines, i, all_schemas, current_file, eol=eol)
@@ -1799,7 +1655,7 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                     changed_i += 1
                     continue
 
-            # I-mixed: oneOf[mixed inline + $ref] → object with derived props
+            # I-mixed: inline+$ref mix -> each item becomes a named property
             if all_schemas is not None:
                 transformed = try_transform_category_i_mixed(
                     lines, i, all_schemas, current_file, eol=eol)
@@ -1810,17 +1666,20 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                     changed_im += 1
                     continue
 
+        # anyOf handlers (priority: extensible enum -> E)
         if lines[i].strip() == "anyOf:":
-            # B: anyOf[enum + string]  (try first — more specific)
-            transformed = try_transform_category_b(lines, i)
+
+            # extensible enum: anyOf[string+enum, string]
+            transformed = try_transform_extensible_enum(
+                lines, i, keyword="anyOf")
             if transformed is not None:
                 new_lines, next_i = transformed
                 out.extend(new_lines)
                 i = next_i
-                changed_b += 1
+                changed_enum += 1
                 continue
 
-            # E: anyOf where all items are type: string
+            # E: all-string anyOf -> promote first non-null item
             if string_schemas is not None:
                 transformed = try_transform_category_e(
                     lines, i, string_schemas, current_file, eol=eol)
@@ -1831,12 +1690,14 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
                     changed_e += 1
                     continue
 
+        # no transform matched -> pass through
         out.append(lines[i])
         if lines[i].strip() == "oneOf:":
-            unhandled_oneof.append(i + 1)  # 1-based line number
+            unhandled_oneof.append(i + 1)
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_i, changed_im, unhandled_oneof
+    return (out, changed_enum, changed_d, changed_allof, changed_e,
+            changed_f, changed_i, changed_im, unhandled_oneof)
 
 
 # ---------------------------------------------------------------------------
@@ -1846,11 +1707,13 @@ def transform_lines(lines, string_schemas=None, all_schemas=None,
 def process_yaml_file(in_file: Path, out_file: Path,
                       string_schemas: set = None,
                       all_schemas: dict = None):
+    """Transform a single YAML file and write the result."""
     with open(in_file, "r", encoding="utf-8", newline="") as f:
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce, cf, cg, ci, cim, unhandled = transform_lines(
+    (new_lines, c_enum, cd, ca, ce, cf,
+     ci, cim, unhandled) = transform_lines(
         lines, string_schemas=string_schemas, all_schemas=all_schemas,
         current_file=in_file.name)
     new_text = "".join(new_lines)
@@ -1859,7 +1722,7 @@ def process_yaml_file(in_file: Path, out_file: Path,
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce, cf, cg, ci, cim, unhandled
+    return c_enum, cd, ca, ce, cf, ci, cim, unhandled
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -1869,10 +1732,7 @@ def copy_other_file(in_file: Path, out_file: Path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description=(
-            "Apply YAML transformations (A/B/C/D) "
-            "from input_dir to output_dir."
-        )
+        description="YAML preprocessor for openapi-generator v7 C generator"
     )
     parser.add_argument("input_dir", help="Input directory, e.g. standard")
     parser.add_argument("output_dir", help="Output directory, e.g. modified")
@@ -1895,18 +1755,17 @@ def main():
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # ---- 1st pass: collect type: string schemas across all YAML files ----
+    # ---- 1st pass: collect string schemas and all schemas ----
     string_schemas = collect_string_schemas(input_dir)
     print(f"Collected {len(string_schemas)} string-type schemas")
 
-    # ---- 1st pass (b): collect all schemas for category I flattening ----
     all_schemas = collect_all_schemas(input_dir)
     print(f"Collected {len(all_schemas)} total schemas")
 
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = total_f = total_g = total_i = total_im = 0
-    total_unhandled = 0
+    total_enum = total_d = total_allof = total_e = total_f = 0
+    total_i = total_im = total_unhandled = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -1916,19 +1775,20 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce, cf, cg, ci, cim, unhandled = process_yaml_file(
+            c_enum, cd, ca, ce, cf, ci, cim, unhandled = process_yaml_file(
                 in_file, out_file, string_schemas=string_schemas,
                 all_schemas=all_schemas)
-            total_b += cb
+            total_enum += c_enum
             total_d += cd
             total_allof += ca
             total_e += ce
             total_f += cf
-            total_g += cg
             total_i += ci
             total_im += cim
             total_unhandled += len(unhandled)
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, i={ci}, im={cim})")
+            print(f"[YAML] {rel} "
+                  f"(enum={c_enum}, d={cd}, allof={ca}, e={ce}, "
+                  f"f={cf}, i={ci}, im={cim})")
             for ln in unhandled:
                 print(f"  [WARN] unhandled oneOf at line {ln}")
         else:
@@ -1936,16 +1796,15 @@ def main():
             print(f"[COPY] {rel}")
 
     print()
-    print(f"Processed YAML files   : {total_yaml}")
-    print(f"Changed B blocks       : {total_b}")
-    print(f"Changed D blocks       : {total_d}")
-    print(f"Changed allOf blocks   : {total_allof}")
-    print(f"Changed E blocks       : {total_e}")
-    print(f"Changed F blocks       : {total_f}")
-    print(f"Changed G blocks       : {total_g}")
-    print(f"Changed I blocks       : {total_i}")
-    print(f"Changed I-mixed blocks : {total_im}")
-    print(f"Unhandled oneOf blocks : {total_unhandled}")
+    print(f"Processed YAML files       : {total_yaml}")
+    print(f"Extensible enum (anyOf/oneOf) : {total_enum}")
+    print(f"allOf (pattern-only)       : {total_allof}")
+    print(f"allOf ($ref + not/props)   : {total_d}")
+    print(f"anyOf (all-string)         : {total_e}")
+    print(f"oneOf (validation-only)    : {total_f}")
+    print(f"oneOf (all-$ref flatten)   : {total_i}")
+    print(f"oneOf (mixed -> named prop) : {total_im}")
+    print(f"oneOf (unhandled)          : {total_unhandled}")
 
 
 
