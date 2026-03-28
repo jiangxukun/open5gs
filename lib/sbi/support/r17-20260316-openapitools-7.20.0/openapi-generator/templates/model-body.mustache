@@ -144,6 +144,9 @@ char *value
     OpenAPI_{{classname}}_t *{{classname}}_local_var = ogs_malloc(sizeof(OpenAPI_{{classname}}_t));
     ogs_assert({{classname}}_local_var);
 
+{{^vars}}
+    {{classname}}_local_var->value = value;
+{{/vars}}
 {{#vars}}
     {{^required}}
     {{#isNullable}}
@@ -296,6 +299,12 @@ void OpenAPI_{{classname}}_free(OpenAPI_{{classname}}_t *{{classname}})
     }
         {{/isMap}}
     {{/isContainer}}
+{{/vars}}
+{{^vars}}
+    if ({{classname}}->value) {
+        ogs_free({{classname}}->value);
+        {{classname}}->value = NULL;
+    }
 {{/vars}}
     ogs_free({{classname}});
 }
@@ -995,6 +1004,9 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
 
 {{/vars}}
     {{classname}}_local_var = OpenAPI_{{classname}}_create (
+{{^vars}}
+        NULL
+{{/vars}}
 {{#vars}}
     {{^required}}
     {{#isNullable}}

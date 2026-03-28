@@ -554,6 +554,35 @@ def collect_string_schemas(input_dir: Path) -> set:
     return string_schemas
 
 
+def collect_all_schemas(input_dir: Path) -> dict:
+    """
+    First pass: collect all schemas as parsed dicts.
+    Returns {(filename, schema_name): schema_dict}.
+    """
+    all_schemas = {}
+    for yaml_file in sorted(input_dir.rglob("*")):
+        if not is_yaml_file(yaml_file):
+            continue
+        with open(yaml_file, "r", encoding="utf-8") as f:
+            try:
+                doc = yaml.safe_load(f)
+            except Exception:
+                continue
+        if not isinstance(doc, dict):
+            continue
+        components = doc.get("components")
+        if not isinstance(components, dict):
+            continue
+        schemas = components.get("schemas")
+        if not isinstance(schemas, dict):
+            continue
+        fname = yaml_file.name
+        for name, schema in schemas.items():
+            if isinstance(schema, dict):
+                all_schemas[(fname, name)] = schema
+    return all_schemas
+
+
 def resolve_ref_is_string(ref_str: str, current_filename: str,
                           string_schemas: set) -> bool:
     """Check whether a $ref target is a type: string schema."""
@@ -1045,6 +1074,349 @@ def try_transform_category_g(lines, start_idx):
 
 
 # ---------------------------------------------------------------------------
+# Category I: oneOf where ALL items are $ref to object schemas → flatten
+# ---------------------------------------------------------------------------
+
+def _format_scalar(value):
+    """Format a scalar value for YAML output."""
+    if value is None:
+        return "null"
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (int, float)):
+        return str(value)
+    s = str(value)
+    # yaml.safe_load appends trailing \n for block scalars (> or |)
+    s = s.rstrip("\n")
+    # Quote if contains special characters that need quoting in YAML
+    if any(c in s for c in (
+        '#', ':', '{', '}', '[', ']', ',', '&', '*', '?', '|',
+        '<', '>', '=', '!', '%', '@', '`',
+    )):
+        return "'" + s.replace("'", "''") + "'"
+    if s == '' or s.startswith(' ') or s.endswith(' '):
+        return "'" + s.replace("'", "''") + "'"
+    return s
+
+
+def _serialize_schema_dict(schema, indent, eol):
+    """
+    Serialize a schema dict (properties, items, etc.) to YAML lines.
+    Handles nested dicts, lists, and scalars.
+    """
+    lines = []
+    if not isinstance(schema, dict):
+        return lines
+    for key, value in schema.items():
+        k_str = str(key)
+        prefix = " " * indent + k_str + ":"
+        if isinstance(value, dict):
+            lines.append(prefix + eol)
+            lines.extend(_serialize_schema_dict(value, indent + 2, eol))
+        elif isinstance(value, list):
+            lines.append(prefix + eol)
+            for item in value:
+                if isinstance(item, dict):
+                    # YAML list-of-dicts: first key on "- " line
+                    items_list = list(item.items())
+                    fk, fv = items_list[0]
+                    if isinstance(fv, (str, int, float, bool)) or fv is None:
+                        lines.append(
+                            " " * (indent + 2) + "- " + str(fk)
+                            + ": " + _format_scalar(fv) + eol)
+                    elif isinstance(fv, dict):
+                        lines.append(
+                            " " * (indent + 2) + "- " + str(fk) + ":" + eol)
+                        lines.extend(
+                            _serialize_schema_dict(fv, indent + 6, eol))
+                    else:
+                        lines.append(
+                            " " * (indent + 2) + "- " + str(fk)
+                            + ": " + _format_scalar(fv) + eol)
+                    # Remaining keys at indent + 4
+                    for ek, ev in items_list[1:]:
+                        sub_prefix = " " * (indent + 4) + str(ek) + ":"
+                        if isinstance(ev, dict):
+                            lines.append(sub_prefix + eol)
+                            lines.extend(
+                                _serialize_schema_dict(ev, indent + 6, eol))
+                        elif isinstance(ev, list):
+                            lines.append(sub_prefix + eol)
+                            for sub_item in ev:
+                                lines.append(
+                                    " " * (indent + 6) + "- "
+                                    + _format_scalar(sub_item) + eol)
+                        else:
+                            lines.append(
+                                sub_prefix + " " + _format_scalar(ev) + eol)
+                else:
+                    lines.append(
+                        " " * (indent + 2) + "- " + _format_scalar(item) + eol)
+        else:
+            lines.append(prefix + " " + _format_scalar(value) + eol)
+    return lines
+
+
+def _resolve_ref_to_schema(ref_str, current_filename, all_schemas):
+    """Resolve a $ref string to (source_filename, schema_dict) or None."""
+    ref_str = ref_str.strip().strip("'\"")
+    if "#" not in ref_str:
+        return None
+    file_part, path_part = ref_str.split("#", 1)
+    parts = path_part.strip("/").split("/")
+    if len(parts) >= 3 and parts[0] == "components" and parts[1] == "schemas":
+        schema_name = parts[2]
+        fname = file_part if file_part else current_filename
+        schema = all_schemas.get((fname, schema_name))
+        if schema is not None:
+            return fname, schema
+    return None
+
+
+def _rewrite_local_refs(obj, source_filename, current_filename):
+    """
+    Recursively walk a parsed schema dict/list and rewrite any local $ref
+    (starting with '#/') to include source_filename — but only when the
+    source file differs from the file we're generating into.
+    """
+    if source_filename == current_filename:
+        return obj  # no rewriting needed for same-file refs
+
+    if isinstance(obj, dict):
+        result = {}
+        for k, v in obj.items():
+            if k == "$ref" and isinstance(v, str):
+                ref_val = v.strip().strip("'\"")
+                if ref_val.startswith("#/"):
+                    # Local ref → prepend source filename
+                    result[k] = source_filename + ref_val
+                else:
+                    result[k] = v
+            else:
+                result[k] = _rewrite_local_refs(v, source_filename,
+                                                current_filename)
+        return result
+    elif isinstance(obj, list):
+        return [_rewrite_local_refs(item, source_filename, current_filename)
+                for item in obj]
+    else:
+        return obj
+
+
+def try_transform_category_i(lines, start_idx, all_schemas, current_file,
+                              eol="\n"):
+    """
+    Category I — oneOf where ALL items are $ref to object schemas.
+
+    Instead of promoting just the first item, flatten all referenced schemas'
+    properties into a single type: object.
+
+    Example input:
+        oneOf:
+          - $ref: '#/components/schemas/NfInstanceIdCond'
+          - $ref: '#/components/schemas/NfTypeCond'
+          ...
+
+    Output:
+        #oneOf:
+        #  - $ref: '#/components/schemas/NfInstanceIdCond'
+        #  - $ref: '#/components/schemas/NfTypeCond'
+        #  ...
+        type: object
+        properties:
+          nfInstanceId:
+            $ref: '...'
+          nfType:
+            $ref: '...'
+          ...
+    """
+    if lines[start_idx].strip() != "oneOf:":
+        return None
+
+    oneof_line = lines[start_idx]
+    oneof_indent = leading_spaces(oneof_line)
+    j = start_idx + 1
+
+    # Skip blanks
+    while j < len(lines) and is_blank(lines[j]):
+        j += 1
+    if j >= len(lines):
+        return None
+
+    # Detect compact style
+    first_item_indent = leading_spaces(lines[j])
+    compact = (first_item_indent == oneof_indent)
+
+    # Collect body
+    body_start = start_idx + 1
+    k = body_start
+    while k < len(lines):
+        if is_blank(lines[k]):
+            k += 1
+            continue
+        indent = leading_spaces(lines[k])
+        stripped = lines[k].lstrip(" ")
+        if compact:
+            if indent > oneof_indent:
+                k += 1
+                continue
+            if indent == oneof_indent and stripped.startswith("- "):
+                k += 1
+                continue
+            break
+        else:
+            if indent <= oneof_indent:
+                break
+            k += 1
+    body_end = k
+    body_lines = lines[body_start:body_end]
+
+    if not body_lines:
+        return None
+
+    # Parse items
+    items = []
+    current_item = None
+    item_base_indent = None
+
+    for line in body_lines:
+        if is_blank(line):
+            if current_item is not None:
+                current_item.append(line)
+            continue
+        indent = leading_spaces(line)
+        stripped = line.lstrip(" ")
+        if stripped.startswith("- "):
+            if item_base_indent is None:
+                item_base_indent = indent
+            if indent == item_base_indent:
+                if current_item is not None:
+                    items.append(current_item)
+                current_item = [line]
+                continue
+        if current_item is not None:
+            current_item.append(line)
+
+    if current_item is not None:
+        items.append(current_item)
+
+    # Need at least 2 items, ALL must be "- $ref: ..."
+    if len(items) < 2:
+        return None
+
+    ref_values = []
+    for item in items:
+        first = item[0].strip()
+        if not first.startswith("- $ref:"):
+            return None
+        # Must be a single-line $ref (no continuation lines)
+        non_blank = [l for l in item if not is_blank(l)]
+        if len(non_blank) != 1:
+            return None
+        ref_val = first.removeprefix("- $ref:").strip()
+        ref_values.append(ref_val)
+
+    # Resolve each $ref to a schema and check it has properties
+    merged_properties = {}  # ordered dict (Python 3.7+)
+    for ref_val in ref_values:
+        result = _resolve_ref_to_schema(ref_val, current_file, all_schemas)
+        if result is None:
+            return None
+        source_fname, schema = result
+        props = schema.get("properties")
+        if not isinstance(props, dict) or not props:
+            return None
+        for pname, pdef in props.items():
+            if pname not in merged_properties:
+                # Rewrite any local $ref that belongs to source file
+                merged_properties[pname] = _rewrite_local_refs(
+                    pdef, source_fname, current_file)
+
+    if not merged_properties:
+        return None
+
+    # --- Check sibling key conflict (same as H) ---
+    new_keys = {"type", "properties"}
+    sibling_keys = set()
+
+    scan = start_idx - 1
+    while scan >= 0:
+        line = lines[scan]
+        if is_blank(line):
+            scan -= 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if not stripped.startswith("#"):
+                key_part = stripped.split(":")[0].strip()
+                if key_part:
+                    sibling_keys.add(key_part)
+        scan -= 1
+
+    scan = body_end
+    while scan < len(lines):
+        line = lines[scan]
+        if is_blank(line):
+            scan += 1
+            continue
+        indent = leading_spaces(line)
+        if indent < oneof_indent:
+            break
+        if indent == oneof_indent:
+            stripped = line.strip()
+            if not stripped.startswith("#"):
+                key_part = stripped.split(":")[0].strip()
+                if key_part:
+                    sibling_keys.add(key_part)
+        scan += 1
+
+    if new_keys & sibling_keys:
+        return None
+
+    # --- Detect discriminator ---
+    disc_end = body_end
+    tmp = disc_end
+    while tmp < len(lines) and is_blank(lines[tmp]):
+        tmp += 1
+    if (tmp < len(lines)
+            and lines[tmp].strip().startswith("discriminator:")
+            and leading_spaces(lines[tmp]) == oneof_indent):
+        disc_indent = oneof_indent
+        disc_end = tmp + 1
+        while disc_end < len(lines):
+            if is_blank(lines[disc_end]):
+                disc_end += 1
+                continue
+            if leading_spaces(lines[disc_end]) > disc_indent:
+                disc_end += 1
+                continue
+            break
+
+    # --- Build output ---
+    out = []
+
+    # Comment out oneOf block + discriminator
+    out.append(comment_exact(oneof_line))
+    for line in body_lines:
+        out.append(comment_exact(line))
+    for line in lines[body_end:disc_end]:
+        out.append(comment_exact(line))
+
+    # Generate flattened object
+    out.append(" " * oneof_indent + "type: object" + eol)
+    out.append(" " * oneof_indent + "properties:" + eol)
+    prop_indent = oneof_indent + 2
+    for pname, pdef in merged_properties.items():
+        out.append(" " * prop_indent + pname + ":" + eol)
+        out.extend(_serialize_schema_dict(pdef, prop_indent + 2, eol))
+
+    return out, disc_end
+
+
+# ---------------------------------------------------------------------------
 # Category H: oneOf catch-all — promote first item for composed types
 # ---------------------------------------------------------------------------
 
@@ -1265,11 +1637,12 @@ def try_transform_category_h(lines, start_idx, eol="\n"):
 # Main transform pass (A/B/D/E/F/G/H)
 # ---------------------------------------------------------------------------
 
-def transform_lines(lines, string_schemas=None, current_file=""):
+def transform_lines(lines, string_schemas=None, all_schemas=None,
+                    current_file=""):
     eol = detect_eol(lines)
     out = []
     i = 0
-    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = 0
+    changed_b = changed_d = changed_allof = changed_e = changed_f = changed_g = changed_h = changed_i = 0
 
     while i < len(lines):
         # A: type:string + allOf(pattern only)
@@ -1310,6 +1683,17 @@ def transform_lines(lines, string_schemas=None, current_file=""):
                 changed_f += 1
                 continue
 
+            # I: oneOf[all $ref → object schemas] → flatten to merged object
+            if all_schemas is not None:
+                transformed = try_transform_category_i(
+                    lines, i, all_schemas, current_file, eol=eol)
+                if transformed is not None:
+                    new_lines, next_i = transformed
+                    out.extend(new_lines)
+                    i = next_i
+                    changed_i += 1
+                    continue
+
             # H: oneOf catch-all (composed types — promote first item)
             transformed = try_transform_category_h(lines, i, eol=eol)
             if transformed is not None:
@@ -1343,7 +1727,7 @@ def transform_lines(lines, string_schemas=None, current_file=""):
         out.append(lines[i])
         i += 1
 
-    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h
+    return out, changed_b, changed_d, changed_allof, changed_e, changed_f, changed_g, changed_h, changed_i
 
 
 # ---------------------------------------------------------------------------
@@ -1351,20 +1735,22 @@ def transform_lines(lines, string_schemas=None, current_file=""):
 # ---------------------------------------------------------------------------
 
 def process_yaml_file(in_file: Path, out_file: Path,
-                      string_schemas: set = None):
+                      string_schemas: set = None,
+                      all_schemas: dict = None):
     with open(in_file, "r", encoding="utf-8", newline="") as f:
         original_text = f.read()
 
     lines = split_lines_preserve_exact(original_text)
-    new_lines, cb, cd, ca, ce, cf, cg, ch = transform_lines(
-        lines, string_schemas=string_schemas, current_file=in_file.name)
+    new_lines, cb, cd, ca, ce, cf, cg, ch, ci = transform_lines(
+        lines, string_schemas=string_schemas, all_schemas=all_schemas,
+        current_file=in_file.name)
     new_text = "".join(new_lines)
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
     with open(out_file, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
 
-    return cb, cd, ca, ce, cf, cg, ch
+    return cb, cd, ca, ce, cf, cg, ch, ci
 
 
 def copy_other_file(in_file: Path, out_file: Path):
@@ -1404,9 +1790,13 @@ def main():
     string_schemas = collect_string_schemas(input_dir)
     print(f"Collected {len(string_schemas)} string-type schemas")
 
+    # ---- 1st pass (b): collect all schemas for category I flattening ----
+    all_schemas = collect_all_schemas(input_dir)
+    print(f"Collected {len(all_schemas)} total schemas")
+
     # ---- 2nd pass: transform ----
     total_yaml = 0
-    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = 0
+    total_b = total_d = total_allof = total_e = total_f = total_g = total_h = total_i = 0
 
     for in_file in sorted(input_dir.rglob("*")):
         if in_file.is_dir():
@@ -1416,8 +1806,9 @@ def main():
 
         if is_yaml_file(in_file):
             total_yaml += 1
-            cb, cd, ca, ce, cf, cg, ch = process_yaml_file(
-                in_file, out_file, string_schemas=string_schemas)
+            cb, cd, ca, ce, cf, cg, ch, ci = process_yaml_file(
+                in_file, out_file, string_schemas=string_schemas,
+                all_schemas=all_schemas)
             total_b += cb
             total_d += cd
             total_allof += ca
@@ -1425,7 +1816,8 @@ def main():
             total_f += cf
             total_g += cg
             total_h += ch
-            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch})")
+            total_i += ci
+            print(f"[YAML] {rel} (b={cb}, d={cd}, allof={ca}, e={ce}, f={cf}, g={cg}, h={ch}, i={ci})")
         else:
             copy_other_file(in_file, out_file)
             print(f"[COPY] {rel}")
@@ -1439,6 +1831,7 @@ def main():
     print(f"Changed F blocks       : {total_f}")
     print(f"Changed G blocks       : {total_g}")
     print(f"Changed H blocks       : {total_h}")
+    print(f"Changed I blocks       : {total_i}")
 
 
 
