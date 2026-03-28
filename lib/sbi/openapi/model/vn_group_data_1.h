@@ -1,0 +1,47 @@
+/*
+ * vn_group_data_1.h
+ *
+ * 
+ */
+
+#ifndef _OpenAPI_vn_group_data_1_H_
+#define _OpenAPI_vn_group_data_1_H_
+
+#include <string.h>
+#include "../external/cJSON.h"
+#include "../include/list.h"
+#include "../include/keyValuePair.h"
+#include "../include/binary.h"
+#include "app_descriptor_1.h"
+#include "pdu_session_types_1.h"
+#include "snssai.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct OpenAPI_vn_group_data_1_s OpenAPI_vn_group_data_1_t;
+typedef struct OpenAPI_vn_group_data_1_s {
+    struct OpenAPI_pdu_session_types_1_s *pdu_session_types;
+    char *dnn;
+    struct OpenAPI_snssai_s *single_nssai;
+    OpenAPI_list_t *app_descriptors;
+} OpenAPI_vn_group_data_1_t;
+
+OpenAPI_vn_group_data_1_t *OpenAPI_vn_group_data_1_create(
+    OpenAPI_pdu_session_types_1_t *pdu_session_types,
+    char *dnn,
+    OpenAPI_snssai_t *single_nssai,
+    OpenAPI_list_t *app_descriptors
+);
+void OpenAPI_vn_group_data_1_free(OpenAPI_vn_group_data_1_t *vn_group_data_1);
+OpenAPI_vn_group_data_1_t *OpenAPI_vn_group_data_1_parseFromJSON(cJSON *vn_group_data_1JSON);
+cJSON *OpenAPI_vn_group_data_1_convertToJSON(OpenAPI_vn_group_data_1_t *vn_group_data_1);
+OpenAPI_vn_group_data_1_t *OpenAPI_vn_group_data_1_copy(OpenAPI_vn_group_data_1_t *dst, OpenAPI_vn_group_data_1_t *src);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _OpenAPI_vn_group_data_1_H_ */
+
