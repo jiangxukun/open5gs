@@ -73,7 +73,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
     ogs_sbi_stream_t *stream = NULL;
     ogs_pool_id_t stream_id = OGS_INVALID_POOL_ID;
     ogs_sbi_request_t *sbi_request = NULL;
-    ogs_sbi_service_type_e service_type = OGS_SBI_SERVICE_TYPE_NULL;
+    OpenAPI_service_name_e service_name = OpenAPI_service_name_NULL;
 
     ogs_sbi_nf_instance_t *nf_instance = NULL;
     ogs_sbi_subscription_data_t *subscription_data = NULL;
@@ -811,7 +811,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
                     ran_ue_id = ctx->ran_ue_id;
             }
 
-            service_type = sbi_xact->service_type;
+            service_name = sbi_xact->service_name;
             requester_nf_type = sbi_xact->requester_nf_type;
             discovery_option = sbi_xact->discovery_option;
 
@@ -932,7 +932,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
 
             default:
                 ogs_fatal("Not implemented [%s:%d]",
-                    ogs_sbi_service_type_to_name(service_type),
+                    OpenAPI_service_name_ToString(service_name),
                     sbi_object->type);
                 ogs_assert_if_reached();
             }

@@ -987,6 +987,7 @@ libsbi_openapi_sources = files('''
     model/service_experience_info.c
     model/service_experience_type.c
     model/service_info_status.c
+    model/service_name.c
     model/service_name_cond.c
     model/service_name_list_cond.c
     model/service_parameter_data.c

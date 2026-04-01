@@ -51,7 +51,7 @@ void pcf_state_operational(ogs_fsm_t *s, pcf_event_t *e)
     ogs_sbi_xact_t *sbi_xact = NULL;
     ogs_pool_id_t sbi_xact_id = OGS_INVALID_POOL_ID;
 
-    ogs_sbi_service_type_e service_type = OGS_SBI_SERVICE_TYPE_NULL;
+    OpenAPI_service_name_e service_name = OpenAPI_service_name_NULL;
 
     pcf_ue_am_t *pcf_ue_am = NULL;
     ogs_pool_id_t pcf_ue_am_id = OGS_INVALID_POOL_ID;
@@ -775,7 +775,7 @@ void pcf_state_operational(ogs_fsm_t *s, pcf_event_t *e)
                     sbi_xact->assoc_stream_id <= OGS_MAX_POOL_ID);
             stream = ogs_sbi_stream_find_by_id(sbi_xact->assoc_stream_id);
 
-            service_type = sbi_xact->service_type;
+            service_name = sbi_xact->service_name;
 
             ogs_sbi_xact_remove(sbi_xact);
 
@@ -811,7 +811,7 @@ void pcf_state_operational(ogs_fsm_t *s, pcf_event_t *e)
 
             default:
                 ogs_fatal("Not implemented [%s:%d]",
-                    ogs_sbi_service_type_to_name(service_type),
+                    OpenAPI_service_name_ToString(service_name),
                     sbi_object->type);
                 ogs_assert_if_reached();
             }

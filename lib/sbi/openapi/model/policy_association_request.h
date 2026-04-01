@@ -20,6 +20,7 @@
 #include "plmn_id_nid.h"
 #include "rat_type.h"
 #include "service_area_restriction.h"
+#include "service_name.h"
 #include "snssai.h"
 #include "trace_data.h"
 #include "ue_slice_mbr.h"
@@ -58,7 +59,7 @@ typedef struct OpenAPI_policy_association_request_s {
     OpenAPI_list_t *mapping_snssais;
     OpenAPI_list_t *n3g_allowed_snssais;
     struct OpenAPI_guami_s *guami;
-    char *service_name;
+    OpenAPI_service_name_e service_name;
     bool is_trace_req_null;
     struct OpenAPI_trace_data_s *trace_req;
     OpenAPI_list_t *nwdaf_datas;
@@ -92,7 +93,7 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_create(
     OpenAPI_list_t *mapping_snssais,
     OpenAPI_list_t *n3g_allowed_snssais,
     OpenAPI_guami_t *guami,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     bool is_trace_req_null,
     OpenAPI_trace_data_t *trace_req,
     OpenAPI_list_t *nwdaf_datas,

@@ -15,6 +15,7 @@
 #include "context_info.h"
 #include "immediate_report_1.h"
 #include "plmn_id_1.h"
+#include "service_name.h"
 #include "snssai.h"
 #include "ue_context_in_smf_data_sub_filter_1.h"
 
@@ -29,7 +30,7 @@ typedef struct OpenAPI_sdm_subscription_1_s {
     int implicit_unsubscribe;
     char *expires;
     char *callback_reference;
-    char *amf_service_name;
+    OpenAPI_service_name_e amf_service_name;
     OpenAPI_list_t *monitored_resource_uris;
     struct OpenAPI_snssai_s *single_nssai;
     char *dnn;
@@ -54,7 +55,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_create(
     int implicit_unsubscribe,
     char *expires,
     char *callback_reference,
-    char *amf_service_name,
+    OpenAPI_service_name_e amf_service_name,
     OpenAPI_list_t *monitored_resource_uris,
     OpenAPI_snssai_t *single_nssai,
     char *dnn,

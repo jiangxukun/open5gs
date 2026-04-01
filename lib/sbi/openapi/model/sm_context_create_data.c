@@ -18,7 +18,7 @@ OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_create(
     OpenAPI_snssai_t *hplmn_snssai,
     char *serving_nf_id,
     OpenAPI_guami_t *guami,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_plmn_id_nid_t *serving_network,
     OpenAPI_request_type_e request_type,
     OpenAPI_ref_to_binary_data_t *n1_sm_msg,
@@ -300,10 +300,6 @@ void OpenAPI_sm_context_create_data_free(OpenAPI_sm_context_create_data_t *sm_co
     if (sm_context_create_data->guami) {
         OpenAPI_guami_free(sm_context_create_data->guami);
         sm_context_create_data->guami = NULL;
-    }
-    if (sm_context_create_data->service_name) {
-        ogs_free(sm_context_create_data->service_name);
-        sm_context_create_data->service_name = NULL;
     }
     if (sm_context_create_data->serving_network) {
         OpenAPI_plmn_id_nid_free(sm_context_create_data->serving_network);
@@ -647,8 +643,8 @@ cJSON *OpenAPI_sm_context_create_data_convertToJSON(OpenAPI_sm_context_create_da
     }
     }
 
-    if (sm_context_create_data->service_name) {
-    if (cJSON_AddStringToObject(item, "serviceName", sm_context_create_data->service_name) == NULL) {
+    if (sm_context_create_data->service_name != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "serviceName", OpenAPI_service_name_ToString(sm_context_create_data->service_name)) == NULL) {
         ogs_error("OpenAPI_sm_context_create_data_convertToJSON() failed [service_name]");
         goto end;
     }
@@ -1460,6 +1456,7 @@ OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_parseFromJSON(c
     cJSON *guami = NULL;
     OpenAPI_guami_t *guami_local_nonprim = NULL;
     cJSON *service_name = NULL;
+    OpenAPI_service_name_e service_nameVariable = 0;
     cJSON *serving_network = NULL;
     OpenAPI_plmn_id_nid_t *serving_network_local_nonprim = NULL;
     cJSON *request_type = NULL;
@@ -1677,10 +1674,11 @@ OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_parseFromJSON(c
 
     service_name = cJSON_GetObjectItemCaseSensitive(sm_context_create_dataJSON, "serviceName");
     if (service_name) {
-    if (!cJSON_IsString(service_name) && !cJSON_IsNull(service_name)) {
+    if (!cJSON_IsString(service_name)) {
         ogs_error("OpenAPI_sm_context_create_data_parseFromJSON() failed [service_name]");
         goto end;
     }
+    service_nameVariable = OpenAPI_service_name_FromString(service_name->valuestring);
     }
 
     serving_network = cJSON_GetObjectItemCaseSensitive(sm_context_create_dataJSON, "servingNetwork");
@@ -2541,7 +2539,7 @@ OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_parseFromJSON(c
         hplmn_snssai ? hplmn_snssai_local_nonprim : NULL,
         ogs_strdup(serving_nf_id->valuestring),
         guami ? guami_local_nonprim : NULL,
-        service_name && !cJSON_IsNull(service_name) ? ogs_strdup(service_name->valuestring) : NULL,
+        service_name ? service_nameVariable : 0,
         serving_network_local_nonprim,
         request_type ? request_typeVariable : 0,
         n1_sm_msg ? n1_sm_msg_local_nonprim : NULL,

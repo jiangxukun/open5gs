@@ -18,6 +18,7 @@
 #include "guami.h"
 #include "ims_vo_ps.h"
 #include "rat_type.h"
+#include "service_name.h"
 #include "ue_reachable_ind.h"
 #include "vgmlc_address.h"
 
@@ -34,9 +35,9 @@ typedef struct OpenAPI_amf3_gpp_access_registration_s {
     char *pei;
     OpenAPI_ims_vo_ps_e ims_vo_ps;
     char *dereg_callback_uri;
-    char *amf_service_name_dereg;
+    OpenAPI_service_name_e amf_service_name_dereg;
     char *pcscf_restoration_callback_uri;
-    char *amf_service_name_pcscf_rest;
+    OpenAPI_service_name_e amf_service_name_pcscf_rest;
     bool is_initial_registration_ind;
     int initial_registration_ind;
     bool is_emergency_registration_ind;
@@ -84,9 +85,9 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_cre
     char *pei,
     OpenAPI_ims_vo_ps_e ims_vo_ps,
     char *dereg_callback_uri,
-    char *amf_service_name_dereg,
+    OpenAPI_service_name_e amf_service_name_dereg,
     char *pcscf_restoration_callback_uri,
-    char *amf_service_name_pcscf_rest,
+    OpenAPI_service_name_e amf_service_name_pcscf_rest,
     bool is_initial_registration_ind,
     int initial_registration_ind,
     bool is_emergency_registration_ind,

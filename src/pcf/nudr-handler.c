@@ -213,7 +213,7 @@ bool pcf_nudr_dr_handle_query_sm_data(
         }
 
         r = pcf_sess_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NBSF_MANAGEMENT, NULL,
+                    OpenAPI_service_name_nbsf_management, NULL,
                     pcf_nbsf_management_build_register,
                     sess, stream, NULL);
         ogs_expect(r == OGS_OK);

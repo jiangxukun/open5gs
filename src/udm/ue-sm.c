@@ -192,7 +192,7 @@ void udm_ue_state_operational(ogs_fsm_t *s, udm_event_t *e)
                 if (message->param.num_of_dataset_names &&
                         !message->h.resource.component[1]) {
                     r = udm_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDR_DR, NULL,
+                            OpenAPI_service_name_nudr_dr, NULL,
                             udm_nudr_dr_build_query_subscription_provisioned,
                             udm_ue, stream, UDM_SBI_UE_PROVISIONED_DATASETS,
                             message);
@@ -205,7 +205,7 @@ void udm_ue_state_operational(ogs_fsm_t *s, udm_event_t *e)
                 CASE(OGS_SBI_RESOURCE_NAME_SMF_SELECT_DATA)
                 CASE(OGS_SBI_RESOURCE_NAME_SM_DATA)
                     r = udm_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDR_DR, NULL,
+                            OpenAPI_service_name_nudr_dr, NULL,
                             udm_nudr_dr_build_query_subscription_provisioned,
                             udm_ue, stream, UDM_SBI_NO_STATE, message);
                     ogs_expect(r == OGS_OK);
@@ -214,7 +214,7 @@ void udm_ue_state_operational(ogs_fsm_t *s, udm_event_t *e)
 
                 CASE(OGS_SBI_RESOURCE_NAME_NSSAI)
                     r = udm_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDR_DR, NULL,
+                            OpenAPI_service_name_nudr_dr, NULL,
                             udm_nudr_dr_build_query_subscription_provisioned,
                             udm_ue, stream, UDM_SBI_UE_PROVISIONED_NSSAI_ONLY,
                             message);

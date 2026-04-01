@@ -31,6 +31,7 @@
 #include "satellite_backhaul_category.h"
 #include "sbi_binding_level.h"
 #include "server_addressing_info.h"
+#include "service_name.h"
 #include "small_data_rate_status.h"
 #include "snssai.h"
 #include "tngf_info.h"
@@ -59,7 +60,7 @@ typedef struct OpenAPI_sm_context_create_data_s {
     struct OpenAPI_snssai_s *hplmn_snssai;
     char *serving_nf_id;
     struct OpenAPI_guami_s *guami;
-    char *service_name;
+    OpenAPI_service_name_e service_name;
     struct OpenAPI_plmn_id_nid_s *serving_network;
     OpenAPI_request_type_e request_type;
     struct OpenAPI_ref_to_binary_data_s *n1_sm_msg;
@@ -184,7 +185,7 @@ OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_create(
     OpenAPI_snssai_t *hplmn_snssai,
     char *serving_nf_id,
     OpenAPI_guami_t *guami,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_plmn_id_nid_t *serving_network,
     OpenAPI_request_type_e request_type,
     OpenAPI_ref_to_binary_data_t *n1_sm_msg,

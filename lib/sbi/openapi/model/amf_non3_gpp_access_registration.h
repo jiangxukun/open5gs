@@ -17,6 +17,7 @@
 #include "guami.h"
 #include "ims_vo_ps.h"
 #include "rat_type.h"
+#include "service_name.h"
 #include "vgmlc_address.h"
 
 #ifdef __cplusplus
@@ -32,9 +33,9 @@ typedef struct OpenAPI_amf_non3_gpp_access_registration_s {
     char *pei;
     OpenAPI_ims_vo_ps_e ims_vo_ps;
     char *dereg_callback_uri;
-    char *amf_service_name_dereg;
+    OpenAPI_service_name_e amf_service_name_dereg;
     char *pcscf_restoration_callback_uri;
-    char *amf_service_name_pcscf_rest;
+    OpenAPI_service_name_e amf_service_name_pcscf_rest;
     struct OpenAPI_guami_s *guami;
     OpenAPI_list_t *backup_amf_info;
     OpenAPI_rat_type_e rat_type;
@@ -70,9 +71,9 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
     char *pei,
     OpenAPI_ims_vo_ps_e ims_vo_ps,
     char *dereg_callback_uri,
-    char *amf_service_name_dereg,
+    OpenAPI_service_name_e amf_service_name_dereg,
     char *pcscf_restoration_callback_uri,
-    char *amf_service_name_pcscf_rest,
+    OpenAPI_service_name_e amf_service_name_pcscf_rest,
     OpenAPI_guami_t *guami,
     OpenAPI_list_t *backup_amf_info,
     OpenAPI_rat_type_e rat_type,

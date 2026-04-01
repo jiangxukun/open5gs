@@ -22,6 +22,7 @@
 #include "plmn_id_nid.h"
 #include "plmn_oauth2.h"
 #include "plmn_snssai.h"
+#include "service_name.h"
 #include "uri_scheme.h"
 #include "vendor_specific_feature.h"
 
@@ -32,7 +33,7 @@ extern "C" {
 typedef struct OpenAPI_nf_service_s OpenAPI_nf_service_t;
 typedef struct OpenAPI_nf_service_s {
     char *service_instance_id;
-    char *service_name;
+    OpenAPI_service_name_e service_name;
     OpenAPI_list_t *versions;
     OpenAPI_uri_scheme_e scheme;
     OpenAPI_nf_service_status_e nf_service_status;
@@ -69,7 +70,7 @@ typedef struct OpenAPI_nf_service_s {
 
 OpenAPI_nf_service_t *OpenAPI_nf_service_create(
     char *service_instance_id,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_list_t *versions,
     OpenAPI_uri_scheme_e scheme,
     OpenAPI_nf_service_status_e nf_service_status,

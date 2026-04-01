@@ -10,7 +10,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_create(
     int implicit_unsubscribe,
     char *expires,
     char *callback_reference,
-    char *amf_service_name,
+    OpenAPI_service_name_e amf_service_name,
     OpenAPI_list_t *monitored_resource_uris,
     OpenAPI_snssai_t *single_nssai,
     char *dnn,
@@ -76,10 +76,6 @@ void OpenAPI_sdm_subscription_1_free(OpenAPI_sdm_subscription_1_t *sdm_subscript
     if (sdm_subscription_1->callback_reference) {
         ogs_free(sdm_subscription_1->callback_reference);
         sdm_subscription_1->callback_reference = NULL;
-    }
-    if (sdm_subscription_1->amf_service_name) {
-        ogs_free(sdm_subscription_1->amf_service_name);
-        sdm_subscription_1->amf_service_name = NULL;
     }
     if (sdm_subscription_1->monitored_resource_uris) {
         OpenAPI_list_for_each(sdm_subscription_1->monitored_resource_uris, node) {
@@ -173,8 +169,8 @@ cJSON *OpenAPI_sdm_subscription_1_convertToJSON(OpenAPI_sdm_subscription_1_t *sd
         goto end;
     }
 
-    if (sdm_subscription_1->amf_service_name) {
-    if (cJSON_AddStringToObject(item, "amfServiceName", sdm_subscription_1->amf_service_name) == NULL) {
+    if (sdm_subscription_1->amf_service_name != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceName", OpenAPI_service_name_ToString(sdm_subscription_1->amf_service_name)) == NULL) {
         ogs_error("OpenAPI_sdm_subscription_1_convertToJSON() failed [amf_service_name]");
         goto end;
     }
@@ -330,6 +326,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_parseFromJSON(cJSON *sd
     cJSON *expires = NULL;
     cJSON *callback_reference = NULL;
     cJSON *amf_service_name = NULL;
+    OpenAPI_service_name_e amf_service_nameVariable = 0;
     cJSON *monitored_resource_uris = NULL;
     OpenAPI_list_t *monitored_resource_urisList = NULL;
     cJSON *single_nssai = NULL;
@@ -388,10 +385,11 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_parseFromJSON(cJSON *sd
 
     amf_service_name = cJSON_GetObjectItemCaseSensitive(sdm_subscription_1JSON, "amfServiceName");
     if (amf_service_name) {
-    if (!cJSON_IsString(amf_service_name) && !cJSON_IsNull(amf_service_name)) {
+    if (!cJSON_IsString(amf_service_name)) {
         ogs_error("OpenAPI_sdm_subscription_1_parseFromJSON() failed [amf_service_name]");
         goto end;
     }
+    amf_service_nameVariable = OpenAPI_service_name_FromString(amf_service_name->valuestring);
     }
 
     monitored_resource_uris = cJSON_GetObjectItemCaseSensitive(sdm_subscription_1JSON, "monitoredResourceUris");
@@ -537,7 +535,7 @@ OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_parseFromJSON(cJSON *sd
         implicit_unsubscribe ? implicit_unsubscribe->valueint : 0,
         expires && !cJSON_IsNull(expires) ? ogs_strdup(expires->valuestring) : NULL,
         ogs_strdup(callback_reference->valuestring),
-        amf_service_name && !cJSON_IsNull(amf_service_name) ? ogs_strdup(amf_service_name->valuestring) : NULL,
+        amf_service_name ? amf_service_nameVariable : 0,
         monitored_resource_urisList,
         single_nssai ? single_nssai_local_nonprim : NULL,
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,

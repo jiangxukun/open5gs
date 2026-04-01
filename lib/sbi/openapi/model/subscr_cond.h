@@ -18,6 +18,7 @@
 #include "ml_analytics_info.h"
 #include "nf_type.h"
 #include "pfd_data.h"
+#include "service_name.h"
 #include "snssai.h"
 #include "tai.h"
 #include "tai_range.h"
@@ -36,7 +37,7 @@ typedef struct OpenAPI_subscr_cond_s {
     char *nf_instance_id;
     OpenAPI_list_t *nf_instance_id_list;
     OpenAPI_nf_type_e nf_type;
-    char *service_name;
+    OpenAPI_service_name_e service_name;
     OpenAPI_subscr_cond_condition_type_e condition_type;
     OpenAPI_list_t *service_name_list;
     char *amf_set_id;
@@ -68,7 +69,7 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_create(
     char *nf_instance_id,
     OpenAPI_list_t *nf_instance_id_list,
     OpenAPI_nf_type_e nf_type,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_subscr_cond_condition_type_e condition_type,
     OpenAPI_list_t *service_name_list,
     char *amf_set_id,

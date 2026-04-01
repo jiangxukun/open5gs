@@ -12,9 +12,9 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
     char *pei,
     OpenAPI_ims_vo_ps_e ims_vo_ps,
     char *dereg_callback_uri,
-    char *amf_service_name_dereg,
+    OpenAPI_service_name_e amf_service_name_dereg,
     char *pcscf_restoration_callback_uri,
-    char *amf_service_name_pcscf_rest,
+    OpenAPI_service_name_e amf_service_name_pcscf_rest,
     OpenAPI_guami_t *guami,
     OpenAPI_list_t *backup_amf_info,
     OpenAPI_rat_type_e rat_type,
@@ -107,17 +107,9 @@ void OpenAPI_amf_non3_gpp_access_registration_free(OpenAPI_amf_non3_gpp_access_r
         ogs_free(amf_non3_gpp_access_registration->dereg_callback_uri);
         amf_non3_gpp_access_registration->dereg_callback_uri = NULL;
     }
-    if (amf_non3_gpp_access_registration->amf_service_name_dereg) {
-        ogs_free(amf_non3_gpp_access_registration->amf_service_name_dereg);
-        amf_non3_gpp_access_registration->amf_service_name_dereg = NULL;
-    }
     if (amf_non3_gpp_access_registration->pcscf_restoration_callback_uri) {
         ogs_free(amf_non3_gpp_access_registration->pcscf_restoration_callback_uri);
         amf_non3_gpp_access_registration->pcscf_restoration_callback_uri = NULL;
-    }
-    if (amf_non3_gpp_access_registration->amf_service_name_pcscf_rest) {
-        ogs_free(amf_non3_gpp_access_registration->amf_service_name_pcscf_rest);
-        amf_non3_gpp_access_registration->amf_service_name_pcscf_rest = NULL;
     }
     if (amf_non3_gpp_access_registration->guami) {
         OpenAPI_guami_free(amf_non3_gpp_access_registration->guami);
@@ -227,8 +219,8 @@ cJSON *OpenAPI_amf_non3_gpp_access_registration_convertToJSON(OpenAPI_amf_non3_g
         goto end;
     }
 
-    if (amf_non3_gpp_access_registration->amf_service_name_dereg) {
-    if (cJSON_AddStringToObject(item, "amfServiceNameDereg", amf_non3_gpp_access_registration->amf_service_name_dereg) == NULL) {
+    if (amf_non3_gpp_access_registration->amf_service_name_dereg != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceNameDereg", OpenAPI_service_name_ToString(amf_non3_gpp_access_registration->amf_service_name_dereg)) == NULL) {
         ogs_error("OpenAPI_amf_non3_gpp_access_registration_convertToJSON() failed [amf_service_name_dereg]");
         goto end;
     }
@@ -241,8 +233,8 @@ cJSON *OpenAPI_amf_non3_gpp_access_registration_convertToJSON(OpenAPI_amf_non3_g
     }
     }
 
-    if (amf_non3_gpp_access_registration->amf_service_name_pcscf_rest) {
-    if (cJSON_AddStringToObject(item, "amfServiceNamePcscfRest", amf_non3_gpp_access_registration->amf_service_name_pcscf_rest) == NULL) {
+    if (amf_non3_gpp_access_registration->amf_service_name_pcscf_rest != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceNamePcscfRest", OpenAPI_service_name_ToString(amf_non3_gpp_access_registration->amf_service_name_pcscf_rest)) == NULL) {
         ogs_error("OpenAPI_amf_non3_gpp_access_registration_convertToJSON() failed [amf_service_name_pcscf_rest]");
         goto end;
     }
@@ -428,8 +420,10 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
     OpenAPI_ims_vo_ps_e ims_vo_psVariable = 0;
     cJSON *dereg_callback_uri = NULL;
     cJSON *amf_service_name_dereg = NULL;
+    OpenAPI_service_name_e amf_service_name_deregVariable = 0;
     cJSON *pcscf_restoration_callback_uri = NULL;
     cJSON *amf_service_name_pcscf_rest = NULL;
+    OpenAPI_service_name_e amf_service_name_pcscf_restVariable = 0;
     cJSON *guami = NULL;
     OpenAPI_guami_t *guami_local_nonprim = NULL;
     cJSON *backup_amf_info = NULL;
@@ -511,10 +505,11 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
 
     amf_service_name_dereg = cJSON_GetObjectItemCaseSensitive(amf_non3_gpp_access_registrationJSON, "amfServiceNameDereg");
     if (amf_service_name_dereg) {
-    if (!cJSON_IsString(amf_service_name_dereg) && !cJSON_IsNull(amf_service_name_dereg)) {
+    if (!cJSON_IsString(amf_service_name_dereg)) {
         ogs_error("OpenAPI_amf_non3_gpp_access_registration_parseFromJSON() failed [amf_service_name_dereg]");
         goto end;
     }
+    amf_service_name_deregVariable = OpenAPI_service_name_FromString(amf_service_name_dereg->valuestring);
     }
 
     pcscf_restoration_callback_uri = cJSON_GetObjectItemCaseSensitive(amf_non3_gpp_access_registrationJSON, "pcscfRestorationCallbackUri");
@@ -527,10 +522,11 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
 
     amf_service_name_pcscf_rest = cJSON_GetObjectItemCaseSensitive(amf_non3_gpp_access_registrationJSON, "amfServiceNamePcscfRest");
     if (amf_service_name_pcscf_rest) {
-    if (!cJSON_IsString(amf_service_name_pcscf_rest) && !cJSON_IsNull(amf_service_name_pcscf_rest)) {
+    if (!cJSON_IsString(amf_service_name_pcscf_rest)) {
         ogs_error("OpenAPI_amf_non3_gpp_access_registration_parseFromJSON() failed [amf_service_name_pcscf_rest]");
         goto end;
     }
+    amf_service_name_pcscf_restVariable = OpenAPI_service_name_FromString(amf_service_name_pcscf_rest->valuestring);
     }
 
     guami = cJSON_GetObjectItemCaseSensitive(amf_non3_gpp_access_registrationJSON, "guami");
@@ -722,9 +718,9 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
         pei && !cJSON_IsNull(pei) ? ogs_strdup(pei->valuestring) : NULL,
         ims_vo_psVariable,
         ogs_strdup(dereg_callback_uri->valuestring),
-        amf_service_name_dereg && !cJSON_IsNull(amf_service_name_dereg) ? ogs_strdup(amf_service_name_dereg->valuestring) : NULL,
+        amf_service_name_dereg ? amf_service_name_deregVariable : 0,
         pcscf_restoration_callback_uri && !cJSON_IsNull(pcscf_restoration_callback_uri) ? ogs_strdup(pcscf_restoration_callback_uri->valuestring) : NULL,
-        amf_service_name_pcscf_rest && !cJSON_IsNull(amf_service_name_pcscf_rest) ? ogs_strdup(amf_service_name_pcscf_rest->valuestring) : NULL,
+        amf_service_name_pcscf_rest ? amf_service_name_pcscf_restVariable : 0,
         guami_local_nonprim,
         backup_amf_info ? backup_amf_infoList : NULL,
         rat_typeVariable,

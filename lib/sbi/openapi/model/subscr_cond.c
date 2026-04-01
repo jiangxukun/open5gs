@@ -31,7 +31,7 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_create(
     char *nf_instance_id,
     OpenAPI_list_t *nf_instance_id_list,
     OpenAPI_nf_type_e nf_type,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_subscr_cond_condition_type_e condition_type,
     OpenAPI_list_t *service_name_list,
     char *amf_set_id,
@@ -113,14 +113,7 @@ void OpenAPI_subscr_cond_free(OpenAPI_subscr_cond_t *subscr_cond)
         OpenAPI_list_free(subscr_cond->nf_instance_id_list);
         subscr_cond->nf_instance_id_list = NULL;
     }
-    if (subscr_cond->service_name) {
-        ogs_free(subscr_cond->service_name);
-        subscr_cond->service_name = NULL;
-    }
     if (subscr_cond->service_name_list) {
-        OpenAPI_list_for_each(subscr_cond->service_name_list, node) {
-            ogs_free(node->data);
-        }
         OpenAPI_list_free(subscr_cond->service_name_list);
         subscr_cond->service_name_list = NULL;
     }
@@ -300,8 +293,8 @@ cJSON *OpenAPI_subscr_cond_convertToJSON(OpenAPI_subscr_cond_t *subscr_cond)
     }
     }
 
-    if (subscr_cond->service_name) {
-    if (cJSON_AddStringToObject(item, "serviceName", subscr_cond->service_name) == NULL) {
+    if (subscr_cond->service_name != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "serviceName", OpenAPI_service_name_ToString(subscr_cond->service_name)) == NULL) {
         ogs_error("OpenAPI_subscr_cond_convertToJSON() failed [service_name]");
         goto end;
     }
@@ -314,14 +307,14 @@ cJSON *OpenAPI_subscr_cond_convertToJSON(OpenAPI_subscr_cond_t *subscr_cond)
     }
     }
 
-    if (subscr_cond->service_name_list) {
+    if (subscr_cond->service_name_list != OpenAPI_service_name_NULL) {
     cJSON *service_name_listList = cJSON_AddArrayToObject(item, "serviceNameList");
     if (service_name_listList == NULL) {
         ogs_error("OpenAPI_subscr_cond_convertToJSON() failed [service_name_list]");
         goto end;
     }
     OpenAPI_list_for_each(subscr_cond->service_name_list, node) {
-        if (cJSON_AddStringToObject(service_name_listList, "", (char*)node->data) == NULL) {
+        if (cJSON_AddStringToObject(service_name_listList, "", OpenAPI_service_name_ToString((intptr_t)node->data)) == NULL) {
             ogs_error("OpenAPI_subscr_cond_convertToJSON() failed [service_name_list]");
             goto end;
         }
@@ -642,6 +635,7 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_parseFromJSON(cJSON *subscr_condJSON)
     cJSON *nf_type = NULL;
     OpenAPI_nf_type_e nf_typeVariable = 0;
     cJSON *service_name = NULL;
+    OpenAPI_service_name_e service_nameVariable = 0;
     cJSON *condition_type = NULL;
     OpenAPI_subscr_cond_condition_type_e condition_typeVariable = 0;
     cJSON *service_name_list = NULL;
@@ -727,10 +721,11 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_parseFromJSON(cJSON *subscr_condJSON)
 
     service_name = cJSON_GetObjectItemCaseSensitive(subscr_condJSON, "serviceName");
     if (service_name) {
-    if (!cJSON_IsString(service_name) && !cJSON_IsNull(service_name)) {
+    if (!cJSON_IsString(service_name)) {
         ogs_error("OpenAPI_subscr_cond_parseFromJSON() failed [service_name]");
         goto end;
     }
+    service_nameVariable = OpenAPI_service_name_FromString(service_name->valuestring);
     }
 
     condition_type = cJSON_GetObjectItemCaseSensitive(subscr_condJSON, "conditionType");
@@ -753,13 +748,22 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_parseFromJSON(cJSON *subscr_condJSON)
         service_name_listList = OpenAPI_list_create();
 
         cJSON_ArrayForEach(service_name_list_local, service_name_list) {
-            double *localDouble = NULL;
-            int *localInt = NULL;
+            OpenAPI_service_name_e localEnum = OpenAPI_service_name_NULL;
             if (!cJSON_IsString(service_name_list_local)) {
                 ogs_error("OpenAPI_subscr_cond_parseFromJSON() failed [service_name_list]");
                 goto end;
             }
-            OpenAPI_list_add(service_name_listList, ogs_strdup(service_name_list_local->valuestring));
+            localEnum = OpenAPI_service_name_FromString(service_name_list_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"service_name_list\" is not supported. Ignoring it ...",
+                         service_name_list_local->valuestring);
+            } else {
+                OpenAPI_list_add(service_name_listList, (void *)localEnum);
+            }
+        }
+        if (service_name_listList->count == 0) {
+            ogs_error("OpenAPI_subscr_cond_parseFromJSON() failed: Expected service_name_listList to not be empty (after ignoring unsupported enum values).");
+            goto end;
         }
     }
 
@@ -1221,7 +1225,7 @@ OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_parseFromJSON(cJSON *subscr_condJSON)
         nf_instance_id && !cJSON_IsNull(nf_instance_id) ? ogs_strdup(nf_instance_id->valuestring) : NULL,
         nf_instance_id_list ? nf_instance_id_listList : NULL,
         nf_type ? nf_typeVariable : 0,
-        service_name && !cJSON_IsNull(service_name) ? ogs_strdup(service_name->valuestring) : NULL,
+        service_name ? service_nameVariable : 0,
         condition_type ? condition_typeVariable : 0,
         service_name_list ? service_name_listList : NULL,
         amf_set_id && !cJSON_IsNull(amf_set_id) ? ogs_strdup(amf_set_id->valuestring) : NULL,
@@ -1259,9 +1263,6 @@ end:
         nf_instance_id_listList = NULL;
     }
     if (service_name_listList) {
-        OpenAPI_list_for_each(service_name_listList, node) {
-            ogs_free(node->data);
-        }
         OpenAPI_list_free(service_name_listList);
         service_name_listList = NULL;
     }

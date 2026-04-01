@@ -240,14 +240,14 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
             if (UDM_SDM_SUBSCRIBED(amf_ue)) {
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NUDM_SDM, NULL,
+                        OpenAPI_service_name_nudm_sdm, NULL,
                         amf_nudm_sdm_build_subscription_delete,
                         amf_ue, state, NULL);
                 ogs_expect(r == OGS_OK);
                 ogs_assert(r != OGS_ERROR);
             } else if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                 r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL, NULL,
+                    OpenAPI_service_name_npcf_am_policy_control, NULL,
                     amf_npcf_am_policy_control_build_delete,
                     amf_ue, state, NULL);
                 ogs_expect(r == OGS_OK);
@@ -352,7 +352,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
                         if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                             r = amf_ue_sbi_discover_and_send(
-                                    OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                    OpenAPI_service_name_npcf_am_policy_control,
                                     NULL,
                                     amf_npcf_am_policy_control_build_delete,
                                     amf_ue, state, NULL);
@@ -381,7 +381,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
                             if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                        OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                        OpenAPI_service_name_npcf_am_policy_control,
                                         NULL,
                                         amf_npcf_am_policy_control_build_delete,
                                         amf_ue, state, NULL);
@@ -492,7 +492,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
                         UDM_SDM_CLEAR(amf_ue);
 
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                                OpenAPI_service_name_nudm_uecm, NULL,
                                 amf_nudm_uecm_build_registration_delete,
                                 amf_ue, state, NULL);
                         ogs_expect(r == OGS_OK);
@@ -594,14 +594,14 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
                             state == AMF_UE_INITIATED_DE_REGISTERED) {
                             if (CHECK_5G_AKA_CONFIRMATION(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                    OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                                    OpenAPI_service_name_nausf_auth, NULL,
                                     amf_nausf_auth_build_authenticate_delete,
                                     amf_ue, state, NULL);
                                 ogs_expect(r == OGS_OK);
                                 ogs_assert(r != OGS_ERROR);
                             } else if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                        OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                        OpenAPI_service_name_npcf_am_policy_control,
                                         NULL,
                                         amf_npcf_am_policy_control_build_delete,
                                         amf_ue, state, NULL);
@@ -618,7 +618,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
                                 AMF_NETWORK_INITIATED_EXPLICIT_DE_REGISTERED) {
                             if (CHECK_5G_AKA_CONFIRMATION(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                                        OpenAPI_service_name_nausf_auth, NULL,
                                         amf_nausf_auth_build_authenticate_delete,
                                         amf_ue, state, NULL);
                                 ogs_expect(r == OGS_OK);
@@ -636,7 +636,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
                                     if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                                         r = amf_ue_sbi_discover_and_send(
-                                                OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                                OpenAPI_service_name_npcf_am_policy_control,
                                                 NULL,
                                                 amf_npcf_am_policy_control_build_delete,
                                                 amf_ue, state, NULL);
@@ -830,7 +830,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
                     if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                         amf_sess_xact_count(amf_ue) == xact_count) {
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                                OpenAPI_service_name_nausf_auth, NULL,
                                 amf_nausf_auth_build_authenticate,
                                 amf_ue, 0, NULL);
                         ogs_expect(r == OGS_OK);
@@ -1057,14 +1057,14 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
             if (UDM_SDM_SUBSCRIBED(amf_ue)) {
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NUDM_SDM, NULL,
+                        OpenAPI_service_name_nudm_sdm, NULL,
                         amf_nudm_sdm_build_subscription_delete,
                         amf_ue, state, NULL);
                 ogs_expect(r == OGS_OK);
                 ogs_assert(r != OGS_ERROR);
             } else if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                 r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL, NULL,
+                    OpenAPI_service_name_npcf_am_policy_control, NULL,
                     amf_npcf_am_policy_control_build_delete,
                     amf_ue, state, NULL);
                 ogs_expect(r == OGS_OK);
@@ -1168,7 +1168,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
                         if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                             r = amf_ue_sbi_discover_and_send(
-                                    OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                    OpenAPI_service_name_npcf_am_policy_control,
                                     NULL,
                                     amf_npcf_am_policy_control_build_delete,
                                     amf_ue, state, NULL);
@@ -1197,7 +1197,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
                             if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                        OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                        OpenAPI_service_name_npcf_am_policy_control,
                                         NULL,
                                         amf_npcf_am_policy_control_build_delete,
                                         amf_ue, state, NULL);
@@ -1285,7 +1285,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
                         UDM_SDM_CLEAR(amf_ue);
 
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                                OpenAPI_service_name_nudm_uecm, NULL,
                                 amf_nudm_uecm_build_registration_delete,
                                 amf_ue, state, NULL);
                         ogs_expect(r == OGS_OK);
@@ -1389,7 +1389,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
                             if (CHECK_5G_AKA_CONFIRMATION(amf_ue)) {
                                 r = amf_ue_sbi_discover_and_send(
-                                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH,
+                                        OpenAPI_service_name_nausf_auth,
                                         NULL,
                                         amf_nausf_auth_build_authenticate_delete,
                                         amf_ue, state, NULL);
@@ -1409,7 +1409,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
                                     if (PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                                         r = amf_ue_sbi_discover_and_send(
-                                                OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                                OpenAPI_service_name_npcf_am_policy_control,
                                                 NULL,
                                                 amf_npcf_am_policy_control_build_delete,
                                                 amf_ue, state, NULL);
@@ -1575,7 +1575,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
                     if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                         amf_sess_xact_count(amf_ue) == xact_count) {
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                                OpenAPI_service_name_nausf_auth, NULL,
                                 amf_nausf_auth_build_authenticate,
                                 amf_ue, 0, NULL);
                         ogs_expect(r == OGS_OK);
@@ -1725,7 +1725,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e,
                 ogs_sbi_discovery_option_set_guami(discovery_option, &guami);
 
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAMF_COMM, discovery_option,
+                        OpenAPI_service_name_namf_comm, discovery_option,
                         amf_namf_comm_build_ue_context_transfer,
                         amf_ue, state, nas_message);
                 ogs_expect(r == OGS_OK);
@@ -1778,7 +1778,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e,
 
                     if (!UDM_SDM_SUBSCRIBED(amf_ue)) {
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                                OpenAPI_service_name_nudm_uecm, NULL,
                                 amf_nudm_uecm_build_registration,
                                 amf_ue, 0, NULL);
                         ogs_expect(r == OGS_OK);
@@ -1787,7 +1787,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e,
                         break;
                     } else if (!PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                OpenAPI_service_name_npcf_am_policy_control,
                                 NULL,
                                 amf_npcf_am_policy_control_build_create,
                                 amf_ue, 0, NULL);
@@ -1820,7 +1820,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e,
                 if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                     amf_sess_xact_count(amf_ue) == xact_count) {
                     r = amf_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                            OpenAPI_service_name_nausf_auth, NULL,
                             amf_nausf_auth_build_authenticate,
                             amf_ue, 0, NULL);
                     ogs_expect(r == OGS_OK);
@@ -1950,7 +1950,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e,
             if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                 amf_sess_xact_count(amf_ue) == xact_count) {
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                        OpenAPI_service_name_nausf_auth, NULL,
                         amf_nausf_auth_build_authenticate,
                         amf_ue, 0, NULL);
                 ogs_expect(r == OGS_OK);
@@ -2161,7 +2161,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             case OGS_5GMM_CAUSE_NGKSI_ALREADY_IN_USE:
                 ogs_warn("Authentication failure(ngKSI already in use)");
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                        OpenAPI_service_name_nausf_auth, NULL,
                         amf_nausf_auth_build_authenticate,
                         amf_ue, 0, NULL);
                 ogs_expect(r == OGS_OK);
@@ -2186,7 +2186,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
                     break;
                 }
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                        OpenAPI_service_name_nausf_auth, NULL,
                         amf_nausf_auth_build_authenticate,
                         amf_ue, 0, authentication_failure_parameter->auts);
                 ogs_expect(r == OGS_OK);
@@ -2222,7 +2222,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             }
 
             r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                    OpenAPI_service_name_nausf_auth, NULL,
                     amf_nausf_auth_build_authenticate, amf_ue, 0, NULL);
             ogs_expect(r == OGS_OK);
             ogs_assert(r != OGS_ERROR);
@@ -2620,7 +2620,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
                 ogs_sbi_discovery_option_set_guami(discovery_option, &guami);
 
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAMF_COMM, discovery_option,
+                        OpenAPI_service_name_namf_comm, discovery_option,
                         amf_namf_comm_build_registration_status_update,
                         amf_ue, state,
                         (void *)OpenAPI_ue_context_transfer_status_TRANSFERRED);
@@ -2639,7 +2639,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             amf_ue->nhcc = 1;
 
             r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                    OpenAPI_service_name_nudm_uecm, NULL,
                     amf_nudm_uecm_build_registration, amf_ue, 0, NULL);
             ogs_expect(r == OGS_OK);
             ogs_assert(r != OGS_ERROR);
@@ -2677,7 +2677,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             }
 
             r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                    OpenAPI_service_name_nausf_auth, NULL,
                     amf_nausf_auth_build_authenticate, amf_ue, 0, NULL);
             ogs_expect(r == OGS_OK);
             ogs_assert(r != OGS_ERROR);
@@ -2795,7 +2795,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
                     amf_ue->nhcc = 1;
 
                     r = amf_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                            OpenAPI_service_name_nudm_uecm, NULL,
                             amf_nudm_uecm_build_registration, amf_ue, 0, NULL);
                     ogs_expect(r == OGS_OK);
                     ogs_assert(r != OGS_ERROR);
@@ -2974,7 +2974,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
                 SWITCH(sbi_message->h.method)
                 CASE(OGS_SBI_HTTP_METHOD_PUT)
                     r = amf_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDM_SDM, NULL,
+                            OpenAPI_service_name_nudm_sdm, NULL,
                             amf_nudm_sdm_build_get,
                             amf_ue, state,
                             (char *)OGS_SBI_RESOURCE_NAME_AM_DATA);
@@ -3252,7 +3252,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                 amf_sess_xact_count(amf_ue) == xact_count) {
                 r = amf_ue_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                        OpenAPI_service_name_nausf_auth, NULL,
                         amf_nausf_auth_build_authenticate,
                         amf_ue, 0, NULL);
                 ogs_expect(r == OGS_OK);
@@ -3404,7 +3404,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             ogs_sbi_discovery_option_set_guami(discovery_option, &guami);
 
             r = amf_ue_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NAMF_COMM, discovery_option,
+                    OpenAPI_service_name_namf_comm, discovery_option,
                     amf_namf_comm_build_registration_status_update,
                     amf_ue, state,
                     (void *)OpenAPI_ue_context_transfer_status_NOT_TRANSFERRED);
@@ -3521,7 +3521,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
 
                     if (!PCF_AM_POLICY_ASSOCIATED(amf_ue)) {
                         r = amf_ue_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL,
+                                OpenAPI_service_name_npcf_am_policy_control,
                                 NULL,
                                 amf_npcf_am_policy_control_build_create,
                                 amf_ue, 0, NULL);
@@ -3554,7 +3554,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
                 if (!AMF_SESSION_RELEASE_PENDING(amf_ue) &&
                     amf_sess_xact_count(amf_ue) == xact_count) {
                     r = amf_ue_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NAUSF_AUTH, NULL,
+                            OpenAPI_service_name_nausf_auth, NULL,
                             amf_nausf_auth_build_authenticate,
                             amf_ue, 0, NULL);
                     ogs_expect(r == OGS_OK);

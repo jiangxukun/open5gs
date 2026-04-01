@@ -811,14 +811,14 @@ void smf_gsm_state_wait_pfcp_establishment(ogs_fsm_t *s, smf_event_t *e)
                 }
                 if (HOME_ROUTED_ROAMING_IN_VSMF(sess)) {
                     r = smf_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NSMF_PDUSESSION, NULL,
+                            OpenAPI_service_name_nsmf_pdusession, NULL,
                             smf_nsmf_pdusession_build_create_data,
                             sess, NULL, 0, NULL);
                     ogs_expect(r == OGS_OK);
                     ogs_assert(r != OGS_ERROR);
                 } else if (HOME_ROUTED_ROAMING_IN_HSMF(sess)) {
                     r = smf_sbi_discover_and_send(
-                            OGS_SBI_SERVICE_TYPE_NUDM_UECM, NULL,
+                            OpenAPI_service_name_nudm_uecm, NULL,
                             smf_nudm_uecm_build_registration,
                             sess, stream,
                             SMF_UECM_STATE_REGISTERED_HR,
@@ -1841,7 +1841,7 @@ void smf_gsm_state_operational(ogs_fsm_t *s, smf_event_t *e)
                     OpenAPI_request_indication_UE_REQ_PDU_SES_MOD;
 
                 r = smf_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NSMF_PDUSESSION, NULL,
+                        OpenAPI_service_name_nsmf_pdusession, NULL,
                         smf_nsmf_pdusession_build_hsmf_update_data,
                         sess, stream, SMF_UPDATE_STATE_UE_REQ_MOD, NULL);
                 ogs_expect(r == OGS_OK);
@@ -2099,7 +2099,7 @@ void smf_gsm_state_operational(ogs_fsm_t *s, smf_event_t *e)
                     OpenAPI_request_indication_NW_REQ_PDU_SES_REL;
 
                 r = smf_sbi_discover_and_send(
-                        OGS_SBI_SERVICE_TYPE_NSMF_PDUSESSION, NULL,
+                        OpenAPI_service_name_nsmf_pdusession, NULL,
                         smf_nsmf_pdusession_build_vsmf_update_data,
                         sess, NULL, e->h.sbi.state, NULL);
                 ogs_expect(r == OGS_OK);
@@ -2321,7 +2321,7 @@ void smf_gsm_state_wait_pfcp_deletion(ogs_fsm_t *s, smf_event_t *e)
                         }
 
                         r = smf_sbi_discover_and_send(
-                                OGS_SBI_SERVICE_TYPE_NSMF_PDUSESSION, NULL,
+                                OpenAPI_service_name_nsmf_pdusession, NULL,
                                 smf_nsmf_pdusession_build_vsmf_update_data,
                                 sess, NULL, trigger, NULL);
                         ogs_expect(r == OGS_OK);
@@ -3599,7 +3599,7 @@ void smf_gsm_state_5gc_n1_n2_reject(ogs_fsm_t *s, smf_event_t *e)
             sess->nsmf_param.ue_timezone = true;
 
             r = smf_sbi_discover_and_send(
-                    OGS_SBI_SERVICE_TYPE_NPCF_SMPOLICYCONTROL, NULL,
+                    OpenAPI_service_name_npcf_smpolicycontrol, NULL,
                     smf_npcf_smpolicycontrol_build_delete,
                     sess, NULL,
                     OGS_PFCP_DELETE_TRIGGER_AMF_UPDATE_SM_CONTEXT, NULL);

@@ -6,7 +6,7 @@
 
 OpenAPI_nf_service_t *OpenAPI_nf_service_create(
     char *service_instance_id,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     OpenAPI_list_t *versions,
     OpenAPI_uri_scheme_e scheme,
     OpenAPI_nf_service_status_e nf_service_status,
@@ -92,10 +92,6 @@ void OpenAPI_nf_service_free(OpenAPI_nf_service_t *nf_service)
     if (nf_service->service_instance_id) {
         ogs_free(nf_service->service_instance_id);
         nf_service->service_instance_id = NULL;
-    }
-    if (nf_service->service_name) {
-        ogs_free(nf_service->service_name);
-        nf_service->service_name = NULL;
     }
     if (nf_service->versions) {
         OpenAPI_list_for_each(nf_service->versions, node) {
@@ -256,11 +252,11 @@ cJSON *OpenAPI_nf_service_convertToJSON(OpenAPI_nf_service_t *nf_service)
         goto end;
     }
 
-    if (!nf_service->service_name) {
+    if (nf_service->service_name == OpenAPI_service_name_NULL) {
         ogs_error("OpenAPI_nf_service_convertToJSON() failed [service_name]");
         return NULL;
     }
-    if (cJSON_AddStringToObject(item, "serviceName", nf_service->service_name) == NULL) {
+    if (cJSON_AddStringToObject(item, "serviceName", OpenAPI_service_name_ToString(nf_service->service_name)) == NULL) {
         ogs_error("OpenAPI_nf_service_convertToJSON() failed [service_name]");
         goto end;
     }
@@ -629,6 +625,7 @@ OpenAPI_nf_service_t *OpenAPI_nf_service_parseFromJSON(cJSON *nf_serviceJSON)
     OpenAPI_lnode_t *node = NULL;
     cJSON *service_instance_id = NULL;
     cJSON *service_name = NULL;
+    OpenAPI_service_name_e service_nameVariable = 0;
     cJSON *versions = NULL;
     OpenAPI_list_t *versionsList = NULL;
     cJSON *scheme = NULL;
@@ -693,6 +690,7 @@ OpenAPI_nf_service_t *OpenAPI_nf_service_parseFromJSON(cJSON *nf_serviceJSON)
         ogs_error("OpenAPI_nf_service_parseFromJSON() failed [service_name]");
         goto end;
     }
+    service_nameVariable = OpenAPI_service_name_FromString(service_name->valuestring);
 
     versions = cJSON_GetObjectItemCaseSensitive(nf_serviceJSON, "versions");
     if (!versions) {
@@ -1145,7 +1143,7 @@ OpenAPI_nf_service_t *OpenAPI_nf_service_parseFromJSON(cJSON *nf_serviceJSON)
 
     nf_service_local_var = OpenAPI_nf_service_create (
         ogs_strdup(service_instance_id->valuestring),
-        ogs_strdup(service_name->valuestring),
+        service_nameVariable,
         versionsList,
         schemeVariable,
         nf_service_statusVariable,

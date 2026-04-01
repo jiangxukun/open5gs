@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+#include "service_name.h"
 
 #ifdef __cplusplus
 extern "C" {

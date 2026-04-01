@@ -76,6 +76,7 @@ ogs_sbi_request_t *nrf_nnrf_nfm_build_nf_status_notify(
                 subscription_data->subscr_cond.service_name,
                 NULL,
                 subscription_data->requester_features);
+
         if (!NotificationData->nf_profile) {
             ogs_error("No nf_profile");
             goto end;

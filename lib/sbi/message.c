@@ -482,7 +482,8 @@ ogs_sbi_request_t *ogs_sbi_build_request(ogs_sbi_message_t *message)
             } else {
                 ogs_warn("build failed: service-names[%d:%s]",
                             discovery_option->num_of_service_names,
-                            discovery_option->service_names[0]);
+                            OpenAPI_service_name_ToString(
+                                discovery_option->service_names[0]));
             }
         }
         if (discovery_option->num_of_snssais) {
@@ -3561,8 +3562,6 @@ ogs_sbi_discovery_option_t *ogs_sbi_discovery_option_new(void)
 void ogs_sbi_discovery_option_free(
         ogs_sbi_discovery_option_t *discovery_option)
 {
-    int i;
-
     ogs_assert(discovery_option);
 
     if (discovery_option->target_nf_instance_id)
@@ -3571,9 +3570,6 @@ void ogs_sbi_discovery_option_free(
         ogs_free(discovery_option->requester_nf_instance_id);
     if (discovery_option->dnn)
         ogs_free(discovery_option->dnn);
-
-    for (i = 0; i < discovery_option->num_of_service_names; i++)
-        ogs_free(discovery_option->service_names[i]);
 
     if (discovery_option->hnrf_uri)
         ogs_free(discovery_option->hnrf_uri);
@@ -3617,16 +3613,16 @@ void ogs_sbi_discovery_option_set_dnn(
 
 void ogs_sbi_discovery_option_add_service_names(
         ogs_sbi_discovery_option_t *discovery_option,
-        char *service_name)
+        OpenAPI_service_name_e service_name)
 {
     ogs_assert(discovery_option);
     ogs_assert(service_name);
 
     ogs_assert(discovery_option->num_of_service_names <
-                OGS_SBI_MAX_NUM_OF_SERVICE_TYPE);
+                OGS_SBI_MAX_NUM_OF_SERVICE_NAME);
 
     discovery_option->service_names[discovery_option->num_of_service_names] =
-        ogs_strdup(service_name);
+        service_name;
     ogs_assert(discovery_option->service_names
                 [discovery_option->num_of_service_names]);
     discovery_option->num_of_service_names++;
@@ -3636,11 +3632,20 @@ char *ogs_sbi_discovery_option_build_service_names(
         ogs_sbi_discovery_option_t *discovery_option)
 {
     int i;
+    char *name = NULL;
     char *service_names = NULL;
 
     ogs_assert(discovery_option);
 
-    service_names = ogs_strdup(discovery_option->service_names[0]);
+    name = OpenAPI_service_name_ToString(
+                discovery_option->service_names[0]);
+    if (!name) {
+        ogs_error("Invalid service_names[%d]",
+                discovery_option->service_names[0]);
+        return NULL;
+    }
+
+    service_names = ogs_strdup(name);
     if (!service_names) {
         ogs_error("ogs_strdup() failed");
         return NULL;;
@@ -3663,9 +3668,15 @@ char *ogs_sbi_discovery_option_build_service_names(
      * See also https://swagger.io/docs/specification/serialization/
      */
     if (discovery_option->num_of_service_names > 1) {
-        for (i = 1; i < discovery_option->num_of_service_names; i++)
-            service_names = ogs_mstrcatf(
-                    service_names, ",%s", discovery_option->service_names[i]);
+        for (i = 1; i < discovery_option->num_of_service_names; i++) {
+            name = OpenAPI_service_name_ToString(
+                        discovery_option->service_names[i]);
+            if (name)
+                service_names = ogs_mstrcatf(service_names, ",%s", name);
+            else
+                ogs_error("Invalid service_names[%d]",
+                        discovery_option->service_names[i]);
+        }
     }
 
     return service_names;
@@ -3707,7 +3718,12 @@ void ogs_sbi_discovery_option_parse_service_names(
      */
     token = ogs_strtok_r(v, ",", &saveptr);
     while (token != NULL) {
-        ogs_sbi_discovery_option_add_service_names(discovery_option, token);
+        OpenAPI_service_name_e name = OpenAPI_service_name_FromString(token);
+        if (name)
+            ogs_sbi_discovery_option_add_service_names(discovery_option, name);
+        else
+            ogs_error("Invalid token[%s]", token);
+
         token = ogs_strtok_r(NULL, ",", &saveptr);
     }
 

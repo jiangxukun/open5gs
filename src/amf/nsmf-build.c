@@ -229,8 +229,8 @@ ogs_sbi_request_t *amf_nsmf_pdusession_build_create_sm_context(
      * the PCF when a situation arises where we really need the PCF-ID.
      */
     pcf_nf_instance = OGS_SBI_GET_NF_INSTANCE(
-            amf_ue->sbi.service_type_array[
-            OGS_SBI_SERVICE_TYPE_NPCF_AM_POLICY_CONTROL]);
+            amf_ue->sbi.service_name_array[
+            OpenAPI_service_name_npcf_am_policy_control]);
     if (pcf_nf_instance)
         SmContextCreateData.pcf_id = pcf_nf_instance->id;
     else

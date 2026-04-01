@@ -62,8 +62,8 @@ static void handle_nf_profile_retrieval(
         ogs_list_for_each(&nf_instance->nf_service_list, nf_service) {
             if (subscription_spec->subscr_cond.service_name &&
                 nf_service->name &&
-                !strcmp(subscription_spec->subscr_cond.service_name, nf_service->name))
-            {
+                subscription_spec->subscr_cond.service_name ==
+                    nf_service->name) {
                 /* ok; save the nf_instance */
                 save = true;
                 break;
@@ -278,7 +278,7 @@ void ogs_sbi_nf_state_will_register(ogs_fsm_t *s, ogs_event_t *e)
 static bool nf_status_subscription_exists(
         const char *req_nf_instance_id,
         OpenAPI_nf_type_e nf_type,
-        const char *service_name)
+        OpenAPI_service_name_e service_name)
 {
     ogs_sbi_subscription_data_t *s = NULL;
     bool same_nf_type = false;
@@ -289,7 +289,7 @@ static bool nf_status_subscription_exists(
     ogs_assert(req_nf_instance_id);
 
     nf_type_present = (nf_type != OpenAPI_nf_type_NULL);
-    service_name_present = (service_name != NULL);
+    service_name_present = (service_name != OpenAPI_service_name_NULL);
 
     ogs_list_for_each(&ogs_sbi_self()->subscription_data_list, s) {
         if (!s->req_nf_instance_id)
@@ -311,7 +311,7 @@ static bool nf_status_subscription_exists(
 
         if (service_name_present &&
             s->subscr_cond.service_name &&
-            strcmp(s->subscr_cond.service_name, service_name) == 0)
+            s->subscr_cond.service_name == service_name)
             same_service_name = true;
 
         if (same_nf_type || same_service_name)

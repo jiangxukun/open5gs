@@ -31,7 +31,7 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_create(
     OpenAPI_list_t *mapping_snssais,
     OpenAPI_list_t *n3g_allowed_snssais,
     OpenAPI_guami_t *guami,
-    char *service_name,
+    OpenAPI_service_name_e service_name,
     bool is_trace_req_null,
     OpenAPI_trace_data_t *trace_req,
     OpenAPI_list_t *nwdaf_datas,
@@ -197,10 +197,6 @@ void OpenAPI_policy_association_request_free(OpenAPI_policy_association_request_
     if (policy_association_request->guami) {
         OpenAPI_guami_free(policy_association_request->guami);
         policy_association_request->guami = NULL;
-    }
-    if (policy_association_request->service_name) {
-        ogs_free(policy_association_request->service_name);
-        policy_association_request->service_name = NULL;
     }
     if (policy_association_request->trace_req) {
         OpenAPI_trace_data_free(policy_association_request->trace_req);
@@ -533,8 +529,8 @@ cJSON *OpenAPI_policy_association_request_convertToJSON(OpenAPI_policy_associati
     }
     }
 
-    if (policy_association_request->service_name) {
-    if (cJSON_AddStringToObject(item, "serviceName", policy_association_request->service_name) == NULL) {
+    if (policy_association_request->service_name != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "serviceName", OpenAPI_service_name_ToString(policy_association_request->service_name)) == NULL) {
         ogs_error("OpenAPI_policy_association_request_convertToJSON() failed [service_name]");
         goto end;
     }
@@ -636,6 +632,7 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_parseFr
     cJSON *guami = NULL;
     OpenAPI_guami_t *guami_local_nonprim = NULL;
     cJSON *service_name = NULL;
+    OpenAPI_service_name_e service_nameVariable = 0;
     cJSON *trace_req = NULL;
     OpenAPI_trace_data_t *trace_req_local_nonprim = NULL;
     cJSON *nwdaf_datas = NULL;
@@ -1031,10 +1028,11 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_parseFr
 
     service_name = cJSON_GetObjectItemCaseSensitive(policy_association_requestJSON, "serviceName");
     if (service_name) {
-    if (!cJSON_IsString(service_name) && !cJSON_IsNull(service_name)) {
+    if (!cJSON_IsString(service_name)) {
         ogs_error("OpenAPI_policy_association_request_parseFromJSON() failed [service_name]");
         goto end;
     }
+    service_nameVariable = OpenAPI_service_name_FromString(service_name->valuestring);
     }
 
     trace_req = cJSON_GetObjectItemCaseSensitive(policy_association_requestJSON, "traceReq");
@@ -1109,7 +1107,7 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_parseFr
         mapping_snssais ? mapping_snssaisList : NULL,
         n3g_allowed_snssais ? n3g_allowed_snssaisList : NULL,
         guami ? guami_local_nonprim : NULL,
-        service_name && !cJSON_IsNull(service_name) ? ogs_strdup(service_name->valuestring) : NULL,
+        service_name ? service_nameVariable : 0,
         trace_req && cJSON_IsNull(trace_req) ? true : false,
         trace_req ? trace_req_local_nonprim : NULL,
         nwdaf_datas ? nwdaf_datasList : NULL,

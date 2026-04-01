@@ -10,7 +10,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
     int implicit_unsubscribe,
     char *expires,
     char *callback_reference,
-    char *amf_service_name,
+    OpenAPI_service_name_e amf_service_name,
     OpenAPI_list_t *monitored_resource_uris,
     OpenAPI_snssai_t *single_nssai,
     char *dnn,
@@ -76,10 +76,6 @@ void OpenAPI_modify_200_response_free(OpenAPI_modify_200_response_t *modify_200_
     if (modify_200_response->callback_reference) {
         ogs_free(modify_200_response->callback_reference);
         modify_200_response->callback_reference = NULL;
-    }
-    if (modify_200_response->amf_service_name) {
-        ogs_free(modify_200_response->amf_service_name);
-        modify_200_response->amf_service_name = NULL;
     }
     if (modify_200_response->monitored_resource_uris) {
         OpenAPI_list_for_each(modify_200_response->monitored_resource_uris, node) {
@@ -169,8 +165,8 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
     }
 
-    if (modify_200_response->amf_service_name) {
-    if (cJSON_AddStringToObject(item, "amfServiceName", modify_200_response->amf_service_name) == NULL) {
+    if (modify_200_response->amf_service_name != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceName", OpenAPI_service_name_ToString(modify_200_response->amf_service_name)) == NULL) {
         ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [amf_service_name]");
         goto end;
     }
@@ -324,6 +320,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     cJSON *expires = NULL;
     cJSON *callback_reference = NULL;
     cJSON *amf_service_name = NULL;
+    OpenAPI_service_name_e amf_service_nameVariable = 0;
     cJSON *monitored_resource_uris = NULL;
     OpenAPI_list_t *monitored_resource_urisList = NULL;
     cJSON *single_nssai = NULL;
@@ -378,10 +375,11 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
 
     amf_service_name = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "amfServiceName");
     if (amf_service_name) {
-    if (!cJSON_IsString(amf_service_name) && !cJSON_IsNull(amf_service_name)) {
+    if (!cJSON_IsString(amf_service_name)) {
         ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [amf_service_name]");
         goto end;
     }
+    amf_service_nameVariable = OpenAPI_service_name_FromString(amf_service_name->valuestring);
     }
 
     monitored_resource_uris = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "monitoredResourceUris");
@@ -525,7 +523,7 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
         implicit_unsubscribe ? implicit_unsubscribe->valueint : 0,
         expires && !cJSON_IsNull(expires) ? ogs_strdup(expires->valuestring) : NULL,
         callback_reference && !cJSON_IsNull(callback_reference) ? ogs_strdup(callback_reference->valuestring) : NULL,
-        amf_service_name && !cJSON_IsNull(amf_service_name) ? ogs_strdup(amf_service_name->valuestring) : NULL,
+        amf_service_name ? amf_service_nameVariable : 0,
         monitored_resource_uris ? monitored_resource_urisList : NULL,
         single_nssai ? single_nssai_local_nonprim : NULL,
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,

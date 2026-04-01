@@ -12,9 +12,9 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_cre
     char *pei,
     OpenAPI_ims_vo_ps_e ims_vo_ps,
     char *dereg_callback_uri,
-    char *amf_service_name_dereg,
+    OpenAPI_service_name_e amf_service_name_dereg,
     char *pcscf_restoration_callback_uri,
-    char *amf_service_name_pcscf_rest,
+    OpenAPI_service_name_e amf_service_name_pcscf_rest,
     bool is_initial_registration_ind,
     int initial_registration_ind,
     bool is_emergency_registration_ind,
@@ -131,17 +131,9 @@ void OpenAPI_amf3_gpp_access_registration_free(OpenAPI_amf3_gpp_access_registrat
         ogs_free(amf3_gpp_access_registration->dereg_callback_uri);
         amf3_gpp_access_registration->dereg_callback_uri = NULL;
     }
-    if (amf3_gpp_access_registration->amf_service_name_dereg) {
-        ogs_free(amf3_gpp_access_registration->amf_service_name_dereg);
-        amf3_gpp_access_registration->amf_service_name_dereg = NULL;
-    }
     if (amf3_gpp_access_registration->pcscf_restoration_callback_uri) {
         ogs_free(amf3_gpp_access_registration->pcscf_restoration_callback_uri);
         amf3_gpp_access_registration->pcscf_restoration_callback_uri = NULL;
-    }
-    if (amf3_gpp_access_registration->amf_service_name_pcscf_rest) {
-        ogs_free(amf3_gpp_access_registration->amf_service_name_pcscf_rest);
-        amf3_gpp_access_registration->amf_service_name_pcscf_rest = NULL;
     }
     if (amf3_gpp_access_registration->guami) {
         OpenAPI_guami_free(amf3_gpp_access_registration->guami);
@@ -253,8 +245,8 @@ cJSON *OpenAPI_amf3_gpp_access_registration_convertToJSON(OpenAPI_amf3_gpp_acces
         goto end;
     }
 
-    if (amf3_gpp_access_registration->amf_service_name_dereg) {
-    if (cJSON_AddStringToObject(item, "amfServiceNameDereg", amf3_gpp_access_registration->amf_service_name_dereg) == NULL) {
+    if (amf3_gpp_access_registration->amf_service_name_dereg != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceNameDereg", OpenAPI_service_name_ToString(amf3_gpp_access_registration->amf_service_name_dereg)) == NULL) {
         ogs_error("OpenAPI_amf3_gpp_access_registration_convertToJSON() failed [amf_service_name_dereg]");
         goto end;
     }
@@ -267,8 +259,8 @@ cJSON *OpenAPI_amf3_gpp_access_registration_convertToJSON(OpenAPI_amf3_gpp_acces
     }
     }
 
-    if (amf3_gpp_access_registration->amf_service_name_pcscf_rest) {
-    if (cJSON_AddStringToObject(item, "amfServiceNamePcscfRest", amf3_gpp_access_registration->amf_service_name_pcscf_rest) == NULL) {
+    if (amf3_gpp_access_registration->amf_service_name_pcscf_rest != OpenAPI_service_name_NULL) {
+    if (cJSON_AddStringToObject(item, "amfServiceNamePcscfRest", OpenAPI_service_name_ToString(amf3_gpp_access_registration->amf_service_name_pcscf_rest)) == NULL) {
         ogs_error("OpenAPI_amf3_gpp_access_registration_convertToJSON() failed [amf_service_name_pcscf_rest]");
         goto end;
     }
@@ -509,8 +501,10 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_par
     OpenAPI_ims_vo_ps_e ims_vo_psVariable = 0;
     cJSON *dereg_callback_uri = NULL;
     cJSON *amf_service_name_dereg = NULL;
+    OpenAPI_service_name_e amf_service_name_deregVariable = 0;
     cJSON *pcscf_restoration_callback_uri = NULL;
     cJSON *amf_service_name_pcscf_rest = NULL;
+    OpenAPI_service_name_e amf_service_name_pcscf_restVariable = 0;
     cJSON *initial_registration_ind = NULL;
     cJSON *emergency_registration_ind = NULL;
     cJSON *guami = NULL;
@@ -599,10 +593,11 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_par
 
     amf_service_name_dereg = cJSON_GetObjectItemCaseSensitive(amf3_gpp_access_registrationJSON, "amfServiceNameDereg");
     if (amf_service_name_dereg) {
-    if (!cJSON_IsString(amf_service_name_dereg) && !cJSON_IsNull(amf_service_name_dereg)) {
+    if (!cJSON_IsString(amf_service_name_dereg)) {
         ogs_error("OpenAPI_amf3_gpp_access_registration_parseFromJSON() failed [amf_service_name_dereg]");
         goto end;
     }
+    amf_service_name_deregVariable = OpenAPI_service_name_FromString(amf_service_name_dereg->valuestring);
     }
 
     pcscf_restoration_callback_uri = cJSON_GetObjectItemCaseSensitive(amf3_gpp_access_registrationJSON, "pcscfRestorationCallbackUri");
@@ -615,10 +610,11 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_par
 
     amf_service_name_pcscf_rest = cJSON_GetObjectItemCaseSensitive(amf3_gpp_access_registrationJSON, "amfServiceNamePcscfRest");
     if (amf_service_name_pcscf_rest) {
-    if (!cJSON_IsString(amf_service_name_pcscf_rest) && !cJSON_IsNull(amf_service_name_pcscf_rest)) {
+    if (!cJSON_IsString(amf_service_name_pcscf_rest)) {
         ogs_error("OpenAPI_amf3_gpp_access_registration_parseFromJSON() failed [amf_service_name_pcscf_rest]");
         goto end;
     }
+    amf_service_name_pcscf_restVariable = OpenAPI_service_name_FromString(amf_service_name_pcscf_rest->valuestring);
     }
 
     initial_registration_ind = cJSON_GetObjectItemCaseSensitive(amf3_gpp_access_registrationJSON, "initialRegistrationInd");
@@ -868,9 +864,9 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_par
         pei && !cJSON_IsNull(pei) ? ogs_strdup(pei->valuestring) : NULL,
         ims_vo_ps ? ims_vo_psVariable : 0,
         ogs_strdup(dereg_callback_uri->valuestring),
-        amf_service_name_dereg && !cJSON_IsNull(amf_service_name_dereg) ? ogs_strdup(amf_service_name_dereg->valuestring) : NULL,
+        amf_service_name_dereg ? amf_service_name_deregVariable : 0,
         pcscf_restoration_callback_uri && !cJSON_IsNull(pcscf_restoration_callback_uri) ? ogs_strdup(pcscf_restoration_callback_uri->valuestring) : NULL,
-        amf_service_name_pcscf_rest && !cJSON_IsNull(amf_service_name_pcscf_rest) ? ogs_strdup(amf_service_name_pcscf_rest->valuestring) : NULL,
+        amf_service_name_pcscf_rest ? amf_service_name_pcscf_restVariable : 0,
         initial_registration_ind ? true : false,
         initial_registration_ind ? initial_registration_ind->valueint : 0,
         emergency_registration_ind ? true : false,
