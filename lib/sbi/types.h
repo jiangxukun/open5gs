@@ -104,8 +104,9 @@ extern "C" {
  * Internal service-name IDs not defined in OpenAPI_service_name_e
  * Internal service-name IDs start at 1000
  */
-#define OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK 1000
-#define OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK 1001
+#define OGS_SBI_SERVICE_NAME_ID_N32C_HANDSHAKE 1000
+#define OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK 1001
+#define OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK 1002
 
 int ogs_sbi_service_name_id_from_string(const char *service_name);
 

@@ -27,6 +27,8 @@ static const struct {
         OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK },
     { OGS_SBI_SERVICE_NAME_NSMF_CALLBACK,
         OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK },
+    { OGS_SBI_SERVICE_NAME_N32C_HANDSHAKE,
+        OGS_SBI_SERVICE_NAME_ID_N32C_HANDSHAKE },
 };
 
 int ogs_sbi_service_name_id_from_string(const char *service_name)
