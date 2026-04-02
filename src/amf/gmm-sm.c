@@ -88,6 +88,8 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
     amf_nsmf_pdusession_sm_context_param_t param;
 
+    int service_name_id = OpenAPI_service_name_NULL;
+
     ogs_assert(s);
     ogs_assert(e);
 
@@ -268,8 +270,10 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 
         xact_count = amf_sess_xact_count(amf_ue);
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
 
@@ -411,7 +415,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             if ((sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT)) {
@@ -522,7 +526,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
             if (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) {
@@ -670,7 +674,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 SWITCH(sbi_message->h.method)
@@ -782,7 +786,7 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_COMM)
+        case OpenAPI_service_name_namf_comm:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_CONTEXTS)
                 SWITCH(sbi_message->h.resource.component[2])
@@ -854,10 +858,10 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
-        END
+        }
         break;
 
     default:
@@ -875,6 +879,8 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
     ogs_sbi_message_t *sbi_message = NULL;
 
     amf_nsmf_pdusession_sm_context_param_t param;
+
+    int service_name_id = OpenAPI_service_name_NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -1085,8 +1091,10 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
         xact_count = amf_sess_xact_count(amf_ue);
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
                 if (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED &&
@@ -1227,7 +1235,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             if ((sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT)) {
@@ -1337,7 +1345,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
             if (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) {
@@ -1443,7 +1451,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 SWITCH(sbi_message->h.method)
@@ -1525,7 +1533,7 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_COMM)
+        case OpenAPI_service_name_namf_comm:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_CONTEXTS)
                 SWITCH(sbi_message->h.resource.component[2])
@@ -1599,10 +1607,10 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
-        END
+        }
         break;
 
     default:
@@ -2081,6 +2089,8 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
 
     ogs_sbi_message_t *sbi_message = NULL;
 
+    int service_name_id = OpenAPI_service_name_NULL;
+
     ogs_assert(s);
     ogs_assert(e);
 
@@ -2275,8 +2285,10 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         sbi_message = e->h.sbi.message;
         ogs_assert(sbi_message);
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
 
@@ -2358,7 +2370,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
             if (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT &&
                 sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) {
@@ -2399,7 +2411,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             if ((sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT)) {
@@ -2461,7 +2473,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 SWITCH(sbi_message->h.method)
@@ -2489,10 +2501,10 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
-        END
+        }
         break;
 
     default:
@@ -2510,6 +2522,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
     ogs_nas_5gs_message_t *nas_message = NULL;
     ogs_nas_security_header_type_t h;
     ogs_sbi_message_t *sbi_message = NULL;
+    int service_name_id = OpenAPI_service_name_NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -2717,8 +2730,10 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
         sbi_message = e->h.sbi.message;
         ogs_assert(sbi_message);
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
 
@@ -2765,7 +2780,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_COMM)
+        case OpenAPI_service_name_namf_comm:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_CONTEXTS)
                 SWITCH(sbi_message->h.resource.component[2])
@@ -2827,10 +2842,10 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
-        END
+        }
         break;
 
     case AMF_EVENT_5GMM_TIMER:
@@ -2880,6 +2895,8 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
     gmm_configuration_update_command_param_t gmm_param;
     amf_nsmf_pdusession_sm_context_param_t nsmf_param;
 
+    int service_name_id = OpenAPI_service_name_NULL;
+
     ogs_assert(s);
     ogs_assert(e);
 
@@ -2905,8 +2922,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         ogs_assert(sbi_message);
         state = e->h.sbi.state;
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
 
@@ -2953,7 +2972,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
 
             SWITCH(sbi_message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_REGISTRATIONS)
@@ -2996,7 +3015,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             if (!strcmp(sbi_message->h.resource.component[1],
                         OGS_SBI_RESOURCE_NAME_SDM_SUBSCRIPTIONS) &&
                 !strcmp(sbi_message->h.method, OGS_SBI_HTTP_METHOD_DELETE)) {
@@ -3064,7 +3083,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 SWITCH(sbi_message->h.method)
@@ -3116,10 +3135,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
-        END
+        }
         break;
 
     case AMF_EVENT_5GMM_MESSAGE:
@@ -3360,6 +3379,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
     ogs_sbi_message_t *sbi_message = NULL;
 
     amf_nsmf_pdusession_sm_context_param_t param;
+    int service_name_id = OpenAPI_service_name_NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -3596,8 +3616,10 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             break;
         }
 
-        SWITCH(sbi_message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                sbi_message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
 
@@ -3644,7 +3666,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
             SWITCH(sbi_message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_REGISTRATIONS)
                 if (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED &&
@@ -3678,7 +3700,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             if ((sbi_message->res_status != OGS_SBI_HTTP_STATUS_OK) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_CREATED) &&
                 (sbi_message->res_status != OGS_SBI_HTTP_STATUS_NO_CONTENT)) {
@@ -3740,7 +3762,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 SWITCH(sbi_message->h.method)
@@ -3766,7 +3788,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_COMM)
+        case OpenAPI_service_name_namf_comm:
             SWITCH(sbi_message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_CONTEXTS)
                 SWITCH(sbi_message->h.resource.component[2])
@@ -3824,11 +3846,11 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
             END
             break;
 
-        DEFAULT
+        default:
             ogs_error("Invalid service name [%s]", sbi_message->h.service.name);
             ogs_assert_if_reached();
 
-        END
+        }
         break;
 
     default:

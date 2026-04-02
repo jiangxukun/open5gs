@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 by Sukchan Lee <acetcom@gmail.com>
+ * Copyright (C) 2019-2026 by Sukchan Lee <acetcom@gmail.com>
  *
  * This file is part of Open5GS.
  *
@@ -99,6 +99,15 @@ extern "C" {
 #define OGS_SBI_SERVICE_NAME_NAMF_OAM "namf-oam"
 
 #define OGS_SBI_MAX_NUM_OF_SERVICE_NAME 128
+
+/*
+ * Internal service-name IDs not defined in OpenAPI_service_name_e
+ * Internal service-name IDs start at 1000
+ */
+#define OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK 1000
+#define OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK 1001
+
+int ogs_sbi_service_name_id_from_string(const char *service_name);
 
 OpenAPI_nf_type_e ogs_sbi_service_name_to_nf_type(
         OpenAPI_service_name_e service_name);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 by Sukchan Lee <acetcom@gmail.com>
+ * Copyright (C) 2019-2026 by Sukchan Lee <acetcom@gmail.com>
  *
  * This file is part of Open5GS.
  *
@@ -18,6 +18,38 @@
  */
 
 #include "ogs-sbi.h"
+
+static const struct {
+    const char *name;
+    int service_name_id;
+} service_name_map[] = {
+    { OGS_SBI_SERVICE_NAME_NAMF_CALLBACK,
+        OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK },
+    { OGS_SBI_SERVICE_NAME_NSMF_CALLBACK,
+        OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK },
+};
+
+int ogs_sbi_service_name_id_from_string(const char *service_name)
+{
+    OpenAPI_service_name_e parsed = OpenAPI_service_name_NULL;
+    const char *canonical = NULL;
+    int i;
+
+    ogs_assert(service_name);
+
+    for (i = 0; i < OGS_ARRAY_SIZE(service_name_map); i++) {
+        if (!strcmp(service_name, service_name_map[i].name))
+            return service_name_map[i].service_name_id;
+    }
+
+    parsed = OpenAPI_service_name_FromString((char *)service_name);
+    canonical = OpenAPI_service_name_ToString(parsed);
+
+    if (!canonical || strcmp(service_name, canonical) != 0)
+        return OpenAPI_service_name_NULL;
+
+    return parsed;
+}
 
 static OpenAPI_nf_type_e nf_type_from_special_prefix(const char *prefix)
 {
