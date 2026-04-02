@@ -14,7 +14,7 @@ $ sudo npm install @openapitools/openapi-generator-cli -g
 
 $ Run generator
 $ sudo openapi-generator-cli version-manager set 6.4.0
-$ python3 transform.py ./standard ./modified
+$ python3 transform.py ./patched ./modified
 $ ./generator.sh
 
 
@@ -31,7 +31,7 @@ $ npm install @openapitools/openapi-generator-cli -g
 
 $ Run generator
 $ openapi-generator-cli version-manager set 6.4.0
-$ python3 transform.py ./standard ./modified
+$ python3 transform.py ./patched ./modified
 $ ./generator.sh
 
 
@@ -39,10 +39,10 @@ $ ./generator.sh
 
 1. Download the *.yaml from etsi.org
 2. Copy *.yaml to standard directory
-3. The standard directory contains diffs of hand-edited changes
-   from the original ETSI YAML files. Apply similar modifications
-   to the new version.
-4. Run python3 transform.py ./standard ./modified
+3. The patched directory contains diffs of hand-edited changes
+   from the original ETSI YAML files in the standard directory.
+   Apply similar modifications to the new version.
+4. Run python3 transform.py ./patched ./modified
    to generate the modified directory.
 5. Run ./generator.sh and check for openapi-generator-cli errors
 6. If you copy the entire OLD version without ERROR to standard,
