@@ -45,7 +45,8 @@ ogs_sbi_request_t *amf_nsmf_pdusession_build_create_sm_context(
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_POST;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NSMF_PDUSESSION;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nsmf_pdusession);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_SM_CONTEXTS;
@@ -207,7 +208,8 @@ ogs_sbi_request_t *amf_nsmf_pdusession_build_create_sm_context(
 
             SmContextCreateData.h_smf_uri =
                 ogs_msprintf("%s/%s/%s/%s", apiroot,
-                        (char *)OGS_SBI_SERVICE_NAME_NSMF_PDUSESSION,
+                        OpenAPI_service_name_ToString(
+                            OpenAPI_service_name_nsmf_pdusession),
                         (char *)OGS_SBI_API_V1,
                         (char *)OGS_SBI_RESOURCE_NAME_PDU_SESSIONS);
             ogs_assert(SmContextCreateData.h_smf_uri);

@@ -1741,6 +1741,7 @@ static int parse_json(ogs_sbi_message_t *message,
         char *content_type, char *json)
 {
     int rv = OGS_OK;
+    int service_name_id = OpenAPI_service_name_NULL;
     cJSON *item = NULL;
 
     ogs_assert(message);
@@ -1788,8 +1789,10 @@ static int parse_json(ogs_sbi_message_t *message,
             }
         }
     } else {
-        SWITCH(message->h.service.name)
-        CASE(OGS_SBI_SERVICE_NAME_NNRF_NFM)
+        service_name_id = ogs_sbi_service_name_id_from_string(
+                message->h.service.name);
+        switch (service_name_id) {
+        case OpenAPI_service_name_nnrf_nfm:
 
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_NF_INSTANCES)
@@ -1850,7 +1853,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NNRF_DISC)
+        case OpenAPI_service_name_nnrf_disc:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_NF_INSTANCES)
                 if (message->res_status < 300) {
@@ -1872,7 +1875,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAUSF_AUTH)
+        case OpenAPI_service_name_nausf_auth:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_AUTHENTICATIONS)
                 SWITCH(message->h.method)
@@ -1925,7 +1928,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UEAU)
+        case OpenAPI_service_name_nudm_ueau:
             SWITCH(message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_SECURITY_INFORMATION)
                 SWITCH(message->h.resource.component[2])
@@ -1974,7 +1977,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_UECM)
+        case OpenAPI_service_name_nudm_uecm:
             SWITCH(message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_REGISTRATIONS)
                 SWITCH(message->h.resource.component[2])
@@ -2042,7 +2045,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDM_SDM)
+        case OpenAPI_service_name_nudm_sdm:
             SWITCH(message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_NSSAI)
                 if (message->res_status < 300) {
@@ -2146,7 +2149,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NUDR_DR)
+        case OpenAPI_service_name_nudr_dr:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_SUBSCRIPTION_DATA)
                 SWITCH(message->h.resource.component[2])
@@ -2376,7 +2379,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NSMF_PDUSESSION)
+        case OpenAPI_service_name_nsmf_pdusession:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_SM_CONTEXTS)
                 SWITCH(message->h.resource.component[2])
@@ -2627,7 +2630,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_COMM)
+        case OpenAPI_service_name_namf_comm:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_UE_CONTEXTS)
                 SWITCH(message->h.resource.component[2])
@@ -2707,7 +2710,7 @@ static int parse_json(ogs_sbi_message_t *message,
                         message->h.resource.component[0]);
             END
             break;
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL)
+        case OpenAPI_service_name_npcf_am_policy_control:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_POLICIES)
                 if (message->res_status == 0) {
@@ -2734,7 +2737,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_SMPOLICYCONTROL)
+        case OpenAPI_service_name_npcf_smpolicycontrol:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_SM_POLICIES)
                 if (!message->h.resource.component[1]) {
@@ -2782,7 +2785,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NNSSF_NSSELECTION)
+        case OpenAPI_service_name_nnssf_nsselection:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_NETWORK_SLICE_INFORMATION)
                 if (message->res_status == OGS_SBI_HTTP_STATUS_OK) {
@@ -2803,7 +2806,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NBSF_MANAGEMENT)
+        case OpenAPI_service_name_nbsf_management:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_PCF_BINDINGS)
                 if (message->h.resource.component[1]) {
@@ -2855,7 +2858,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NPCF_POLICYAUTHORIZATION)
+        case OpenAPI_service_name_npcf_policyauthorization:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_APP_SESSIONS)
                 if (message->h.resource.component[1]) {
@@ -2915,7 +2918,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_N32C_HANDSHAKE)
+        case OGS_SBI_SERVICE_NAME_ID_N32C_HANDSHAKE:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_EXCHANGE_CAPABILITY)
                 SWITCH(message->h.method)
@@ -2948,7 +2951,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NAMF_CALLBACK)
+        case OGS_SBI_SERVICE_NAME_ID_NAMF_CALLBACK:
             SWITCH(message->h.resource.component[1])
             CASE(OGS_SBI_RESOURCE_NAME_SM_CONTEXT_STATUS)
                 if (message->res_status < 300) {
@@ -2997,7 +3000,7 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        CASE(OGS_SBI_SERVICE_NAME_NSMF_CALLBACK)
+        case OGS_SBI_SERVICE_NAME_ID_NSMF_CALLBACK:
             SWITCH(message->h.resource.component[0])
             CASE(OGS_SBI_RESOURCE_NAME_N1_N2_FAILURE_NOTIFY)
                 if (message->res_status < 300) {
@@ -3069,11 +3072,11 @@ static int parse_json(ogs_sbi_message_t *message,
             END
             break;
 
-        DEFAULT
+        default:
             rv = OGS_ERROR;
             ogs_error("Not implemented API name [%s]",
                     message->h.service.name);
-        END
+        }
     }
 
 cleanup:

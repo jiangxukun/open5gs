@@ -46,7 +46,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_register(void)
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_PUT;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
@@ -266,7 +267,7 @@ OpenAPI_nf_profile_t *ogs_nnrf_nfm_build_nf_profile(
         OpenAPI_nf_service_t *NFService = NULL;
 
         if (service_name && nf_service->name &&
-            service_name == nf_service->name)
+            service_name != nf_service->name)
             continue;
 
         if (discovery_option && discovery_option->num_of_service_names) {
@@ -1531,7 +1532,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_update(void)
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_PATCH;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
@@ -1595,7 +1597,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_de_register(void)
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_DELETE;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
@@ -1627,7 +1630,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_status_subscribe(
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_POST;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_SUBSCRIPTIONS;
@@ -1645,7 +1649,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_status_subscribe(
     }
 
     memset(&header, 0, sizeof(header));
-    header.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    header.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     header.api.version = (char *)OGS_SBI_API_V1;
     header.resource.component[0] =
             (char *)OGS_SBI_RESOURCE_NAME_NF_STATUS_NOTIFY;
@@ -1786,7 +1791,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_profile_retrieve(char *nf_instance_id)
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_GET;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
@@ -1805,7 +1811,8 @@ ogs_sbi_request_t *ogs_nnrf_nfm_build_nflist_retrieve(void)
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_GET;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_NFM;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_nfm);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
@@ -1829,7 +1836,8 @@ ogs_sbi_request_t *ogs_nnrf_disc_build_discover(
 
     memset(&message, 0, sizeof(message));
     message.h.method = (char *)OGS_SBI_HTTP_METHOD_GET;
-    message.h.service.name = (char *)OGS_SBI_SERVICE_NAME_NNRF_DISC;
+    message.h.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nnrf_disc);
     message.h.api.version = (char *)OGS_SBI_API_V1;
     message.h.resource.component[0] =
         (char *)OGS_SBI_RESOURCE_NAME_NF_INSTANCES;
