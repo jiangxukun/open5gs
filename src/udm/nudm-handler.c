@@ -720,7 +720,8 @@ bool udm_nudm_sdm_handle_subscription_create(
     ogs_assert(server);
 
     memset(&header, 0, sizeof(header));
-    header.service.name = (char *)OGS_SBI_SERVICE_NAME_NUDM_SDM;
+    header.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_nudm_sdm);
     header.api.version = (char *)OGS_SBI_API_V2;
     header.resource.component[0] = udm_ue->supi;
     header.resource.component[1] =

@@ -185,7 +185,8 @@ bool pcf_npcf_am_policy_control_handle_create(pcf_ue_am_t *pcf_ue_am,
 
         memset(&header, 0, sizeof(header));
         header.service.name =
-            (char *)OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL;
+            OpenAPI_service_name_ToString(
+                    OpenAPI_service_name_npcf_am_policy_control);
         header.api.version = (char *)OGS_SBI_API_V1;
         header.resource.component[0] = (char *)OGS_SBI_RESOURCE_NAME_POLICIES;
         header.resource.component[1] = pcf_ue_am->association_id;
@@ -1041,7 +1042,9 @@ bool pcf_npcf_policyauthorization_handle_create(pcf_sess_t *sess,
     memset(&sendmsg, 0, sizeof(sendmsg));
 
     memset(&header, 0, sizeof(header));
-    header.service.name = (char *)OGS_SBI_SERVICE_NAME_NPCF_POLICYAUTHORIZATION;
+    header.service.name =
+        OpenAPI_service_name_ToString(
+                OpenAPI_service_name_npcf_policyauthorization);
     header.api.version = (char *)OGS_SBI_API_V1;
     header.resource.component[0] = (char *)OGS_SBI_RESOURCE_NAME_APP_SESSIONS;
     header.resource.component[1] = (char *)app_session->app_session_id;

@@ -121,7 +121,8 @@ bool pcf_nudr_dr_handle_query_am_data(
 
         memset(&header, 0, sizeof(header));
         header.service.name =
-            (char *)OGS_SBI_SERVICE_NAME_NPCF_AM_POLICY_CONTROL;
+            OpenAPI_service_name_ToString(
+                    OpenAPI_service_name_npcf_am_policy_control);
         header.api.version = (char *)OGS_SBI_API_V1;
         header.resource.component[0] =
             (char *)OGS_SBI_RESOURCE_NAME_POLICIES;

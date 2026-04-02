@@ -524,18 +524,20 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
                 }
 
                 if (v_start && v_end) {
-                    SWITCH(key)
-                    CASE(OGS_SBI_SERVICE_NAME_NNRF_NFM)
+                    int service_name_id = OpenAPI_service_name_NULL;
+                    service_name_id = ogs_sbi_service_name_id_from_string(key);
+                    switch (service_name_id) {
+                    case OpenAPI_service_name_nnrf_nfm:
                         nnrf_nfm = ogs_strndup(v_start, v_end-v_start);
                         break;
-                    CASE(OGS_SBI_SERVICE_NAME_NNRF_DISC)
+                    case OpenAPI_service_name_nnrf_disc:
                         nnrf_disc = ogs_strndup(v_start, v_end-v_start);
                         break;
-                    CASE(OGS_SBI_SERVICE_NAME_NNRF_OAUTH2)
+                    case OpenAPI_service_name_nnrf_oauth2:
                         nnrf_oauth2 = ogs_strndup(v_start, v_end-v_start);
                         break;
-                    DEFAULT
-                    END
+                    default:
+                    }
                 }
             }
 

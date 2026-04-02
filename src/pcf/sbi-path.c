@@ -81,14 +81,18 @@ int pcf_sbi_open(void)
             policyauthorization_enabled == true)) {
         ogs_fatal("CHECK CONFIGURATION:");
         ogs_fatal("   %s - %s",
-            OGS_SBI_SERVICE_NAME_NPCF_SMPOLICYCONTROL,
+            OpenAPI_service_name_ToString(
+                OpenAPI_service_name_npcf_smpolicycontrol),
             smpolicycontrol_enabled ? "enabled" : "disabled");
         ogs_fatal("   %s - %s",
-            OGS_SBI_SERVICE_NAME_NPCF_POLICYAUTHORIZATION,
+            OpenAPI_service_name_ToString(
+                OpenAPI_service_name_npcf_policyauthorization),
             policyauthorization_enabled ? "enabled" : "disabled");
         ogs_fatal("Only one of %s and %s cannot be enabled.",
-            OGS_SBI_SERVICE_NAME_NPCF_SMPOLICYCONTROL,
-            OGS_SBI_SERVICE_NAME_NPCF_POLICYAUTHORIZATION);
+            OpenAPI_service_name_ToString(
+                OpenAPI_service_name_npcf_smpolicycontrol),
+            OpenAPI_service_name_ToString(
+                OpenAPI_service_name_npcf_policyauthorization));
         ogs_fatal("They can be enabled or disabled together.");
 
         return OGS_ERROR;
@@ -535,7 +539,8 @@ bool pcf_sbi_send_smpolicycontrol_create_response(
     }
 
     memset(&header, 0, sizeof(header));
-    header.service.name = (char *)OGS_SBI_SERVICE_NAME_NPCF_SMPOLICYCONTROL;
+    header.service.name =
+        OpenAPI_service_name_ToString(OpenAPI_service_name_npcf_smpolicycontrol);
     header.api.version = (char *)OGS_SBI_API_V1;
     header.resource.component[0] = (char *)OGS_SBI_RESOURCE_NAME_SM_POLICIES;
     header.resource.component[1] = sess->sm_policy_id;

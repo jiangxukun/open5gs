@@ -280,7 +280,9 @@ int amf_namf_comm_handle_n1_n2_message_transfer(
                 ogs_assert(server);
 
                 memset(&header, 0, sizeof(header));
-                header.service.name = (char *)OGS_SBI_SERVICE_NAME_NAMF_COMM;
+                header.service.name =
+                    OpenAPI_service_name_ToString(
+                            OpenAPI_service_name_namf_comm);
                 header.api.version = (char *)OGS_SBI_API_V1;
                 header.resource.component[0] =
                     (char *)OGS_SBI_RESOURCE_NAME_UE_CONTEXTS;
@@ -342,7 +344,9 @@ int amf_namf_comm_handle_n1_n2_message_transfer(
             ogs_assert(server);
 
             memset(&header, 0, sizeof(header));
-            header.service.name = (char *)OGS_SBI_SERVICE_NAME_NAMF_COMM;
+            header.service.name =
+                OpenAPI_service_name_ToString(
+                        OpenAPI_service_name_namf_comm);
             header.api.version = (char *)OGS_SBI_API_V1;
             header.resource.component[0] =
                 (char *)OGS_SBI_RESOURCE_NAME_UE_CONTEXTS;
@@ -416,7 +420,9 @@ int amf_namf_comm_handle_n1_n2_message_transfer(
                 ogs_assert(server);
 
                 memset(&header, 0, sizeof(header));
-                header.service.name = (char *)OGS_SBI_SERVICE_NAME_NAMF_COMM;
+                header.service.name =
+                    OpenAPI_service_name_ToString(
+                            OpenAPI_service_name_namf_comm);
                 header.api.version = (char *)OGS_SBI_API_V1;
                 header.resource.component[0] =
                     (char *)OGS_SBI_RESOURCE_NAME_UE_CONTEXTS;

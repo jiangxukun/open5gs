@@ -255,7 +255,9 @@ ogs_sbi_request_t *amf_nsmf_pdusession_build_create_sm_context(
     if (param && param->nrf_uri) {
         message.http.custom.nrf_uri =
             ogs_msprintf("%s: \"%s\"",
-                    OGS_SBI_SERVICE_NAME_NNRF_DISC, param->nrf_uri);
+                    OpenAPI_service_name_ToString(
+                        OpenAPI_service_name_nnrf_disc),
+                    param->nrf_uri);
     }
 
     request = ogs_sbi_build_request(&message);
