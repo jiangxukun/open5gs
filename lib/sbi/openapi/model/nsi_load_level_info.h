@@ -1,7 +1,7 @@
 /*
  * nsi_load_level_info.h
  *
- * Represents the network slice and optionally the associated network slice instance and the  load level information. 
+ * Represents the network slice and optionally the associated network slice instance and the load level information. 
  */
 
 #ifndef _OpenAPI_nsi_load_level_info_H_

@@ -1,7 +1,7 @@
 /*
  * pp_maximum_response_time.h
  *
- * 
+ * Contains AF provisioned Maximum Response Time
  */
 
 #ifndef _OpenAPI_pp_maximum_response_time_H_

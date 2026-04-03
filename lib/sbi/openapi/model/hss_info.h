@@ -29,6 +29,7 @@ struct OpenAPI_hss_info_s {
     OpenAPI_list_t *msisdn_ranges;
     OpenAPI_list_t *external_group_identifiers_ranges;
     struct OpenAPI_network_node_diameter_address_s *hss_diameter_address;
+    OpenAPI_list_t *additional_diam_addresses;
 };
 
 OpenAPI_hss_info_t *OpenAPI_hss_info_create(
@@ -38,7 +39,8 @@ OpenAPI_hss_info_t *OpenAPI_hss_info_create(
     OpenAPI_list_t *ims_public_identity_ranges,
     OpenAPI_list_t *msisdn_ranges,
     OpenAPI_list_t *external_group_identifiers_ranges,
-    OpenAPI_network_node_diameter_address_t *hss_diameter_address
+    OpenAPI_network_node_diameter_address_t *hss_diameter_address,
+    OpenAPI_list_t *additional_diam_addresses
 );
 void OpenAPI_hss_info_free(OpenAPI_hss_info_t *hss_info);
 OpenAPI_hss_info_t *OpenAPI_hss_info_parseFromJSON(cJSON *hss_infoJSON);

@@ -18,6 +18,7 @@ typedef struct OpenAPI_monitoring_configuration_1_s OpenAPI_monitoring_configura
 #include "event_type.h"
 #include "location_reporting_configuration_1.h"
 #include "loss_connectivity_cfg_1.h"
+#include "monitoring_suspension_1.h"
 #include "pdu_session_status_cfg_1.h"
 #include "reachability_for_data_configuration_1.h"
 #include "reachability_for_sms_configuration.h"
@@ -43,6 +44,7 @@ struct OpenAPI_monitoring_configuration_1_s {
     int suggested_packet_num_dl;
     char *dnn;
     struct OpenAPI_snssai_s *single_nssai;
+    char *app_id;
     struct OpenAPI_pdu_session_status_cfg_1_s *pdu_session_status_cfg;
     OpenAPI_reachability_for_sms_configuration_e reachability_for_sms_cfg;
     char *mtc_provider_information;
@@ -50,6 +52,10 @@ struct OpenAPI_monitoring_configuration_1_s {
     struct OpenAPI_reachability_for_data_configuration_1_s *reachability_for_data_cfg;
     bool is_idle_status_ind;
     int idle_status_ind;
+    struct OpenAPI_monitoring_suspension_1_s *monitoring_suspension;
+    OpenAPI_list_t *shared_monitoring_suspension_id_list;
+    bool is_pei_requested;
+    int pei_requested;
 };
 
 OpenAPI_monitoring_configuration_1_t *OpenAPI_monitoring_configuration_1_create(
@@ -68,13 +74,18 @@ OpenAPI_monitoring_configuration_1_t *OpenAPI_monitoring_configuration_1_create(
     int suggested_packet_num_dl,
     char *dnn,
     OpenAPI_snssai_t *single_nssai,
+    char *app_id,
     OpenAPI_pdu_session_status_cfg_1_t *pdu_session_status_cfg,
     OpenAPI_reachability_for_sms_configuration_e reachability_for_sms_cfg,
     char *mtc_provider_information,
     char *af_id,
     OpenAPI_reachability_for_data_configuration_1_t *reachability_for_data_cfg,
     bool is_idle_status_ind,
-    int idle_status_ind
+    int idle_status_ind,
+    OpenAPI_monitoring_suspension_1_t *monitoring_suspension,
+    OpenAPI_list_t *shared_monitoring_suspension_id_list,
+    bool is_pei_requested,
+    int pei_requested
 );
 void OpenAPI_monitoring_configuration_1_free(OpenAPI_monitoring_configuration_1_t *monitoring_configuration_1);
 OpenAPI_monitoring_configuration_1_t *OpenAPI_monitoring_configuration_1_parseFromJSON(cJSON *monitoring_configuration_1JSON);

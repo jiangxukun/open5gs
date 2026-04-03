@@ -16,7 +16,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_create(
     bool is_ip_sm_gw_null,
     OpenAPI_ip_sm_gw_registration_t *ip_sm_gw,
     OpenAPI_roaming_info_update_t *roaming_info,
-    OpenAPI_pei_update_info_t *pei_info
+    OpenAPI_pei_update_info_1_t *pei_info
 )
 {
     OpenAPI_context_data_sets_t *context_data_sets_local_var = ogs_malloc(sizeof(OpenAPI_context_data_sets_t));
@@ -98,7 +98,7 @@ void OpenAPI_context_data_sets_free(OpenAPI_context_data_sets_t *context_data_se
         context_data_sets->roaming_info = NULL;
     }
     if (context_data_sets->pei_info) {
-        OpenAPI_pei_update_info_free(context_data_sets->pei_info);
+        OpenAPI_pei_update_info_1_free(context_data_sets->pei_info);
         context_data_sets->pei_info = NULL;
     }
     ogs_free(context_data_sets);
@@ -263,7 +263,7 @@ cJSON *OpenAPI_context_data_sets_convertToJSON(OpenAPI_context_data_sets_t *cont
     }
 
     if (context_data_sets->pei_info) {
-    cJSON *pei_info_local_JSON = OpenAPI_pei_update_info_convertToJSON(context_data_sets->pei_info);
+    cJSON *pei_info_local_JSON = OpenAPI_pei_update_info_1_convertToJSON(context_data_sets->pei_info);
     if (pei_info_local_JSON == NULL) {
         ogs_error("OpenAPI_context_data_sets_convertToJSON() failed [pei_info]");
         goto end;
@@ -304,7 +304,7 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_parseFromJSON(cJSON *cont
     cJSON *roaming_info = NULL;
     OpenAPI_roaming_info_update_t *roaming_info_local_nonprim = NULL;
     cJSON *pei_info = NULL;
-    OpenAPI_pei_update_info_t *pei_info_local_nonprim = NULL;
+    OpenAPI_pei_update_info_1_t *pei_info_local_nonprim = NULL;
     amf3_gpp = cJSON_GetObjectItemCaseSensitive(context_data_setsJSON, "amf3Gpp");
     if (amf3_gpp) {
     amf3_gpp_local_nonprim = OpenAPI_amf3_gpp_access_registration_parseFromJSON(amf3_gpp);
@@ -459,9 +459,9 @@ OpenAPI_context_data_sets_t *OpenAPI_context_data_sets_parseFromJSON(cJSON *cont
 
     pei_info = cJSON_GetObjectItemCaseSensitive(context_data_setsJSON, "peiInfo");
     if (pei_info) {
-    pei_info_local_nonprim = OpenAPI_pei_update_info_parseFromJSON(pei_info);
+    pei_info_local_nonprim = OpenAPI_pei_update_info_1_parseFromJSON(pei_info);
     if (!pei_info_local_nonprim) {
-        ogs_error("OpenAPI_pei_update_info_parseFromJSON failed [pei_info]");
+        ogs_error("OpenAPI_pei_update_info_1_parseFromJSON failed [pei_info]");
         goto end;
     }
     }
@@ -536,7 +536,7 @@ end:
         roaming_info_local_nonprim = NULL;
     }
     if (pei_info_local_nonprim) {
-        OpenAPI_pei_update_info_free(pei_info_local_nonprim);
+        OpenAPI_pei_update_info_1_free(pei_info_local_nonprim);
         pei_info_local_nonprim = NULL;
     }
     return NULL;

@@ -1,7 +1,7 @@
 /*
  * edrx_parameters_1.h
  *
- * 
+ * Contains eDRX parameters
  */
 
 #ifndef _OpenAPI_edrx_parameters_1_H_

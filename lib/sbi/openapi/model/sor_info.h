@@ -1,7 +1,7 @@
 /*
  * sor_info.h
  *
- * 
+ * Contains steering of roaming information
  */
 
 #ifndef _OpenAPI_sor_info_H_
@@ -27,6 +27,8 @@ struct OpenAPI_sor_info_s {
     char *provisioning_time;
     char *sor_transparent_container;
     char *sor_cmci;
+    char *sor_snpn_si;
+    char *sor_snpn_si_ls;
     bool is_store_sor_cmci_in_me;
     int store_sor_cmci_in_me;
     bool is_usim_support_of_sor_cmci;
@@ -41,6 +43,8 @@ OpenAPI_sor_info_t *OpenAPI_sor_info_create(
     char *provisioning_time,
     char *sor_transparent_container,
     char *sor_cmci,
+    char *sor_snpn_si,
+    char *sor_snpn_si_ls,
     bool is_store_sor_cmci_in_me,
     int store_sor_cmci_in_me,
     bool is_usim_support_of_sor_cmci,

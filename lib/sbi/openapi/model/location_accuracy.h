@@ -1,7 +1,7 @@
 /*
  * location_accuracy.h
  *
- * 
+ * Indicates the location accuracy level.
  */
 
 #ifndef _OpenAPI_location_accuracy_H_
@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_location_accuracy_NULL = 0, OpenAPI_location_accuracy_CELL_LEVEL, OpenAPI_location_accuracy_RAN_NODE_LEVEL, OpenAPI_location_accuracy_TA_LEVEL, OpenAPI_location_accuracy_N3IWF_LEVEL, OpenAPI_location_accuracy_UE_IP, OpenAPI_location_accuracy_UE_PORT } OpenAPI_location_accuracy_e;
+typedef enum { OpenAPI_location_accuracy_NULL = 0, OpenAPI_location_accuracy_CELL_LEVEL, OpenAPI_location_accuracy_RAN_NODE_LEVEL, OpenAPI_location_accuracy_TA_LEVEL, OpenAPI_location_accuracy_PLMN_LEVEL, OpenAPI_location_accuracy_N3IWF_LEVEL, OpenAPI_location_accuracy_UE_IP, OpenAPI_location_accuracy_UE_PORT } OpenAPI_location_accuracy_e;
 
 char* OpenAPI_location_accuracy_ToString(OpenAPI_location_accuracy_e location_accuracy);
 

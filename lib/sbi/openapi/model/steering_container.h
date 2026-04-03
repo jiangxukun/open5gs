@@ -1,7 +1,7 @@
 /*
  * steering_container.h
  *
- * 
+ * Contains Steering Info or a secured packet
  */
 
 #ifndef _OpenAPI_steering_container_H_

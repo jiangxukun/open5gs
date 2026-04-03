@@ -38,6 +38,10 @@ struct OpenAPI_ee_subscription_1_s {
     OpenAPI_list_t *exclude_gpsi_list;
     OpenAPI_list_t *include_gpsi_list;
     char *data_restoration_callback_uri;
+    bool is_udr_restart_ind;
+    int udr_restart_ind;
+    char *last_synchronization_time;
+    char *subscription_update_callback_uri;
 };
 
 OpenAPI_ee_subscription_1_t *OpenAPI_ee_subscription_1_create(
@@ -56,7 +60,11 @@ OpenAPI_ee_subscription_1_t *OpenAPI_ee_subscription_1_create(
     char *gpsi,
     OpenAPI_list_t *exclude_gpsi_list,
     OpenAPI_list_t *include_gpsi_list,
-    char *data_restoration_callback_uri
+    char *data_restoration_callback_uri,
+    bool is_udr_restart_ind,
+    int udr_restart_ind,
+    char *last_synchronization_time,
+    char *subscription_update_callback_uri
 );
 void OpenAPI_ee_subscription_1_free(OpenAPI_ee_subscription_1_t *ee_subscription_1);
 OpenAPI_ee_subscription_1_t *OpenAPI_ee_subscription_1_parseFromJSON(cJSON *ee_subscription_1JSON);

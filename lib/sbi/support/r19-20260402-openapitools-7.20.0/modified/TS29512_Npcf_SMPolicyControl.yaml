@@ -477,7 +477,8 @@ components:
         maPduInd:
           $ref: '#/components/schemas/MaPduIndication'
         atsssCapab:
-          $ref: '#/components/schemas/AtsssCapability'
+#          $ref: '#/components/schemas/AtsssCapability'
+          $ref: '#/components/schemas/NpcfAtsssCapability'
         atsssCapabs:
           type: array
           items:
@@ -1131,7 +1132,8 @@ components:
         steerModeUl:
           $ref: '#/components/schemas/SteeringMode'
         mulAccCtrl:
-          $ref: '#/components/schemas/MulticastAccessControl'
+#          $ref: '#/components/schemas/MulticastAccessControl'
+          $ref: '#/components/schemas/NpcfMulticastAccessControl'
         candDnaiInd:
           type: boolean
           description: >
@@ -1579,7 +1581,8 @@ components:
         maPduInd:
           $ref: '#/components/schemas/MaPduIndication'
         atsssCapab:
-          $ref: '#/components/schemas/AtsssCapability'
+#          $ref: '#/components/schemas/AtsssCapability'
+          $ref: '#/components/schemas/NpcfAtsssCapability'
         atsssCapabs:
           type: array
           items:
@@ -3118,8 +3121,8 @@ components:
         - CREATE_PCC_RULE
         - DELETE_PCC_RULE
         - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS
-        - MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS
-        - MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS
+        - MODIFY_PCC_RULE_AND_REPLACE_PACKET_FILTERS
+        - MODIFY_PCC_RULE_AND_DELETE_PACKET_FILTERS
         - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS
 #      - type: string
 #        description: >
@@ -3319,7 +3322,8 @@ components:
 #          This string provides forward-compatibility with future extensions to the enumeration
 #          and is not used to encode content defined in the present version of this API.
 #
-    MulticastAccessControl:
+#    MulticastAccessControl:
+    NpcfMulticastAccessControl:
       description: >
         Indicates whether the service data flow, corresponding to the service data flow template, is
         allowed or not allowed.
@@ -3425,7 +3429,8 @@ components:
 #          This string provides forward-compatibility with future extensions to the enumeration
 #          and is not used to encode content defined in the present version of this API.
 #
-    AtsssCapability:
+#    AtsssCapability:
+    NpcfAtsssCapability:
       description: Contains the ATSSS capability supported for the MA PDU Session.
 #      anyOf:
 #      - type: string

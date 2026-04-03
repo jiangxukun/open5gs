@@ -1,7 +1,7 @@
 /*
  * smf_registration_info.h
  *
- * 
+ * This data type provides information about the SMF registration information.
  */
 
 #ifndef _OpenAPI_smf_registration_info_H_

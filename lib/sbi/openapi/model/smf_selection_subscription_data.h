@@ -1,7 +1,7 @@
 /*
  * smf_selection_subscription_data.h
  *
- * 
+ * Contains SMF selection subscription data
  */
 
 #ifndef _OpenAPI_smf_selection_subscription_data_H_
@@ -24,13 +24,15 @@ struct OpenAPI_smf_selection_subscription_data_s {
     OpenAPI_list_t* subscribed_snssai_infos;
     char *shared_snssai_infos_id;
     char *hss_group_id;
+    OpenAPI_list_t *additional_shared_snssai_infos_ids;
 };
 
 OpenAPI_smf_selection_subscription_data_t *OpenAPI_smf_selection_subscription_data_create(
     char *supported_features,
     OpenAPI_list_t* subscribed_snssai_infos,
     char *shared_snssai_infos_id,
-    char *hss_group_id
+    char *hss_group_id,
+    OpenAPI_list_t *additional_shared_snssai_infos_ids
 );
 void OpenAPI_smf_selection_subscription_data_free(OpenAPI_smf_selection_subscription_data_t *smf_selection_subscription_data);
 OpenAPI_smf_selection_subscription_data_t *OpenAPI_smf_selection_subscription_data_parseFromJSON(cJSON *smf_selection_subscription_dataJSON);

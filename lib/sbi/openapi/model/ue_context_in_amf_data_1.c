@@ -5,7 +5,7 @@
 #include "ue_context_in_amf_data_1.h"
 
 OpenAPI_ue_context_in_amf_data_1_t *OpenAPI_ue_context_in_amf_data_1_create(
-    OpenAPI_eps_interworking_info_t *eps_interworking_info,
+    OpenAPI_eps_interworking_info_1_t *eps_interworking_info,
     OpenAPI_list_t *amf_info
 )
 {
@@ -26,7 +26,7 @@ void OpenAPI_ue_context_in_amf_data_1_free(OpenAPI_ue_context_in_amf_data_1_t *u
         return;
     }
     if (ue_context_in_amf_data_1->eps_interworking_info) {
-        OpenAPI_eps_interworking_info_free(ue_context_in_amf_data_1->eps_interworking_info);
+        OpenAPI_eps_interworking_info_1_free(ue_context_in_amf_data_1->eps_interworking_info);
         ue_context_in_amf_data_1->eps_interworking_info = NULL;
     }
     if (ue_context_in_amf_data_1->amf_info) {
@@ -51,7 +51,7 @@ cJSON *OpenAPI_ue_context_in_amf_data_1_convertToJSON(OpenAPI_ue_context_in_amf_
 
     item = cJSON_CreateObject();
     if (ue_context_in_amf_data_1->eps_interworking_info) {
-    cJSON *eps_interworking_info_local_JSON = OpenAPI_eps_interworking_info_convertToJSON(ue_context_in_amf_data_1->eps_interworking_info);
+    cJSON *eps_interworking_info_local_JSON = OpenAPI_eps_interworking_info_1_convertToJSON(ue_context_in_amf_data_1->eps_interworking_info);
     if (eps_interworking_info_local_JSON == NULL) {
         ogs_error("OpenAPI_ue_context_in_amf_data_1_convertToJSON() failed [eps_interworking_info]");
         goto end;
@@ -88,14 +88,14 @@ OpenAPI_ue_context_in_amf_data_1_t *OpenAPI_ue_context_in_amf_data_1_parseFromJS
     OpenAPI_ue_context_in_amf_data_1_t *ue_context_in_amf_data_1_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *eps_interworking_info = NULL;
-    OpenAPI_eps_interworking_info_t *eps_interworking_info_local_nonprim = NULL;
+    OpenAPI_eps_interworking_info_1_t *eps_interworking_info_local_nonprim = NULL;
     cJSON *amf_info = NULL;
     OpenAPI_list_t *amf_infoList = NULL;
     eps_interworking_info = cJSON_GetObjectItemCaseSensitive(ue_context_in_amf_data_1JSON, "epsInterworkingInfo");
     if (eps_interworking_info) {
-    eps_interworking_info_local_nonprim = OpenAPI_eps_interworking_info_parseFromJSON(eps_interworking_info);
+    eps_interworking_info_local_nonprim = OpenAPI_eps_interworking_info_1_parseFromJSON(eps_interworking_info);
     if (!eps_interworking_info_local_nonprim) {
-        ogs_error("OpenAPI_eps_interworking_info_parseFromJSON failed [eps_interworking_info]");
+        ogs_error("OpenAPI_eps_interworking_info_1_parseFromJSON failed [eps_interworking_info]");
         goto end;
     }
     }
@@ -132,7 +132,7 @@ OpenAPI_ue_context_in_amf_data_1_t *OpenAPI_ue_context_in_amf_data_1_parseFromJS
     return ue_context_in_amf_data_1_local_var;
 end:
     if (eps_interworking_info_local_nonprim) {
-        OpenAPI_eps_interworking_info_free(eps_interworking_info_local_nonprim);
+        OpenAPI_eps_interworking_info_1_free(eps_interworking_info_local_nonprim);
         eps_interworking_info_local_nonprim = NULL;
     }
     if (amf_infoList) {

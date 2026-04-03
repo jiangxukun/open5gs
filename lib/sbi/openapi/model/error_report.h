@@ -1,7 +1,7 @@
 /*
  * error_report.h
  *
- * Contains the rule error reports.
+ * Contains the rule,policy decision and/or condition data error reports.
  */
 
 #ifndef _OpenAPI_error_report_H_

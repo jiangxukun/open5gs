@@ -12,7 +12,16 @@ OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value
     OpenAPI_list_t *serving_rat_types,
     OpenAPI_list_t *tai_list,
     OpenAPI_list_t *tai_range_list,
-    OpenAPI_list_t *supported_gad_shapes
+    OpenAPI_list_t *supported_gad_shapes,
+    OpenAPI_pru_existence_info_t *pru_existence_info,
+    bool is_pru_support_ind,
+    int pru_support_ind,
+    bool is_rangingslpos_support_ind,
+    int rangingslpos_support_ind,
+    bool is_up_positioning_ind,
+    int up_positioning_ind,
+    bool is_aiml_pos_ind,
+    int aiml_pos_ind
 )
 {
     OpenAPI_nrf_info_served_lmf_info_value_t *nrf_info_served_lmf_info_value_local_var = ogs_malloc(sizeof(OpenAPI_nrf_info_served_lmf_info_value_t));
@@ -26,6 +35,15 @@ OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value
     nrf_info_served_lmf_info_value_local_var->tai_list = tai_list;
     nrf_info_served_lmf_info_value_local_var->tai_range_list = tai_range_list;
     nrf_info_served_lmf_info_value_local_var->supported_gad_shapes = supported_gad_shapes;
+    nrf_info_served_lmf_info_value_local_var->pru_existence_info = pru_existence_info;
+    nrf_info_served_lmf_info_value_local_var->is_pru_support_ind = is_pru_support_ind;
+    nrf_info_served_lmf_info_value_local_var->pru_support_ind = pru_support_ind;
+    nrf_info_served_lmf_info_value_local_var->is_rangingslpos_support_ind = is_rangingslpos_support_ind;
+    nrf_info_served_lmf_info_value_local_var->rangingslpos_support_ind = rangingslpos_support_ind;
+    nrf_info_served_lmf_info_value_local_var->is_up_positioning_ind = is_up_positioning_ind;
+    nrf_info_served_lmf_info_value_local_var->up_positioning_ind = up_positioning_ind;
+    nrf_info_served_lmf_info_value_local_var->is_aiml_pos_ind = is_aiml_pos_ind;
+    nrf_info_served_lmf_info_value_local_var->aiml_pos_ind = aiml_pos_ind;
 
     return nrf_info_served_lmf_info_value_local_var;
 }
@@ -74,6 +92,10 @@ void OpenAPI_nrf_info_served_lmf_info_value_free(OpenAPI_nrf_info_served_lmf_inf
     if (nrf_info_served_lmf_info_value->supported_gad_shapes) {
         OpenAPI_list_free(nrf_info_served_lmf_info_value->supported_gad_shapes);
         nrf_info_served_lmf_info_value->supported_gad_shapes = NULL;
+    }
+    if (nrf_info_served_lmf_info_value->pru_existence_info) {
+        OpenAPI_pru_existence_info_free(nrf_info_served_lmf_info_value->pru_existence_info);
+        nrf_info_served_lmf_info_value->pru_existence_info = NULL;
     }
     ogs_free(nrf_info_served_lmf_info_value);
 }
@@ -198,6 +220,47 @@ cJSON *OpenAPI_nrf_info_served_lmf_info_value_convertToJSON(OpenAPI_nrf_info_ser
     }
     }
 
+    if (nrf_info_served_lmf_info_value->pru_existence_info) {
+    cJSON *pru_existence_info_local_JSON = OpenAPI_pru_existence_info_convertToJSON(nrf_info_served_lmf_info_value->pru_existence_info);
+    if (pru_existence_info_local_JSON == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [pru_existence_info]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "pruExistenceInfo", pru_existence_info_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [pru_existence_info]");
+        goto end;
+    }
+    }
+
+    if (nrf_info_served_lmf_info_value->is_pru_support_ind) {
+    if (cJSON_AddBoolToObject(item, "pruSupportInd", nrf_info_served_lmf_info_value->pru_support_ind) == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [pru_support_ind]");
+        goto end;
+    }
+    }
+
+    if (nrf_info_served_lmf_info_value->is_rangingslpos_support_ind) {
+    if (cJSON_AddBoolToObject(item, "rangingslposSupportInd", nrf_info_served_lmf_info_value->rangingslpos_support_ind) == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [rangingslpos_support_ind]");
+        goto end;
+    }
+    }
+
+    if (nrf_info_served_lmf_info_value->is_up_positioning_ind) {
+    if (cJSON_AddBoolToObject(item, "upPositioningInd", nrf_info_served_lmf_info_value->up_positioning_ind) == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [up_positioning_ind]");
+        goto end;
+    }
+    }
+
+    if (nrf_info_served_lmf_info_value->is_aiml_pos_ind) {
+    if (cJSON_AddBoolToObject(item, "aimlPosInd", nrf_info_served_lmf_info_value->aiml_pos_ind) == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_convertToJSON() failed [aiml_pos_ind]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -221,6 +284,12 @@ OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value
     OpenAPI_list_t *tai_range_listList = NULL;
     cJSON *supported_gad_shapes = NULL;
     OpenAPI_list_t *supported_gad_shapesList = NULL;
+    cJSON *pru_existence_info = NULL;
+    OpenAPI_pru_existence_info_t *pru_existence_info_local_nonprim = NULL;
+    cJSON *pru_support_ind = NULL;
+    cJSON *rangingslpos_support_ind = NULL;
+    cJSON *up_positioning_ind = NULL;
+    cJSON *aiml_pos_ind = NULL;
     serving_client_types = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "servingClientTypes");
     if (serving_client_types) {
         cJSON *serving_client_types_local = NULL;
@@ -427,6 +496,47 @@ OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value
         }
     }
 
+    pru_existence_info = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "pruExistenceInfo");
+    if (pru_existence_info) {
+    pru_existence_info_local_nonprim = OpenAPI_pru_existence_info_parseFromJSON(pru_existence_info);
+    if (!pru_existence_info_local_nonprim) {
+        ogs_error("OpenAPI_pru_existence_info_parseFromJSON failed [pru_existence_info]");
+        goto end;
+    }
+    }
+
+    pru_support_ind = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "pruSupportInd");
+    if (pru_support_ind) {
+    if (!cJSON_IsBool(pru_support_ind)) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_parseFromJSON() failed [pru_support_ind]");
+        goto end;
+    }
+    }
+
+    rangingslpos_support_ind = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "rangingslposSupportInd");
+    if (rangingslpos_support_ind) {
+    if (!cJSON_IsBool(rangingslpos_support_ind)) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_parseFromJSON() failed [rangingslpos_support_ind]");
+        goto end;
+    }
+    }
+
+    up_positioning_ind = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "upPositioningInd");
+    if (up_positioning_ind) {
+    if (!cJSON_IsBool(up_positioning_ind)) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_parseFromJSON() failed [up_positioning_ind]");
+        goto end;
+    }
+    }
+
+    aiml_pos_ind = cJSON_GetObjectItemCaseSensitive(nrf_info_served_lmf_info_valueJSON, "aimlPosInd");
+    if (aiml_pos_ind) {
+    if (!cJSON_IsBool(aiml_pos_ind)) {
+        ogs_error("OpenAPI_nrf_info_served_lmf_info_value_parseFromJSON() failed [aiml_pos_ind]");
+        goto end;
+    }
+    }
+
     nrf_info_served_lmf_info_value_local_var = OpenAPI_nrf_info_served_lmf_info_value_create (
         serving_client_types ? serving_client_typesList : NULL,
         lmf_id && !cJSON_IsNull(lmf_id) ? ogs_strdup(lmf_id->valuestring) : NULL,
@@ -435,7 +545,16 @@ OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value
         serving_rat_types ? serving_rat_typesList : NULL,
         tai_list ? tai_listList : NULL,
         tai_range_list ? tai_range_listList : NULL,
-        supported_gad_shapes ? supported_gad_shapesList : NULL
+        supported_gad_shapes ? supported_gad_shapesList : NULL,
+        pru_existence_info ? pru_existence_info_local_nonprim : NULL,
+        pru_support_ind ? true : false,
+        pru_support_ind ? pru_support_ind->valueint : 0,
+        rangingslpos_support_ind ? true : false,
+        rangingslpos_support_ind ? rangingslpos_support_ind->valueint : 0,
+        up_positioning_ind ? true : false,
+        up_positioning_ind ? up_positioning_ind->valueint : 0,
+        aiml_pos_ind ? true : false,
+        aiml_pos_ind ? aiml_pos_ind->valueint : 0
     );
 
     return nrf_info_served_lmf_info_value_local_var;
@@ -473,6 +592,10 @@ end:
     if (supported_gad_shapesList) {
         OpenAPI_list_free(supported_gad_shapesList);
         supported_gad_shapesList = NULL;
+    }
+    if (pru_existence_info_local_nonprim) {
+        OpenAPI_pru_existence_info_free(pru_existence_info_local_nonprim);
+        pru_existence_info_local_nonprim = NULL;
     }
     return NULL;
 }

@@ -1,7 +1,7 @@
 /*
  * pp_dl_packet_count_ext.h
  *
- * 
+ * Contains AF provisioned DL Buffering Suggested Packet Count Extension
  */
 
 #ifndef _OpenAPI_pp_dl_packet_count_ext_H_

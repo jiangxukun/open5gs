@@ -1,7 +1,7 @@
 /*
  * ip_sm_gw_registration.h
  *
- * 
+ * This data type contains the IP-SW-GW routing information.
  */
 
 #ifndef _OpenAPI_ip_sm_gw_registration_H_

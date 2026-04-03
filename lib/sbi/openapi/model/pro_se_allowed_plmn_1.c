@@ -5,7 +5,7 @@
 #include "pro_se_allowed_plmn_1.h"
 
 OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_create(
-    OpenAPI_plmn_id_1_t *visited_plmn,
+    OpenAPI_plmn_id_t *visited_plmn,
     OpenAPI_list_t *prose_direct_allowed
 )
 {
@@ -26,7 +26,7 @@ void OpenAPI_pro_se_allowed_plmn_1_free(OpenAPI_pro_se_allowed_plmn_1_t *pro_se_
         return;
     }
     if (pro_se_allowed_plmn_1->visited_plmn) {
-        OpenAPI_plmn_id_1_free(pro_se_allowed_plmn_1->visited_plmn);
+        OpenAPI_plmn_id_free(pro_se_allowed_plmn_1->visited_plmn);
         pro_se_allowed_plmn_1->visited_plmn = NULL;
     }
     if (pro_se_allowed_plmn_1->prose_direct_allowed) {
@@ -51,7 +51,7 @@ cJSON *OpenAPI_pro_se_allowed_plmn_1_convertToJSON(OpenAPI_pro_se_allowed_plmn_1
         ogs_error("OpenAPI_pro_se_allowed_plmn_1_convertToJSON() failed [visited_plmn]");
         return NULL;
     }
-    cJSON *visited_plmn_local_JSON = OpenAPI_plmn_id_1_convertToJSON(pro_se_allowed_plmn_1->visited_plmn);
+    cJSON *visited_plmn_local_JSON = OpenAPI_plmn_id_convertToJSON(pro_se_allowed_plmn_1->visited_plmn);
     if (visited_plmn_local_JSON == NULL) {
         ogs_error("OpenAPI_pro_se_allowed_plmn_1_convertToJSON() failed [visited_plmn]");
         goto end;
@@ -85,7 +85,7 @@ OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_parseFromJSON(cJS
     OpenAPI_pro_se_allowed_plmn_1_t *pro_se_allowed_plmn_1_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
     cJSON *visited_plmn = NULL;
-    OpenAPI_plmn_id_1_t *visited_plmn_local_nonprim = NULL;
+    OpenAPI_plmn_id_t *visited_plmn_local_nonprim = NULL;
     cJSON *prose_direct_allowed = NULL;
     OpenAPI_list_t *prose_direct_allowedList = NULL;
     visited_plmn = cJSON_GetObjectItemCaseSensitive(pro_se_allowed_plmn_1JSON, "visitedPlmn");
@@ -93,9 +93,9 @@ OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_parseFromJSON(cJS
         ogs_error("OpenAPI_pro_se_allowed_plmn_1_parseFromJSON() failed [visited_plmn]");
         goto end;
     }
-    visited_plmn_local_nonprim = OpenAPI_plmn_id_1_parseFromJSON(visited_plmn);
+    visited_plmn_local_nonprim = OpenAPI_plmn_id_parseFromJSON(visited_plmn);
     if (!visited_plmn_local_nonprim) {
-        ogs_error("OpenAPI_plmn_id_1_parseFromJSON failed [visited_plmn]");
+        ogs_error("OpenAPI_plmn_id_parseFromJSON failed [visited_plmn]");
         goto end;
     }
 
@@ -137,7 +137,7 @@ OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_parseFromJSON(cJS
     return pro_se_allowed_plmn_1_local_var;
 end:
     if (visited_plmn_local_nonprim) {
-        OpenAPI_plmn_id_1_free(visited_plmn_local_nonprim);
+        OpenAPI_plmn_id_free(visited_plmn_local_nonprim);
         visited_plmn_local_nonprim = NULL;
     }
     if (prose_direct_allowedList) {

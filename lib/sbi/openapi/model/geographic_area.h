@@ -37,6 +37,8 @@ struct OpenAPI_geographic_area_s {
     OpenAPI_list_t *point_list;
     double altitude;
     float uncertainty_altitude;
+    bool is_v_confidence;
+    int v_confidence;
     int inner_radius;
     float uncertainty_radius;
     int offset_angle;
@@ -52,6 +54,8 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_create(
     OpenAPI_list_t *point_list,
     double altitude,
     float uncertainty_altitude,
+    bool is_v_confidence,
+    int v_confidence,
     int inner_radius,
     float uncertainty_radius,
     int offset_angle,

@@ -1,7 +1,7 @@
 /*
  * app_detection_report.h
  *
- * Indicates the start or stop of the detected application traffic and the application identifier of the detected application traffic.
+ * Indicates the start or stop of the detected application traffic and the application identifier of the detected application traffic. 
  */
 
 #ifndef _OpenAPI_app_detection_report_H_

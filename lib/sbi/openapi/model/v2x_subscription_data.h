@@ -1,7 +1,7 @@
 /*
  * v2x_subscription_data.h
  *
- * 
+ * V2X Subscription Data
  */
 
 #ifndef _OpenAPI_v2x_subscription_data_H_

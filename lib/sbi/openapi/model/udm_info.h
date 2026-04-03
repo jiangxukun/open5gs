@@ -30,6 +30,8 @@ struct OpenAPI_udm_info_s {
     OpenAPI_list_t *routing_indicators;
     OpenAPI_list_t *internal_group_identifiers_ranges;
     OpenAPI_list_t *suci_infos;
+    bool is_any_ue_udm_single_instance;
+    int any_ue_udm_single_instance;
 };
 
 OpenAPI_udm_info_t *OpenAPI_udm_info_create(
@@ -39,7 +41,9 @@ OpenAPI_udm_info_t *OpenAPI_udm_info_create(
     OpenAPI_list_t *external_group_identifiers_ranges,
     OpenAPI_list_t *routing_indicators,
     OpenAPI_list_t *internal_group_identifiers_ranges,
-    OpenAPI_list_t *suci_infos
+    OpenAPI_list_t *suci_infos,
+    bool is_any_ue_udm_single_instance,
+    int any_ue_udm_single_instance
 );
 void OpenAPI_udm_info_free(OpenAPI_udm_info_t *udm_info);
 OpenAPI_udm_info_t *OpenAPI_udm_info_parseFromJSON(cJSON *udm_infoJSON);

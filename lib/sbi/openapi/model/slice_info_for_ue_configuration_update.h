@@ -1,7 +1,7 @@
 /*
  * slice_info_for_ue_configuration_update.h
  *
- * Contains the slice information requested during UE configuration update procedure
+ * Contains the slice information requested during UE configuration update procedure 
  */
 
 #ifndef _OpenAPI_slice_info_for_ue_configuration_update_H_

@@ -17,6 +17,7 @@ typedef struct OpenAPI_nrf_info_served_bsf_info_value_s OpenAPI_nrf_info_served_
 #include "identity_range.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
+#include "service_scenario_ind.h"
 #include "supi_range.h"
 
 #ifdef __cplusplus
@@ -33,6 +34,8 @@ struct OpenAPI_nrf_info_served_bsf_info_value_s {
     char *group_id;
     OpenAPI_list_t *supi_ranges;
     OpenAPI_list_t *gpsi_ranges;
+    OpenAPI_list_t *service_scenario_inds;
+    OpenAPI_list_t *mac_addr_patterns;
 };
 
 OpenAPI_nrf_info_served_bsf_info_value_t *OpenAPI_nrf_info_served_bsf_info_value_create(
@@ -44,7 +47,9 @@ OpenAPI_nrf_info_served_bsf_info_value_t *OpenAPI_nrf_info_served_bsf_info_value
     char *rx_diam_realm,
     char *group_id,
     OpenAPI_list_t *supi_ranges,
-    OpenAPI_list_t *gpsi_ranges
+    OpenAPI_list_t *gpsi_ranges,
+    OpenAPI_list_t *service_scenario_inds,
+    OpenAPI_list_t *mac_addr_patterns
 );
 void OpenAPI_nrf_info_served_bsf_info_value_free(OpenAPI_nrf_info_served_bsf_info_value_t *nrf_info_served_bsf_info_value);
 OpenAPI_nrf_info_served_bsf_info_value_t *OpenAPI_nrf_info_served_bsf_info_value_parseFromJSON(cJSON *nrf_info_served_bsf_info_valueJSON);

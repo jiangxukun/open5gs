@@ -1,7 +1,7 @@
 /*
  * nidd_information.h
  *
- * 
+ * Contains NIDD Information
  */
 
 #ifndef _OpenAPI_nidd_information_H_

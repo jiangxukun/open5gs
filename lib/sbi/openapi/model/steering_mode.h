@@ -32,6 +32,7 @@ struct OpenAPI_steering_mode_s {
     bool is_thres_value_null;
     struct OpenAPI_threshold_value_s *thres_value;
     OpenAPI_steer_mode_indicator_e steer_mode_ind;
+    OpenAPI_access_type_e primary;
 };
 
 OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
@@ -43,7 +44,8 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     OpenAPI_access_type_e prio_acc,
     bool is_thres_value_null,
     OpenAPI_threshold_value_t *thres_value,
-    OpenAPI_steer_mode_indicator_e steer_mode_ind
+    OpenAPI_steer_mode_indicator_e steer_mode_ind,
+    OpenAPI_access_type_e primary
 );
 void OpenAPI_steering_mode_free(OpenAPI_steering_mode_t *steering_mode);
 OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_modeJSON);

@@ -1,7 +1,7 @@
 /*
  * eps_iwk_pgw.h
  *
- * 
+ * This datatype signifies the PGW FQDN, SMF instance ID and the PLMNId location.
  */
 
 #ifndef _OpenAPI_eps_iwk_pgw_H_

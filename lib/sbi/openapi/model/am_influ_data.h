@@ -15,7 +15,9 @@
 typedef struct OpenAPI_am_influ_data_s OpenAPI_am_influ_data_t;
 #include "am_influ_event.h"
 #include "dnn_snssai_information.h"
+#include "plmn_id.h"
 #include "service_area_coverage_info.h"
+#include "slice_repl_req_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,6 +30,7 @@ struct OpenAPI_am_influ_data_s {
     char *supi;
     bool is_any_ue_ind;
     int any_ue_ind;
+    OpenAPI_list_t *roam_ue_plmn_ids;
     bool is_policy_duration;
     int policy_duration;
     OpenAPI_list_t *ev_subs;
@@ -37,6 +40,7 @@ struct OpenAPI_am_influ_data_s {
     bool is_thru_req;
     int thru_req;
     OpenAPI_list_t *cov_req;
+    struct OpenAPI_slice_repl_req_info_s *af_slice_repl_req_info;
     char *supported_features;
     char *res_uri;
     OpenAPI_list_t *reset_ids;
@@ -49,6 +53,7 @@ OpenAPI_am_influ_data_t *OpenAPI_am_influ_data_create(
     char *supi,
     bool is_any_ue_ind,
     int any_ue_ind,
+    OpenAPI_list_t *roam_ue_plmn_ids,
     bool is_policy_duration,
     int policy_duration,
     OpenAPI_list_t *ev_subs,
@@ -58,6 +63,7 @@ OpenAPI_am_influ_data_t *OpenAPI_am_influ_data_create(
     bool is_thru_req,
     int thru_req,
     OpenAPI_list_t *cov_req,
+    OpenAPI_slice_repl_req_info_t *af_slice_repl_req_info,
     char *supported_features,
     char *res_uri,
     OpenAPI_list_t *reset_ids

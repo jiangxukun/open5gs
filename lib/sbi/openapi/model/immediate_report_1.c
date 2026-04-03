@@ -5,14 +5,14 @@
 #include "immediate_report_1.h"
 
 OpenAPI_immediate_report_1_t *OpenAPI_immediate_report_1_create(
-    OpenAPI_subscription_data_sets_1_t *subscription_data_sets,
+    OpenAPI_provisioned_data_sets_t *provisioned_data_sets,
     OpenAPI_list_t *shared_data_list
 )
 {
     OpenAPI_immediate_report_1_t *immediate_report_1_local_var = ogs_malloc(sizeof(OpenAPI_immediate_report_1_t));
     ogs_assert(immediate_report_1_local_var);
 
-    immediate_report_1_local_var->subscription_data_sets = subscription_data_sets;
+    immediate_report_1_local_var->provisioned_data_sets = provisioned_data_sets;
     immediate_report_1_local_var->shared_data_list = shared_data_list;
 
     return immediate_report_1_local_var;
@@ -25,9 +25,9 @@ void OpenAPI_immediate_report_1_free(OpenAPI_immediate_report_1_t *immediate_rep
     if (NULL == immediate_report_1) {
         return;
     }
-    if (immediate_report_1->subscription_data_sets) {
-        OpenAPI_subscription_data_sets_1_free(immediate_report_1->subscription_data_sets);
-        immediate_report_1->subscription_data_sets = NULL;
+    if (immediate_report_1->provisioned_data_sets) {
+        OpenAPI_provisioned_data_sets_free(immediate_report_1->provisioned_data_sets);
+        immediate_report_1->provisioned_data_sets = NULL;
     }
     if (immediate_report_1->shared_data_list) {
         OpenAPI_list_for_each(immediate_report_1->shared_data_list, node) {
@@ -50,15 +50,15 @@ cJSON *OpenAPI_immediate_report_1_convertToJSON(OpenAPI_immediate_report_1_t *im
     }
 
     item = cJSON_CreateObject();
-    if (immediate_report_1->subscription_data_sets) {
-    cJSON *subscription_data_sets_local_JSON = OpenAPI_subscription_data_sets_1_convertToJSON(immediate_report_1->subscription_data_sets);
-    if (subscription_data_sets_local_JSON == NULL) {
-        ogs_error("OpenAPI_immediate_report_1_convertToJSON() failed [subscription_data_sets]");
+    if (immediate_report_1->provisioned_data_sets) {
+    cJSON *provisioned_data_sets_local_JSON = OpenAPI_provisioned_data_sets_convertToJSON(immediate_report_1->provisioned_data_sets);
+    if (provisioned_data_sets_local_JSON == NULL) {
+        ogs_error("OpenAPI_immediate_report_1_convertToJSON() failed [provisioned_data_sets]");
         goto end;
     }
-    cJSON_AddItemToObject(item, "SubscriptionDataSets", subscription_data_sets_local_JSON);
+    cJSON_AddItemToObject(item, "ProvisionedDataSets", provisioned_data_sets_local_JSON);
     if (item->child == NULL) {
-        ogs_error("OpenAPI_immediate_report_1_convertToJSON() failed [subscription_data_sets]");
+        ogs_error("OpenAPI_immediate_report_1_convertToJSON() failed [provisioned_data_sets]");
         goto end;
     }
     }
@@ -87,15 +87,15 @@ OpenAPI_immediate_report_1_t *OpenAPI_immediate_report_1_parseFromJSON(cJSON *im
 {
     OpenAPI_immediate_report_1_t *immediate_report_1_local_var = NULL;
     OpenAPI_lnode_t *node = NULL;
-    cJSON *subscription_data_sets = NULL;
-    OpenAPI_subscription_data_sets_1_t *subscription_data_sets_local_nonprim = NULL;
+    cJSON *provisioned_data_sets = NULL;
+    OpenAPI_provisioned_data_sets_t *provisioned_data_sets_local_nonprim = NULL;
     cJSON *shared_data_list = NULL;
     OpenAPI_list_t *shared_data_listList = NULL;
-    subscription_data_sets = cJSON_GetObjectItemCaseSensitive(immediate_report_1JSON, "SubscriptionDataSets");
-    if (subscription_data_sets) {
-    subscription_data_sets_local_nonprim = OpenAPI_subscription_data_sets_1_parseFromJSON(subscription_data_sets);
-    if (!subscription_data_sets_local_nonprim) {
-        ogs_error("OpenAPI_subscription_data_sets_1_parseFromJSON failed [subscription_data_sets]");
+    provisioned_data_sets = cJSON_GetObjectItemCaseSensitive(immediate_report_1JSON, "ProvisionedDataSets");
+    if (provisioned_data_sets) {
+    provisioned_data_sets_local_nonprim = OpenAPI_provisioned_data_sets_parseFromJSON(provisioned_data_sets);
+    if (!provisioned_data_sets_local_nonprim) {
+        ogs_error("OpenAPI_provisioned_data_sets_parseFromJSON failed [provisioned_data_sets]");
         goto end;
     }
     }
@@ -125,15 +125,15 @@ OpenAPI_immediate_report_1_t *OpenAPI_immediate_report_1_parseFromJSON(cJSON *im
     }
 
     immediate_report_1_local_var = OpenAPI_immediate_report_1_create (
-        subscription_data_sets ? subscription_data_sets_local_nonprim : NULL,
+        provisioned_data_sets ? provisioned_data_sets_local_nonprim : NULL,
         shared_data_list ? shared_data_listList : NULL
     );
 
     return immediate_report_1_local_var;
 end:
-    if (subscription_data_sets_local_nonprim) {
-        OpenAPI_subscription_data_sets_1_free(subscription_data_sets_local_nonprim);
-        subscription_data_sets_local_nonprim = NULL;
+    if (provisioned_data_sets_local_nonprim) {
+        OpenAPI_provisioned_data_sets_free(provisioned_data_sets_local_nonprim);
+        provisioned_data_sets_local_nonprim = NULL;
     }
     if (shared_data_listList) {
         OpenAPI_list_for_each(shared_data_listList, node) {

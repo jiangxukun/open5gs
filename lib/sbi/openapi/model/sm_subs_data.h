@@ -1,7 +1,7 @@
 /*
  * sm_subs_data.h
  *
- * 
+ * Session Management Subscription Data
  */
 
 #ifndef _OpenAPI_sm_subs_data_H_

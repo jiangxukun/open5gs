@@ -14,6 +14,7 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_qos_data_s OpenAPI_qos_data_t;
 #include "arp.h"
+#include "pdu_set_qos_para_rm.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,6 +62,10 @@ struct OpenAPI_qos_data_s {
     bool is_packet_delay_budget;
     int packet_delay_budget;
     char *packet_error_rate;
+    bool is_pdu_set_qos_dl_null;
+    struct OpenAPI_pdu_set_qos_para_rm_s *pdu_set_qos_dl;
+    bool is_pdu_set_qos_ul_null;
+    struct OpenAPI_pdu_set_qos_para_rm_s *pdu_set_qos_ul;
 };
 
 OpenAPI_qos_data_t *OpenAPI_qos_data_create(
@@ -104,7 +109,11 @@ OpenAPI_qos_data_t *OpenAPI_qos_data_create(
     int ext_max_data_burst_vol,
     bool is_packet_delay_budget,
     int packet_delay_budget,
-    char *packet_error_rate
+    char *packet_error_rate,
+    bool is_pdu_set_qos_dl_null,
+    OpenAPI_pdu_set_qos_para_rm_t *pdu_set_qos_dl,
+    bool is_pdu_set_qos_ul_null,
+    OpenAPI_pdu_set_qos_para_rm_t *pdu_set_qos_ul
 );
 void OpenAPI_qos_data_free(OpenAPI_qos_data_t *qos_data);
 OpenAPI_qos_data_t *OpenAPI_qos_data_parseFromJSON(cJSON *qos_dataJSON);

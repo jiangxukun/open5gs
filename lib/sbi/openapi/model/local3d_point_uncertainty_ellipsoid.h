@@ -29,6 +29,8 @@ struct OpenAPI_local3d_point_uncertainty_ellipsoid_s {
     struct OpenAPI_relative_cartesian_location_s *point;
     struct OpenAPI_uncertainty_ellipsoid_s *uncertainty_ellipsoid;
     int confidence;
+    bool is_v_confidence;
+    int v_confidence;
 };
 
 OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty_ellipsoid_create(
@@ -36,7 +38,9 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     OpenAPI_local_origin_t *local_origin,
     OpenAPI_relative_cartesian_location_t *point,
     OpenAPI_uncertainty_ellipsoid_t *uncertainty_ellipsoid,
-    int confidence
+    int confidence,
+    bool is_v_confidence,
+    int v_confidence
 );
 void OpenAPI_local3d_point_uncertainty_ellipsoid_free(OpenAPI_local3d_point_uncertainty_ellipsoid_t *local3d_point_uncertainty_ellipsoid);
 OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty_ellipsoid_parseFromJSON(cJSON *local3d_point_uncertainty_ellipsoidJSON);

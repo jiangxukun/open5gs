@@ -1,7 +1,7 @@
 /*
  * pdu_session.h
  *
- * 
+ * Contains PDU Session
  */
 
 #ifndef _OpenAPI_pdu_session_H_

@@ -1,7 +1,7 @@
 /*
  * class_criterion.h
  *
- * Indicates the dispersion class criterion for fixed, camper and/or traveller UE, and/or the  top-heavy UE dispersion class criterion. 
+ * Indicates the dispersion class criterion for fixed, camper and/or traveller UE, and/or the top-heavy UE dispersion class criterion. 
  */
 
 #ifndef _OpenAPI_class_criterion_H_

@@ -29,6 +29,8 @@ struct OpenAPI_udr_info_s {
     OpenAPI_list_t *external_group_identifiers_ranges;
     OpenAPI_list_t *supported_data_sets;
     OpenAPI_list_t *shared_data_id_ranges;
+    bool is_any_ue_ind;
+    int any_ue_ind;
 };
 
 OpenAPI_udr_info_t *OpenAPI_udr_info_create(
@@ -37,7 +39,9 @@ OpenAPI_udr_info_t *OpenAPI_udr_info_create(
     OpenAPI_list_t *gpsi_ranges,
     OpenAPI_list_t *external_group_identifiers_ranges,
     OpenAPI_list_t *supported_data_sets,
-    OpenAPI_list_t *shared_data_id_ranges
+    OpenAPI_list_t *shared_data_id_ranges,
+    bool is_any_ue_ind,
+    int any_ue_ind
 );
 void OpenAPI_udr_info_free(OpenAPI_udr_info_t *udr_info);
 OpenAPI_udr_info_t *OpenAPI_udr_info_parseFromJSON(cJSON *udr_infoJSON);

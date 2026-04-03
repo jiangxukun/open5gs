@@ -15,7 +15,7 @@
 typedef struct OpenAPI_access_and_mobility_data_s OpenAPI_access_and_mobility_data_t;
 #include "access_type.h"
 #include "cm_info.h"
-#include "plmn_id_1.h"
+#include "plmn_id.h"
 #include "rat_type.h"
 #include "rm_info.h"
 #include "sms_support.h"
@@ -32,6 +32,7 @@ struct OpenAPI_access_and_mobility_data_s {
     char *time_zone;
     char *time_zone_ts;
     OpenAPI_access_type_e access_type;
+    char *access_type_ts;
     OpenAPI_list_t *reg_states;
     char *reg_states_ts;
     OpenAPI_list_t *conn_states;
@@ -43,7 +44,7 @@ struct OpenAPI_access_and_mobility_data_s {
     bool is_roaming_status;
     int roaming_status;
     char *roaming_status_ts;
-    struct OpenAPI_plmn_id_1_s *current_plmn;
+    struct OpenAPI_plmn_id_s *current_plmn;
     char *current_plmn_ts;
     OpenAPI_list_t *rat_type;
     char *rat_types_ts;
@@ -57,6 +58,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_create(
     char *time_zone,
     char *time_zone_ts,
     OpenAPI_access_type_e access_type,
+    char *access_type_ts,
     OpenAPI_list_t *reg_states,
     char *reg_states_ts,
     OpenAPI_list_t *conn_states,
@@ -68,7 +70,7 @@ OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_create(
     bool is_roaming_status,
     int roaming_status,
     char *roaming_status_ts,
-    OpenAPI_plmn_id_1_t *current_plmn,
+    OpenAPI_plmn_id_t *current_plmn,
     char *current_plmn_ts,
     OpenAPI_list_t *rat_type,
     char *rat_types_ts,

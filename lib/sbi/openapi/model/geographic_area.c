@@ -13,6 +13,8 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_create(
     OpenAPI_list_t *point_list,
     double altitude,
     float uncertainty_altitude,
+    bool is_v_confidence,
+    int v_confidence,
     int inner_radius,
     float uncertainty_radius,
     int offset_angle,
@@ -30,6 +32,8 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_create(
     geographic_area_local_var->point_list = point_list;
     geographic_area_local_var->altitude = altitude;
     geographic_area_local_var->uncertainty_altitude = uncertainty_altitude;
+    geographic_area_local_var->is_v_confidence = is_v_confidence;
+    geographic_area_local_var->v_confidence = v_confidence;
     geographic_area_local_var->inner_radius = inner_radius;
     geographic_area_local_var->uncertainty_radius = uncertainty_radius;
     geographic_area_local_var->offset_angle = offset_angle;
@@ -151,6 +155,13 @@ cJSON *OpenAPI_geographic_area_convertToJSON(OpenAPI_geographic_area_t *geograph
         goto end;
     }
 
+    if (geographic_area->is_v_confidence) {
+    if (cJSON_AddNumberToObject(item, "vConfidence", geographic_area->v_confidence) == NULL) {
+        ogs_error("OpenAPI_geographic_area_convertToJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
     if (cJSON_AddNumberToObject(item, "innerRadius", geographic_area->inner_radius) == NULL) {
         ogs_error("OpenAPI_geographic_area_convertToJSON() failed [inner_radius]");
         goto end;
@@ -191,6 +202,7 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
     OpenAPI_list_t *point_listList = NULL;
     cJSON *altitude = NULL;
     cJSON *uncertainty_altitude = NULL;
+    cJSON *v_confidence = NULL;
     cJSON *inner_radius = NULL;
     cJSON *uncertainty_radius = NULL;
     cJSON *offset_angle = NULL;
@@ -294,6 +306,14 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
         goto end;
     }
 
+    v_confidence = cJSON_GetObjectItemCaseSensitive(geographic_areaJSON, "vConfidence");
+    if (v_confidence) {
+    if (!cJSON_IsNumber(v_confidence)) {
+        ogs_error("OpenAPI_geographic_area_parseFromJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
     inner_radius = cJSON_GetObjectItemCaseSensitive(geographic_areaJSON, "innerRadius");
     if (!inner_radius) {
         ogs_error("OpenAPI_geographic_area_parseFromJSON() failed [inner_radius]");
@@ -347,6 +367,8 @@ OpenAPI_geographic_area_t *OpenAPI_geographic_area_parseFromJSON(cJSON *geograph
         altitude->valuedouble,
         
         uncertainty_altitude->valuedouble,
+        v_confidence ? true : false,
+        v_confidence ? v_confidence->valuedouble : 0,
         
         inner_radius->valuedouble,
         

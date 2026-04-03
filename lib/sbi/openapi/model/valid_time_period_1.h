@@ -1,7 +1,7 @@
 /*
  * valid_time_period_1.h
  *
- * 
+ * Contains the validity time period
  */
 
 #ifndef _OpenAPI_valid_time_period_1_H_

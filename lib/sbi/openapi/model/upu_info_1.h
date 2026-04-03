@@ -1,7 +1,7 @@
 /*
  * upu_info_1.h
  *
- * 
+ * Contains UE Parameter Update Information
  */
 
 #ifndef _OpenAPI_upu_info_1_H_

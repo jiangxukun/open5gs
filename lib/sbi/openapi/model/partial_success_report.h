@@ -1,7 +1,7 @@
 /*
  * partial_success_report.h
  *
- * Includes the information reported by the SMF when some of the PCC rules and/or session rules are not successfully installed/activated.
+ * Includes the information reported by the SMF when some of the PCC rules and/or session rules  and/or policy decision and/or condition data are not successfully installed/activated or stored. 
  */
 
 #ifndef _OpenAPI_partial_success_report_H_

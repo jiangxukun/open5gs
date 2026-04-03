@@ -14,8 +14,11 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_amf_event_mode_s OpenAPI_amf_event_mode_t;
 #include "amf_event_trigger.h"
+#include "muting_exception_instructions.h"
+#include "muting_notifications_settings.h"
 #include "notification_flag.h"
 #include "partitioning_criteria.h"
+#include "var_rep_period.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +35,9 @@ struct OpenAPI_amf_event_mode_s {
     int samp_ratio;
     OpenAPI_list_t *partitioning_criteria;
     OpenAPI_notification_flag_e notif_flag;
+    struct OpenAPI_muting_exception_instructions_s *muting_exc_instructions;
+    struct OpenAPI_muting_notifications_settings_s *muting_not_settings;
+    OpenAPI_list_t *var_rep_period_info;
 };
 
 OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_create(
@@ -44,7 +50,10 @@ OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_create(
     bool is_samp_ratio,
     int samp_ratio,
     OpenAPI_list_t *partitioning_criteria,
-    OpenAPI_notification_flag_e notif_flag
+    OpenAPI_notification_flag_e notif_flag,
+    OpenAPI_muting_exception_instructions_t *muting_exc_instructions,
+    OpenAPI_muting_notifications_settings_t *muting_not_settings,
+    OpenAPI_list_t *var_rep_period_info
 );
 void OpenAPI_amf_event_mode_free(OpenAPI_amf_event_mode_t *amf_event_mode);
 OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_parseFromJSON(cJSON *amf_event_modeJSON);

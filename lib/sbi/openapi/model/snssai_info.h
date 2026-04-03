@@ -1,7 +1,7 @@
 /*
  * snssai_info.h
  *
- * 
+ * Contains S-NSSAI Information
  */
 
 #ifndef _OpenAPI_snssai_info_H_

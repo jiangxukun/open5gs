@@ -1,7 +1,7 @@
 /*
  * suggested_packet_num_dl.h
  *
- * 
+ * Contains suggested number of DL packets
  */
 
 #ifndef _OpenAPI_suggested_packet_num_dl_H_

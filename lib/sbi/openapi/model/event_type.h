@@ -1,7 +1,7 @@
 /*
  * event_type.h
  *
- * 
+ * Event Type
  */
 
 #ifndef _OpenAPI_event_type_H_
@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_event_type_NULL = 0, OpenAPI_event_type_LOSS_OF_CONNECTIVITY, OpenAPI_event_type_UE_REACHABILITY_FOR_DATA, OpenAPI_event_type_UE_REACHABILITY_FOR_SMS, OpenAPI_event_type_LOCATION_REPORTING, OpenAPI_event_type_CHANGE_OF_SUPI_PEI_ASSOCIATION, OpenAPI_event_type_ROAMING_STATUS, OpenAPI_event_type_COMMUNICATION_FAILURE, OpenAPI_event_type_AVAILABILITY_AFTER_DDN_FAILURE, OpenAPI_event_type_CN_TYPE_CHANGE, OpenAPI_event_type_DL_DATA_DELIVERY_STATUS, OpenAPI_event_type_PDN_CONNECTIVITY_STATUS, OpenAPI_event_type_UE_CONNECTION_MANAGEMENT_STATE, OpenAPI_event_type_ACCESS_TYPE_REPORT, OpenAPI_event_type_REGISTRATION_STATE_REPORT, OpenAPI_event_type_CONNECTIVITY_STATE_REPORT, OpenAPI_event_type_TYPE_ALLOCATION_CODE_REPORT, OpenAPI_event_type_FREQUENT_MOBILITY_REGISTRATION_REPORT, OpenAPI_event_type_PDU_SES_REL, OpenAPI_event_type_PDU_SES_EST, OpenAPI_event_type_UE_MEMORY_AVAILABLE_FOR_SMS } OpenAPI_event_type_e;
+typedef enum { OpenAPI_event_type_NULL = 0, OpenAPI_event_type_QOS_MONITORING, OpenAPI_event_type_USER_DATA_USAGE_MEASURES, OpenAPI_event_type_USER_DATA_USAGE_TRENDS, OpenAPI_event_type_TSC_MNGT_INFO, OpenAPI_event_type_UE_NAT_MAPPING_INFO, OpenAPI_event_type_HANDLING_OF_PAYLOAD_HEADERS_INFO, OpenAPI_event_type_SUBSCRIPTION_TERMINATION } OpenAPI_event_type_e;
 
 char* OpenAPI_event_type_ToString(OpenAPI_event_type_e event_type);
 

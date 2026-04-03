@@ -28,6 +28,8 @@ struct OpenAPI_nrf_info_served_smf_info_value_s {
     OpenAPI_list_t *s_nssai_smf_info_list;
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *tai_range_list;
+    OpenAPI_list_t *lom_tai_list;
+    OpenAPI_list_t *lom_tai_range_list;
     char *pgw_fqdn;
     OpenAPI_list_t *pgw_ip_addr_list;
     OpenAPI_list_t *access_type;
@@ -48,6 +50,8 @@ OpenAPI_nrf_info_served_smf_info_value_t *OpenAPI_nrf_info_served_smf_info_value
     OpenAPI_list_t *s_nssai_smf_info_list,
     OpenAPI_list_t *tai_list,
     OpenAPI_list_t *tai_range_list,
+    OpenAPI_list_t *lom_tai_list,
+    OpenAPI_list_t *lom_tai_range_list,
     char *pgw_fqdn,
     OpenAPI_list_t *pgw_ip_addr_list,
     OpenAPI_list_t *access_type,

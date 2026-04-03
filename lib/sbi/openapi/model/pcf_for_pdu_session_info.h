@@ -1,7 +1,7 @@
 /*
  * pcf_for_pdu_session_info.h
  *
- * Contains the informaiton of the PCF for a PDU session.
+ * Contains the information of the PCF for a PDU session.
  */
 
 #ifndef _OpenAPI_pcf_for_pdu_session_info_H_

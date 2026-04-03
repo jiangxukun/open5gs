@@ -6,7 +6,7 @@
 
 char* OpenAPI_am_influ_event_ToString(OpenAPI_am_influ_event_e am_influ_event)
 {
-    const char *am_influ_eventArray[] =  { "NULL", "SERVICE_AREA_COVRG_OUTCOME" };
+    const char *am_influ_eventArray[] =  { "NULL", "SERVICE_AREA_COVRG_OUTCOME", "SLICE_REPLACE_OUTCOME" };
     size_t sizeofArray = sizeof(am_influ_eventArray) / sizeof(am_influ_eventArray[0]);
     if (am_influ_event < sizeofArray)
         return (char *)am_influ_eventArray[am_influ_event];
@@ -17,7 +17,7 @@ char* OpenAPI_am_influ_event_ToString(OpenAPI_am_influ_event_e am_influ_event)
 OpenAPI_am_influ_event_e OpenAPI_am_influ_event_FromString(char* am_influ_event)
 {
     int stringToReturn = 0;
-    const char *am_influ_eventArray[] =  { "NULL", "SERVICE_AREA_COVRG_OUTCOME" };
+    const char *am_influ_eventArray[] =  { "NULL", "SERVICE_AREA_COVRG_OUTCOME", "SLICE_REPLACE_OUTCOME" };
     size_t sizeofArray = sizeof(am_influ_eventArray) / sizeof(am_influ_eventArray[0]);
     while (stringToReturn < sizeofArray) {
         if (strcmp(am_influ_event, am_influ_eventArray[stringToReturn]) == 0) {

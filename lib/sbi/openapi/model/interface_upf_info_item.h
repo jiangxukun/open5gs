@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_interface_upf_info_item_s OpenAPI_interface_upf_info_item_t;
+#include "port_range.h"
 #include "up_interface_type.h"
 
 #ifdef __cplusplus
@@ -25,6 +26,7 @@ struct OpenAPI_interface_upf_info_item_s {
     OpenAPI_list_t *ipv6_endpoint_addresses;
     char *endpoint_fqdn;
     char *network_instance;
+    OpenAPI_list_t *port_range_list;
 };
 
 OpenAPI_interface_upf_info_item_t *OpenAPI_interface_upf_info_item_create(
@@ -32,7 +34,8 @@ OpenAPI_interface_upf_info_item_t *OpenAPI_interface_upf_info_item_create(
     OpenAPI_list_t *ipv4_endpoint_addresses,
     OpenAPI_list_t *ipv6_endpoint_addresses,
     char *endpoint_fqdn,
-    char *network_instance
+    char *network_instance,
+    OpenAPI_list_t *port_range_list
 );
 void OpenAPI_interface_upf_info_item_free(OpenAPI_interface_upf_info_item_t *interface_upf_info_item);
 OpenAPI_interface_upf_info_item_t *OpenAPI_interface_upf_info_item_parseFromJSON(cJSON *interface_upf_info_itemJSON);

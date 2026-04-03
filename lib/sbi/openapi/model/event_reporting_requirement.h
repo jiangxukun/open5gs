@@ -16,6 +16,7 @@ typedef struct OpenAPI_event_reporting_requirement_s OpenAPI_event_reporting_req
 #include "accuracy.h"
 #include "analytics_metadata.h"
 #include "analytics_metadata_indication.h"
+#include "time_window.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,6 +38,7 @@ struct OpenAPI_event_reporting_requirement_s {
     char *time_ana_needed;
     OpenAPI_list_t *ana_meta;
     struct OpenAPI_analytics_metadata_indication_s *ana_meta_ind;
+    struct OpenAPI_time_window_s *hist_ana_time_period;
 };
 
 OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_create(
@@ -54,7 +56,8 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_creat
     int max_supi_nbr,
     char *time_ana_needed,
     OpenAPI_list_t *ana_meta,
-    OpenAPI_analytics_metadata_indication_t *ana_meta_ind
+    OpenAPI_analytics_metadata_indication_t *ana_meta_ind,
+    OpenAPI_time_window_t *hist_ana_time_period
 );
 void OpenAPI_event_reporting_requirement_free(OpenAPI_event_reporting_requirement_t *event_reporting_requirement);
 OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parseFromJSON(cJSON *event_reporting_requirementJSON);

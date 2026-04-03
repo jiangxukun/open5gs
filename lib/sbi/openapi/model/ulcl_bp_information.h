@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_ulcl_bp_information_s OpenAPI_ulcl_bp_information_t;
+#include "event_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,10 +21,12 @@ extern "C" {
 
 struct OpenAPI_ulcl_bp_information_s {
     char *ulcl_bp_upf_id;
+    OpenAPI_list_t *upf_events;
 };
 
 OpenAPI_ulcl_bp_information_t *OpenAPI_ulcl_bp_information_create(
-    char *ulcl_bp_upf_id
+    char *ulcl_bp_upf_id,
+    OpenAPI_list_t *upf_events
 );
 void OpenAPI_ulcl_bp_information_free(OpenAPI_ulcl_bp_information_t *ulcl_bp_information);
 OpenAPI_ulcl_bp_information_t *OpenAPI_ulcl_bp_information_parseFromJSON(cJSON *ulcl_bp_informationJSON);

@@ -28,6 +28,7 @@ struct OpenAPI_bsf_subscription_s {
     char *gpsi;
     struct OpenAPI_snssai_dnn_pair_s *snssai_dnn_pairs;
     OpenAPI_list_t *add_snssai_dnn_pairs;
+    char *expiry;
     char *supp_feat;
 };
 
@@ -39,6 +40,7 @@ OpenAPI_bsf_subscription_t *OpenAPI_bsf_subscription_create(
     char *gpsi,
     OpenAPI_snssai_dnn_pair_t *snssai_dnn_pairs,
     OpenAPI_list_t *add_snssai_dnn_pairs,
+    char *expiry,
     char *supp_feat
 );
 void OpenAPI_bsf_subscription_free(OpenAPI_bsf_subscription_t *bsf_subscription);

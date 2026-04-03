@@ -1,7 +1,7 @@
 /*
  * expected_ue_behaviour.h
  *
- * 
+ * Contains Expected UE Behaviour
  */
 
 #ifndef _OpenAPI_expected_ue_behaviour_H_

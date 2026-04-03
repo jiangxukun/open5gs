@@ -1,7 +1,7 @@
 /*
  * acknowledge_info.h
  *
- * 
+ * Contains acknowledgement information
  */
 
 #ifndef _OpenAPI_acknowledge_info_H_

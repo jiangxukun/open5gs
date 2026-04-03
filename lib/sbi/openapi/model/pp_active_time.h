@@ -1,7 +1,7 @@
 /*
  * pp_active_time.h
  *
- * 
+ * Contains AF provisioned active time
  */
 
 #ifndef _OpenAPI_pp_active_time_H_

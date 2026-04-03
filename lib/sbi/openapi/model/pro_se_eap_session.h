@@ -1,7 +1,7 @@
 /*
  * pro_se_eap_session.h
  *
- * Contains information related to the EAP session. If present the 5gPrukId IE shall carry the CP-PRUK ID.
+ * Contains information related to the EAP session. If present the 5gPrukId IE shall carry the CP-PRUK ID. 
  */
 
 #ifndef _OpenAPI_pro_se_eap_session_H_

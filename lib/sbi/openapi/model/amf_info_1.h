@@ -1,7 +1,7 @@
 /*
  * amf_info_1.h
  *
- * 
+ * Contains AMF Information
  */
 
 #ifndef _OpenAPI_amf_info_1_H_

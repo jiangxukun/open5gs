@@ -1,7 +1,7 @@
 /*
  * ipx_provider_sec_info.h
  *
- * Defines the security information list of an IPX
+ * Defines the security information list of an RI
  */
 
 #ifndef _OpenAPI_ipx_provider_sec_info_H_

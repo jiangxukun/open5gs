@@ -25,6 +25,7 @@ struct OpenAPI_sec_param_exch_rsp_data_s {
     char *selected_jwe_cipher_suite;
     char *selected_jws_cipher_suite;
     struct OpenAPI_protection_policy_s *sel_protection_policy_info;
+    OpenAPI_list_t *sel_sec_profiles;
     OpenAPI_list_t *ipx_provider_sec_info_list;
     char *sender;
 };
@@ -34,6 +35,7 @@ OpenAPI_sec_param_exch_rsp_data_t *OpenAPI_sec_param_exch_rsp_data_create(
     char *selected_jwe_cipher_suite,
     char *selected_jws_cipher_suite,
     OpenAPI_protection_policy_t *sel_protection_policy_info,
+    OpenAPI_list_t *sel_sec_profiles,
     OpenAPI_list_t *ipx_provider_sec_info_list,
     char *sender
 );

@@ -19,6 +19,7 @@ typedef struct OpenAPI_ue_context_create_data_s OpenAPI_ue_context_create_data_t
 #include "ng_ran_target_id.h"
 #include "plmn_id_nid.h"
 #include "ue_context.h"
+#include "xr_device_with2_rx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,6 +36,7 @@ struct OpenAPI_ue_context_create_data_s {
     struct OpenAPI_ng_ap_cause_s *ngap_cause;
     char *supported_features;
     struct OpenAPI_plmn_id_nid_s *serving_network;
+    OpenAPI_xr_device_with2_rx_e xr_device_with2_rx;
 };
 
 OpenAPI_ue_context_create_data_t *OpenAPI_ue_context_create_data_create(
@@ -47,7 +49,8 @@ OpenAPI_ue_context_create_data_t *OpenAPI_ue_context_create_data_create(
     OpenAPI_n2_info_content_t *ue_radio_capability_for_paging,
     OpenAPI_ng_ap_cause_t *ngap_cause,
     char *supported_features,
-    OpenAPI_plmn_id_nid_t *serving_network
+    OpenAPI_plmn_id_nid_t *serving_network,
+    OpenAPI_xr_device_with2_rx_e xr_device_with2_rx
 );
 void OpenAPI_ue_context_create_data_free(OpenAPI_ue_context_create_data_t *ue_context_create_data);
 OpenAPI_ue_context_create_data_t *OpenAPI_ue_context_create_data_parseFromJSON(cJSON *ue_context_create_dataJSON);

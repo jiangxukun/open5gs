@@ -1,7 +1,7 @@
 /*
  * plmn_operator_class.h
  *
- * 
+ * Contains PLMN Operator Class
  */
 
 #ifndef _OpenAPI_plmn_operator_class_H_

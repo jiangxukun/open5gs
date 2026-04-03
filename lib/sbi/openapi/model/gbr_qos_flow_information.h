@@ -14,6 +14,7 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_gbr_qos_flow_information_s OpenAPI_gbr_qos_flow_information_t;
 #include "alternative_qos_profile.h"
+#include "available_bitrate_monitoring_request.h"
 #include "notification_control.h"
 
 #ifdef __cplusplus
@@ -31,6 +32,7 @@ struct OpenAPI_gbr_qos_flow_information_s {
     bool is_max_packet_loss_rate_ul;
     int max_packet_loss_rate_ul;
     OpenAPI_list_t *alternative_qos_profile_list;
+    struct OpenAPI_available_bitrate_monitoring_request_s *avail_bitrate_mon_req;
 };
 
 OpenAPI_gbr_qos_flow_information_t *OpenAPI_gbr_qos_flow_information_create(
@@ -43,7 +45,8 @@ OpenAPI_gbr_qos_flow_information_t *OpenAPI_gbr_qos_flow_information_create(
     int max_packet_loss_rate_dl,
     bool is_max_packet_loss_rate_ul,
     int max_packet_loss_rate_ul,
-    OpenAPI_list_t *alternative_qos_profile_list
+    OpenAPI_list_t *alternative_qos_profile_list,
+    OpenAPI_available_bitrate_monitoring_request_t *avail_bitrate_mon_req
 );
 void OpenAPI_gbr_qos_flow_information_free(OpenAPI_gbr_qos_flow_information_t *gbr_qos_flow_information);
 OpenAPI_gbr_qos_flow_information_t *OpenAPI_gbr_qos_flow_information_parseFromJSON(cJSON *gbr_qos_flow_informationJSON);

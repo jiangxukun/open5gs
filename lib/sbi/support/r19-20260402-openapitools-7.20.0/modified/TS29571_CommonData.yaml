@@ -1681,49 +1681,52 @@ components:
         'nullable: true' property."
 
     RatType:
-      anyOf:
-        - type: string
-          enum:
-            - NR
-            - EUTRA
-            - WLAN
-            - VIRTUAL
-            - NBIOT
-            - WIRELINE
-            - WIRELINE_CABLE
-            - WIRELINE_BBF
-            - LTE-M
-            - NR_U
-            - EUTRA_U
-            - TRUSTED_N3GA
-            - TRUSTED_WLAN
-            - UTRA
-            - GERA
-            - NR_LEO
-            - NR_MEO
-            - NR_GEO
-            - NR_OTHER_SAT
-            - NR_REDCAP
-            - WB_E_UTRAN_LEO
-            - WB_E_UTRAN_MEO
-            - WB_E_UTRAN_GEO
-            - WB_E_UTRAN_OTHERSAT
-            - NB_IOT_LEO
-            - NB_IOT_MEO
-            - NB_IOT_GEO
-            - NB_IOT_OTHERSAT
-            - LTE_M_LEO
-            - LTE_M_MEO
-            - LTE_M_GEO
-            - LTE_M_OTHERSAT
-            - NR_EREDCAP
-            - HSPA_EVOLUTION        - type: string
-      description: Indicates the radio access used.
-
+#      anyOf:
+#        - type: string
+      type: string
+      enum:
+        - NR
+        - EUTRA
+        - WLAN
+        - VIRTUAL
+        - NBIOT
+        - WIRELINE
+        - WIRELINE_CABLE
+        - WIRELINE_BBF
+        - LTE-M
+        - NR_U
+        - EUTRA_U
+        - TRUSTED_N3GA
+        - TRUSTED_WLAN
+        - UTRA
+        - GERA
+        - NR_LEO
+        - NR_MEO
+        - NR_GEO
+        - NR_OTHER_SAT
+        - NR_REDCAP
+        - WB_E_UTRAN_LEO
+        - WB_E_UTRAN_MEO
+        - WB_E_UTRAN_GEO
+        - WB_E_UTRAN_OTHERSAT
+        - NB_IOT_LEO
+        - NB_IOT_MEO
+        - NB_IOT_GEO
+        - NB_IOT_OTHERSAT
+        - LTE_M_LEO
+        - LTE_M_MEO
+        - LTE_M_GEO
+        - LTE_M_OTHERSAT
+        - NR_EREDCAP
+        - HSPA_EVOLUTION
+#        - type: string
+#      description: Indicates the radio access used.
+#
     RatTypeRm:
-      anyOf:
-        - $ref: '#/components/schemas/RatType'
-        - $ref: '#/components/schemas/NullValue'
+      $ref: '#/components/schemas/RatType'
+#      anyOf:
+#        - $ref: '#/components/schemas/RatType'
+#        - $ref: '#/components/schemas/NullValue'
       description: >
         Provides information about the radio access but with the OpenAPI 'nullable: true' property. 
 

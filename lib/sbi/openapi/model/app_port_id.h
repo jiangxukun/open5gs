@@ -1,7 +1,7 @@
 /*
  * app_port_id.h
  *
- * 
+ * Contains the Application Port Id
  */
 
 #ifndef _OpenAPI_app_port_id_H_

@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_qos_sustainability_info_s OpenAPI_qos_sustainability_info_t;
+#include "geographical_area.h"
 #include "network_area_info.h"
 #include "retainability_threshold.h"
 #include "snssai.h"
@@ -23,10 +24,13 @@ extern "C" {
 
 struct OpenAPI_qos_sustainability_info_s {
     struct OpenAPI_network_area_info_s *area_info;
+    OpenAPI_list_t *fine_area_infos;
     char *start_ts;
     char *end_ts;
     struct OpenAPI_retainability_threshold_s *qos_flow_ret_thd;
     char *ran_ue_throu_thd;
+    bool is_e2e_delay_thd;
+    int e2e_delay_thd;
     struct OpenAPI_snssai_s *snssai;
     bool is_confidence;
     int confidence;
@@ -34,10 +38,13 @@ struct OpenAPI_qos_sustainability_info_s {
 
 OpenAPI_qos_sustainability_info_t *OpenAPI_qos_sustainability_info_create(
     OpenAPI_network_area_info_t *area_info,
+    OpenAPI_list_t *fine_area_infos,
     char *start_ts,
     char *end_ts,
     OpenAPI_retainability_threshold_t *qos_flow_ret_thd,
     char *ran_ue_throu_thd,
+    bool is_e2e_delay_thd,
+    int e2e_delay_thd,
     OpenAPI_snssai_t *snssai,
     bool is_confidence,
     int confidence

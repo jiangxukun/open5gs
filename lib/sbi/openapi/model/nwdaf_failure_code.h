@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_nwdaf_failure_code_NULL = 0, OpenAPI_nwdaf_failure_code_UNAVAILABLE_DATA, OpenAPI_nwdaf_failure_code_BOTH_STAT_PRED_NOT_ALLOWED, OpenAPI_nwdaf_failure_code_UNSATISFIED_REQUESTED_ANALYTICS_TIME, OpenAPI_nwdaf_failure_code_OTHER } OpenAPI_nwdaf_failure_code_e;
+typedef enum { OpenAPI_nwdaf_failure_code_NULL = 0, OpenAPI_nwdaf_failure_code_UNAVAILABLE_DATA, OpenAPI_nwdaf_failure_code_BOTH_STAT_PRED_NOT_ALLOWED, OpenAPI_nwdaf_failure_code_PREDICTION_NOT_ALLOWED, OpenAPI_nwdaf_failure_code_UNSATISFIED_REQUESTED_ANALYTICS_TIME, OpenAPI_nwdaf_failure_code_NO_ROAMING_SUPPORT, OpenAPI_nwdaf_failure_code_OTHER } OpenAPI_nwdaf_failure_code_e;
 
 char* OpenAPI_nwdaf_failure_code_ToString(OpenAPI_nwdaf_failure_code_e nwdaf_failure_code);
 

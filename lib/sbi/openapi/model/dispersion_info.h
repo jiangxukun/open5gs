@@ -1,7 +1,7 @@
 /*
  * dispersion_info.h
  *
- * Represents the Dispersion information. When subscribed event is \&quot;DISPERSION\&quot;, the  \&quot;disperInfos\&quot; attribute shall be included. 
+ * Represents the Dispersion information. When subscribed event is \&quot;DISPERSION\&quot;, the \&quot;disperInfos\&quot; attribute shall be included. 
  */
 
 #ifndef _OpenAPI_dispersion_info_H_

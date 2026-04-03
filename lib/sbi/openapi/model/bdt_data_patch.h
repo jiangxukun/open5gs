@@ -23,11 +23,21 @@ extern "C" {
 struct OpenAPI_bdt_data_patch_s {
     struct OpenAPI_transfer_policy_s *trans_policy;
     OpenAPI_bdt_policy_status_e bdtp_status;
+    bool is_warn_notif_enabled;
+    int warn_notif_enabled;
+    char *notif_uri;
+    bool is_energy_ind;
+    int energy_ind;
 };
 
 OpenAPI_bdt_data_patch_t *OpenAPI_bdt_data_patch_create(
     OpenAPI_transfer_policy_t *trans_policy,
-    OpenAPI_bdt_policy_status_e bdtp_status
+    OpenAPI_bdt_policy_status_e bdtp_status,
+    bool is_warn_notif_enabled,
+    int warn_notif_enabled,
+    char *notif_uri,
+    bool is_energy_ind,
+    int energy_ind
 );
 void OpenAPI_bdt_data_patch_free(OpenAPI_bdt_data_patch_t *bdt_data_patch);
 OpenAPI_bdt_data_patch_t *OpenAPI_bdt_data_patch_parseFromJSON(cJSON *bdt_data_patchJSON);

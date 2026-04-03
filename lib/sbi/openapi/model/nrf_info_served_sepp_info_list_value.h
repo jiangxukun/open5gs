@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_nrf_info_served_sepp_info_list_value_s OpenAPI_nrf_info_served_sepp_info_list_value_t;
+#include "n32_purpose.h"
 #include "plmn_id.h"
 #include "plmn_id_nid.h"
 #include "sepp_info.h"
@@ -26,13 +27,15 @@ struct OpenAPI_nrf_info_served_sepp_info_list_value_s {
     OpenAPI_list_t* sepp_ports;
     OpenAPI_list_t *remote_plmn_list;
     OpenAPI_list_t *remote_snpn_list;
+    OpenAPI_list_t *n32_purposes;
 };
 
 OpenAPI_nrf_info_served_sepp_info_list_value_t *OpenAPI_nrf_info_served_sepp_info_list_value_create(
     char *sepp_prefix,
     OpenAPI_list_t* sepp_ports,
     OpenAPI_list_t *remote_plmn_list,
-    OpenAPI_list_t *remote_snpn_list
+    OpenAPI_list_t *remote_snpn_list,
+    OpenAPI_list_t *n32_purposes
 );
 void OpenAPI_nrf_info_served_sepp_info_list_value_free(OpenAPI_nrf_info_served_sepp_info_list_value_t *nrf_info_served_sepp_info_list_value);
 OpenAPI_nrf_info_served_sepp_info_list_value_t *OpenAPI_nrf_info_served_sepp_info_list_value_parseFromJSON(cJSON *nrf_info_served_sepp_info_list_valueJSON);

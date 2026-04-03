@@ -13,7 +13,6 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_bsf_notification_s OpenAPI_bsf_notification_t;
-#include "binding_level.h"
 #include "bsf_event_notification.h"
 
 #ifdef __cplusplus
@@ -22,17 +21,11 @@ extern "C" {
 
 struct OpenAPI_bsf_notification_s {
     char *notif_corre_id;
-    char *pcf_id;
-    char *pcf_set_id;
-    OpenAPI_binding_level_e bind_level;
     OpenAPI_list_t *event_notifs;
 };
 
 OpenAPI_bsf_notification_t *OpenAPI_bsf_notification_create(
     char *notif_corre_id,
-    char *pcf_id,
-    char *pcf_set_id,
-    OpenAPI_binding_level_e bind_level,
     OpenAPI_list_t *event_notifs
 );
 void OpenAPI_bsf_notification_free(OpenAPI_bsf_notification_t *bsf_notification);

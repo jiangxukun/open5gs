@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_modifysubscription_data_subscription_200_response_s OpenAPI_modifysubscription_data_subscription_200_response_t;
+#include "additional_data_ref.h"
 #include "hss_subscription_info.h"
 #include "report_item.h"
 #include "sdm_subscription_1.h"
@@ -34,6 +35,10 @@ struct OpenAPI_modifysubscription_data_subscription_200_response_s {
     bool is_unique_subscription;
     int unique_subscription;
     char *supported_features;
+    bool is_immediate_report;
+    int immediate_report;
+    OpenAPI_list_t *additional_data_refs;
+    OpenAPI_list_t *reset_ids;
 };
 
 OpenAPI_modifysubscription_data_subscription_200_response_t *OpenAPI_modifysubscription_data_subscription_200_response_create(
@@ -48,7 +53,11 @@ OpenAPI_modifysubscription_data_subscription_200_response_t *OpenAPI_modifysubsc
     char *subscription_id,
     bool is_unique_subscription,
     int unique_subscription,
-    char *supported_features
+    char *supported_features,
+    bool is_immediate_report,
+    int immediate_report,
+    OpenAPI_list_t *additional_data_refs,
+    OpenAPI_list_t *reset_ids
 );
 void OpenAPI_modifysubscription_data_subscription_200_response_free(OpenAPI_modifysubscription_data_subscription_200_response_t *modifysubscription_data_subscription_200_response);
 OpenAPI_modifysubscription_data_subscription_200_response_t *OpenAPI_modifysubscription_data_subscription_200_response_parseFromJSON(cJSON *modifysubscription_data_subscription_200_responseJSON);

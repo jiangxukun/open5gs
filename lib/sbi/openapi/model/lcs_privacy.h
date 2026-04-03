@@ -1,7 +1,7 @@
 /*
  * lcs_privacy.h
  *
- * 
+ * Contains LCS Privacy Parameters
  */
 
 #ifndef _OpenAPI_lcs_privacy_H_
@@ -13,7 +13,10 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_lcs_privacy_s OpenAPI_lcs_privacy_t;
+#include "area_usage_ind.h"
+#include "geographic_area.h"
 #include "lpi.h"
+#include "up_loc_rep_ind_af.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +28,9 @@ struct OpenAPI_lcs_privacy_s {
     int reference_id;
     struct OpenAPI_lpi_s *lpi;
     char *mtc_provider_information;
+    struct OpenAPI_geographic_area_s *evt_rpt_expected_area;
+    OpenAPI_area_usage_ind_e area_usage_ind;
+    OpenAPI_up_loc_rep_ind_af_e up_loc_rep_ind_af;
 };
 
 OpenAPI_lcs_privacy_t *OpenAPI_lcs_privacy_create(
@@ -32,7 +38,10 @@ OpenAPI_lcs_privacy_t *OpenAPI_lcs_privacy_create(
     bool is_reference_id,
     int reference_id,
     OpenAPI_lpi_t *lpi,
-    char *mtc_provider_information
+    char *mtc_provider_information,
+    OpenAPI_geographic_area_t *evt_rpt_expected_area,
+    OpenAPI_area_usage_ind_e area_usage_ind,
+    OpenAPI_up_loc_rep_ind_af_e up_loc_rep_ind_af
 );
 void OpenAPI_lcs_privacy_free(OpenAPI_lcs_privacy_t *lcs_privacy);
 OpenAPI_lcs_privacy_t *OpenAPI_lcs_privacy_parseFromJSON(cJSON *lcs_privacyJSON);

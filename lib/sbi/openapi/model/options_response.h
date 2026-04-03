@@ -1,7 +1,7 @@
 /*
  * options_response.h
  *
- * Communication options of the NRF sent in response payload of OPTIONS method
+ * Communication options of the NRF sent in response content of OPTIONS method
  */
 
 #ifndef _OpenAPI_options_response_H_

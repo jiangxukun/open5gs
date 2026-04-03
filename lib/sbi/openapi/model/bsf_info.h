@@ -16,6 +16,7 @@ typedef struct OpenAPI_bsf_info_s OpenAPI_bsf_info_t;
 #include "identity_range.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
+#include "service_scenario_ind.h"
 #include "supi_range.h"
 
 #ifdef __cplusplus
@@ -32,6 +33,8 @@ struct OpenAPI_bsf_info_s {
     char *group_id;
     OpenAPI_list_t *supi_ranges;
     OpenAPI_list_t *gpsi_ranges;
+    OpenAPI_list_t *service_scenario_inds;
+    OpenAPI_list_t *mac_addr_patterns;
 };
 
 OpenAPI_bsf_info_t *OpenAPI_bsf_info_create(
@@ -43,7 +46,9 @@ OpenAPI_bsf_info_t *OpenAPI_bsf_info_create(
     char *rx_diam_realm,
     char *group_id,
     OpenAPI_list_t *supi_ranges,
-    OpenAPI_list_t *gpsi_ranges
+    OpenAPI_list_t *gpsi_ranges,
+    OpenAPI_list_t *service_scenario_inds,
+    OpenAPI_list_t *mac_addr_patterns
 );
 void OpenAPI_bsf_info_free(OpenAPI_bsf_info_t *bsf_info);
 OpenAPI_bsf_info_t *OpenAPI_bsf_info_parseFromJSON(cJSON *bsf_infoJSON);

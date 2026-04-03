@@ -1,7 +1,7 @@
 /*
  * context_info.h
  *
- * 
+ * Context Information
  */
 
 #ifndef _OpenAPI_context_info_H_

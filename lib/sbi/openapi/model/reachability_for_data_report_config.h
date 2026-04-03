@@ -1,7 +1,7 @@
 /*
  * reachability_for_data_report_config.h
  *
- * 
+ * Indicates the configuration for report of reachability status for data. 
  */
 
 #ifndef _OpenAPI_reachability_for_data_report_config_H_

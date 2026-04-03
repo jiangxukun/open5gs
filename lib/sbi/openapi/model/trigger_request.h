@@ -1,7 +1,7 @@
 /*
  * trigger_request.h
  *
- * 
+ * This data type identifies if the NF service consumer requires to trigger P-CSCF  restoration. 
  */
 
 #ifndef _OpenAPI_trigger_request_H_

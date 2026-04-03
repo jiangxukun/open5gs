@@ -1,7 +1,7 @@
 /*
  * pdu_session_event_notification.h
  *
- * Indicates PDU session information for the concerned established/terminated PDU session.
+ * Indicates PDU session related events information. 
  */
 
 #ifndef _OpenAPI_pdu_session_event_notification_H_

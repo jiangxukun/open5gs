@@ -39,6 +39,10 @@ struct OpenAPI_vsmf_update_error_s {
     struct OpenAPI_n4_information_s *n4_info_ext1;
     struct OpenAPI_n4_information_s *n4_info_ext2;
     struct OpenAPI_n4_information_s *n4_info_ext3;
+    bool is_retry_after;
+    int retry_after;
+    bool is_max_waiting_time;
+    int max_waiting_time;
 };
 
 OpenAPI_vsmf_update_error_t *OpenAPI_vsmf_update_error_create(
@@ -56,7 +60,11 @@ OpenAPI_vsmf_update_error_t *OpenAPI_vsmf_update_error_create(
     OpenAPI_n4_information_t *n4_info,
     OpenAPI_n4_information_t *n4_info_ext1,
     OpenAPI_n4_information_t *n4_info_ext2,
-    OpenAPI_n4_information_t *n4_info_ext3
+    OpenAPI_n4_information_t *n4_info_ext3,
+    bool is_retry_after,
+    int retry_after,
+    bool is_max_waiting_time,
+    int max_waiting_time
 );
 void OpenAPI_vsmf_update_error_free(OpenAPI_vsmf_update_error_t *vsmf_update_error);
 OpenAPI_vsmf_update_error_t *OpenAPI_vsmf_update_error_parseFromJSON(cJSON *vsmf_update_errorJSON);

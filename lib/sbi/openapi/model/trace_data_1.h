@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_trace_data_1_s OpenAPI_trace_data_1_t;
+#include "job_type.h"
 #include "trace_depth.h"
 
 #ifdef __cplusplus
@@ -26,7 +27,9 @@ struct OpenAPI_trace_data_1_s {
     char *event_list;
     char *collection_entity_ipv4_addr;
     char *collection_entity_ipv6_addr;
+    char *trace_reporting_consumer_uri;
     char *interface_list;
+    OpenAPI_job_type_e job_type;
 };
 
 OpenAPI_trace_data_1_t *OpenAPI_trace_data_1_create(
@@ -36,7 +39,9 @@ OpenAPI_trace_data_1_t *OpenAPI_trace_data_1_create(
     char *event_list,
     char *collection_entity_ipv4_addr,
     char *collection_entity_ipv6_addr,
-    char *interface_list
+    char *trace_reporting_consumer_uri,
+    char *interface_list,
+    OpenAPI_job_type_e job_type
 );
 void OpenAPI_trace_data_1_free(OpenAPI_trace_data_1_t *trace_data_1);
 OpenAPI_trace_data_1_t *OpenAPI_trace_data_1_parseFromJSON(cJSON *trace_data_1JSON);

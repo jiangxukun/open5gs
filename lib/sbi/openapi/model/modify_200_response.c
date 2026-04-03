@@ -26,7 +26,16 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
     bool is_unique_subscription,
     int unique_subscription,
     OpenAPI_list_t *reset_ids,
-    OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter
+    OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter,
+    OpenAPI_list_t *adjacent_plmns,
+    bool is_disaster_roaming_ind,
+    int disaster_roaming_ind,
+    char *data_restoration_callback_uri,
+    bool is_udr_restart_ind,
+    int udr_restart_ind,
+    char *last_synchronization_time,
+    OpenAPI_list_t* expected_ue_behaviour_thresholds,
+    OpenAPI_guami_t *guami
 )
 {
     OpenAPI_modify_200_response_t *modify_200_response_local_var = ogs_malloc(sizeof(OpenAPI_modify_200_response_t));
@@ -54,6 +63,15 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
     modify_200_response_local_var->unique_subscription = unique_subscription;
     modify_200_response_local_var->reset_ids = reset_ids;
     modify_200_response_local_var->ue_con_smf_data_sub_filter = ue_con_smf_data_sub_filter;
+    modify_200_response_local_var->adjacent_plmns = adjacent_plmns;
+    modify_200_response_local_var->is_disaster_roaming_ind = is_disaster_roaming_ind;
+    modify_200_response_local_var->disaster_roaming_ind = disaster_roaming_ind;
+    modify_200_response_local_var->data_restoration_callback_uri = data_restoration_callback_uri;
+    modify_200_response_local_var->is_udr_restart_ind = is_udr_restart_ind;
+    modify_200_response_local_var->udr_restart_ind = udr_restart_ind;
+    modify_200_response_local_var->last_synchronization_time = last_synchronization_time;
+    modify_200_response_local_var->expected_ue_behaviour_thresholds = expected_ue_behaviour_thresholds;
+    modify_200_response_local_var->guami = guami;
 
     return modify_200_response_local_var;
 }
@@ -122,6 +140,35 @@ void OpenAPI_modify_200_response_free(OpenAPI_modify_200_response_t *modify_200_
     if (modify_200_response->ue_con_smf_data_sub_filter) {
         OpenAPI_ue_context_in_smf_data_sub_filter_free(modify_200_response->ue_con_smf_data_sub_filter);
         modify_200_response->ue_con_smf_data_sub_filter = NULL;
+    }
+    if (modify_200_response->adjacent_plmns) {
+        OpenAPI_list_for_each(modify_200_response->adjacent_plmns, node) {
+            OpenAPI_plmn_id_free(node->data);
+        }
+        OpenAPI_list_free(modify_200_response->adjacent_plmns);
+        modify_200_response->adjacent_plmns = NULL;
+    }
+    if (modify_200_response->data_restoration_callback_uri) {
+        ogs_free(modify_200_response->data_restoration_callback_uri);
+        modify_200_response->data_restoration_callback_uri = NULL;
+    }
+    if (modify_200_response->last_synchronization_time) {
+        ogs_free(modify_200_response->last_synchronization_time);
+        modify_200_response->last_synchronization_time = NULL;
+    }
+    if (modify_200_response->expected_ue_behaviour_thresholds) {
+        OpenAPI_list_for_each(modify_200_response->expected_ue_behaviour_thresholds, node) {
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
+            ogs_free(localKeyValue->key);
+            OpenAPI_expected_ue_behaviour_threshold_free(localKeyValue->value);
+            OpenAPI_map_free(localKeyValue);
+        }
+        OpenAPI_list_free(modify_200_response->expected_ue_behaviour_thresholds);
+        modify_200_response->expected_ue_behaviour_thresholds = NULL;
+    }
+    if (modify_200_response->guami) {
+        OpenAPI_guami_free(modify_200_response->guami);
+        modify_200_response->guami = NULL;
     }
     ogs_free(modify_200_response);
 }
@@ -307,6 +354,93 @@ cJSON *OpenAPI_modify_200_response_convertToJSON(OpenAPI_modify_200_response_t *
     }
     }
 
+    if (modify_200_response->adjacent_plmns) {
+    cJSON *adjacent_plmnsList = cJSON_AddArrayToObject(item, "adjacentPlmns");
+    if (adjacent_plmnsList == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [adjacent_plmns]");
+        goto end;
+    }
+    OpenAPI_list_for_each(modify_200_response->adjacent_plmns, node) {
+        cJSON *itemLocal = OpenAPI_plmn_id_convertToJSON(node->data);
+        if (itemLocal == NULL) {
+            ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [adjacent_plmns]");
+            goto end;
+        }
+        cJSON_AddItemToArray(adjacent_plmnsList, itemLocal);
+    }
+    }
+
+    if (modify_200_response->is_disaster_roaming_ind) {
+    if (cJSON_AddBoolToObject(item, "disasterRoamingInd", modify_200_response->disaster_roaming_ind) == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [disaster_roaming_ind]");
+        goto end;
+    }
+    }
+
+    if (modify_200_response->data_restoration_callback_uri) {
+    if (cJSON_AddStringToObject(item, "dataRestorationCallbackUri", modify_200_response->data_restoration_callback_uri) == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [data_restoration_callback_uri]");
+        goto end;
+    }
+    }
+
+    if (modify_200_response->is_udr_restart_ind) {
+    if (cJSON_AddBoolToObject(item, "udrRestartInd", modify_200_response->udr_restart_ind) == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [udr_restart_ind]");
+        goto end;
+    }
+    }
+
+    if (modify_200_response->last_synchronization_time) {
+    if (cJSON_AddStringToObject(item, "lastSynchronizationTime", modify_200_response->last_synchronization_time) == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [last_synchronization_time]");
+        goto end;
+    }
+    }
+
+    if (modify_200_response->expected_ue_behaviour_thresholds) {
+    cJSON *expected_ue_behaviour_thresholds = cJSON_AddObjectToObject(item, "expectedUeBehaviourThresholds");
+    if (expected_ue_behaviour_thresholds == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [expected_ue_behaviour_thresholds]");
+        goto end;
+    }
+    cJSON *localMapObject = expected_ue_behaviour_thresholds;
+    if (modify_200_response->expected_ue_behaviour_thresholds) {
+        OpenAPI_list_for_each(modify_200_response->expected_ue_behaviour_thresholds, node) {
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
+            if (localKeyValue == NULL) {
+                ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [expected_ue_behaviour_thresholds]");
+                goto end;
+            }
+            if (localKeyValue->key == NULL) {
+                ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [expected_ue_behaviour_thresholds]");
+                goto end;
+            }
+            cJSON *itemLocal = localKeyValue->value ?
+                OpenAPI_expected_ue_behaviour_threshold_convertToJSON(localKeyValue->value) :
+                cJSON_CreateNull();
+            if (itemLocal == NULL) {
+                ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [inner]");
+                goto end;
+            }
+            cJSON_AddItemToObject(localMapObject, localKeyValue->key, itemLocal);
+        }
+    }
+    }
+
+    if (modify_200_response->guami) {
+    cJSON *guami_local_JSON = OpenAPI_guami_convertToJSON(modify_200_response->guami);
+    if (guami_local_JSON == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [guami]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "guami", guami_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_modify_200_response_convertToJSON() failed [guami]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -341,6 +475,16 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     OpenAPI_list_t *reset_idsList = NULL;
     cJSON *ue_con_smf_data_sub_filter = NULL;
     OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter_local_nonprim = NULL;
+    cJSON *adjacent_plmns = NULL;
+    OpenAPI_list_t *adjacent_plmnsList = NULL;
+    cJSON *disaster_roaming_ind = NULL;
+    cJSON *data_restoration_callback_uri = NULL;
+    cJSON *udr_restart_ind = NULL;
+    cJSON *last_synchronization_time = NULL;
+    cJSON *expected_ue_behaviour_thresholds = NULL;
+    OpenAPI_list_t *expected_ue_behaviour_thresholdsList = NULL;
+    cJSON *guami = NULL;
+    OpenAPI_guami_t *guami_local_nonprim = NULL;
     nf_instance_id = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "nfInstanceId");
     if (nf_instance_id) {
     if (!cJSON_IsString(nf_instance_id) && !cJSON_IsNull(nf_instance_id)) {
@@ -517,6 +661,97 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
     }
     }
 
+    adjacent_plmns = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "adjacentPlmns");
+    if (adjacent_plmns) {
+        cJSON *adjacent_plmns_local = NULL;
+        if (!cJSON_IsArray(adjacent_plmns)) {
+            ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [adjacent_plmns]");
+            goto end;
+        }
+
+        adjacent_plmnsList = OpenAPI_list_create();
+
+        cJSON_ArrayForEach(adjacent_plmns_local, adjacent_plmns) {
+            if (!cJSON_IsObject(adjacent_plmns_local)) {
+                ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [adjacent_plmns]");
+                goto end;
+            }
+            OpenAPI_plmn_id_t *adjacent_plmnsItem = OpenAPI_plmn_id_parseFromJSON(adjacent_plmns_local);
+            if (!adjacent_plmnsItem) {
+                ogs_error("No adjacent_plmnsItem");
+                goto end;
+            }
+            OpenAPI_list_add(adjacent_plmnsList, adjacent_plmnsItem);
+        }
+    }
+
+    disaster_roaming_ind = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "disasterRoamingInd");
+    if (disaster_roaming_ind) {
+    if (!cJSON_IsBool(disaster_roaming_ind)) {
+        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [disaster_roaming_ind]");
+        goto end;
+    }
+    }
+
+    data_restoration_callback_uri = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "dataRestorationCallbackUri");
+    if (data_restoration_callback_uri) {
+    if (!cJSON_IsString(data_restoration_callback_uri) && !cJSON_IsNull(data_restoration_callback_uri)) {
+        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [data_restoration_callback_uri]");
+        goto end;
+    }
+    }
+
+    udr_restart_ind = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "udrRestartInd");
+    if (udr_restart_ind) {
+    if (!cJSON_IsBool(udr_restart_ind)) {
+        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [udr_restart_ind]");
+        goto end;
+    }
+    }
+
+    last_synchronization_time = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "lastSynchronizationTime");
+    if (last_synchronization_time) {
+    if (!cJSON_IsString(last_synchronization_time) && !cJSON_IsNull(last_synchronization_time)) {
+        ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [last_synchronization_time]");
+        goto end;
+    }
+    }
+
+    expected_ue_behaviour_thresholds = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "expectedUeBehaviourThresholds");
+    if (expected_ue_behaviour_thresholds) {
+        cJSON *expected_ue_behaviour_thresholds_local_map = NULL;
+        if (!cJSON_IsObject(expected_ue_behaviour_thresholds) && !cJSON_IsNull(expected_ue_behaviour_thresholds)) {
+            ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [expected_ue_behaviour_thresholds]");
+            goto end;
+        }
+        if (cJSON_IsObject(expected_ue_behaviour_thresholds)) {
+            expected_ue_behaviour_thresholdsList = OpenAPI_list_create();
+            OpenAPI_map_t *localMapKeyPair = NULL;
+            cJSON_ArrayForEach(expected_ue_behaviour_thresholds_local_map, expected_ue_behaviour_thresholds) {
+                cJSON *localMapObject = expected_ue_behaviour_thresholds_local_map;
+                if (cJSON_IsObject(localMapObject)) {
+                    localMapKeyPair = OpenAPI_map_create(
+                        ogs_strdup(localMapObject->string), OpenAPI_expected_ue_behaviour_threshold_parseFromJSON(localMapObject));
+                } else if (cJSON_IsNull(localMapObject)) {
+                    localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), NULL);
+                } else {
+                    ogs_error("OpenAPI_modify_200_response_parseFromJSON() failed [inner]");
+                    goto end;
+                }
+                OpenAPI_list_add(expected_ue_behaviour_thresholdsList, localMapKeyPair);
+            }
+        }
+    }
+
+    guami = cJSON_GetObjectItemCaseSensitive(modify_200_responseJSON, "guami");
+    if (guami) {
+    guami_local_nonprim = OpenAPI_guami_parseFromJSON(guami);
+    if (!guami_local_nonprim) {
+        ogs_error("OpenAPI_guami_parseFromJSON failed [guami]");
+        goto end;
+    }
+    }
+
     modify_200_response_local_var = OpenAPI_modify_200_response_create (
         nf_instance_id && !cJSON_IsNull(nf_instance_id) ? ogs_strdup(nf_instance_id->valuestring) : NULL,
         implicit_unsubscribe ? true : false,
@@ -539,7 +774,16 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *
         unique_subscription ? true : false,
         unique_subscription ? unique_subscription->valueint : 0,
         reset_ids ? reset_idsList : NULL,
-        ue_con_smf_data_sub_filter ? ue_con_smf_data_sub_filter_local_nonprim : NULL
+        ue_con_smf_data_sub_filter ? ue_con_smf_data_sub_filter_local_nonprim : NULL,
+        adjacent_plmns ? adjacent_plmnsList : NULL,
+        disaster_roaming_ind ? true : false,
+        disaster_roaming_ind ? disaster_roaming_ind->valueint : 0,
+        data_restoration_callback_uri && !cJSON_IsNull(data_restoration_callback_uri) ? ogs_strdup(data_restoration_callback_uri->valuestring) : NULL,
+        udr_restart_ind ? true : false,
+        udr_restart_ind ? udr_restart_ind->valueint : 0,
+        last_synchronization_time && !cJSON_IsNull(last_synchronization_time) ? ogs_strdup(last_synchronization_time->valuestring) : NULL,
+        expected_ue_behaviour_thresholds ? expected_ue_behaviour_thresholdsList : NULL,
+        guami ? guami_local_nonprim : NULL
     );
 
     return modify_200_response_local_var;
@@ -577,6 +821,27 @@ end:
     if (ue_con_smf_data_sub_filter_local_nonprim) {
         OpenAPI_ue_context_in_smf_data_sub_filter_free(ue_con_smf_data_sub_filter_local_nonprim);
         ue_con_smf_data_sub_filter_local_nonprim = NULL;
+    }
+    if (adjacent_plmnsList) {
+        OpenAPI_list_for_each(adjacent_plmnsList, node) {
+            OpenAPI_plmn_id_free(node->data);
+        }
+        OpenAPI_list_free(adjacent_plmnsList);
+        adjacent_plmnsList = NULL;
+    }
+    if (expected_ue_behaviour_thresholdsList) {
+        OpenAPI_list_for_each(expected_ue_behaviour_thresholdsList, node) {
+            OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
+            ogs_free(localKeyValue->key);
+            OpenAPI_expected_ue_behaviour_threshold_free(localKeyValue->value);
+            OpenAPI_map_free(localKeyValue);
+        }
+        OpenAPI_list_free(expected_ue_behaviour_thresholdsList);
+        expected_ue_behaviour_thresholdsList = NULL;
+    }
+    if (guami_local_nonprim) {
+        OpenAPI_guami_free(guami_local_nonprim);
+        guami_local_nonprim = NULL;
     }
     return NULL;
 }

@@ -1,7 +1,7 @@
 /*
  * redundant_transmission_exp_info.h
  *
- * The redundant transmission experience related information. When subscribed event is  \&quot;RED_TRANS_EXP\&quot;, the \&quot;redTransInfos\&quot; attribute shall be included. 
+ * The redundant transmission experience related information. When subscribed event is \&quot;RED_TRANS_EXP\&quot;, the \&quot;redTransInfos\&quot; attribute shall be included. 
  */
 
 #ifndef _OpenAPI_redundant_transmission_exp_info_H_

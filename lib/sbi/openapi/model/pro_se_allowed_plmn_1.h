@@ -1,7 +1,7 @@
 /*
  * pro_se_allowed_plmn_1.h
  *
- * Contains the PLMN identities where the Prose services are authorised to use and the authorised Prose services on this given PLMNs.
+ * Contains the PLMN identities where the Prose services are authorised to use and the authorised Prose services on this given PLMNs. 
  */
 
 #ifndef _OpenAPI_pro_se_allowed_plmn_1_H_
@@ -13,7 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_pro_se_allowed_plmn_1_s OpenAPI_pro_se_allowed_plmn_1_t;
-#include "plmn_id_1.h"
+#include "plmn_id.h"
 #include "prose_direct_allowed.h"
 
 #ifdef __cplusplus
@@ -21,12 +21,12 @@ extern "C" {
 #endif
 
 struct OpenAPI_pro_se_allowed_plmn_1_s {
-    struct OpenAPI_plmn_id_1_s *visited_plmn;
+    struct OpenAPI_plmn_id_s *visited_plmn;
     OpenAPI_list_t *prose_direct_allowed;
 };
 
 OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_create(
-    OpenAPI_plmn_id_1_t *visited_plmn,
+    OpenAPI_plmn_id_t *visited_plmn,
     OpenAPI_list_t *prose_direct_allowed
 );
 void OpenAPI_pro_se_allowed_plmn_1_free(OpenAPI_pro_se_allowed_plmn_1_t *pro_se_allowed_plmn_1);

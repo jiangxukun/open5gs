@@ -19,6 +19,7 @@ typedef struct OpenAPI_nnwdaf_events_subscription_s OpenAPI_nnwdaf_events_subscr
 #include "failure_event_info.h"
 #include "prev_sub_info.h"
 #include "reporting_information.h"
+#include "storage_handling_information.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,6 +35,9 @@ struct OpenAPI_nnwdaf_events_subscription_s {
     OpenAPI_list_t *fail_event_reports;
     struct OpenAPI_prev_sub_info_s *prev_sub;
     struct OpenAPI_consumer_nf_information_s *cons_nf_info;
+    char *adrf_nf_id;
+    char *adrf_nf_set_id;
+    struct OpenAPI_storage_handling_information_s *store_handl;
 };
 
 OpenAPI_nnwdaf_events_subscription_t *OpenAPI_nnwdaf_events_subscription_create(
@@ -45,7 +49,10 @@ OpenAPI_nnwdaf_events_subscription_t *OpenAPI_nnwdaf_events_subscription_create(
     OpenAPI_list_t *event_notifications,
     OpenAPI_list_t *fail_event_reports,
     OpenAPI_prev_sub_info_t *prev_sub,
-    OpenAPI_consumer_nf_information_t *cons_nf_info
+    OpenAPI_consumer_nf_information_t *cons_nf_info,
+    char *adrf_nf_id,
+    char *adrf_nf_set_id,
+    OpenAPI_storage_handling_information_t *store_handl
 );
 void OpenAPI_nnwdaf_events_subscription_free(OpenAPI_nnwdaf_events_subscription_t *nnwdaf_events_subscription);
 OpenAPI_nnwdaf_events_subscription_t *OpenAPI_nnwdaf_events_subscription_parseFromJSON(cJSON *nnwdaf_events_subscriptionJSON);

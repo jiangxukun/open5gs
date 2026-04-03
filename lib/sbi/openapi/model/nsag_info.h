@@ -1,7 +1,7 @@
 /*
  * nsag_info.h
  *
- * Contains the association of NSAGs and S-NSSAI(s) along with the TA(s) within which the association is valid.
+ * Contains the association of NSAGs and S-NSSAI(s) along with the TA(s) within which the association is valid. 
  */
 
 #ifndef _OpenAPI_nsag_info_H_

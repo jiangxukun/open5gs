@@ -25,6 +25,7 @@ struct OpenAPI_sec_param_exch_req_data_s {
     OpenAPI_list_t *jwe_cipher_suite_list;
     OpenAPI_list_t *jws_cipher_suite_list;
     struct OpenAPI_protection_policy_s *protection_policy_info;
+    OpenAPI_list_t *sec_profiles;
     OpenAPI_list_t *ipx_provider_sec_info_list;
     char *sender;
 };
@@ -34,6 +35,7 @@ OpenAPI_sec_param_exch_req_data_t *OpenAPI_sec_param_exch_req_data_create(
     OpenAPI_list_t *jwe_cipher_suite_list,
     OpenAPI_list_t *jws_cipher_suite_list,
     OpenAPI_protection_policy_t *protection_policy_info,
+    OpenAPI_list_t *sec_profiles,
     OpenAPI_list_t *ipx_provider_sec_info_list,
     char *sender
 );

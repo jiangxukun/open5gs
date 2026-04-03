@@ -31,6 +31,24 @@ struct OpenAPI_pro_se_capability_s {
     int prose_l2_remote_ue;
     bool is_prose_l3_remote_ue;
     int prose_l3_remote_ue;
+    bool is_prose_l2_ueto_ue_relay;
+    int prose_l2_ueto_ue_relay;
+    bool is_prose_l3_ueto_ue_relay;
+    int prose_l3_ueto_ue_relay;
+    bool is_prose_l2_end_ue;
+    int prose_l2_end_ue;
+    bool is_prose_l3_end_ue;
+    int prose_l3_end_ue;
+    bool is_prose_l3_interm_relay;
+    int prose_l3_interm_relay;
+    bool is_prose_l3_multihop_remote;
+    int prose_l3_multihop_remote;
+    bool is_prose_l3_net_multihop_relay;
+    int prose_l3_net_multihop_relay;
+    bool is_prose_l3_ue_multihop_relay;
+    int prose_l3_ue_multihop_relay;
+    bool is_prose_l3_end_ue_multihop;
+    int prose_l3_end_ue_multihop;
 };
 
 OpenAPI_pro_se_capability_t *OpenAPI_pro_se_capability_create(
@@ -45,7 +63,25 @@ OpenAPI_pro_se_capability_t *OpenAPI_pro_se_capability_create(
     bool is_prose_l2_remote_ue,
     int prose_l2_remote_ue,
     bool is_prose_l3_remote_ue,
-    int prose_l3_remote_ue
+    int prose_l3_remote_ue,
+    bool is_prose_l2_ueto_ue_relay,
+    int prose_l2_ueto_ue_relay,
+    bool is_prose_l3_ueto_ue_relay,
+    int prose_l3_ueto_ue_relay,
+    bool is_prose_l2_end_ue,
+    int prose_l2_end_ue,
+    bool is_prose_l3_end_ue,
+    int prose_l3_end_ue,
+    bool is_prose_l3_interm_relay,
+    int prose_l3_interm_relay,
+    bool is_prose_l3_multihop_remote,
+    int prose_l3_multihop_remote,
+    bool is_prose_l3_net_multihop_relay,
+    int prose_l3_net_multihop_relay,
+    bool is_prose_l3_ue_multihop_relay,
+    int prose_l3_ue_multihop_relay,
+    bool is_prose_l3_end_ue_multihop,
+    int prose_l3_end_ue_multihop
 );
 void OpenAPI_pro_se_capability_free(OpenAPI_pro_se_capability_t *pro_se_capability);
 OpenAPI_pro_se_capability_t *OpenAPI_pro_se_capability_parseFromJSON(cJSON *pro_se_capabilityJSON);

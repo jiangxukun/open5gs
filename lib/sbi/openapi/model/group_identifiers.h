@@ -1,7 +1,7 @@
 /*
  * group_identifiers.h
  *
- * 
+ * Contains Information to identify a group of Ues
  */
 
 #ifndef _OpenAPI_group_identifiers_H_

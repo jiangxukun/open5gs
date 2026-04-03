@@ -1,7 +1,7 @@
 /*
  * registration_location_info.h
  *
- * 
+ * This data type contains the information about serving AMF, optional VGMLC and access type related information used by (H)GMLC. 
  */
 
 #ifndef _OpenAPI_registration_location_info_H_

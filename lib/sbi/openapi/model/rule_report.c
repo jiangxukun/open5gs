@@ -9,6 +9,8 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_create(
     OpenAPI_rule_status_e rule_status,
     OpenAPI_list_t *cont_vers,
     OpenAPI_failure_code_e failure_code,
+    bool is_retry_after,
+    int retry_after,
     OpenAPI_final_unit_action_e fin_unit_act,
     OpenAPI_list_t *ran_nas_rel_causes,
     char *alt_qos_param_id
@@ -21,6 +23,8 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_create(
     rule_report_local_var->rule_status = rule_status;
     rule_report_local_var->cont_vers = cont_vers;
     rule_report_local_var->failure_code = failure_code;
+    rule_report_local_var->is_retry_after = is_retry_after;
+    rule_report_local_var->retry_after = retry_after;
     rule_report_local_var->fin_unit_act = fin_unit_act;
     rule_report_local_var->ran_nas_rel_causes = ran_nas_rel_causes;
     rule_report_local_var->alt_qos_param_id = alt_qos_param_id;
@@ -124,6 +128,13 @@ cJSON *OpenAPI_rule_report_convertToJSON(OpenAPI_rule_report_t *rule_report)
     }
     }
 
+    if (rule_report->is_retry_after) {
+    if (cJSON_AddNumberToObject(item, "retryAfter", rule_report->retry_after) == NULL) {
+        ogs_error("OpenAPI_rule_report_convertToJSON() failed [retry_after]");
+        goto end;
+    }
+    }
+
     if (rule_report->fin_unit_act != OpenAPI_final_unit_action_NULL) {
     if (cJSON_AddStringToObject(item, "finUnitAct", OpenAPI_final_unit_action_ToString(rule_report->fin_unit_act)) == NULL) {
         ogs_error("OpenAPI_rule_report_convertToJSON() failed [fin_unit_act]");
@@ -170,6 +181,7 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_parseFromJSON(cJSON *rule_reportJSON)
     OpenAPI_list_t *cont_versList = NULL;
     cJSON *failure_code = NULL;
     OpenAPI_failure_code_e failure_codeVariable = 0;
+    cJSON *retry_after = NULL;
     cJSON *fin_unit_act = NULL;
     OpenAPI_final_unit_action_e fin_unit_actVariable = 0;
     cJSON *ran_nas_rel_causes = NULL;
@@ -245,6 +257,14 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_parseFromJSON(cJSON *rule_reportJSON)
     failure_codeVariable = OpenAPI_failure_code_FromString(failure_code->valuestring);
     }
 
+    retry_after = cJSON_GetObjectItemCaseSensitive(rule_reportJSON, "retryAfter");
+    if (retry_after) {
+    if (!cJSON_IsNumber(retry_after)) {
+        ogs_error("OpenAPI_rule_report_parseFromJSON() failed [retry_after]");
+        goto end;
+    }
+    }
+
     fin_unit_act = cJSON_GetObjectItemCaseSensitive(rule_reportJSON, "finUnitAct");
     if (fin_unit_act) {
     if (!cJSON_IsString(fin_unit_act)) {
@@ -291,6 +311,8 @@ OpenAPI_rule_report_t *OpenAPI_rule_report_parseFromJSON(cJSON *rule_reportJSON)
         rule_statusVariable,
         cont_vers ? cont_versList : NULL,
         failure_code ? failure_codeVariable : 0,
+        retry_after ? true : false,
+        retry_after ? retry_after->valuedouble : 0,
         fin_unit_act ? fin_unit_actVariable : 0,
         ran_nas_rel_causes ? ran_nas_rel_causesList : NULL,
         alt_qos_param_id && !cJSON_IsNull(alt_qos_param_id) ? ogs_strdup(alt_qos_param_id->valuestring) : NULL

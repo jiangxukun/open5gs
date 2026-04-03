@@ -23,11 +23,15 @@ extern "C" {
 struct OpenAPI_af_event_notification_s {
     OpenAPI_npcf_af_event_e event;
     OpenAPI_list_t *flows;
+    bool is_retry_after;
+    int retry_after;
 };
 
 OpenAPI_af_event_notification_t *OpenAPI_af_event_notification_create(
     OpenAPI_npcf_af_event_e event,
-    OpenAPI_list_t *flows
+    OpenAPI_list_t *flows,
+    bool is_retry_after,
+    int retry_after
 );
 void OpenAPI_af_event_notification_free(OpenAPI_af_event_notification_t *af_event_notification);
 OpenAPI_af_event_notification_t *OpenAPI_af_event_notification_parseFromJSON(cJSON *af_event_notificationJSON);

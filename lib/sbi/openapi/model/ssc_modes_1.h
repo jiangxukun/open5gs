@@ -1,7 +1,7 @@
 /*
  * ssc_modes_1.h
  *
- * 
+ * Contains a list of SSC Modes
  */
 
 #ifndef _OpenAPI_ssc_modes_1_H_

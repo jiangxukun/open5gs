@@ -1,7 +1,7 @@
 /*
  * reachability_for_sms_configuration.h
  *
- * 
+ * Indicates the configuration for report of reachability status for SMS. 
  */
 
 #ifndef _OpenAPI_reachability_for_sms_configuration_H_

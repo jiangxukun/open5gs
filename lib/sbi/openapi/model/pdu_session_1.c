@@ -7,7 +7,7 @@
 OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_create(
     char *dnn,
     char *smf_instance_id,
-    OpenAPI_plmn_id_1_t *plmn_id,
+    OpenAPI_plmn_id_t *plmn_id,
     OpenAPI_snssai_t *single_nssai
 )
 {
@@ -38,7 +38,7 @@ void OpenAPI_pdu_session_1_free(OpenAPI_pdu_session_1_t *pdu_session_1)
         pdu_session_1->smf_instance_id = NULL;
     }
     if (pdu_session_1->plmn_id) {
-        OpenAPI_plmn_id_1_free(pdu_session_1->plmn_id);
+        OpenAPI_plmn_id_free(pdu_session_1->plmn_id);
         pdu_session_1->plmn_id = NULL;
     }
     if (pdu_session_1->single_nssai) {
@@ -81,7 +81,7 @@ cJSON *OpenAPI_pdu_session_1_convertToJSON(OpenAPI_pdu_session_1_t *pdu_session_
         ogs_error("OpenAPI_pdu_session_1_convertToJSON() failed [plmn_id]");
         return NULL;
     }
-    cJSON *plmn_id_local_JSON = OpenAPI_plmn_id_1_convertToJSON(pdu_session_1->plmn_id);
+    cJSON *plmn_id_local_JSON = OpenAPI_plmn_id_convertToJSON(pdu_session_1->plmn_id);
     if (plmn_id_local_JSON == NULL) {
         ogs_error("OpenAPI_pdu_session_1_convertToJSON() failed [plmn_id]");
         goto end;
@@ -116,7 +116,7 @@ OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_parseFromJSON(cJSON *pdu_session_
     cJSON *dnn = NULL;
     cJSON *smf_instance_id = NULL;
     cJSON *plmn_id = NULL;
-    OpenAPI_plmn_id_1_t *plmn_id_local_nonprim = NULL;
+    OpenAPI_plmn_id_t *plmn_id_local_nonprim = NULL;
     cJSON *single_nssai = NULL;
     OpenAPI_snssai_t *single_nssai_local_nonprim = NULL;
     dnn = cJSON_GetObjectItemCaseSensitive(pdu_session_1JSON, "dnn");
@@ -144,9 +144,9 @@ OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_parseFromJSON(cJSON *pdu_session_
         ogs_error("OpenAPI_pdu_session_1_parseFromJSON() failed [plmn_id]");
         goto end;
     }
-    plmn_id_local_nonprim = OpenAPI_plmn_id_1_parseFromJSON(plmn_id);
+    plmn_id_local_nonprim = OpenAPI_plmn_id_parseFromJSON(plmn_id);
     if (!plmn_id_local_nonprim) {
-        ogs_error("OpenAPI_plmn_id_1_parseFromJSON failed [plmn_id]");
+        ogs_error("OpenAPI_plmn_id_parseFromJSON failed [plmn_id]");
         goto end;
     }
 
@@ -169,7 +169,7 @@ OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_parseFromJSON(cJSON *pdu_session_
     return pdu_session_1_local_var;
 end:
     if (plmn_id_local_nonprim) {
-        OpenAPI_plmn_id_1_free(plmn_id_local_nonprim);
+        OpenAPI_plmn_id_free(plmn_id_local_nonprim);
         plmn_id_local_nonprim = NULL;
     }
     if (single_nssai_local_nonprim) {

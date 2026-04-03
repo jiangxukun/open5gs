@@ -18,12 +18,16 @@ typedef struct OpenAPI_policy_association_update_request_s OpenAPI_policy_associ
 #include "guami.h"
 #include "mapping_of_snssai.h"
 #include "nwdaf_data.h"
+#include "partially_allowed_snssai.h"
 #include "presence_info.h"
 #include "rat_type.h"
 #include "request_trigger.h"
 #include "service_area_restriction.h"
+#include "slice_repl_outcome_info.h"
 #include "smf_selection_data.h"
 #include "snssai.h"
+#include "snssai_part_rejected.h"
+#include "snssai_replace_info.h"
 #include "trace_data.h"
 #include "ue_slice_mbr.h"
 #include "user_location.h"
@@ -50,16 +54,27 @@ struct OpenAPI_policy_association_update_request_s {
     OpenAPI_list_t* pra_statuses;
     struct OpenAPI_user_location_s *user_loc;
     OpenAPI_list_t *allowed_snssais;
+    OpenAPI_list_t* part_allowed_nssai;
+    OpenAPI_list_t* snssais_part_rejected;
+    OpenAPI_list_t *rejected_snssais;
+    OpenAPI_list_t *pending_nssai;
     OpenAPI_list_t *target_snssais;
     OpenAPI_list_t *mapping_snssais;
+    bool is_snssai_repl_infos_null;
+    OpenAPI_list_t *snssai_repl_infos;
     OpenAPI_list_t *access_types;
     OpenAPI_list_t *rat_types;
     OpenAPI_list_t *n3g_allowed_snssais;
+    OpenAPI_list_t *unavail_snssais;
     bool is_trace_req_null;
     struct OpenAPI_trace_data_s *trace_req;
     struct OpenAPI_guami_s *guami;
     bool is_nwdaf_datas_null;
     OpenAPI_list_t *nwdaf_datas;
+    struct OpenAPI_slice_repl_outcome_info_s *af_slice_repl_out;
+    bool is_enrg_sav_ind;
+    int enrg_sav_ind;
+    char *supp_feat;
 };
 
 OpenAPI_policy_association_update_request_t *OpenAPI_policy_association_update_request_create(
@@ -79,16 +94,27 @@ OpenAPI_policy_association_update_request_t *OpenAPI_policy_association_update_r
     OpenAPI_list_t* pra_statuses,
     OpenAPI_user_location_t *user_loc,
     OpenAPI_list_t *allowed_snssais,
+    OpenAPI_list_t* part_allowed_nssai,
+    OpenAPI_list_t* snssais_part_rejected,
+    OpenAPI_list_t *rejected_snssais,
+    OpenAPI_list_t *pending_nssai,
     OpenAPI_list_t *target_snssais,
     OpenAPI_list_t *mapping_snssais,
+    bool is_snssai_repl_infos_null,
+    OpenAPI_list_t *snssai_repl_infos,
     OpenAPI_list_t *access_types,
     OpenAPI_list_t *rat_types,
     OpenAPI_list_t *n3g_allowed_snssais,
+    OpenAPI_list_t *unavail_snssais,
     bool is_trace_req_null,
     OpenAPI_trace_data_t *trace_req,
     OpenAPI_guami_t *guami,
     bool is_nwdaf_datas_null,
-    OpenAPI_list_t *nwdaf_datas
+    OpenAPI_list_t *nwdaf_datas,
+    OpenAPI_slice_repl_outcome_info_t *af_slice_repl_out,
+    bool is_enrg_sav_ind,
+    int enrg_sav_ind,
+    char *supp_feat
 );
 void OpenAPI_policy_association_update_request_free(OpenAPI_policy_association_update_request_t *policy_association_update_request);
 OpenAPI_policy_association_update_request_t *OpenAPI_policy_association_update_request_parseFromJSON(cJSON *policy_association_update_requestJSON);

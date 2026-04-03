@@ -65,13 +65,11 @@ cJSON *OpenAPI_trigger_convertToJSON(OpenAPI_trigger_t *trigger)
     }
 
     item = cJSON_CreateObject();
-    if (trigger->trigger_type == OpenAPI_trigger_type_NULL) {
-        ogs_error("OpenAPI_trigger_convertToJSON() failed [trigger_type]");
-        return NULL;
-    }
+    if (trigger->trigger_type != OpenAPI_trigger_type_NULL) {
     if (cJSON_AddStringToObject(item, "triggerType", OpenAPI_trigger_type_ToString(trigger->trigger_type)) == NULL) {
         ogs_error("OpenAPI_trigger_convertToJSON() failed [trigger_type]");
         goto end;
+    }
     }
 
     if (trigger->trigger_category == OpenAPI_trigger_category_NULL) {
@@ -144,15 +142,13 @@ OpenAPI_trigger_t *OpenAPI_trigger_parseFromJSON(cJSON *triggerJSON)
     cJSON *max_number_ofccc = NULL;
     cJSON *tariff_time_change = NULL;
     trigger_type = cJSON_GetObjectItemCaseSensitive(triggerJSON, "triggerType");
-    if (!trigger_type) {
-        ogs_error("OpenAPI_trigger_parseFromJSON() failed [trigger_type]");
-        goto end;
-    }
+    if (trigger_type) {
     if (!cJSON_IsString(trigger_type)) {
         ogs_error("OpenAPI_trigger_parseFromJSON() failed [trigger_type]");
         goto end;
     }
     trigger_typeVariable = OpenAPI_trigger_type_FromString(trigger_type->valuestring);
+    }
 
     trigger_category = cJSON_GetObjectItemCaseSensitive(triggerJSON, "triggerCategory");
     if (!trigger_category) {
@@ -214,7 +210,7 @@ OpenAPI_trigger_t *OpenAPI_trigger_parseFromJSON(cJSON *triggerJSON)
     }
 
     trigger_local_var = OpenAPI_trigger_create (
-        trigger_typeVariable,
+        trigger_type ? trigger_typeVariable : 0,
         trigger_categoryVariable,
         time_limit ? true : false,
         time_limit ? time_limit->valuedouble : 0,

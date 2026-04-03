@@ -1,7 +1,7 @@
 /*
  * af_external.h
  *
- * 
+ * Unrelated Class identified by Application Function
  */
 
 #ifndef _OpenAPI_af_external_H_

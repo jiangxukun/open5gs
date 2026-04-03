@@ -18,6 +18,7 @@ typedef struct OpenAPI_qos_flow_profile_s OpenAPI_qos_flow_profile_t;
 #include "dynamic5_qi.h"
 #include "gbr_qos_flow_information.h"
 #include "non_dynamic5_qi.h"
+#include "pdu_set_qos_para.h"
 #include "qos_monitoring_req.h"
 #include "reflective_qo_s_attribute.h"
 
@@ -36,6 +37,17 @@ struct OpenAPI_qos_flow_profile_s {
     OpenAPI_qos_monitoring_req_e qos_monitoring_req;
     bool is_qos_rep_period;
     int qos_rep_period;
+    bool is_pdu_set_qos_dl_null;
+    struct OpenAPI_pdu_set_qos_para_s *pdu_set_qos_dl;
+    bool is_pdu_set_qos_ul_null;
+    struct OpenAPI_pdu_set_qos_para_s *pdu_set_qos_ul;
+    bool is_dl_pdu_set_mark_sup_ind;
+    int dl_pdu_set_mark_sup_ind;
+    char *multi_modal_id;
+    bool is_ul_bitrate_adapt_ind;
+    int ul_bitrate_adapt_ind;
+    bool is_no_qos_mon_pd_wo_n3_dl_teid;
+    int no_qos_mon_pd_wo_n3_dl_teid;
 };
 
 OpenAPI_qos_flow_profile_t *OpenAPI_qos_flow_profile_create(
@@ -48,7 +60,18 @@ OpenAPI_qos_flow_profile_t *OpenAPI_qos_flow_profile_create(
     OpenAPI_additional_qos_flow_info_e additional_qos_flow_info,
     OpenAPI_qos_monitoring_req_e qos_monitoring_req,
     bool is_qos_rep_period,
-    int qos_rep_period
+    int qos_rep_period,
+    bool is_pdu_set_qos_dl_null,
+    OpenAPI_pdu_set_qos_para_t *pdu_set_qos_dl,
+    bool is_pdu_set_qos_ul_null,
+    OpenAPI_pdu_set_qos_para_t *pdu_set_qos_ul,
+    bool is_dl_pdu_set_mark_sup_ind,
+    int dl_pdu_set_mark_sup_ind,
+    char *multi_modal_id,
+    bool is_ul_bitrate_adapt_ind,
+    int ul_bitrate_adapt_ind,
+    bool is_no_qos_mon_pd_wo_n3_dl_teid,
+    int no_qos_mon_pd_wo_n3_dl_teid
 );
 void OpenAPI_qos_flow_profile_free(OpenAPI_qos_flow_profile_t *qos_flow_profile);
 OpenAPI_qos_flow_profile_t *OpenAPI_qos_flow_profile_parseFromJSON(cJSON *qos_flow_profileJSON);

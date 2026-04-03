@@ -1,7 +1,7 @@
 /*
  * lcs_mo_data_1.h
  *
- * 
+ * LCS Mobile Originated Subscription Data
  */
 
 #ifndef _OpenAPI_lcs_mo_data_1_H_

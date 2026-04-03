@@ -1,7 +1,7 @@
 /*
  * emergency_info.h
  *
- * 
+ * Contains Emergency Information
  */
 
 #ifndef _OpenAPI_emergency_info_H_
@@ -27,6 +27,7 @@ struct OpenAPI_emergency_info_s {
     bool is_epdg_ind;
     int epdg_ind;
     struct OpenAPI_plmn_id_s *plmn_id;
+    char *emergency_registration_time;
 };
 
 OpenAPI_emergency_info_t *OpenAPI_emergency_info_create(
@@ -35,7 +36,8 @@ OpenAPI_emergency_info_t *OpenAPI_emergency_info_create(
     char *smf_instance_id,
     bool is_epdg_ind,
     int epdg_ind,
-    OpenAPI_plmn_id_t *plmn_id
+    OpenAPI_plmn_id_t *plmn_id,
+    char *emergency_registration_time
 );
 void OpenAPI_emergency_info_free(OpenAPI_emergency_info_t *emergency_info);
 OpenAPI_emergency_info_t *OpenAPI_emergency_info_parseFromJSON(cJSON *emergency_infoJSON);

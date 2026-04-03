@@ -13,7 +13,11 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_area_scope_s OpenAPI_area_scope_t;
+#include "cag_info_1.h"
+#include "cell_id_nid_info.h"
+#include "nid_info.h"
 #include "tac_info.h"
+#include "tac_nid_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,13 +28,23 @@ struct OpenAPI_area_scope_s {
     OpenAPI_list_t *nr_cell_id_list;
     OpenAPI_list_t *tac_list;
     OpenAPI_list_t* tac_info_per_plmn;
+    OpenAPI_list_t* cag_info_per_plmn;
+    OpenAPI_list_t* nid_info_per_plmn;
+    OpenAPI_list_t* cell_id_nid_info_per_plmn;
+    OpenAPI_list_t* tac_nid_info_per_plmn;
+    OpenAPI_list_t *cag_list;
 };
 
 OpenAPI_area_scope_t *OpenAPI_area_scope_create(
     OpenAPI_list_t *eutra_cell_id_list,
     OpenAPI_list_t *nr_cell_id_list,
     OpenAPI_list_t *tac_list,
-    OpenAPI_list_t* tac_info_per_plmn
+    OpenAPI_list_t* tac_info_per_plmn,
+    OpenAPI_list_t* cag_info_per_plmn,
+    OpenAPI_list_t* nid_info_per_plmn,
+    OpenAPI_list_t* cell_id_nid_info_per_plmn,
+    OpenAPI_list_t* tac_nid_info_per_plmn,
+    OpenAPI_list_t *cag_list
 );
 void OpenAPI_area_scope_free(OpenAPI_area_scope_t *area_scope);
 OpenAPI_area_scope_t *OpenAPI_area_scope_parseFromJSON(cJSON *area_scopeJSON);

@@ -1,7 +1,7 @@
 /*
  * default_unrelated_class.h
  *
- * 
+ * Default Unrelated Class
  */
 
 #ifndef _OpenAPI_default_unrelated_class_H_

@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_dnn_upf_info_item_s OpenAPI_dnn_upf_info_item_t;
+#include "interface_upf_info_item.h"
 #include "ip_index.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
@@ -28,9 +29,14 @@ struct OpenAPI_dnn_upf_info_item_s {
     OpenAPI_list_t *pdu_session_types;
     OpenAPI_list_t *ipv4_address_ranges;
     OpenAPI_list_t *ipv6_prefix_ranges;
+    OpenAPI_list_t *nated_ipv4_address_ranges;
+    OpenAPI_list_t *nated_ipv6_prefix_ranges;
     OpenAPI_list_t *ipv4_index_list;
     OpenAPI_list_t *ipv6_index_list;
+    char *network_instance;
     OpenAPI_list_t* dnai_nw_instance_list;
+    OpenAPI_list_t *interface_upf_info_list;
+    OpenAPI_list_t* private_ipv4_address_ranges_per_ip_domain;
 };
 
 OpenAPI_dnn_upf_info_item_t *OpenAPI_dnn_upf_info_item_create(
@@ -39,9 +45,14 @@ OpenAPI_dnn_upf_info_item_t *OpenAPI_dnn_upf_info_item_create(
     OpenAPI_list_t *pdu_session_types,
     OpenAPI_list_t *ipv4_address_ranges,
     OpenAPI_list_t *ipv6_prefix_ranges,
+    OpenAPI_list_t *nated_ipv4_address_ranges,
+    OpenAPI_list_t *nated_ipv6_prefix_ranges,
     OpenAPI_list_t *ipv4_index_list,
     OpenAPI_list_t *ipv6_index_list,
-    OpenAPI_list_t* dnai_nw_instance_list
+    char *network_instance,
+    OpenAPI_list_t* dnai_nw_instance_list,
+    OpenAPI_list_t *interface_upf_info_list,
+    OpenAPI_list_t* private_ipv4_address_ranges_per_ip_domain
 );
 void OpenAPI_dnn_upf_info_item_free(OpenAPI_dnn_upf_info_item_t *dnn_upf_info_item);
 OpenAPI_dnn_upf_info_item_t *OpenAPI_dnn_upf_info_item_parseFromJSON(cJSON *dnn_upf_info_itemJSON);

@@ -1,7 +1,7 @@
 /*
  * network_node_diameter_address_1.h
  *
- * 
+ * This data type is a part of smsfDiameterAddress and it should be present whenever smsf supports Diameter protocol. 
  */
 
 #ifndef _OpenAPI_network_node_diameter_address_1_H_

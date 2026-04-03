@@ -20,13 +20,18 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
     int suggested_packet_num_dl,
     char *dnn,
     OpenAPI_snssai_t *single_nssai,
+    char *app_id,
     OpenAPI_pdu_session_status_cfg_t *pdu_session_status_cfg,
     OpenAPI_reachability_for_sms_configuration_e reachability_for_sms_cfg,
     char *mtc_provider_information,
     char *af_id,
     OpenAPI_reachability_for_data_configuration_t *reachability_for_data_cfg,
     bool is_idle_status_ind,
-    int idle_status_ind
+    int idle_status_ind,
+    OpenAPI_monitoring_suspension_t *monitoring_suspension,
+    OpenAPI_list_t *shared_monitoring_suspension_id_list,
+    bool is_pei_requested,
+    int pei_requested
 )
 {
     OpenAPI_monitoring_configuration_t *monitoring_configuration_local_var = ogs_malloc(sizeof(OpenAPI_monitoring_configuration_t));
@@ -47,6 +52,7 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
     monitoring_configuration_local_var->suggested_packet_num_dl = suggested_packet_num_dl;
     monitoring_configuration_local_var->dnn = dnn;
     monitoring_configuration_local_var->single_nssai = single_nssai;
+    monitoring_configuration_local_var->app_id = app_id;
     monitoring_configuration_local_var->pdu_session_status_cfg = pdu_session_status_cfg;
     monitoring_configuration_local_var->reachability_for_sms_cfg = reachability_for_sms_cfg;
     monitoring_configuration_local_var->mtc_provider_information = mtc_provider_information;
@@ -54,6 +60,10 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
     monitoring_configuration_local_var->reachability_for_data_cfg = reachability_for_data_cfg;
     monitoring_configuration_local_var->is_idle_status_ind = is_idle_status_ind;
     monitoring_configuration_local_var->idle_status_ind = idle_status_ind;
+    monitoring_configuration_local_var->monitoring_suspension = monitoring_suspension;
+    monitoring_configuration_local_var->shared_monitoring_suspension_id_list = shared_monitoring_suspension_id_list;
+    monitoring_configuration_local_var->is_pei_requested = is_pei_requested;
+    monitoring_configuration_local_var->pei_requested = pei_requested;
 
     return monitoring_configuration_local_var;
 }
@@ -85,6 +95,10 @@ void OpenAPI_monitoring_configuration_free(OpenAPI_monitoring_configuration_t *m
         OpenAPI_snssai_free(monitoring_configuration->single_nssai);
         monitoring_configuration->single_nssai = NULL;
     }
+    if (monitoring_configuration->app_id) {
+        ogs_free(monitoring_configuration->app_id);
+        monitoring_configuration->app_id = NULL;
+    }
     if (monitoring_configuration->pdu_session_status_cfg) {
         OpenAPI_pdu_session_status_cfg_free(monitoring_configuration->pdu_session_status_cfg);
         monitoring_configuration->pdu_session_status_cfg = NULL;
@@ -100,6 +114,17 @@ void OpenAPI_monitoring_configuration_free(OpenAPI_monitoring_configuration_t *m
     if (monitoring_configuration->reachability_for_data_cfg) {
         OpenAPI_reachability_for_data_configuration_free(monitoring_configuration->reachability_for_data_cfg);
         monitoring_configuration->reachability_for_data_cfg = NULL;
+    }
+    if (monitoring_configuration->monitoring_suspension) {
+        OpenAPI_monitoring_suspension_free(monitoring_configuration->monitoring_suspension);
+        monitoring_configuration->monitoring_suspension = NULL;
+    }
+    if (monitoring_configuration->shared_monitoring_suspension_id_list) {
+        OpenAPI_list_for_each(monitoring_configuration->shared_monitoring_suspension_id_list, node) {
+            ogs_free(node->data);
+        }
+        OpenAPI_list_free(monitoring_configuration->shared_monitoring_suspension_id_list);
+        monitoring_configuration->shared_monitoring_suspension_id_list = NULL;
     }
     ogs_free(monitoring_configuration);
 }
@@ -218,6 +243,13 @@ cJSON *OpenAPI_monitoring_configuration_convertToJSON(OpenAPI_monitoring_configu
     }
     }
 
+    if (monitoring_configuration->app_id) {
+    if (cJSON_AddStringToObject(item, "appId", monitoring_configuration->app_id) == NULL) {
+        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [app_id]");
+        goto end;
+    }
+    }
+
     if (monitoring_configuration->pdu_session_status_cfg) {
     cJSON *pdu_session_status_cfg_local_JSON = OpenAPI_pdu_session_status_cfg_convertToJSON(monitoring_configuration->pdu_session_status_cfg);
     if (pdu_session_status_cfg_local_JSON == NULL) {
@@ -272,6 +304,40 @@ cJSON *OpenAPI_monitoring_configuration_convertToJSON(OpenAPI_monitoring_configu
     }
     }
 
+    if (monitoring_configuration->monitoring_suspension) {
+    cJSON *monitoring_suspension_local_JSON = OpenAPI_monitoring_suspension_convertToJSON(monitoring_configuration->monitoring_suspension);
+    if (monitoring_suspension_local_JSON == NULL) {
+        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [monitoring_suspension]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "monitoringSuspension", monitoring_suspension_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [monitoring_suspension]");
+        goto end;
+    }
+    }
+
+    if (monitoring_configuration->shared_monitoring_suspension_id_list) {
+    cJSON *shared_monitoring_suspension_id_listList = cJSON_AddArrayToObject(item, "sharedMonitoringSuspensionIdList");
+    if (shared_monitoring_suspension_id_listList == NULL) {
+        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [shared_monitoring_suspension_id_list]");
+        goto end;
+    }
+    OpenAPI_list_for_each(monitoring_configuration->shared_monitoring_suspension_id_list, node) {
+        if (cJSON_AddStringToObject(shared_monitoring_suspension_id_listList, "", (char*)node->data) == NULL) {
+            ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [shared_monitoring_suspension_id_list]");
+            goto end;
+        }
+    }
+    }
+
+    if (monitoring_configuration->is_pei_requested) {
+    if (cJSON_AddBoolToObject(item, "peiRequested", monitoring_configuration->pei_requested) == NULL) {
+        ogs_error("OpenAPI_monitoring_configuration_convertToJSON() failed [pei_requested]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -297,6 +363,7 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     cJSON *dnn = NULL;
     cJSON *single_nssai = NULL;
     OpenAPI_snssai_t *single_nssai_local_nonprim = NULL;
+    cJSON *app_id = NULL;
     cJSON *pdu_session_status_cfg = NULL;
     OpenAPI_pdu_session_status_cfg_t *pdu_session_status_cfg_local_nonprim = NULL;
     cJSON *reachability_for_sms_cfg = NULL;
@@ -306,6 +373,11 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     cJSON *reachability_for_data_cfg = NULL;
     OpenAPI_reachability_for_data_configuration_t *reachability_for_data_cfg_local_nonprim = NULL;
     cJSON *idle_status_ind = NULL;
+    cJSON *monitoring_suspension = NULL;
+    OpenAPI_monitoring_suspension_t *monitoring_suspension_local_nonprim = NULL;
+    cJSON *shared_monitoring_suspension_id_list = NULL;
+    OpenAPI_list_t *shared_monitoring_suspension_id_listList = NULL;
+    cJSON *pei_requested = NULL;
     event_type = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "eventType");
     if (!event_type) {
         ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [event_type]");
@@ -402,6 +474,14 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     }
     }
 
+    app_id = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "appId");
+    if (app_id) {
+    if (!cJSON_IsString(app_id) && !cJSON_IsNull(app_id)) {
+        ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [app_id]");
+        goto end;
+    }
+    }
+
     pdu_session_status_cfg = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "pduSessionStatusCfg");
     if (pdu_session_status_cfg) {
     pdu_session_status_cfg_local_nonprim = OpenAPI_pdu_session_status_cfg_parseFromJSON(pdu_session_status_cfg);
@@ -453,6 +533,44 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
     }
     }
 
+    monitoring_suspension = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "monitoringSuspension");
+    if (monitoring_suspension) {
+    monitoring_suspension_local_nonprim = OpenAPI_monitoring_suspension_parseFromJSON(monitoring_suspension);
+    if (!monitoring_suspension_local_nonprim) {
+        ogs_error("OpenAPI_monitoring_suspension_parseFromJSON failed [monitoring_suspension]");
+        goto end;
+    }
+    }
+
+    shared_monitoring_suspension_id_list = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "sharedMonitoringSuspensionIdList");
+    if (shared_monitoring_suspension_id_list) {
+        cJSON *shared_monitoring_suspension_id_list_local = NULL;
+        if (!cJSON_IsArray(shared_monitoring_suspension_id_list)) {
+            ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [shared_monitoring_suspension_id_list]");
+            goto end;
+        }
+
+        shared_monitoring_suspension_id_listList = OpenAPI_list_create();
+
+        cJSON_ArrayForEach(shared_monitoring_suspension_id_list_local, shared_monitoring_suspension_id_list) {
+            double *localDouble = NULL;
+            int *localInt = NULL;
+            if (!cJSON_IsString(shared_monitoring_suspension_id_list_local)) {
+                ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [shared_monitoring_suspension_id_list]");
+                goto end;
+            }
+            OpenAPI_list_add(shared_monitoring_suspension_id_listList, ogs_strdup(shared_monitoring_suspension_id_list_local->valuestring));
+        }
+    }
+
+    pei_requested = cJSON_GetObjectItemCaseSensitive(monitoring_configurationJSON, "peiRequested");
+    if (pei_requested) {
+    if (!cJSON_IsBool(pei_requested)) {
+        ogs_error("OpenAPI_monitoring_configuration_parseFromJSON() failed [pei_requested]");
+        goto end;
+    }
+    }
+
     monitoring_configuration_local_var = OpenAPI_monitoring_configuration_create (
         event_typeVariable,
         immediate_flag ? true : false,
@@ -469,13 +587,18 @@ OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_parseFromJS
         suggested_packet_num_dl ? suggested_packet_num_dl->valuedouble : 0,
         dnn && !cJSON_IsNull(dnn) ? ogs_strdup(dnn->valuestring) : NULL,
         single_nssai ? single_nssai_local_nonprim : NULL,
+        app_id && !cJSON_IsNull(app_id) ? ogs_strdup(app_id->valuestring) : NULL,
         pdu_session_status_cfg ? pdu_session_status_cfg_local_nonprim : NULL,
         reachability_for_sms_cfg ? reachability_for_sms_cfgVariable : 0,
         mtc_provider_information && !cJSON_IsNull(mtc_provider_information) ? ogs_strdup(mtc_provider_information->valuestring) : NULL,
         af_id && !cJSON_IsNull(af_id) ? ogs_strdup(af_id->valuestring) : NULL,
         reachability_for_data_cfg ? reachability_for_data_cfg_local_nonprim : NULL,
         idle_status_ind ? true : false,
-        idle_status_ind ? idle_status_ind->valueint : 0
+        idle_status_ind ? idle_status_ind->valueint : 0,
+        monitoring_suspension ? monitoring_suspension_local_nonprim : NULL,
+        shared_monitoring_suspension_id_list ? shared_monitoring_suspension_id_listList : NULL,
+        pei_requested ? true : false,
+        pei_requested ? pei_requested->valueint : 0
     );
 
     return monitoring_configuration_local_var;
@@ -503,6 +626,17 @@ end:
     if (reachability_for_data_cfg_local_nonprim) {
         OpenAPI_reachability_for_data_configuration_free(reachability_for_data_cfg_local_nonprim);
         reachability_for_data_cfg_local_nonprim = NULL;
+    }
+    if (monitoring_suspension_local_nonprim) {
+        OpenAPI_monitoring_suspension_free(monitoring_suspension_local_nonprim);
+        monitoring_suspension_local_nonprim = NULL;
+    }
+    if (shared_monitoring_suspension_id_listList) {
+        OpenAPI_list_for_each(shared_monitoring_suspension_id_listList, node) {
+            ogs_free(node->data);
+        }
+        OpenAPI_list_free(shared_monitoring_suspension_id_listList);
+        shared_monitoring_suspension_id_listList = NULL;
     }
     return NULL;
 }

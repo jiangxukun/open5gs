@@ -23,6 +23,8 @@ struct OpenAPI_pfd_data_for_app_ext_s {
     char *application_id;
     OpenAPI_list_t *pfds;
     char *caching_time;
+    bool is_caching_timer;
+    int caching_timer;
     char *supp_feat;
     OpenAPI_list_t *reset_ids;
     bool is_allowed_delay;
@@ -33,6 +35,8 @@ OpenAPI_pfd_data_for_app_ext_t *OpenAPI_pfd_data_for_app_ext_create(
     char *application_id,
     OpenAPI_list_t *pfds,
     char *caching_time,
+    bool is_caching_timer,
+    int caching_timer,
     char *supp_feat,
     OpenAPI_list_t *reset_ids,
     bool is_allowed_delay,

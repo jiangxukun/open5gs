@@ -1,7 +1,7 @@
 /*
  * ue_context_in_amf_data.h
  *
- * 
+ * Contains UE Context In AMF Data
  */
 
 #ifndef _OpenAPI_ue_context_in_amf_data_H_

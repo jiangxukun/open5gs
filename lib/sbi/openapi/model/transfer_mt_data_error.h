@@ -16,6 +16,7 @@ typedef struct OpenAPI_transfer_mt_data_error_s OpenAPI_transfer_mt_data_error_t
 #include "access_token_err.h"
 #include "access_token_req.h"
 #include "invalid_param.h"
+#include "no_profile_match_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,6 +35,8 @@ struct OpenAPI_transfer_mt_data_error_s {
     struct OpenAPI_access_token_err_s *access_token_error;
     struct OpenAPI_access_token_req_s *access_token_request;
     char *nrf_id;
+    OpenAPI_list_t *supported_api_versions;
+    struct OpenAPI_no_profile_match_info_s *no_profile_match_info;
     bool is_remote_error;
     int remote_error;
     bool is_max_waiting_time;
@@ -53,6 +56,8 @@ OpenAPI_transfer_mt_data_error_t *OpenAPI_transfer_mt_data_error_create(
     OpenAPI_access_token_err_t *access_token_error,
     OpenAPI_access_token_req_t *access_token_request,
     char *nrf_id,
+    OpenAPI_list_t *supported_api_versions,
+    OpenAPI_no_profile_match_info_t *no_profile_match_info,
     bool is_remote_error,
     int remote_error,
     bool is_max_waiting_time,

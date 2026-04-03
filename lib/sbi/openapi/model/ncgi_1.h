@@ -13,20 +13,20 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_ncgi_1_s OpenAPI_ncgi_1_t;
-#include "plmn_id_1.h"
+#include "plmn_id.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 struct OpenAPI_ncgi_1_s {
-    struct OpenAPI_plmn_id_1_s *plmn_id;
+    struct OpenAPI_plmn_id_s *plmn_id;
     char *nr_cell_id;
     char *nid;
 };
 
 OpenAPI_ncgi_1_t *OpenAPI_ncgi_1_create(
-    OpenAPI_plmn_id_1_t *plmn_id,
+    OpenAPI_plmn_id_t *plmn_id,
     char *nr_cell_id,
     char *nid
 );

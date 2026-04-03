@@ -17,7 +17,9 @@ typedef struct OpenAPI_n1_message_notification_s OpenAPI_n1_message_notification
 #include "guami.h"
 #include "n1_message_container.h"
 #include "ncgi.h"
+#include "pru_ind.h"
 #include "registration_context_container.h"
+#include "tai.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,6 +36,9 @@ struct OpenAPI_n1_message_notification_s {
     int c_io_t5_gs_optimisation;
     struct OpenAPI_ecgi_s *ecgi;
     struct OpenAPI_ncgi_s *ncgi;
+    struct OpenAPI_tai_s *tai;
+    char *supi;
+    OpenAPI_pru_ind_e pru_ind;
 };
 
 OpenAPI_n1_message_notification_t *OpenAPI_n1_message_notification_create(
@@ -46,7 +51,10 @@ OpenAPI_n1_message_notification_t *OpenAPI_n1_message_notification_create(
     bool is_c_io_t5_gs_optimisation,
     int c_io_t5_gs_optimisation,
     OpenAPI_ecgi_t *ecgi,
-    OpenAPI_ncgi_t *ncgi
+    OpenAPI_ncgi_t *ncgi,
+    OpenAPI_tai_t *tai,
+    char *supi,
+    OpenAPI_pru_ind_e pru_ind
 );
 void OpenAPI_n1_message_notification_free(OpenAPI_n1_message_notification_t *n1_message_notification);
 OpenAPI_n1_message_notification_t *OpenAPI_n1_message_notification_parseFromJSON(cJSON *n1_message_notificationJSON);

@@ -518,7 +518,8 @@ components:
           minItems: 1
         guami:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Guami'
-        serviveName:
+#        serviveName:
+        serviceName:
           $ref: 'TS29510_Nnrf_NFManagement.yaml#/components/schemas/ServiceName'
         traceReq:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/TraceData'

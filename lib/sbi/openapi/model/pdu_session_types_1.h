@@ -1,7 +1,7 @@
 /*
  * pdu_session_types_1.h
  *
- * 
+ * Contains a list of PDU session types
  */
 
 #ifndef _OpenAPI_pdu_session_types_1_H_

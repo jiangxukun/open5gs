@@ -13,7 +13,8 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     OpenAPI_access_type_e prio_acc,
     bool is_thres_value_null,
     OpenAPI_threshold_value_t *thres_value,
-    OpenAPI_steer_mode_indicator_e steer_mode_ind
+    OpenAPI_steer_mode_indicator_e steer_mode_ind,
+    OpenAPI_access_type_e primary
 )
 {
     OpenAPI_steering_mode_t *steering_mode_local_var = ogs_malloc(sizeof(OpenAPI_steering_mode_t));
@@ -28,6 +29,7 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     steering_mode_local_var->is_thres_value_null = is_thres_value_null;
     steering_mode_local_var->thres_value = thres_value;
     steering_mode_local_var->steer_mode_ind = steer_mode_ind;
+    steering_mode_local_var->primary = primary;
 
     return steering_mode_local_var;
 }
@@ -119,6 +121,13 @@ cJSON *OpenAPI_steering_mode_convertToJSON(OpenAPI_steering_mode_t *steering_mod
     }
     }
 
+    if (steering_mode->primary != OpenAPI_access_type_NULL) {
+    if (cJSON_AddStringToObject(item, "primary", OpenAPI_access_type_ToString(steering_mode->primary)) == NULL) {
+        ogs_error("OpenAPI_steering_mode_convertToJSON() failed [primary]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -140,6 +149,8 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
     OpenAPI_threshold_value_t *thres_value_local_nonprim = NULL;
     cJSON *steer_mode_ind = NULL;
     OpenAPI_steer_mode_indicator_e steer_mode_indVariable = 0;
+    cJSON *primary = NULL;
+    OpenAPI_access_type_e primaryVariable = 0;
     steer_mode_value = cJSON_GetObjectItemCaseSensitive(steering_modeJSON, "steerModeValue");
     if (!steer_mode_value) {
         ogs_error("OpenAPI_steering_mode_parseFromJSON() failed [steer_mode_value]");
@@ -206,6 +217,15 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
     steer_mode_indVariable = OpenAPI_steer_mode_indicator_FromString(steer_mode_ind->valuestring);
     }
 
+    primary = cJSON_GetObjectItemCaseSensitive(steering_modeJSON, "primary");
+    if (primary) {
+    if (!cJSON_IsString(primary)) {
+        ogs_error("OpenAPI_steering_mode_parseFromJSON() failed [primary]");
+        goto end;
+    }
+    primaryVariable = OpenAPI_access_type_FromString(primary->valuestring);
+    }
+
     steering_mode_local_var = OpenAPI_steering_mode_create (
         steer_mode_valueVariable,
         active ? activeVariable : 0,
@@ -215,7 +235,8 @@ OpenAPI_steering_mode_t *OpenAPI_steering_mode_parseFromJSON(cJSON *steering_mod
         prio_acc ? prio_accVariable : 0,
         thres_value && cJSON_IsNull(thres_value) ? true : false,
         thres_value ? thres_value_local_nonprim : NULL,
-        steer_mode_ind ? steer_mode_indVariable : 0
+        steer_mode_ind ? steer_mode_indVariable : 0,
+        primary ? primaryVariable : 0
     );
 
     return steering_mode_local_var;

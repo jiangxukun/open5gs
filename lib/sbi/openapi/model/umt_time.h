@@ -1,7 +1,7 @@
 /*
  * umt_time.h
  *
- * 
+ * Contains Umt Time
  */
 
 #ifndef _OpenAPI_umt_time_H_

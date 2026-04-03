@@ -13,6 +13,8 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_reporting_information_s OpenAPI_reporting_information_t;
+#include "muting_exception_instructions.h"
+#include "muting_notifications_settings.h"
 #include "notification_flag.h"
 #include "notification_method_1.h"
 #include "partitioning_criteria.h"
@@ -36,6 +38,8 @@ struct OpenAPI_reporting_information_s {
     bool is_grp_rep_time;
     int grp_rep_time;
     OpenAPI_notification_flag_e notif_flag;
+    struct OpenAPI_muting_exception_instructions_s *notif_flag_instruct;
+    struct OpenAPI_muting_notifications_settings_s *muting_setting;
 };
 
 OpenAPI_reporting_information_t *OpenAPI_reporting_information_create(
@@ -52,7 +56,9 @@ OpenAPI_reporting_information_t *OpenAPI_reporting_information_create(
     OpenAPI_list_t *partition_criteria,
     bool is_grp_rep_time,
     int grp_rep_time,
-    OpenAPI_notification_flag_e notif_flag
+    OpenAPI_notification_flag_e notif_flag,
+    OpenAPI_muting_exception_instructions_t *notif_flag_instruct,
+    OpenAPI_muting_notifications_settings_t *muting_setting
 );
 void OpenAPI_reporting_information_free(OpenAPI_reporting_information_t *reporting_information);
 OpenAPI_reporting_information_t *OpenAPI_reporting_information_parseFromJSON(cJSON *reporting_informationJSON);

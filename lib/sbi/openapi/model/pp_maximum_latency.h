@@ -1,7 +1,7 @@
 /*
  * pp_maximum_latency.h
  *
- * 
+ * Contains AF provisioned Maximum Latency
  */
 
 #ifndef _OpenAPI_pp_maximum_latency_H_

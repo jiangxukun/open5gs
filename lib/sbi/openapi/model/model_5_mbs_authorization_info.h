@@ -1,7 +1,7 @@
 /*
  * model_5_mbs_authorization_info.h
  *
- * 
+ * Contains 5MBS Session Authorization Information
  */
 
 #ifndef _OpenAPI_model_5_mbs_authorization_info_H_

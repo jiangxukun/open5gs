@@ -1,7 +1,7 @@
 /*
  * amf_dereg_info.h
  *
- * 
+ * This data type contains the reason of deregistration.
  */
 
 #ifndef _OpenAPI_amf_dereg_info_H_

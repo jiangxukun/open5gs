@@ -1,7 +1,7 @@
 /*
  * mbs_ext_problem_details.h
  *
- * Contains the FQDN or IP endpoints of the existing PCF and the cause value if there is an  existing PCF binding information for the MBS session. 
+ * Contains the FQDN or IP endpoints of the existing PCF and the cause value if there is an existing PCF binding information for the MBS session. 
  */
 
 #ifndef _OpenAPI_mbs_ext_problem_details_H_
@@ -17,6 +17,7 @@ typedef struct OpenAPI_mbs_ext_problem_details_s OpenAPI_mbs_ext_problem_details
 #include "access_token_req.h"
 #include "invalid_param.h"
 #include "ip_end_point.h"
+#include "no_profile_match_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,6 +36,8 @@ struct OpenAPI_mbs_ext_problem_details_s {
     struct OpenAPI_access_token_err_s *access_token_error;
     struct OpenAPI_access_token_req_s *access_token_request;
     char *nrf_id;
+    OpenAPI_list_t *supported_api_versions;
+    struct OpenAPI_no_profile_match_info_s *no_profile_match_info;
     char *pcf_fqdn;
     OpenAPI_list_t *pcf_ip_end_points;
 };
@@ -52,6 +55,8 @@ OpenAPI_mbs_ext_problem_details_t *OpenAPI_mbs_ext_problem_details_create(
     OpenAPI_access_token_err_t *access_token_error,
     OpenAPI_access_token_req_t *access_token_request,
     char *nrf_id,
+    OpenAPI_list_t *supported_api_versions,
+    OpenAPI_no_profile_match_info_t *no_profile_match_info,
     char *pcf_fqdn,
     OpenAPI_list_t *pcf_ip_end_points
 );

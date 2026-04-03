@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_required_access_info_NULL = 0, OpenAPI_required_access_info_USER_LOCATION, OpenAPI_required_access_info_UE_TIME_ZONE } OpenAPI_required_access_info_e;
+typedef enum { OpenAPI_required_access_info_NULL = 0, OpenAPI_required_access_info_USER_LOCATION, OpenAPI_required_access_info_UE_TIME_ZONE, OpenAPI_required_access_info_UE_SAT_INFO } OpenAPI_required_access_info_e;
 
 char* OpenAPI_required_access_info_ToString(OpenAPI_required_access_info_e required_access_info);
 

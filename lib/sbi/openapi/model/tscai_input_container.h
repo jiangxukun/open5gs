@@ -13,6 +13,8 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_tscai_input_container_s OpenAPI_tscai_input_container_t;
+#include "periodicity_range.h"
+#include "time_window.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +28,8 @@ struct OpenAPI_tscai_input_container_s {
     int sur_time_in_num_msg;
     bool is_sur_time_in_time;
     int sur_time_in_time;
+    struct OpenAPI_time_window_s *burst_arrival_time_wnd;
+    struct OpenAPI_periodicity_range_s *periodicity_range;
 };
 
 OpenAPI_tscai_input_container_t *OpenAPI_tscai_input_container_create(
@@ -35,7 +39,9 @@ OpenAPI_tscai_input_container_t *OpenAPI_tscai_input_container_create(
     bool is_sur_time_in_num_msg,
     int sur_time_in_num_msg,
     bool is_sur_time_in_time,
-    int sur_time_in_time
+    int sur_time_in_time,
+    OpenAPI_time_window_t *burst_arrival_time_wnd,
+    OpenAPI_periodicity_range_t *periodicity_range
 );
 void OpenAPI_tscai_input_container_free(OpenAPI_tscai_input_container_t *tscai_input_container);
 OpenAPI_tscai_input_container_t *OpenAPI_tscai_input_container_parseFromJSON(cJSON *tscai_input_containerJSON);

@@ -1,7 +1,7 @@
 /*
  * pei_update_info.h
  *
- * 
+ * This data type contains information about the PEI.
  */
 
 #ifndef _OpenAPI_pei_update_info_H_

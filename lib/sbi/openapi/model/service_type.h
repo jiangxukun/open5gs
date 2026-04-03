@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_service_type_NULL = 0, OpenAPI_service_type_AF_GUIDANCE_FOR_URSP } OpenAPI_service_type_e;
+typedef enum { OpenAPI_service_type_NULL = 0, OpenAPI_service_type_AF_GUIDANCE_FOR_URSP, OpenAPI_service_type_AF_REQUESTED_QOS, OpenAPI_service_type_AF_PROVISION_N3GPP_DEV_ID_INFO } OpenAPI_service_type_e;
 
 char* OpenAPI_service_type_ToString(OpenAPI_service_type_e service_type);
 

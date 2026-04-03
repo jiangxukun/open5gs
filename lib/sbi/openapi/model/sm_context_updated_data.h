@@ -52,6 +52,8 @@ struct OpenAPI_sm_context_updated_data_s {
     char *selected_old_smf_id;
     char *inter_plmn_api_root;
     struct OpenAPI_anchor_smf_features_s *anchor_smf_features;
+    bool is_pdu_session_prio;
+    int pdu_session_prio;
 };
 
 OpenAPI_sm_context_updated_data_t *OpenAPI_sm_context_updated_data_create(
@@ -78,7 +80,9 @@ OpenAPI_sm_context_updated_data_t *OpenAPI_sm_context_updated_data_create(
     char *selected_smf_id,
     char *selected_old_smf_id,
     char *inter_plmn_api_root,
-    OpenAPI_anchor_smf_features_t *anchor_smf_features
+    OpenAPI_anchor_smf_features_t *anchor_smf_features,
+    bool is_pdu_session_prio,
+    int pdu_session_prio
 );
 void OpenAPI_sm_context_updated_data_free(OpenAPI_sm_context_updated_data_t *sm_context_updated_data);
 OpenAPI_sm_context_updated_data_t *OpenAPI_sm_context_updated_data_parseFromJSON(cJSON *sm_context_updated_dataJSON);

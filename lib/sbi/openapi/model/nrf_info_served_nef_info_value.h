@@ -38,6 +38,10 @@ struct OpenAPI_nrf_info_served_nef_info_value_s {
     OpenAPI_list_t *un_trust_af_info_list;
     bool is_uas_nf_functionality_ind;
     int uas_nf_functionality_ind;
+    bool is_multi_mem_af_sess_qos_ind;
+    int multi_mem_af_sess_qos_ind;
+    bool is_member_ue_sel_assist_ind;
+    int member_ue_sel_assist_ind;
 };
 
 OpenAPI_nrf_info_served_nef_info_value_t *OpenAPI_nrf_info_served_nef_info_value_create(
@@ -52,7 +56,11 @@ OpenAPI_nrf_info_served_nef_info_value_t *OpenAPI_nrf_info_served_nef_info_value
     OpenAPI_list_t *dnai_list,
     OpenAPI_list_t *un_trust_af_info_list,
     bool is_uas_nf_functionality_ind,
-    int uas_nf_functionality_ind
+    int uas_nf_functionality_ind,
+    bool is_multi_mem_af_sess_qos_ind,
+    int multi_mem_af_sess_qos_ind,
+    bool is_member_ue_sel_assist_ind,
+    int member_ue_sel_assist_ind
 );
 void OpenAPI_nrf_info_served_nef_info_value_free(OpenAPI_nrf_info_served_nef_info_value_t *nrf_info_served_nef_info_value);
 OpenAPI_nrf_info_served_nef_info_value_t *OpenAPI_nrf_info_served_nef_info_value_parseFromJSON(cJSON *nrf_info_served_nef_info_valueJSON);

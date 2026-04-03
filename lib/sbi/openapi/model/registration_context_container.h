@@ -51,6 +51,8 @@ struct OpenAPI_registration_context_container_s {
     struct OpenAPI_plmn_id_s *selected_plmn_id;
     bool is_iab_node_ind;
     int iab_node_ind;
+    bool is_mbsr_node_ind;
+    int mbsr_node_ind;
     struct OpenAPI_ce_mode_b_ind_s *ce_mode_b_ind;
     struct OpenAPI_lte_m_ind_s *lte_m_ind;
     bool is_authenticated_ind;
@@ -80,6 +82,8 @@ OpenAPI_registration_context_container_t *OpenAPI_registration_context_container
     OpenAPI_plmn_id_t *selected_plmn_id,
     bool is_iab_node_ind,
     int iab_node_ind,
+    bool is_mbsr_node_ind,
+    int mbsr_node_ind,
     OpenAPI_ce_mode_b_ind_t *ce_mode_b_ind,
     OpenAPI_lte_m_ind_t *lte_m_ind,
     bool is_authenticated_ind,

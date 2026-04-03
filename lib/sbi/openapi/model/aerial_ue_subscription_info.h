@@ -1,7 +1,7 @@
 /*
  * aerial_ue_subscription_info.h
  *
- * Contains the Aerial UE Subscription Information, it at least contains the Aerial UE Indication.
+ * Contains the Aerial UE Subscription Information, it at least contains the Aerial UE Indication. 
  */
 
 #ifndef _OpenAPI_aerial_ue_subscription_info_H_

@@ -1,7 +1,7 @@
 /*
  * communication_characteristics_af.h
  *
- * 
+ * Contains Communication Characteristics per AF
  */
 
 #ifndef _OpenAPI_communication_characteristics_af_H_
@@ -26,6 +26,8 @@ struct OpenAPI_communication_characteristics_af_s {
     int maximum_response_time;
     bool is_maximum_latency;
     int maximum_latency;
+    bool is_eps_applied_ind;
+    int eps_applied_ind;
 };
 
 OpenAPI_communication_characteristics_af_t *OpenAPI_communication_characteristics_af_create(
@@ -35,7 +37,9 @@ OpenAPI_communication_characteristics_af_t *OpenAPI_communication_characteristic
     bool is_maximum_response_time,
     int maximum_response_time,
     bool is_maximum_latency,
-    int maximum_latency
+    int maximum_latency,
+    bool is_eps_applied_ind,
+    int eps_applied_ind
 );
 void OpenAPI_communication_characteristics_af_free(OpenAPI_communication_characteristics_af_t *communication_characteristics_af);
 OpenAPI_communication_characteristics_af_t *OpenAPI_communication_characteristics_af_parseFromJSON(cJSON *communication_characteristics_afJSON);

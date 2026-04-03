@@ -10,7 +10,9 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
     double altitude,
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse,
     float uncertainty_altitude,
-    int confidence
+    int confidence,
+    bool is_v_confidence,
+    int v_confidence
 )
 {
     OpenAPI_point_altitude_uncertainty_t *point_altitude_uncertainty_local_var = ogs_malloc(sizeof(OpenAPI_point_altitude_uncertainty_t));
@@ -22,6 +24,8 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
     point_altitude_uncertainty_local_var->uncertainty_ellipse = uncertainty_ellipse;
     point_altitude_uncertainty_local_var->uncertainty_altitude = uncertainty_altitude;
     point_altitude_uncertainty_local_var->confidence = confidence;
+    point_altitude_uncertainty_local_var->is_v_confidence = is_v_confidence;
+    point_altitude_uncertainty_local_var->v_confidence = v_confidence;
 
     return point_altitude_uncertainty_local_var;
 }
@@ -109,6 +113,13 @@ cJSON *OpenAPI_point_altitude_uncertainty_convertToJSON(OpenAPI_point_altitude_u
         goto end;
     }
 
+    if (point_altitude_uncertainty->is_v_confidence) {
+    if (cJSON_AddNumberToObject(item, "vConfidence", point_altitude_uncertainty->v_confidence) == NULL) {
+        ogs_error("OpenAPI_point_altitude_uncertainty_convertToJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -126,6 +137,7 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse_local_nonprim = NULL;
     cJSON *uncertainty_altitude = NULL;
     cJSON *confidence = NULL;
+    cJSON *v_confidence = NULL;
     shape = cJSON_GetObjectItemCaseSensitive(point_altitude_uncertaintyJSON, "shape");
     if (!shape) {
         ogs_error("OpenAPI_point_altitude_uncertainty_parseFromJSON() failed [shape]");
@@ -189,6 +201,14 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
         goto end;
     }
 
+    v_confidence = cJSON_GetObjectItemCaseSensitive(point_altitude_uncertaintyJSON, "vConfidence");
+    if (v_confidence) {
+    if (!cJSON_IsNumber(v_confidence)) {
+        ogs_error("OpenAPI_point_altitude_uncertainty_parseFromJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
     point_altitude_uncertainty_local_var = OpenAPI_point_altitude_uncertainty_create (
         shapeVariable,
         point_local_nonprim,
@@ -198,7 +218,9 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFr
         
         uncertainty_altitude->valuedouble,
         
-        confidence->valuedouble
+        confidence->valuedouble,
+        v_confidence ? true : false,
+        v_confidence ? v_confidence->valuedouble : 0
     );
 
     return point_altitude_uncertainty_local_var;

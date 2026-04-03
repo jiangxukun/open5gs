@@ -1,7 +1,7 @@
 /*
  * location_area_1.h
  *
- * 
+ * Contains Location Area
  */
 
 #ifndef _OpenAPI_location_area_1_H_

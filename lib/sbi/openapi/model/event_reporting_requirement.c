@@ -19,7 +19,8 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_creat
     int max_supi_nbr,
     char *time_ana_needed,
     OpenAPI_list_t *ana_meta,
-    OpenAPI_analytics_metadata_indication_t *ana_meta_ind
+    OpenAPI_analytics_metadata_indication_t *ana_meta_ind,
+    OpenAPI_time_window_t *hist_ana_time_period
 )
 {
     OpenAPI_event_reporting_requirement_t *event_reporting_requirement_local_var = ogs_malloc(sizeof(OpenAPI_event_reporting_requirement_t));
@@ -40,6 +41,7 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_creat
     event_reporting_requirement_local_var->time_ana_needed = time_ana_needed;
     event_reporting_requirement_local_var->ana_meta = ana_meta;
     event_reporting_requirement_local_var->ana_meta_ind = ana_meta_ind;
+    event_reporting_requirement_local_var->hist_ana_time_period = hist_ana_time_period;
 
     return event_reporting_requirement_local_var;
 }
@@ -74,6 +76,10 @@ void OpenAPI_event_reporting_requirement_free(OpenAPI_event_reporting_requiremen
     if (event_reporting_requirement->ana_meta_ind) {
         OpenAPI_analytics_metadata_indication_free(event_reporting_requirement->ana_meta_ind);
         event_reporting_requirement->ana_meta_ind = NULL;
+    }
+    if (event_reporting_requirement->hist_ana_time_period) {
+        OpenAPI_time_window_free(event_reporting_requirement->hist_ana_time_period);
+        event_reporting_requirement->hist_ana_time_period = NULL;
     }
     ogs_free(event_reporting_requirement);
 }
@@ -186,6 +192,19 @@ cJSON *OpenAPI_event_reporting_requirement_convertToJSON(OpenAPI_event_reporting
     }
     }
 
+    if (event_reporting_requirement->hist_ana_time_period) {
+    cJSON *hist_ana_time_period_local_JSON = OpenAPI_time_window_convertToJSON(event_reporting_requirement->hist_ana_time_period);
+    if (hist_ana_time_period_local_JSON == NULL) {
+        ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [hist_ana_time_period]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "histAnaTimePeriod", hist_ana_time_period_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_event_reporting_requirement_convertToJSON() failed [hist_ana_time_period]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -209,6 +228,8 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
     OpenAPI_list_t *ana_metaList = NULL;
     cJSON *ana_meta_ind = NULL;
     OpenAPI_analytics_metadata_indication_t *ana_meta_ind_local_nonprim = NULL;
+    cJSON *hist_ana_time_period = NULL;
+    OpenAPI_time_window_t *hist_ana_time_period_local_nonprim = NULL;
     accuracy = cJSON_GetObjectItemCaseSensitive(event_reporting_requirementJSON, "accuracy");
     if (accuracy) {
     if (!cJSON_IsString(accuracy)) {
@@ -343,6 +364,15 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
     }
     }
 
+    hist_ana_time_period = cJSON_GetObjectItemCaseSensitive(event_reporting_requirementJSON, "histAnaTimePeriod");
+    if (hist_ana_time_period) {
+    hist_ana_time_period_local_nonprim = OpenAPI_time_window_parseFromJSON(hist_ana_time_period);
+    if (!hist_ana_time_period_local_nonprim) {
+        ogs_error("OpenAPI_time_window_parseFromJSON failed [hist_ana_time_period]");
+        goto end;
+    }
+    }
+
     event_reporting_requirement_local_var = OpenAPI_event_reporting_requirement_create (
         accuracy ? accuracyVariable : 0,
         acc_per_subset ? acc_per_subsetList : NULL,
@@ -358,7 +388,8 @@ OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_parse
         max_supi_nbr ? max_supi_nbr->valuedouble : 0,
         time_ana_needed && !cJSON_IsNull(time_ana_needed) ? ogs_strdup(time_ana_needed->valuestring) : NULL,
         ana_meta ? ana_metaList : NULL,
-        ana_meta_ind ? ana_meta_ind_local_nonprim : NULL
+        ana_meta_ind ? ana_meta_ind_local_nonprim : NULL,
+        hist_ana_time_period ? hist_ana_time_period_local_nonprim : NULL
     );
 
     return event_reporting_requirement_local_var;
@@ -374,6 +405,10 @@ end:
     if (ana_meta_ind_local_nonprim) {
         OpenAPI_analytics_metadata_indication_free(ana_meta_ind_local_nonprim);
         ana_meta_ind_local_nonprim = NULL;
+    }
+    if (hist_ana_time_period_local_nonprim) {
+        OpenAPI_time_window_free(hist_ana_time_period_local_nonprim);
+        hist_ana_time_period_local_nonprim = NULL;
     }
     return NULL;
 }

@@ -1,7 +1,7 @@
 /*
  * ip_address_1.h
  *
- * 
+ * IP Address
  */
 
 #ifndef _OpenAPI_ip_address_1_H_

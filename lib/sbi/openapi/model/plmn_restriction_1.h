@@ -1,7 +1,7 @@
 /*
  * plmn_restriction_1.h
  *
- * 
+ * Contains subscribed restrictions
  */
 
 #ifndef _OpenAPI_plmn_restriction_1_H_
@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_plmn_restriction_1_s OpenAPI_plmn_restriction_1_t;
+#include "access_type.h"
 #include "area_1.h"
 #include "core_network_type.h"
 #include "rat_type.h"
@@ -27,6 +28,7 @@ struct OpenAPI_plmn_restriction_1_s {
     OpenAPI_list_t *forbidden_areas;
     struct OpenAPI_service_area_restriction_1_s *service_area_restriction;
     OpenAPI_list_t *core_network_type_restrictions;
+    OpenAPI_list_t *access_type_restrictions;
     OpenAPI_list_t *primary_rat_restrictions;
     OpenAPI_list_t *secondary_rat_restrictions;
 };
@@ -36,6 +38,7 @@ OpenAPI_plmn_restriction_1_t *OpenAPI_plmn_restriction_1_create(
     OpenAPI_list_t *forbidden_areas,
     OpenAPI_service_area_restriction_1_t *service_area_restriction,
     OpenAPI_list_t *core_network_type_restrictions,
+    OpenAPI_list_t *access_type_restrictions,
     OpenAPI_list_t *primary_rat_restrictions,
     OpenAPI_list_t *secondary_rat_restrictions
 );

@@ -9,12 +9,14 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     OpenAPI_list_t *nwdaf_events,
     OpenAPI_list_t *tai_list,
     OpenAPI_list_t *tai_range_list,
+    OpenAPI_list_t *tai_weight_list,
     OpenAPI_nwdaf_capability_t *nwdaf_capability,
     bool is_analytics_delay,
     int analytics_delay,
     OpenAPI_list_t *serving_nf_set_id_list,
     OpenAPI_list_t *serving_nf_type_list,
-    OpenAPI_list_t *ml_analytics_list
+    OpenAPI_list_t *ml_analytics_list,
+    OpenAPI_list_t *pos_cases
 )
 {
     OpenAPI_nrf_info_served_nwdaf_info_value_t *nrf_info_served_nwdaf_info_value_local_var = ogs_malloc(sizeof(OpenAPI_nrf_info_served_nwdaf_info_value_t));
@@ -24,12 +26,14 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     nrf_info_served_nwdaf_info_value_local_var->nwdaf_events = nwdaf_events;
     nrf_info_served_nwdaf_info_value_local_var->tai_list = tai_list;
     nrf_info_served_nwdaf_info_value_local_var->tai_range_list = tai_range_list;
+    nrf_info_served_nwdaf_info_value_local_var->tai_weight_list = tai_weight_list;
     nrf_info_served_nwdaf_info_value_local_var->nwdaf_capability = nwdaf_capability;
     nrf_info_served_nwdaf_info_value_local_var->is_analytics_delay = is_analytics_delay;
     nrf_info_served_nwdaf_info_value_local_var->analytics_delay = analytics_delay;
     nrf_info_served_nwdaf_info_value_local_var->serving_nf_set_id_list = serving_nf_set_id_list;
     nrf_info_served_nwdaf_info_value_local_var->serving_nf_type_list = serving_nf_type_list;
     nrf_info_served_nwdaf_info_value_local_var->ml_analytics_list = ml_analytics_list;
+    nrf_info_served_nwdaf_info_value_local_var->pos_cases = pos_cases;
 
     return nrf_info_served_nwdaf_info_value_local_var;
 }
@@ -63,6 +67,13 @@ void OpenAPI_nrf_info_served_nwdaf_info_value_free(OpenAPI_nrf_info_served_nwdaf
         OpenAPI_list_free(nrf_info_served_nwdaf_info_value->tai_range_list);
         nrf_info_served_nwdaf_info_value->tai_range_list = NULL;
     }
+    if (nrf_info_served_nwdaf_info_value->tai_weight_list) {
+        OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->tai_weight_list, node) {
+            OpenAPI_tai_weight_info_free(node->data);
+        }
+        OpenAPI_list_free(nrf_info_served_nwdaf_info_value->tai_weight_list);
+        nrf_info_served_nwdaf_info_value->tai_weight_list = NULL;
+    }
     if (nrf_info_served_nwdaf_info_value->nwdaf_capability) {
         OpenAPI_nwdaf_capability_free(nrf_info_served_nwdaf_info_value->nwdaf_capability);
         nrf_info_served_nwdaf_info_value->nwdaf_capability = NULL;
@@ -84,6 +95,10 @@ void OpenAPI_nrf_info_served_nwdaf_info_value_free(OpenAPI_nrf_info_served_nwdaf
         }
         OpenAPI_list_free(nrf_info_served_nwdaf_info_value->ml_analytics_list);
         nrf_info_served_nwdaf_info_value->ml_analytics_list = NULL;
+    }
+    if (nrf_info_served_nwdaf_info_value->pos_cases) {
+        OpenAPI_list_free(nrf_info_served_nwdaf_info_value->pos_cases);
+        nrf_info_served_nwdaf_info_value->pos_cases = NULL;
     }
     ogs_free(nrf_info_served_nwdaf_info_value);
 }
@@ -159,6 +174,22 @@ cJSON *OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON(OpenAPI_nrf_info_s
     }
     }
 
+    if (nrf_info_served_nwdaf_info_value->tai_weight_list) {
+    cJSON *tai_weight_listList = cJSON_AddArrayToObject(item, "taiWeightList");
+    if (tai_weight_listList == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [tai_weight_list]");
+        goto end;
+    }
+    OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->tai_weight_list, node) {
+        cJSON *itemLocal = OpenAPI_tai_weight_info_convertToJSON(node->data);
+        if (itemLocal == NULL) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [tai_weight_list]");
+            goto end;
+        }
+        cJSON_AddItemToArray(tai_weight_listList, itemLocal);
+    }
+    }
+
     if (nrf_info_served_nwdaf_info_value->nwdaf_capability) {
     cJSON *nwdaf_capability_local_JSON = OpenAPI_nwdaf_capability_convertToJSON(nrf_info_served_nwdaf_info_value->nwdaf_capability);
     if (nwdaf_capability_local_JSON == NULL) {
@@ -223,6 +254,20 @@ cJSON *OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON(OpenAPI_nrf_info_s
     }
     }
 
+    if (nrf_info_served_nwdaf_info_value->pos_cases != OpenAPI_positioning_case_NULL) {
+    cJSON *pos_casesList = cJSON_AddArrayToObject(item, "posCases");
+    if (pos_casesList == NULL) {
+        ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [pos_cases]");
+        goto end;
+    }
+    OpenAPI_list_for_each(nrf_info_served_nwdaf_info_value->pos_cases, node) {
+        if (cJSON_AddStringToObject(pos_casesList, "", OpenAPI_positioning_case_ToString((intptr_t)node->data)) == NULL) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_convertToJSON() failed [pos_cases]");
+            goto end;
+        }
+    }
+    }
+
 end:
     return item;
 }
@@ -239,6 +284,8 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     OpenAPI_list_t *tai_listList = NULL;
     cJSON *tai_range_list = NULL;
     OpenAPI_list_t *tai_range_listList = NULL;
+    cJSON *tai_weight_list = NULL;
+    OpenAPI_list_t *tai_weight_listList = NULL;
     cJSON *nwdaf_capability = NULL;
     OpenAPI_nwdaf_capability_t *nwdaf_capability_local_nonprim = NULL;
     cJSON *analytics_delay = NULL;
@@ -248,6 +295,8 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     OpenAPI_list_t *serving_nf_type_listList = NULL;
     cJSON *ml_analytics_list = NULL;
     OpenAPI_list_t *ml_analytics_listList = NULL;
+    cJSON *pos_cases = NULL;
+    OpenAPI_list_t *pos_casesList = NULL;
     event_ids = cJSON_GetObjectItemCaseSensitive(nrf_info_served_nwdaf_info_valueJSON, "eventIds");
     if (event_ids) {
         cJSON *event_ids_local = NULL;
@@ -356,6 +405,30 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
         }
     }
 
+    tai_weight_list = cJSON_GetObjectItemCaseSensitive(nrf_info_served_nwdaf_info_valueJSON, "taiWeightList");
+    if (tai_weight_list) {
+        cJSON *tai_weight_list_local = NULL;
+        if (!cJSON_IsArray(tai_weight_list)) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [tai_weight_list]");
+            goto end;
+        }
+
+        tai_weight_listList = OpenAPI_list_create();
+
+        cJSON_ArrayForEach(tai_weight_list_local, tai_weight_list) {
+            if (!cJSON_IsObject(tai_weight_list_local)) {
+                ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [tai_weight_list]");
+                goto end;
+            }
+            OpenAPI_tai_weight_info_t *tai_weight_listItem = OpenAPI_tai_weight_info_parseFromJSON(tai_weight_list_local);
+            if (!tai_weight_listItem) {
+                ogs_error("No tai_weight_listItem");
+                goto end;
+            }
+            OpenAPI_list_add(tai_weight_listList, tai_weight_listItem);
+        }
+    }
+
     nwdaf_capability = cJSON_GetObjectItemCaseSensitive(nrf_info_served_nwdaf_info_valueJSON, "nwdafCapability");
     if (nwdaf_capability) {
     nwdaf_capability_local_nonprim = OpenAPI_nwdaf_capability_parseFromJSON(nwdaf_capability);
@@ -448,17 +521,49 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
         }
     }
 
+    pos_cases = cJSON_GetObjectItemCaseSensitive(nrf_info_served_nwdaf_info_valueJSON, "posCases");
+    if (pos_cases) {
+        cJSON *pos_cases_local = NULL;
+        if (!cJSON_IsArray(pos_cases)) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [pos_cases]");
+            goto end;
+        }
+
+        pos_casesList = OpenAPI_list_create();
+
+        cJSON_ArrayForEach(pos_cases_local, pos_cases) {
+            OpenAPI_positioning_case_e localEnum = OpenAPI_positioning_case_NULL;
+            if (!cJSON_IsString(pos_cases_local)) {
+                ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed [pos_cases]");
+                goto end;
+            }
+            localEnum = OpenAPI_positioning_case_FromString(pos_cases_local->valuestring);
+            if (!localEnum) {
+                ogs_info("Enum value \"%s\" for field \"pos_cases\" is not supported. Ignoring it ...",
+                         pos_cases_local->valuestring);
+            } else {
+                OpenAPI_list_add(pos_casesList, (void *)localEnum);
+            }
+        }
+        if (pos_casesList->count == 0) {
+            ogs_error("OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON() failed: Expected pos_casesList to not be empty (after ignoring unsupported enum values).");
+            goto end;
+        }
+    }
+
     nrf_info_served_nwdaf_info_value_local_var = OpenAPI_nrf_info_served_nwdaf_info_value_create (
         event_ids ? event_idsList : NULL,
         nwdaf_events ? nwdaf_eventsList : NULL,
         tai_list ? tai_listList : NULL,
         tai_range_list ? tai_range_listList : NULL,
+        tai_weight_list ? tai_weight_listList : NULL,
         nwdaf_capability ? nwdaf_capability_local_nonprim : NULL,
         analytics_delay ? true : false,
         analytics_delay ? analytics_delay->valuedouble : 0,
         serving_nf_set_id_list ? serving_nf_set_id_listList : NULL,
         serving_nf_type_list ? serving_nf_type_listList : NULL,
-        ml_analytics_list ? ml_analytics_listList : NULL
+        ml_analytics_list ? ml_analytics_listList : NULL,
+        pos_cases ? pos_casesList : NULL
     );
 
     return nrf_info_served_nwdaf_info_value_local_var;
@@ -485,6 +590,13 @@ end:
         OpenAPI_list_free(tai_range_listList);
         tai_range_listList = NULL;
     }
+    if (tai_weight_listList) {
+        OpenAPI_list_for_each(tai_weight_listList, node) {
+            OpenAPI_tai_weight_info_free(node->data);
+        }
+        OpenAPI_list_free(tai_weight_listList);
+        tai_weight_listList = NULL;
+    }
     if (nwdaf_capability_local_nonprim) {
         OpenAPI_nwdaf_capability_free(nwdaf_capability_local_nonprim);
         nwdaf_capability_local_nonprim = NULL;
@@ -506,6 +618,10 @@ end:
         }
         OpenAPI_list_free(ml_analytics_listList);
         ml_analytics_listList = NULL;
+    }
+    if (pos_casesList) {
+        OpenAPI_list_free(pos_casesList);
+        pos_casesList = NULL;
     }
     return NULL;
 }

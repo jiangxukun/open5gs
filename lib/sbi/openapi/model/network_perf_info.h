@@ -15,6 +15,8 @@
 typedef struct OpenAPI_network_perf_info_s OpenAPI_network_perf_info_t;
 #include "network_area_info.h"
 #include "network_perf_type.h"
+#include "resource_usage_requirement.h"
+#include "time_window.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,10 +25,12 @@ extern "C" {
 struct OpenAPI_network_perf_info_s {
     struct OpenAPI_network_area_info_s *network_area;
     OpenAPI_network_perf_type_e nw_perf_type;
+    struct OpenAPI_time_window_s *ana_period;
     bool is_relative_ratio;
     int relative_ratio;
     bool is_absolute_num;
     int absolute_num;
+    struct OpenAPI_resource_usage_requirement_s *rsc_usg_req;
     bool is_confidence;
     int confidence;
 };
@@ -34,10 +38,12 @@ struct OpenAPI_network_perf_info_s {
 OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_create(
     OpenAPI_network_area_info_t *network_area,
     OpenAPI_network_perf_type_e nw_perf_type,
+    OpenAPI_time_window_t *ana_period,
     bool is_relative_ratio,
     int relative_ratio,
     bool is_absolute_num,
     int absolute_num,
+    OpenAPI_resource_usage_requirement_t *rsc_usg_req,
     bool is_confidence,
     int confidence
 );

@@ -14,7 +14,10 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_reporting_options_s OpenAPI_reporting_options_t;
 #include "event_report_mode.h"
+#include "muting_exception_instructions.h"
+#include "muting_notifications_settings.h"
 #include "notification_flag.h"
+#include "var_rep_period.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +35,9 @@ struct OpenAPI_reporting_options_s {
     bool is_report_period;
     int report_period;
     OpenAPI_notification_flag_e notif_flag;
+    struct OpenAPI_muting_exception_instructions_s *muting_exc_instructions;
+    struct OpenAPI_muting_notifications_settings_s *muting_not_settings;
+    OpenAPI_list_t *var_rep_period_info;
 };
 
 OpenAPI_reporting_options_t *OpenAPI_reporting_options_create(
@@ -45,7 +51,10 @@ OpenAPI_reporting_options_t *OpenAPI_reporting_options_create(
     int guard_time,
     bool is_report_period,
     int report_period,
-    OpenAPI_notification_flag_e notif_flag
+    OpenAPI_notification_flag_e notif_flag,
+    OpenAPI_muting_exception_instructions_t *muting_exc_instructions,
+    OpenAPI_muting_notifications_settings_t *muting_not_settings,
+    OpenAPI_list_t *var_rep_period_info
 );
 void OpenAPI_reporting_options_free(OpenAPI_reporting_options_t *reporting_options);
 OpenAPI_reporting_options_t *OpenAPI_reporting_options_parseFromJSON(cJSON *reporting_optionsJSON);

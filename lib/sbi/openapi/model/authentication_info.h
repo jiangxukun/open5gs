@@ -39,6 +39,8 @@ struct OpenAPI_authentication_info_s {
     int disaster_roaming_ind;
     bool is_onboarding_ind;
     int onboarding_ind;
+    bool is_aun3_ind;
+    int aun3_ind;
 };
 
 OpenAPI_authentication_info_t *OpenAPI_authentication_info_create(
@@ -59,7 +61,9 @@ OpenAPI_authentication_info_t *OpenAPI_authentication_info_create(
     bool is_disaster_roaming_ind,
     int disaster_roaming_ind,
     bool is_onboarding_ind,
-    int onboarding_ind
+    int onboarding_ind,
+    bool is_aun3_ind,
+    int aun3_ind
 );
 void OpenAPI_authentication_info_free(OpenAPI_authentication_info_t *authentication_info);
 OpenAPI_authentication_info_t *OpenAPI_authentication_info_parseFromJSON(cJSON *authentication_infoJSON);

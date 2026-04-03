@@ -13,7 +13,6 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_iptv_config_data_s OpenAPI_iptv_config_data_t;
-#include "any_type.h"
 #include "multicast_access_control.h"
 #include "snssai.h"
 
@@ -23,8 +22,7 @@ extern "C" {
 
 struct OpenAPI_iptv_config_data_s {
     char *supi;
-    bool is_inter_group_id_null;
-    OpenAPI_any_type_t *inter_group_id;
+    char *inter_group_id;
     char *dnn;
     struct OpenAPI_snssai_s *snssai;
     char *af_app_id;
@@ -36,8 +34,7 @@ struct OpenAPI_iptv_config_data_s {
 
 OpenAPI_iptv_config_data_t *OpenAPI_iptv_config_data_create(
     char *supi,
-    bool is_inter_group_id_null,
-    OpenAPI_any_type_t *inter_group_id,
+    char *inter_group_id,
     char *dnn,
     OpenAPI_snssai_t *snssai,
     char *af_app_id,

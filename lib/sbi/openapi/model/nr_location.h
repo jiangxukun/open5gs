@@ -15,6 +15,7 @@
 typedef struct OpenAPI_nr_location_s OpenAPI_nr_location_t;
 #include "global_ran_node_id.h"
 #include "ncgi.h"
+#include "ntn_tai_info.h"
 #include "tai.h"
 
 #ifdef __cplusplus
@@ -32,6 +33,7 @@ struct OpenAPI_nr_location_s {
     char *geographical_information;
     char *geodetic_information;
     struct OpenAPI_global_ran_node_id_s *global_gnb_id;
+    struct OpenAPI_ntn_tai_info_s *ntn_tai_info;
 };
 
 OpenAPI_nr_location_t *OpenAPI_nr_location_create(
@@ -44,7 +46,8 @@ OpenAPI_nr_location_t *OpenAPI_nr_location_create(
     char *ue_location_timestamp,
     char *geographical_information,
     char *geodetic_information,
-    OpenAPI_global_ran_node_id_t *global_gnb_id
+    OpenAPI_global_ran_node_id_t *global_gnb_id,
+    OpenAPI_ntn_tai_info_t *ntn_tai_info
 );
 void OpenAPI_nr_location_free(OpenAPI_nr_location_t *nr_location);
 OpenAPI_nr_location_t *OpenAPI_nr_location_parseFromJSON(cJSON *nr_locationJSON);

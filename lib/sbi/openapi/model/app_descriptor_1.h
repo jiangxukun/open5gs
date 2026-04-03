@@ -1,7 +1,7 @@
 /*
  * app_descriptor_1.h
  *
- * 
+ * Contains an Application Descriptor
  */
 
 #ifndef _OpenAPI_app_descriptor_1_H_

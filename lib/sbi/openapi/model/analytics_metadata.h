@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_analytics_metadata_NULL = 0, OpenAPI_analytics_metadata_NUM_OF_SAMPLES, OpenAPI_analytics_metadata_DATA_WINDOW, OpenAPI_analytics_metadata_DATA_STAT_PROPS, OpenAPI_analytics_metadata_STRATEGY, OpenAPI_analytics_metadata_ACCURACY } OpenAPI_analytics_metadata_e;
+typedef enum { OpenAPI_analytics_metadata_NULL = 0, OpenAPI_analytics_metadata_NUM_OF_SAMPLES, OpenAPI_analytics_metadata_DATA_WINDOW, OpenAPI_analytics_metadata_DATA_STAT_PROPS, OpenAPI_analytics_metadata_STRATEGY, OpenAPI_analytics_metadata_ACCURACY, OpenAPI_analytics_metadata_DATA_SOURCES, OpenAPI_analytics_metadata_USED_PROC_INSTRUCT } OpenAPI_analytics_metadata_e;
 
 char* OpenAPI_analytics_metadata_ToString(OpenAPI_analytics_metadata_e analytics_metadata);
 

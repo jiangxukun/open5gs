@@ -1,7 +1,7 @@
 /*
  * acc_net_ch_id.h
  *
- * Contains the access network charging identifier for the PCC rule(s) or for the whole PDU session.
+ * Contains the access network charging identifier for the PCC rule(s) or for the whole PDU session. 
  */
 
 #ifndef _OpenAPI_acc_net_ch_id_H_

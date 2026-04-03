@@ -1,7 +1,7 @@
 /*
  * upf_information.h
  *
- * 
+ * Represents the ID/address/FQDN of the UPF.
  */
 
 #ifndef _OpenAPI_upf_information_H_

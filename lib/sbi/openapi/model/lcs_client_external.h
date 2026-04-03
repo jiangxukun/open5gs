@@ -1,7 +1,7 @@
 /*
  * lcs_client_external.h
  *
- * 
+ * Unrelated Class identified by LCS client
  */
 
 #ifndef _OpenAPI_lcs_client_external_H_

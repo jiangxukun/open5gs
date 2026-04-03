@@ -10,8 +10,11 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_create(
     bool is_nf_profile_null,
     OpenAPI_nf_profile_t *nf_profile,
     OpenAPI_list_t *profile_changes,
+    OpenAPI_list_t *shared_data_changes,
     OpenAPI_condition_event_type_e condition_event,
-    OpenAPI_subscription_context_t *subscription_context
+    OpenAPI_subscription_context_t *subscription_context,
+    bool is_complete_nf_profile_null,
+    OpenAPI_nf_profile_t *complete_nf_profile
 )
 {
     OpenAPI_notification_data_t *notification_data_local_var = ogs_malloc(sizeof(OpenAPI_notification_data_t));
@@ -22,8 +25,11 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_create(
     notification_data_local_var->is_nf_profile_null = is_nf_profile_null;
     notification_data_local_var->nf_profile = nf_profile;
     notification_data_local_var->profile_changes = profile_changes;
+    notification_data_local_var->shared_data_changes = shared_data_changes;
     notification_data_local_var->condition_event = condition_event;
     notification_data_local_var->subscription_context = subscription_context;
+    notification_data_local_var->is_complete_nf_profile_null = is_complete_nf_profile_null;
+    notification_data_local_var->complete_nf_profile = complete_nf_profile;
 
     return notification_data_local_var;
 }
@@ -50,9 +56,20 @@ void OpenAPI_notification_data_free(OpenAPI_notification_data_t *notification_da
         OpenAPI_list_free(notification_data->profile_changes);
         notification_data->profile_changes = NULL;
     }
+    if (notification_data->shared_data_changes) {
+        OpenAPI_list_for_each(notification_data->shared_data_changes, node) {
+            OpenAPI_change_item_free(node->data);
+        }
+        OpenAPI_list_free(notification_data->shared_data_changes);
+        notification_data->shared_data_changes = NULL;
+    }
     if (notification_data->subscription_context) {
         OpenAPI_subscription_context_free(notification_data->subscription_context);
         notification_data->subscription_context = NULL;
+    }
+    if (notification_data->complete_nf_profile) {
+        OpenAPI_nf_profile_free(notification_data->complete_nf_profile);
+        notification_data->complete_nf_profile = NULL;
     }
     ogs_free(notification_data);
 }
@@ -120,6 +137,22 @@ cJSON *OpenAPI_notification_data_convertToJSON(OpenAPI_notification_data_t *noti
     }
     }
 
+    if (notification_data->shared_data_changes) {
+    cJSON *shared_data_changesList = cJSON_AddArrayToObject(item, "sharedDataChanges");
+    if (shared_data_changesList == NULL) {
+        ogs_error("OpenAPI_notification_data_convertToJSON() failed [shared_data_changes]");
+        goto end;
+    }
+    OpenAPI_list_for_each(notification_data->shared_data_changes, node) {
+        cJSON *itemLocal = OpenAPI_change_item_convertToJSON(node->data);
+        if (itemLocal == NULL) {
+            ogs_error("OpenAPI_notification_data_convertToJSON() failed [shared_data_changes]");
+            goto end;
+        }
+        cJSON_AddItemToArray(shared_data_changesList, itemLocal);
+    }
+    }
+
     if (notification_data->condition_event != OpenAPI_condition_event_type_NULL) {
     if (cJSON_AddStringToObject(item, "conditionEvent", OpenAPI_condition_event_type_ToString(notification_data->condition_event)) == NULL) {
         ogs_error("OpenAPI_notification_data_convertToJSON() failed [condition_event]");
@@ -140,6 +173,24 @@ cJSON *OpenAPI_notification_data_convertToJSON(OpenAPI_notification_data_t *noti
     }
     }
 
+    if (notification_data->complete_nf_profile) {
+    cJSON *complete_nf_profile_local_JSON = OpenAPI_nf_profile_convertToJSON(notification_data->complete_nf_profile);
+    if (complete_nf_profile_local_JSON == NULL) {
+        ogs_error("OpenAPI_notification_data_convertToJSON() failed [complete_nf_profile]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "completeNfProfile", complete_nf_profile_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_notification_data_convertToJSON() failed [complete_nf_profile]");
+        goto end;
+    }
+    } else if (notification_data->is_complete_nf_profile_null) {
+        if (cJSON_AddNullToObject(item, "completeNfProfile") == NULL) {
+            ogs_error("OpenAPI_notification_data_convertToJSON() failed [complete_nf_profile]");
+            goto end;
+        }
+    }
+
 end:
     return item;
 }
@@ -155,10 +206,14 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_parseFromJSON(cJSON *noti
     OpenAPI_nf_profile_t *nf_profile_local_nonprim = NULL;
     cJSON *profile_changes = NULL;
     OpenAPI_list_t *profile_changesList = NULL;
+    cJSON *shared_data_changes = NULL;
+    OpenAPI_list_t *shared_data_changesList = NULL;
     cJSON *condition_event = NULL;
     OpenAPI_condition_event_type_e condition_eventVariable = 0;
     cJSON *subscription_context = NULL;
     OpenAPI_subscription_context_t *subscription_context_local_nonprim = NULL;
+    cJSON *complete_nf_profile = NULL;
+    OpenAPI_nf_profile_t *complete_nf_profile_local_nonprim = NULL;
     event = cJSON_GetObjectItemCaseSensitive(notification_dataJSON, "event");
     if (!event) {
         ogs_error("OpenAPI_notification_data_parseFromJSON() failed [event]");
@@ -215,6 +270,30 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_parseFromJSON(cJSON *noti
         }
     }
 
+    shared_data_changes = cJSON_GetObjectItemCaseSensitive(notification_dataJSON, "sharedDataChanges");
+    if (shared_data_changes) {
+        cJSON *shared_data_changes_local = NULL;
+        if (!cJSON_IsArray(shared_data_changes)) {
+            ogs_error("OpenAPI_notification_data_parseFromJSON() failed [shared_data_changes]");
+            goto end;
+        }
+
+        shared_data_changesList = OpenAPI_list_create();
+
+        cJSON_ArrayForEach(shared_data_changes_local, shared_data_changes) {
+            if (!cJSON_IsObject(shared_data_changes_local)) {
+                ogs_error("OpenAPI_notification_data_parseFromJSON() failed [shared_data_changes]");
+                goto end;
+            }
+            OpenAPI_change_item_t *shared_data_changesItem = OpenAPI_change_item_parseFromJSON(shared_data_changes_local);
+            if (!shared_data_changesItem) {
+                ogs_error("No shared_data_changesItem");
+                goto end;
+            }
+            OpenAPI_list_add(shared_data_changesList, shared_data_changesItem);
+        }
+    }
+
     condition_event = cJSON_GetObjectItemCaseSensitive(notification_dataJSON, "conditionEvent");
     if (condition_event) {
     if (!cJSON_IsString(condition_event)) {
@@ -233,14 +312,28 @@ OpenAPI_notification_data_t *OpenAPI_notification_data_parseFromJSON(cJSON *noti
     }
     }
 
+    complete_nf_profile = cJSON_GetObjectItemCaseSensitive(notification_dataJSON, "completeNfProfile");
+    if (complete_nf_profile) {
+    if (!cJSON_IsNull(complete_nf_profile)) {
+    complete_nf_profile_local_nonprim = OpenAPI_nf_profile_parseFromJSON(complete_nf_profile);
+    if (!complete_nf_profile_local_nonprim) {
+        ogs_error("OpenAPI_nf_profile_parseFromJSON failed [complete_nf_profile]");
+        goto end;
+    }
+    }
+    }
+
     notification_data_local_var = OpenAPI_notification_data_create (
         eventVariable,
         ogs_strdup(nf_instance_uri->valuestring),
         nf_profile && cJSON_IsNull(nf_profile) ? true : false,
         nf_profile ? nf_profile_local_nonprim : NULL,
         profile_changes ? profile_changesList : NULL,
+        shared_data_changes ? shared_data_changesList : NULL,
         condition_event ? condition_eventVariable : 0,
-        subscription_context ? subscription_context_local_nonprim : NULL
+        subscription_context ? subscription_context_local_nonprim : NULL,
+        complete_nf_profile && cJSON_IsNull(complete_nf_profile) ? true : false,
+        complete_nf_profile ? complete_nf_profile_local_nonprim : NULL
     );
 
     return notification_data_local_var;
@@ -256,9 +349,20 @@ end:
         OpenAPI_list_free(profile_changesList);
         profile_changesList = NULL;
     }
+    if (shared_data_changesList) {
+        OpenAPI_list_for_each(shared_data_changesList, node) {
+            OpenAPI_change_item_free(node->data);
+        }
+        OpenAPI_list_free(shared_data_changesList);
+        shared_data_changesList = NULL;
+    }
     if (subscription_context_local_nonprim) {
         OpenAPI_subscription_context_free(subscription_context_local_nonprim);
         subscription_context_local_nonprim = NULL;
+    }
+    if (complete_nf_profile_local_nonprim) {
+        OpenAPI_nf_profile_free(complete_nf_profile_local_nonprim);
+        complete_nf_profile_local_nonprim = NULL;
     }
     return NULL;
 }

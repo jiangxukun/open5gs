@@ -1,7 +1,7 @@
 /*
  * out_of_credit_information.h
  *
- * Indicates the SDFs without available credit and the corresponding termination action.
+ * Indicates the SDFs without available credit and the corresponding termination action. 
  */
 
 #ifndef _OpenAPI_out_of_credit_information_H_

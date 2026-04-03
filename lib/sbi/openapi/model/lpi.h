@@ -1,7 +1,7 @@
 /*
  * lpi.h
  *
- * 
+ * Contains Location Privacy Indication
  */
 
 #ifndef _OpenAPI_lpi_H_

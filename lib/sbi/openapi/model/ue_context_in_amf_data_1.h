@@ -1,7 +1,7 @@
 /*
  * ue_context_in_amf_data_1.h
  *
- * 
+ * Contains UE Context In AMF Data
  */
 
 #ifndef _OpenAPI_ue_context_in_amf_data_1_H_
@@ -14,19 +14,19 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_ue_context_in_amf_data_1_s OpenAPI_ue_context_in_amf_data_1_t;
 #include "amf_info_1.h"
-#include "eps_interworking_info.h"
+#include "eps_interworking_info_1.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 struct OpenAPI_ue_context_in_amf_data_1_s {
-    struct OpenAPI_eps_interworking_info_s *eps_interworking_info;
+    struct OpenAPI_eps_interworking_info_1_s *eps_interworking_info;
     OpenAPI_list_t *amf_info;
 };
 
 OpenAPI_ue_context_in_amf_data_1_t *OpenAPI_ue_context_in_amf_data_1_create(
-    OpenAPI_eps_interworking_info_t *eps_interworking_info,
+    OpenAPI_eps_interworking_info_1_t *eps_interworking_info,
     OpenAPI_list_t *amf_info
 );
 void OpenAPI_ue_context_in_amf_data_1_free(OpenAPI_ue_context_in_amf_data_1_t *ue_context_in_amf_data_1);

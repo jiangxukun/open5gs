@@ -1,7 +1,7 @@
 /*
  * pro_se_allowed_plmn.h
  *
- * Contains the PLMN identities where the Prose services are authorised to use and the authorised Prose services on this given PLMNs.
+ * Contains the PLMN identities where the Prose services are authorised to use and the authorised Prose services on this given PLMNs. 
  */
 
 #ifndef _OpenAPI_pro_se_allowed_plmn_H_

@@ -14,7 +14,9 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_af_event_subscription_s OpenAPI_af_event_subscription_t;
 #include "af_notif_method.h"
+#include "notif_cap_type.h"
 #include "npcf_af_event.h"
+#include "qos_monitoring_param_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +29,8 @@ struct OpenAPI_af_event_subscription_s {
     int rep_period;
     bool is_wait_time;
     int wait_time;
+    OpenAPI_qos_monitoring_param_type_e qos_mon_param_type;
+    OpenAPI_list_t *cap_types;
 };
 
 OpenAPI_af_event_subscription_t *OpenAPI_af_event_subscription_create(
@@ -35,7 +39,9 @@ OpenAPI_af_event_subscription_t *OpenAPI_af_event_subscription_create(
     bool is_rep_period,
     int rep_period,
     bool is_wait_time,
-    int wait_time
+    int wait_time,
+    OpenAPI_qos_monitoring_param_type_e qos_mon_param_type,
+    OpenAPI_list_t *cap_types
 );
 void OpenAPI_af_event_subscription_free(OpenAPI_af_event_subscription_t *af_event_subscription);
 OpenAPI_af_event_subscription_t *OpenAPI_af_event_subscription_parseFromJSON(cJSON *af_event_subscriptionJSON);

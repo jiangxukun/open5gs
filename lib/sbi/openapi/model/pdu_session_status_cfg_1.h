@@ -20,10 +20,16 @@ extern "C" {
 
 struct OpenAPI_pdu_session_status_cfg_1_s {
     char *dnn;
+    bool is_rat_type_required_null;
+    bool is_rat_type_required;
+    int rat_type_required;
 };
 
 OpenAPI_pdu_session_status_cfg_1_t *OpenAPI_pdu_session_status_cfg_1_create(
-    char *dnn
+    char *dnn,
+    bool is_rat_type_required_null,
+    bool is_rat_type_required,
+    int rat_type_required
 );
 void OpenAPI_pdu_session_status_cfg_1_free(OpenAPI_pdu_session_status_cfg_1_t *pdu_session_status_cfg_1);
 OpenAPI_pdu_session_status_cfg_1_t *OpenAPI_pdu_session_status_cfg_1_parseFromJSON(cJSON *pdu_session_status_cfg_1JSON);

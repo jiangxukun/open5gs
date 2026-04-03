@@ -1,7 +1,7 @@
 /*
  * extended_sm_subs_data.h
  *
- * Contains identifiers of shared Session Management Subscription Data and optionally individual Session Management Subscription Data.
+ * Contains identifiers of shared Session Management Subscription Data and optionally individual Session Management Subscription Data. 
  */
 
 #ifndef _OpenAPI_extended_sm_subs_data_H_

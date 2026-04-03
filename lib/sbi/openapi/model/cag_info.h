@@ -1,7 +1,7 @@
 /*
  * cag_info.h
  *
- * 
+ * Contains Closed Access Group Information
  */
 
 #ifndef _OpenAPI_cag_info_H_

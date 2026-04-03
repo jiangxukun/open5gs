@@ -41,6 +41,10 @@ struct OpenAPI_ee_subscription_ext_s {
     OpenAPI_list_t *exclude_gpsi_list;
     OpenAPI_list_t *include_gpsi_list;
     char *data_restoration_callback_uri;
+    bool is_udr_restart_ind;
+    int udr_restart_ind;
+    char *last_synchronization_time;
+    char *subscription_update_callback_uri;
     OpenAPI_list_t *amf_subscription_info_list;
     struct OpenAPI_smf_subscription_info_s *smf_subscription_info;
     struct OpenAPI_hss_subscription_info_s *hss_subscription_info;
@@ -63,6 +67,10 @@ OpenAPI_ee_subscription_ext_t *OpenAPI_ee_subscription_ext_create(
     OpenAPI_list_t *exclude_gpsi_list,
     OpenAPI_list_t *include_gpsi_list,
     char *data_restoration_callback_uri,
+    bool is_udr_restart_ind,
+    int udr_restart_ind,
+    char *last_synchronization_time,
+    char *subscription_update_callback_uri,
     OpenAPI_list_t *amf_subscription_info_list,
     OpenAPI_smf_subscription_info_t *smf_subscription_info,
     OpenAPI_hss_subscription_info_t *hss_subscription_info

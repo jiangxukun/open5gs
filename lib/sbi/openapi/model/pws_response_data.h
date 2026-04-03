@@ -24,13 +24,17 @@ struct OpenAPI_pws_response_data_s {
     int serial_number;
     int message_identifier;
     OpenAPI_list_t *unknown_tai_list;
+    bool is_n2_pws_sub_miss_ind;
+    int n2_pws_sub_miss_ind;
 };
 
 OpenAPI_pws_response_data_t *OpenAPI_pws_response_data_create(
     int ngap_message_type,
     int serial_number,
     int message_identifier,
-    OpenAPI_list_t *unknown_tai_list
+    OpenAPI_list_t *unknown_tai_list,
+    bool is_n2_pws_sub_miss_ind,
+    int n2_pws_sub_miss_ind
 );
 void OpenAPI_pws_response_data_free(OpenAPI_pws_response_data_t *pws_response_data);
 OpenAPI_pws_response_data_t *OpenAPI_pws_response_data_parseFromJSON(cJSON *pws_response_dataJSON);

@@ -29,6 +29,8 @@ struct OpenAPI_point_altitude_uncertainty_s {
     struct OpenAPI_uncertainty_ellipse_s *uncertainty_ellipse;
     float uncertainty_altitude;
     int confidence;
+    bool is_v_confidence;
+    int v_confidence;
 };
 
 OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
@@ -37,7 +39,9 @@ OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
     double altitude,
     OpenAPI_uncertainty_ellipse_t *uncertainty_ellipse,
     float uncertainty_altitude,
-    int confidence
+    int confidence,
+    bool is_v_confidence,
+    int v_confidence
 );
 void OpenAPI_point_altitude_uncertainty_free(OpenAPI_point_altitude_uncertainty_t *point_altitude_uncertainty);
 OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_parseFromJSON(cJSON *point_altitude_uncertaintyJSON);

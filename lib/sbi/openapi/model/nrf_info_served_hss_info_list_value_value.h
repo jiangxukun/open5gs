@@ -30,6 +30,7 @@ struct OpenAPI_nrf_info_served_hss_info_list_value_value_s {
     OpenAPI_list_t *msisdn_ranges;
     OpenAPI_list_t *external_group_identifiers_ranges;
     struct OpenAPI_network_node_diameter_address_s *hss_diameter_address;
+    OpenAPI_list_t *additional_diam_addresses;
 };
 
 OpenAPI_nrf_info_served_hss_info_list_value_value_t *OpenAPI_nrf_info_served_hss_info_list_value_value_create(
@@ -39,7 +40,8 @@ OpenAPI_nrf_info_served_hss_info_list_value_value_t *OpenAPI_nrf_info_served_hss
     OpenAPI_list_t *ims_public_identity_ranges,
     OpenAPI_list_t *msisdn_ranges,
     OpenAPI_list_t *external_group_identifiers_ranges,
-    OpenAPI_network_node_diameter_address_t *hss_diameter_address
+    OpenAPI_network_node_diameter_address_t *hss_diameter_address,
+    OpenAPI_list_t *additional_diam_addresses
 );
 void OpenAPI_nrf_info_served_hss_info_list_value_value_free(OpenAPI_nrf_info_served_hss_info_list_value_value_t *nrf_info_served_hss_info_list_value_value);
 OpenAPI_nrf_info_served_hss_info_list_value_value_t *OpenAPI_nrf_info_served_hss_info_list_value_value_parseFromJSON(cJSON *nrf_info_served_hss_info_list_value_valueJSON);

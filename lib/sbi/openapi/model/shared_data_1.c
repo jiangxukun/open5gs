@@ -17,7 +17,8 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_create(
     OpenAPI_list_t* treatment_instructions,
     OpenAPI_session_management_subscription_data_1_t *shared_sm_subs_data,
     bool is_shared_ecs_addr_config_info_null,
-    OpenAPI_ecs_addr_config_info_1_t *shared_ecs_addr_config_info
+    OpenAPI_ecs_addr_config_info_1_t *shared_ecs_addr_config_info,
+    OpenAPI_monitoring_suspension_1_t *shared_monitoring_suspension
 )
 {
     OpenAPI_shared_data_1_t *shared_data_1_local_var = ogs_malloc(sizeof(OpenAPI_shared_data_1_t));
@@ -36,6 +37,7 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_create(
     shared_data_1_local_var->shared_sm_subs_data = shared_sm_subs_data;
     shared_data_1_local_var->is_shared_ecs_addr_config_info_null = is_shared_ecs_addr_config_info_null;
     shared_data_1_local_var->shared_ecs_addr_config_info = shared_ecs_addr_config_info;
+    shared_data_1_local_var->shared_monitoring_suspension = shared_monitoring_suspension;
 
     return shared_data_1_local_var;
 }
@@ -113,6 +115,10 @@ void OpenAPI_shared_data_1_free(OpenAPI_shared_data_1_t *shared_data_1)
     if (shared_data_1->shared_ecs_addr_config_info) {
         OpenAPI_ecs_addr_config_info_1_free(shared_data_1->shared_ecs_addr_config_info);
         shared_data_1->shared_ecs_addr_config_info = NULL;
+    }
+    if (shared_data_1->shared_monitoring_suspension) {
+        OpenAPI_monitoring_suspension_1_free(shared_data_1->shared_monitoring_suspension);
+        shared_data_1->shared_monitoring_suspension = NULL;
     }
     ogs_free(shared_data_1);
 }
@@ -341,6 +347,19 @@ cJSON *OpenAPI_shared_data_1_convertToJSON(OpenAPI_shared_data_1_t *shared_data_
         }
     }
 
+    if (shared_data_1->shared_monitoring_suspension) {
+    cJSON *shared_monitoring_suspension_local_JSON = OpenAPI_monitoring_suspension_1_convertToJSON(shared_data_1->shared_monitoring_suspension);
+    if (shared_monitoring_suspension_local_JSON == NULL) {
+        ogs_error("OpenAPI_shared_data_1_convertToJSON() failed [shared_monitoring_suspension]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "sharedMonitoringSuspension", shared_monitoring_suspension_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_shared_data_1_convertToJSON() failed [shared_monitoring_suspension]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -370,6 +389,8 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_parseFromJSON(cJSON *shared_data_
     OpenAPI_session_management_subscription_data_1_t *shared_sm_subs_data_local_nonprim = NULL;
     cJSON *shared_ecs_addr_config_info = NULL;
     OpenAPI_ecs_addr_config_info_1_t *shared_ecs_addr_config_info_local_nonprim = NULL;
+    cJSON *shared_monitoring_suspension = NULL;
+    OpenAPI_monitoring_suspension_1_t *shared_monitoring_suspension_local_nonprim = NULL;
     shared_data_id = cJSON_GetObjectItemCaseSensitive(shared_data_1JSON, "sharedDataId");
     if (!shared_data_id) {
         ogs_error("OpenAPI_shared_data_1_parseFromJSON() failed [shared_data_id]");
@@ -538,6 +559,15 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_parseFromJSON(cJSON *shared_data_
     }
     }
 
+    shared_monitoring_suspension = cJSON_GetObjectItemCaseSensitive(shared_data_1JSON, "sharedMonitoringSuspension");
+    if (shared_monitoring_suspension) {
+    shared_monitoring_suspension_local_nonprim = OpenAPI_monitoring_suspension_1_parseFromJSON(shared_monitoring_suspension);
+    if (!shared_monitoring_suspension_local_nonprim) {
+        ogs_error("OpenAPI_monitoring_suspension_1_parseFromJSON failed [shared_monitoring_suspension]");
+        goto end;
+    }
+    }
+
     shared_data_1_local_var = OpenAPI_shared_data_1_create (
         ogs_strdup(shared_data_id->valuestring),
         shared_am_data ? shared_am_data_local_nonprim : NULL,
@@ -551,7 +581,8 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_parseFromJSON(cJSON *shared_data_
         treatment_instructions ? treatment_instructionsList : NULL,
         shared_sm_subs_data ? shared_sm_subs_data_local_nonprim : NULL,
         shared_ecs_addr_config_info && cJSON_IsNull(shared_ecs_addr_config_info) ? true : false,
-        shared_ecs_addr_config_info ? shared_ecs_addr_config_info_local_nonprim : NULL
+        shared_ecs_addr_config_info ? shared_ecs_addr_config_info_local_nonprim : NULL,
+        shared_monitoring_suspension ? shared_monitoring_suspension_local_nonprim : NULL
     );
 
     return shared_data_1_local_var;
@@ -618,6 +649,10 @@ end:
     if (shared_ecs_addr_config_info_local_nonprim) {
         OpenAPI_ecs_addr_config_info_1_free(shared_ecs_addr_config_info_local_nonprim);
         shared_ecs_addr_config_info_local_nonprim = NULL;
+    }
+    if (shared_monitoring_suspension_local_nonprim) {
+        OpenAPI_monitoring_suspension_1_free(shared_monitoring_suspension_local_nonprim);
+        shared_monitoring_suspension_local_nonprim = NULL;
     }
     return NULL;
 }

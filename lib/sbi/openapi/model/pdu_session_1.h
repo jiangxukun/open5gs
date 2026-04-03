@@ -1,7 +1,7 @@
 /*
  * pdu_session_1.h
  *
- * 
+ * Contains PDU Session
  */
 
 #ifndef _OpenAPI_pdu_session_1_H_
@@ -13,7 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_pdu_session_1_s OpenAPI_pdu_session_1_t;
-#include "plmn_id_1.h"
+#include "plmn_id.h"
 #include "snssai.h"
 
 #ifdef __cplusplus
@@ -23,14 +23,14 @@ extern "C" {
 struct OpenAPI_pdu_session_1_s {
     char *dnn;
     char *smf_instance_id;
-    struct OpenAPI_plmn_id_1_s *plmn_id;
+    struct OpenAPI_plmn_id_s *plmn_id;
     struct OpenAPI_snssai_s *single_nssai;
 };
 
 OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_create(
     char *dnn,
     char *smf_instance_id,
-    OpenAPI_plmn_id_1_t *plmn_id,
+    OpenAPI_plmn_id_t *plmn_id,
     OpenAPI_snssai_t *single_nssai
 );
 void OpenAPI_pdu_session_1_free(OpenAPI_pdu_session_1_t *pdu_session_1);

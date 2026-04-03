@@ -13,7 +13,9 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_access_token_req_s OpenAPI_access_token_req_t;
+#include "ml_model_inter_ind.h"
 #include "nf_type.h"
+#include "nwdaf_event.h"
 #include "plmn_id.h"
 #include "plmn_id_nid.h"
 #include "snssai.h"
@@ -47,6 +49,11 @@ struct OpenAPI_access_token_req_s {
     char *target_nf_service_set_id;
     char *hnrf_access_token_uri;
     char *source_nf_instance_id;
+    char *vendor_id;
+    OpenAPI_list_t *analytics_ids;
+    OpenAPI_list_t *requester_inter_ind_list;
+    char *source_vendor_id;
+    char *af_id;
 };
 
 OpenAPI_access_token_req_t *OpenAPI_access_token_req_create(
@@ -68,7 +75,12 @@ OpenAPI_access_token_req_t *OpenAPI_access_token_req_create(
     char *target_nf_set_id,
     char *target_nf_service_set_id,
     char *hnrf_access_token_uri,
-    char *source_nf_instance_id
+    char *source_nf_instance_id,
+    char *vendor_id,
+    OpenAPI_list_t *analytics_ids,
+    OpenAPI_list_t *requester_inter_ind_list,
+    char *source_vendor_id,
+    char *af_id
 );
 void OpenAPI_access_token_req_free(OpenAPI_access_token_req_t *access_token_req);
 OpenAPI_access_token_req_t *OpenAPI_access_token_req_parseFromJSON(cJSON *access_token_reqJSON);

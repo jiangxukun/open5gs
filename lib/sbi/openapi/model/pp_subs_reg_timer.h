@@ -1,7 +1,7 @@
 /*
  * pp_subs_reg_timer.h
  *
- * 
+ * Contains AF provisionedSubscribed periodic registration timer
  */
 
 #ifndef _OpenAPI_pp_subs_reg_timer_H_

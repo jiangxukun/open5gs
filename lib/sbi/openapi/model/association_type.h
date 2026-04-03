@@ -1,7 +1,7 @@
 /*
  * association_type.h
  *
- * 
+ * Indicates association type to be included to identify  whether it is IMSI-IMEI or IMSI-IMEISV. 
  */
 
 #ifndef _OpenAPI_association_type_H_

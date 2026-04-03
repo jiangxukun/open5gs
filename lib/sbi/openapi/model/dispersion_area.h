@@ -14,6 +14,7 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_dispersion_area_s OpenAPI_dispersion_area_t;
 #include "ecgi.h"
+#include "global_ran_node_id.h"
 #include "ncgi.h"
 #include "tai.h"
 
@@ -23,6 +24,7 @@ extern "C" {
 
 struct OpenAPI_dispersion_area_s {
     OpenAPI_list_t *tai_list;
+    OpenAPI_list_t *ran_node_id_list;
     OpenAPI_list_t *ncgi_list;
     OpenAPI_list_t *ecgi_list;
     bool is_n3ga_ind;
@@ -31,6 +33,7 @@ struct OpenAPI_dispersion_area_s {
 
 OpenAPI_dispersion_area_t *OpenAPI_dispersion_area_create(
     OpenAPI_list_t *tai_list,
+    OpenAPI_list_t *ran_node_id_list,
     OpenAPI_list_t *ncgi_list,
     OpenAPI_list_t *ecgi_list,
     bool is_n3ga_ind,

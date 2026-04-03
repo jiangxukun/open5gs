@@ -29,6 +29,7 @@ struct OpenAPI_policy_data_for_individual_ue_s {
     struct OpenAPI_am_policy_data_s *am_policy_data_set;
     OpenAPI_list_t* um_data;
     OpenAPI_list_t* operator_specific_data_set;
+    char *supp_feat;
 };
 
 OpenAPI_policy_data_for_individual_ue_t *OpenAPI_policy_data_for_individual_ue_create(
@@ -36,7 +37,8 @@ OpenAPI_policy_data_for_individual_ue_t *OpenAPI_policy_data_for_individual_ue_c
     OpenAPI_sm_policy_data_t *sm_policy_data_set,
     OpenAPI_am_policy_data_t *am_policy_data_set,
     OpenAPI_list_t* um_data,
-    OpenAPI_list_t* operator_specific_data_set
+    OpenAPI_list_t* operator_specific_data_set,
+    char *supp_feat
 );
 void OpenAPI_policy_data_for_individual_ue_free(OpenAPI_policy_data_for_individual_ue_t *policy_data_for_individual_ue);
 OpenAPI_policy_data_for_individual_ue_t *OpenAPI_policy_data_for_individual_ue_parseFromJSON(cJSON *policy_data_for_individual_ueJSON);

@@ -28,6 +28,11 @@ struct OpenAPI_sm_context_retrieve_data_s {
     OpenAPI_list_t *not_to_transfer_ebi_list;
     bool is_ran_unchanged_ind;
     int ran_unchanged_ind;
+    bool is_hrsbo_support_ind;
+    int hrsbo_support_ind;
+    bool is_ismf_lom_support_ind;
+    int ismf_lom_support_ind;
+    OpenAPI_list_t *stored_offload_ids;
 };
 
 OpenAPI_sm_context_retrieve_data_t *OpenAPI_sm_context_retrieve_data_create(
@@ -36,7 +41,12 @@ OpenAPI_sm_context_retrieve_data_t *OpenAPI_sm_context_retrieve_data_create(
     OpenAPI_plmn_id_t *serving_network,
     OpenAPI_list_t *not_to_transfer_ebi_list,
     bool is_ran_unchanged_ind,
-    int ran_unchanged_ind
+    int ran_unchanged_ind,
+    bool is_hrsbo_support_ind,
+    int hrsbo_support_ind,
+    bool is_ismf_lom_support_ind,
+    int ismf_lom_support_ind,
+    OpenAPI_list_t *stored_offload_ids
 );
 void OpenAPI_sm_context_retrieve_data_free(OpenAPI_sm_context_retrieve_data_t *sm_context_retrieve_data);
 OpenAPI_sm_context_retrieve_data_t *OpenAPI_sm_context_retrieve_data_parseFromJSON(cJSON *sm_context_retrieve_dataJSON);

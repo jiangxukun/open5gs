@@ -1,7 +1,7 @@
 /*
  * communication_characteristics.h
  *
- * 
+ * Contains Communication Characteristics
  */
 
 #ifndef _OpenAPI_communication_characteristics_H_
@@ -37,6 +37,8 @@ struct OpenAPI_communication_characteristics_s {
     struct OpenAPI_pp_maximum_response_time_s *pp_maximum_response_time;
     bool is_pp_maximum_latency_null;
     struct OpenAPI_pp_maximum_latency_s *pp_maximum_latency;
+    bool is_pp_mps_msg_indication;
+    int pp_mps_msg_indication;
 };
 
 OpenAPI_communication_characteristics_t *OpenAPI_communication_characteristics_create(
@@ -52,7 +54,9 @@ OpenAPI_communication_characteristics_t *OpenAPI_communication_characteristics_c
     bool is_pp_maximum_response_time_null,
     OpenAPI_pp_maximum_response_time_t *pp_maximum_response_time,
     bool is_pp_maximum_latency_null,
-    OpenAPI_pp_maximum_latency_t *pp_maximum_latency
+    OpenAPI_pp_maximum_latency_t *pp_maximum_latency,
+    bool is_pp_mps_msg_indication,
+    int pp_mps_msg_indication
 );
 void OpenAPI_communication_characteristics_free(OpenAPI_communication_characteristics_t *communication_characteristics);
 OpenAPI_communication_characteristics_t *OpenAPI_communication_characteristics_parseFromJSON(cJSON *communication_characteristicsJSON);

@@ -20,8 +20,13 @@ typedef struct OpenAPI_amf_event_s OpenAPI_amf_event_t;
 #include "location_filter.h"
 #include "presence_info.h"
 #include "reachability_filter.h"
+#include "sm_comm_failure_filter.h"
+#include "snssai_dnn_item.h"
 #include "target_area.h"
+#include "time_window.h"
 #include "traffic_descriptor.h"
+#include "trajectory.h"
+#include "uav_altitude_reporting_config.h"
 #include "ue_in_area_filter.h"
 
 #ifdef __cplusplus
@@ -34,6 +39,7 @@ struct OpenAPI_amf_event_s {
     int immediate_flag;
     OpenAPI_list_t *area_list;
     OpenAPI_list_t *location_filter_list;
+    OpenAPI_list_t *location_trends_filter_list;
     bool is_ref_id;
     int ref_id;
     OpenAPI_list_t *traffic_descriptor_list;
@@ -56,6 +62,22 @@ struct OpenAPI_amf_event_s {
     bool is_idle_status_ind;
     int idle_status_ind;
     struct OpenAPI_dispersion_area_s *dispersion_area;
+    char *next_periodic_report_time;
+    bool is_adjust_ao_ion_ra;
+    int adjust_ao_ion_ra;
+    bool is_ran_timing_synchro_status_change;
+    int ran_timing_synchro_status_change;
+    OpenAPI_list_t *notify_for_supi_list;
+    OpenAPI_list_t *notify_for_group_list;
+    OpenAPI_list_t *notify_for_snssai_dnn_list;
+    bool is_reporting_threshold;
+    int reporting_threshold;
+    struct OpenAPI_trajectory_s *assign_trajectory;
+    struct OpenAPI_sm_comm_failure_filter_s *sm_comm_failure_filter;
+    bool is_ue_pos_cap_requested_ind;
+    int ue_pos_cap_requested_ind;
+    OpenAPI_list_t *tw_list;
+    struct OpenAPI_uav_altitude_reporting_config_s *uav_altitude_reporting_config;
 };
 
 OpenAPI_amf_event_t *OpenAPI_amf_event_create(
@@ -64,6 +86,7 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_create(
     int immediate_flag,
     OpenAPI_list_t *area_list,
     OpenAPI_list_t *location_filter_list,
+    OpenAPI_list_t *location_trends_filter_list,
     bool is_ref_id,
     int ref_id,
     OpenAPI_list_t *traffic_descriptor_list,
@@ -85,7 +108,23 @@ OpenAPI_amf_event_t *OpenAPI_amf_event_create(
     char *next_report,
     bool is_idle_status_ind,
     int idle_status_ind,
-    OpenAPI_dispersion_area_t *dispersion_area
+    OpenAPI_dispersion_area_t *dispersion_area,
+    char *next_periodic_report_time,
+    bool is_adjust_ao_ion_ra,
+    int adjust_ao_ion_ra,
+    bool is_ran_timing_synchro_status_change,
+    int ran_timing_synchro_status_change,
+    OpenAPI_list_t *notify_for_supi_list,
+    OpenAPI_list_t *notify_for_group_list,
+    OpenAPI_list_t *notify_for_snssai_dnn_list,
+    bool is_reporting_threshold,
+    int reporting_threshold,
+    OpenAPI_trajectory_t *assign_trajectory,
+    OpenAPI_sm_comm_failure_filter_t *sm_comm_failure_filter,
+    bool is_ue_pos_cap_requested_ind,
+    int ue_pos_cap_requested_ind,
+    OpenAPI_list_t *tw_list,
+    OpenAPI_uav_altitude_reporting_config_t *uav_altitude_reporting_config
 );
 void OpenAPI_amf_event_free(OpenAPI_amf_event_t *amf_event);
 OpenAPI_amf_event_t *OpenAPI_amf_event_parseFromJSON(cJSON *amf_eventJSON);

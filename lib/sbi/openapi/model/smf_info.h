@@ -27,6 +27,8 @@ struct OpenAPI_smf_info_s {
     OpenAPI_list_t *s_nssai_smf_info_list;
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *tai_range_list;
+    OpenAPI_list_t *lom_tai_list;
+    OpenAPI_list_t *lom_tai_range_list;
     char *pgw_fqdn;
     OpenAPI_list_t *pgw_ip_addr_list;
     OpenAPI_list_t *access_type;
@@ -47,6 +49,8 @@ OpenAPI_smf_info_t *OpenAPI_smf_info_create(
     OpenAPI_list_t *s_nssai_smf_info_list,
     OpenAPI_list_t *tai_list,
     OpenAPI_list_t *tai_range_list,
+    OpenAPI_list_t *lom_tai_list,
+    OpenAPI_list_t *lom_tai_range_list,
     char *pgw_fqdn,
     OpenAPI_list_t *pgw_ip_addr_list,
     OpenAPI_list_t *access_type,

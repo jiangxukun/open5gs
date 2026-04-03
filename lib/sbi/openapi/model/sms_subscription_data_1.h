@@ -1,7 +1,7 @@
 /*
  * sms_subscription_data_1.h
  *
- * 
+ * Contains SMS Subscription Data
  */
 
 #ifndef _OpenAPI_sms_subscription_data_1_H_

@@ -1,7 +1,7 @@
 /*
  * ip_index.h
  *
- * Represents the IP Index to be sent from UDM to the SMF (its value can be either an integer or a string)
+ * Represents the IP Index to be sent from UDM to the SMF (its value can be either an integer or a string) 
  */
 
 #ifndef _OpenAPI_ip_index_H_

@@ -1,7 +1,7 @@
 /*
  * cag_data_1.h
  *
- * 
+ * Contains Closed Access Group Data
  */
 
 #ifndef _OpenAPI_cag_data_1_H_
@@ -14,6 +14,7 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_cag_data_1_s OpenAPI_cag_data_1_t;
 #include "cag_info_1.h"
+#include "conditional_cag_info_1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,11 +22,13 @@ extern "C" {
 
 struct OpenAPI_cag_data_1_s {
     OpenAPI_list_t* cag_infos;
+    OpenAPI_list_t* conditional_cag_infos;
     char *provisioning_time;
 };
 
 OpenAPI_cag_data_1_t *OpenAPI_cag_data_1_create(
     OpenAPI_list_t* cag_infos,
+    OpenAPI_list_t* conditional_cag_infos,
     char *provisioning_time
 );
 void OpenAPI_cag_data_1_free(OpenAPI_cag_data_1_t *cag_data_1);

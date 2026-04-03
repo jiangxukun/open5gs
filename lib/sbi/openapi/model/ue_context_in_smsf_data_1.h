@@ -1,7 +1,7 @@
 /*
  * ue_context_in_smsf_data_1.h
  *
- * 
+ * Contains SMSF information
  */
 
 #ifndef _OpenAPI_ue_context_in_smsf_data_1_H_

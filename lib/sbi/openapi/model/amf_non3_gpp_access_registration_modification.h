@@ -1,7 +1,7 @@
 /*
  * amf_non3_gpp_access_registration_modification.h
  *
- * 
+ * This data type contains attributes of AmfNon3GppAccessRegistration that can be modified using PATCH. 
  */
 
 #ifndef _OpenAPI_amf_non3_gpp_access_registration_modification_H_

@@ -1,7 +1,7 @@
 /*
  * nwdaf_data.h
  *
- * Indicates the list of Analytic ID(s) per NWDAF instance ID used for the PDU Session consumed by the SMF.
+ * Indicates the list of Analytic ID(s) per NWDAF instance ID used for the PDU Session consumed by the SMF. 
  */
 
 #ifndef _OpenAPI_nwdaf_data_H_

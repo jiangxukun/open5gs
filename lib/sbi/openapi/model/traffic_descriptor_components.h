@@ -1,7 +1,7 @@
 /*
  * traffic_descriptor_components.h
  *
- * Traffic descriptor components for the requested URSP.
+ * 
  */
 
 #ifndef _OpenAPI_traffic_descriptor_components_H_
@@ -13,30 +13,17 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_traffic_descriptor_components_s OpenAPI_traffic_descriptor_components_t;
-#include "app_descriptor_2.h"
-#include "connection_capabilities.h"
-#include "eth_flow_description_1.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 struct OpenAPI_traffic_descriptor_components_s {
-    OpenAPI_list_t* app_descs;
-    OpenAPI_list_t *flow_descs;
-    OpenAPI_list_t *domain_descs;
-    OpenAPI_list_t *eth_flow_descs;
-    OpenAPI_list_t *dnns;
-    OpenAPI_list_t *conn_caps;
+    char *value;
 };
 
 OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_create(
-    OpenAPI_list_t* app_descs,
-    OpenAPI_list_t *flow_descs,
-    OpenAPI_list_t *domain_descs,
-    OpenAPI_list_t *eth_flow_descs,
-    OpenAPI_list_t *dnns,
-    OpenAPI_list_t *conn_caps
+char *value
 );
 void OpenAPI_traffic_descriptor_components_free(OpenAPI_traffic_descriptor_components_t *traffic_descriptor_components);
 OpenAPI_traffic_descriptor_components_t *OpenAPI_traffic_descriptor_components_parseFromJSON(cJSON *traffic_descriptor_componentsJSON);

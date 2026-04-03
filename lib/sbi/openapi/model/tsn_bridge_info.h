@@ -26,6 +26,10 @@ struct OpenAPI_tsn_bridge_info_s {
     int dstt_port_num;
     bool is_dstt_resid_time;
     int dstt_resid_time;
+    bool is_mtu_ipv4;
+    int mtu_ipv4;
+    bool is_mtu_ipv6;
+    int mtu_ipv6;
 };
 
 OpenAPI_tsn_bridge_info_t *OpenAPI_tsn_bridge_info_create(
@@ -35,7 +39,11 @@ OpenAPI_tsn_bridge_info_t *OpenAPI_tsn_bridge_info_create(
     bool is_dstt_port_num,
     int dstt_port_num,
     bool is_dstt_resid_time,
-    int dstt_resid_time
+    int dstt_resid_time,
+    bool is_mtu_ipv4,
+    int mtu_ipv4,
+    bool is_mtu_ipv6,
+    int mtu_ipv6
 );
 void OpenAPI_tsn_bridge_info_free(OpenAPI_tsn_bridge_info_t *tsn_bridge_info);
 OpenAPI_tsn_bridge_info_t *OpenAPI_tsn_bridge_info_parseFromJSON(cJSON *tsn_bridge_infoJSON);

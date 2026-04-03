@@ -18,11 +18,13 @@ typedef struct OpenAPI_policy_association_request_s OpenAPI_policy_association_r
 #include "guami.h"
 #include "mapping_of_snssai.h"
 #include "nwdaf_data.h"
+#include "partially_allowed_snssai.h"
 #include "plmn_id_nid.h"
 #include "rat_type.h"
 #include "service_area_restriction.h"
 #include "service_name.h"
 #include "snssai.h"
+#include "snssai_part_rejected.h"
 #include "trace_data.h"
 #include "ue_slice_mbr.h"
 #include "user_location.h"
@@ -55,6 +57,10 @@ struct OpenAPI_policy_association_request_s {
     struct OpenAPI_ambr_s *ue_ambr;
     OpenAPI_list_t *ue_slice_mbrs;
     OpenAPI_list_t *allowed_snssais;
+    OpenAPI_list_t* part_allowed_nssai;
+    OpenAPI_list_t* snssais_part_rejected;
+    OpenAPI_list_t *rejected_snssais;
+    OpenAPI_list_t *pending_nssai;
     OpenAPI_list_t *target_snssais;
     OpenAPI_list_t *mapping_snssais;
     OpenAPI_list_t *n3g_allowed_snssais;
@@ -63,6 +69,8 @@ struct OpenAPI_policy_association_request_s {
     bool is_trace_req_null;
     struct OpenAPI_trace_data_s *trace_req;
     OpenAPI_list_t *nwdaf_datas;
+    bool is_enrg_sav_ind;
+    int enrg_sav_ind;
     char *supp_feat;
 };
 
@@ -89,6 +97,10 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_create(
     OpenAPI_ambr_t *ue_ambr,
     OpenAPI_list_t *ue_slice_mbrs,
     OpenAPI_list_t *allowed_snssais,
+    OpenAPI_list_t* part_allowed_nssai,
+    OpenAPI_list_t* snssais_part_rejected,
+    OpenAPI_list_t *rejected_snssais,
+    OpenAPI_list_t *pending_nssai,
     OpenAPI_list_t *target_snssais,
     OpenAPI_list_t *mapping_snssais,
     OpenAPI_list_t *n3g_allowed_snssais,
@@ -97,6 +109,8 @@ OpenAPI_policy_association_request_t *OpenAPI_policy_association_request_create(
     bool is_trace_req_null,
     OpenAPI_trace_data_t *trace_req,
     OpenAPI_list_t *nwdaf_datas,
+    bool is_enrg_sav_ind,
+    int enrg_sav_ind,
     char *supp_feat
 );
 void OpenAPI_policy_association_request_free(OpenAPI_policy_association_request_t *policy_association_request);

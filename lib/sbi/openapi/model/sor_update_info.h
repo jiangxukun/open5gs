@@ -1,7 +1,7 @@
 /*
  * sor_update_info.h
  *
- * 
+ * Contains Steering Of Roaming Update Information
  */
 
 #ifndef _OpenAPI_sor_update_info_H_

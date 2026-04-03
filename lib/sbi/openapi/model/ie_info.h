@@ -28,6 +28,7 @@ struct OpenAPI_ie_info_s {
     bool is_is_modifiable;
     int is_modifiable;
     OpenAPI_list_t* is_modifiable_by_ipx;
+    char *ancestor_ie;
 };
 
 OpenAPI_ie_info_t *OpenAPI_ie_info_create(
@@ -37,7 +38,8 @@ OpenAPI_ie_info_t *OpenAPI_ie_info_create(
     char *rsp_ie,
     bool is_is_modifiable,
     int is_modifiable,
-    OpenAPI_list_t* is_modifiable_by_ipx
+    OpenAPI_list_t* is_modifiable_by_ipx,
+    char *ancestor_ie
 );
 void OpenAPI_ie_info_free(OpenAPI_ie_info_t *ie_info);
 OpenAPI_ie_info_t *OpenAPI_ie_info_parseFromJSON(cJSON *ie_infoJSON);

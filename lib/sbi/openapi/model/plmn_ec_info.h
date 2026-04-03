@@ -1,7 +1,7 @@
 /*
  * plmn_ec_info.h
  *
- * 
+ * Contains serving PLMNs where Enhanced Coverage shall be allowed and the detailed enhanced coverage restriction configuration under per the PLMN. 
  */
 
 #ifndef _OpenAPI_plmn_ec_info_H_

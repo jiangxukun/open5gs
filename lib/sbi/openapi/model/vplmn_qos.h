@@ -23,23 +23,29 @@ extern "C" {
 struct OpenAPI_vplmn_qos_s {
     bool is__5qi;
     int _5qi;
+    OpenAPI_list_t *add5_qi_list;
     struct OpenAPI_arp_s *arp;
     struct OpenAPI_ambr_s *session_ambr;
     char *max_fbr_dl;
     char *max_fbr_ul;
     char *gua_fbr_dl;
     char *gua_fbr_ul;
+    bool is__5qi_pl;
+    int _5qi_pl;
 };
 
 OpenAPI_vplmn_qos_t *OpenAPI_vplmn_qos_create(
     bool is__5qi,
     int _5qi,
+    OpenAPI_list_t *add5_qi_list,
     OpenAPI_arp_t *arp,
     OpenAPI_ambr_t *session_ambr,
     char *max_fbr_dl,
     char *max_fbr_ul,
     char *gua_fbr_dl,
-    char *gua_fbr_ul
+    char *gua_fbr_ul,
+    bool is__5qi_pl,
+    int _5qi_pl
 );
 void OpenAPI_vplmn_qos_free(OpenAPI_vplmn_qos_t *vplmn_qos);
 OpenAPI_vplmn_qos_t *OpenAPI_vplmn_qos_parseFromJSON(cJSON *vplmn_qosJSON);

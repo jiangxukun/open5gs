@@ -1,7 +1,7 @@
 /*
  * app_session_context_update_data_patch.h
  *
- * Identifies the modifications to an Individual Application Session Context and/or the modifications to the sub-resource Events Subscription.
+ * Identifies the modifications to an Individual Application Session Context and/or the modifications to the sub-resource Events Subscription. 
  */
 
 #ifndef _OpenAPI_app_session_context_update_data_patch_H_

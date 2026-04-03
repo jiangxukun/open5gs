@@ -1,7 +1,7 @@
 /*
  * enhanced_coverage_restriction_data.h
  *
- * 
+ * Contains Enhanced Coverage Restriction Data
  */
 
 #ifndef _OpenAPI_enhanced_coverage_restriction_data_H_

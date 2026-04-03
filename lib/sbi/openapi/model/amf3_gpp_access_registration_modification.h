@@ -1,7 +1,7 @@
 /*
  * amf3_gpp_access_registration_modification.h
  *
- * 
+ * This datatype contains the set of attributes obtained from type  Amf3GppAccessRegistration by deleting attributes that are not subject to modification by HTTP PATCH method. 
  */
 
 #ifndef _OpenAPI_amf3_gpp_access_registration_modification_H_
@@ -35,6 +35,8 @@ struct OpenAPI_amf3_gpp_access_registration_modification_s {
     int ue_srvcc_capability;
     bool is_ue_mint_capability;
     int ue_mint_capability;
+    bool is_ue_mint_eps_capability;
+    int ue_mint_eps_capability;
 };
 
 OpenAPI_amf3_gpp_access_registration_modification_t *OpenAPI_amf3_gpp_access_registration_modification_create(
@@ -49,7 +51,9 @@ OpenAPI_amf3_gpp_access_registration_modification_t *OpenAPI_amf3_gpp_access_reg
     bool is_ue_srvcc_capability,
     int ue_srvcc_capability,
     bool is_ue_mint_capability,
-    int ue_mint_capability
+    int ue_mint_capability,
+    bool is_ue_mint_eps_capability,
+    int ue_mint_eps_capability
 );
 void OpenAPI_amf3_gpp_access_registration_modification_free(OpenAPI_amf3_gpp_access_registration_modification_t *amf3_gpp_access_registration_modification);
 OpenAPI_amf3_gpp_access_registration_modification_t *OpenAPI_amf3_gpp_access_registration_modification_parseFromJSON(cJSON *amf3_gpp_access_registration_modificationJSON);

@@ -26,6 +26,7 @@ struct OpenAPI_pcf_for_ue_binding_s {
     char *pcf_for_ue_fqdn;
     OpenAPI_list_t *pcf_for_ue_ip_end_points;
     char *pcf_id;
+    char *recovery_time;
     char *pcf_set_id;
     OpenAPI_binding_level_e bind_level;
     char *supp_feat;
@@ -37,6 +38,7 @@ OpenAPI_pcf_for_ue_binding_t *OpenAPI_pcf_for_ue_binding_create(
     char *pcf_for_ue_fqdn,
     OpenAPI_list_t *pcf_for_ue_ip_end_points,
     char *pcf_id,
+    char *recovery_time,
     char *pcf_set_id,
     OpenAPI_binding_level_e bind_level,
     char *supp_feat

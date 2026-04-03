@@ -1,7 +1,7 @@
 /*
  * service_type_unrelated_class.h
  *
- * 
+ * Contains Service Type Unrelated Class
  */
 
 #ifndef _OpenAPI_service_type_unrelated_class_H_

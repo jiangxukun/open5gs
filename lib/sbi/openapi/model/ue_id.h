@@ -1,7 +1,7 @@
 /*
  * ue_id.h
  *
- * 
+ * Identifier of UE
  */
 
 #ifndef _OpenAPI_ue_id_H_

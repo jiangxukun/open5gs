@@ -1,7 +1,7 @@
 /*
  * am_influ_event.h
  *
- * Represents the service area coverage outcome event.
+ * 
  */
 
 #ifndef _OpenAPI_am_influ_event_H_
@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_am_influ_event_NULL = 0, OpenAPI_am_influ_event_SERVICE_AREA_COVRG_OUTCOME } OpenAPI_am_influ_event_e;
+typedef enum { OpenAPI_am_influ_event_NULL = 0, OpenAPI_am_influ_event_SERVICE_AREA_COVRG_OUTCOME, OpenAPI_am_influ_event_SLICE_REPLACE_OUTCOME } OpenAPI_am_influ_event_e;
 
 char* OpenAPI_am_influ_event_ToString(OpenAPI_am_influ_event_e am_influ_event);
 

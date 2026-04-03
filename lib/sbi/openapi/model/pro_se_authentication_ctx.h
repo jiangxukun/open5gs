@@ -1,7 +1,7 @@
 /*
  * pro_se_authentication_ctx.h
  *
- * Contains the information related to the resource generated to handle the ProSe authentication.
+ * Contains the information related to the resource generated to handle the ProSe authentication. 
  */
 
 #ifndef _OpenAPI_pro_se_authentication_ctx_H_

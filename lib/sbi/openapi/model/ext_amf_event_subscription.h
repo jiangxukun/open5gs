@@ -17,6 +17,8 @@ typedef struct OpenAPI_ext_amf_event_subscription_s OpenAPI_ext_amf_event_subscr
 #include "amf_event_mode.h"
 #include "area_of_interest_event_state.h"
 #include "nf_type.h"
+#include "ue_access_behavior_report_item.h"
+#include "ue_location_trends_report_item.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,12 +43,19 @@ struct OpenAPI_ext_amf_event_subscription_s {
     int any_ue;
     struct OpenAPI_amf_event_mode_s *options;
     OpenAPI_nf_type_e source_nf_type;
+    bool is_term_notify_ind;
+    int term_notify_ind;
     OpenAPI_list_t *binding_info;
     OpenAPI_nf_type_e subscribing_nf_type;
     bool is_event_sync_ind;
     int event_sync_ind;
     OpenAPI_list_t *nf_consumer_info;
     OpenAPI_list_t* aoi_state_list;
+    char *access_token;
+    bool is_amf_set_level_bulk_subs;
+    int amf_set_level_bulk_subs;
+    OpenAPI_list_t *ue_access_behavior_trends;
+    OpenAPI_list_t *ue_location_trends;
 };
 
 OpenAPI_ext_amf_event_subscription_t *OpenAPI_ext_amf_event_subscription_create(
@@ -68,12 +77,19 @@ OpenAPI_ext_amf_event_subscription_t *OpenAPI_ext_amf_event_subscription_create(
     int any_ue,
     OpenAPI_amf_event_mode_t *options,
     OpenAPI_nf_type_e source_nf_type,
+    bool is_term_notify_ind,
+    int term_notify_ind,
     OpenAPI_list_t *binding_info,
     OpenAPI_nf_type_e subscribing_nf_type,
     bool is_event_sync_ind,
     int event_sync_ind,
     OpenAPI_list_t *nf_consumer_info,
-    OpenAPI_list_t* aoi_state_list
+    OpenAPI_list_t* aoi_state_list,
+    char *access_token,
+    bool is_amf_set_level_bulk_subs,
+    int amf_set_level_bulk_subs,
+    OpenAPI_list_t *ue_access_behavior_trends,
+    OpenAPI_list_t *ue_location_trends
 );
 void OpenAPI_ext_amf_event_subscription_free(OpenAPI_ext_amf_event_subscription_t *ext_amf_event_subscription);
 OpenAPI_ext_amf_event_subscription_t *OpenAPI_ext_amf_event_subscription_parseFromJSON(cJSON *ext_amf_event_subscriptionJSON);

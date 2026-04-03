@@ -1,7 +1,7 @@
 /*
  * smcce_ue_list.h
  *
- * Represents the List of UEs classified based on experience level of Session Management  congestion control. 
+ * Represents the List of UEs classified based on experience level of Session Management congestion control. 
  */
 
 #ifndef _OpenAPI_smcce_ue_list_H_

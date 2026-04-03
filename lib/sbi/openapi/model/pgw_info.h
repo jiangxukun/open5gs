@@ -1,7 +1,7 @@
 /*
  * pgw_info.h
  *
- * 
+ * Contains PGW Information
  */
 
 #ifndef _OpenAPI_pgw_info_H_
@@ -29,6 +29,8 @@ struct OpenAPI_pgw_info_s {
     int epdg_ind;
     char *pcf_id;
     char *registration_time;
+    bool is_wildcard_ind;
+    int wildcard_ind;
 };
 
 OpenAPI_pgw_info_t *OpenAPI_pgw_info_create(
@@ -39,7 +41,9 @@ OpenAPI_pgw_info_t *OpenAPI_pgw_info_create(
     bool is_epdg_ind,
     int epdg_ind,
     char *pcf_id,
-    char *registration_time
+    char *registration_time,
+    bool is_wildcard_ind,
+    int wildcard_ind
 );
 void OpenAPI_pgw_info_free(OpenAPI_pgw_info_t *pgw_info);
 OpenAPI_pgw_info_t *OpenAPI_pgw_info_parseFromJSON(cJSON *pgw_infoJSON);

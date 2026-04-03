@@ -1,7 +1,7 @@
 /*
  * ec_restriction.h
  *
- * 
+ * Contains Enhanced Coverage Restriction Parameters
  */
 
 #ifndef _OpenAPI_ec_restriction_H_

@@ -9,7 +9,9 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     OpenAPI_local_origin_t *local_origin,
     OpenAPI_relative_cartesian_location_t *point,
     OpenAPI_uncertainty_ellipsoid_t *uncertainty_ellipsoid,
-    int confidence
+    int confidence,
+    bool is_v_confidence,
+    int v_confidence
 )
 {
     OpenAPI_local3d_point_uncertainty_ellipsoid_t *local3d_point_uncertainty_ellipsoid_local_var = ogs_malloc(sizeof(OpenAPI_local3d_point_uncertainty_ellipsoid_t));
@@ -20,6 +22,8 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     local3d_point_uncertainty_ellipsoid_local_var->point = point;
     local3d_point_uncertainty_ellipsoid_local_var->uncertainty_ellipsoid = uncertainty_ellipsoid;
     local3d_point_uncertainty_ellipsoid_local_var->confidence = confidence;
+    local3d_point_uncertainty_ellipsoid_local_var->is_v_confidence = is_v_confidence;
+    local3d_point_uncertainty_ellipsoid_local_var->v_confidence = v_confidence;
 
     return local3d_point_uncertainty_ellipsoid_local_var;
 }
@@ -116,6 +120,13 @@ cJSON *OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON(OpenAPI_local3d
         goto end;
     }
 
+    if (local3d_point_uncertainty_ellipsoid->is_v_confidence) {
+    if (cJSON_AddNumberToObject(item, "vConfidence", local3d_point_uncertainty_ellipsoid->v_confidence) == NULL) {
+        ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_convertToJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -133,6 +144,7 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
     cJSON *uncertainty_ellipsoid = NULL;
     OpenAPI_uncertainty_ellipsoid_t *uncertainty_ellipsoid_local_nonprim = NULL;
     cJSON *confidence = NULL;
+    cJSON *v_confidence = NULL;
     shape = cJSON_GetObjectItemCaseSensitive(local3d_point_uncertainty_ellipsoidJSON, "shape");
     if (!shape) {
         ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_parseFromJSON() failed [shape]");
@@ -187,13 +199,23 @@ OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty
         goto end;
     }
 
+    v_confidence = cJSON_GetObjectItemCaseSensitive(local3d_point_uncertainty_ellipsoidJSON, "vConfidence");
+    if (v_confidence) {
+    if (!cJSON_IsNumber(v_confidence)) {
+        ogs_error("OpenAPI_local3d_point_uncertainty_ellipsoid_parseFromJSON() failed [v_confidence]");
+        goto end;
+    }
+    }
+
     local3d_point_uncertainty_ellipsoid_local_var = OpenAPI_local3d_point_uncertainty_ellipsoid_create (
         shapeVariable,
         local_origin_local_nonprim,
         point_local_nonprim,
         uncertainty_ellipsoid_local_nonprim,
         
-        confidence->valuedouble
+        confidence->valuedouble,
+        v_confidence ? true : false,
+        v_confidence ? v_confidence->valuedouble : 0
     );
 
     return local3d_point_uncertainty_ellipsoid_local_var;

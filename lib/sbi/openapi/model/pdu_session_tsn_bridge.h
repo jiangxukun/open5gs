@@ -1,7 +1,7 @@
 /*
  * pdu_session_tsn_bridge.h
  *
- * Contains the new TSC user plane node information and may contain the DS-TT port and/or NW-TT port management information.
+ * Contains the new TSC user plane node information and may contain the DS-TT port and/or NW-TT port management information. 
  */
 
 #ifndef _OpenAPI_pdu_session_tsn_bridge_H_

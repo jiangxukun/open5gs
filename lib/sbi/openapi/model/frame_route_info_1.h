@@ -1,7 +1,7 @@
 /*
  * frame_route_info_1.h
  *
- * 
+ * Contains Frame Route Information
  */
 
 #ifndef _OpenAPI_frame_route_info_1_H_

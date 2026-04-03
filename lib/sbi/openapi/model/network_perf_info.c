@@ -7,10 +7,12 @@
 OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_create(
     OpenAPI_network_area_info_t *network_area,
     OpenAPI_network_perf_type_e nw_perf_type,
+    OpenAPI_time_window_t *ana_period,
     bool is_relative_ratio,
     int relative_ratio,
     bool is_absolute_num,
     int absolute_num,
+    OpenAPI_resource_usage_requirement_t *rsc_usg_req,
     bool is_confidence,
     int confidence
 )
@@ -20,10 +22,12 @@ OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_create(
 
     network_perf_info_local_var->network_area = network_area;
     network_perf_info_local_var->nw_perf_type = nw_perf_type;
+    network_perf_info_local_var->ana_period = ana_period;
     network_perf_info_local_var->is_relative_ratio = is_relative_ratio;
     network_perf_info_local_var->relative_ratio = relative_ratio;
     network_perf_info_local_var->is_absolute_num = is_absolute_num;
     network_perf_info_local_var->absolute_num = absolute_num;
+    network_perf_info_local_var->rsc_usg_req = rsc_usg_req;
     network_perf_info_local_var->is_confidence = is_confidence;
     network_perf_info_local_var->confidence = confidence;
 
@@ -40,6 +44,14 @@ void OpenAPI_network_perf_info_free(OpenAPI_network_perf_info_t *network_perf_in
     if (network_perf_info->network_area) {
         OpenAPI_network_area_info_free(network_perf_info->network_area);
         network_perf_info->network_area = NULL;
+    }
+    if (network_perf_info->ana_period) {
+        OpenAPI_time_window_free(network_perf_info->ana_period);
+        network_perf_info->ana_period = NULL;
+    }
+    if (network_perf_info->rsc_usg_req) {
+        OpenAPI_resource_usage_requirement_free(network_perf_info->rsc_usg_req);
+        network_perf_info->rsc_usg_req = NULL;
     }
     ogs_free(network_perf_info);
 }
@@ -75,6 +87,19 @@ cJSON *OpenAPI_network_perf_info_convertToJSON(OpenAPI_network_perf_info_t *netw
     }
     }
 
+    if (network_perf_info->ana_period) {
+    cJSON *ana_period_local_JSON = OpenAPI_time_window_convertToJSON(network_perf_info->ana_period);
+    if (ana_period_local_JSON == NULL) {
+        ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [ana_period]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "anaPeriod", ana_period_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [ana_period]");
+        goto end;
+    }
+    }
+
     if (network_perf_info->is_relative_ratio) {
     if (cJSON_AddNumberToObject(item, "relativeRatio", network_perf_info->relative_ratio) == NULL) {
         ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [relative_ratio]");
@@ -85,6 +110,19 @@ cJSON *OpenAPI_network_perf_info_convertToJSON(OpenAPI_network_perf_info_t *netw
     if (network_perf_info->is_absolute_num) {
     if (cJSON_AddNumberToObject(item, "absoluteNum", network_perf_info->absolute_num) == NULL) {
         ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [absolute_num]");
+        goto end;
+    }
+    }
+
+    if (network_perf_info->rsc_usg_req) {
+    cJSON *rsc_usg_req_local_JSON = OpenAPI_resource_usage_requirement_convertToJSON(network_perf_info->rsc_usg_req);
+    if (rsc_usg_req_local_JSON == NULL) {
+        ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [rsc_usg_req]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "rscUsgReq", rsc_usg_req_local_JSON);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_network_perf_info_convertToJSON() failed [rsc_usg_req]");
         goto end;
     }
     }
@@ -108,8 +146,12 @@ OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_parseFromJSON(cJSON *netw
     OpenAPI_network_area_info_t *network_area_local_nonprim = NULL;
     cJSON *nw_perf_type = NULL;
     OpenAPI_network_perf_type_e nw_perf_typeVariable = 0;
+    cJSON *ana_period = NULL;
+    OpenAPI_time_window_t *ana_period_local_nonprim = NULL;
     cJSON *relative_ratio = NULL;
     cJSON *absolute_num = NULL;
+    cJSON *rsc_usg_req = NULL;
+    OpenAPI_resource_usage_requirement_t *rsc_usg_req_local_nonprim = NULL;
     cJSON *confidence = NULL;
     network_area = cJSON_GetObjectItemCaseSensitive(network_perf_infoJSON, "networkArea");
     if (network_area) {
@@ -129,6 +171,15 @@ OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_parseFromJSON(cJSON *netw
     nw_perf_typeVariable = OpenAPI_network_perf_type_FromString(nw_perf_type->valuestring);
     }
 
+    ana_period = cJSON_GetObjectItemCaseSensitive(network_perf_infoJSON, "anaPeriod");
+    if (ana_period) {
+    ana_period_local_nonprim = OpenAPI_time_window_parseFromJSON(ana_period);
+    if (!ana_period_local_nonprim) {
+        ogs_error("OpenAPI_time_window_parseFromJSON failed [ana_period]");
+        goto end;
+    }
+    }
+
     relative_ratio = cJSON_GetObjectItemCaseSensitive(network_perf_infoJSON, "relativeRatio");
     if (relative_ratio) {
     if (!cJSON_IsNumber(relative_ratio)) {
@@ -145,6 +196,15 @@ OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_parseFromJSON(cJSON *netw
     }
     }
 
+    rsc_usg_req = cJSON_GetObjectItemCaseSensitive(network_perf_infoJSON, "rscUsgReq");
+    if (rsc_usg_req) {
+    rsc_usg_req_local_nonprim = OpenAPI_resource_usage_requirement_parseFromJSON(rsc_usg_req);
+    if (!rsc_usg_req_local_nonprim) {
+        ogs_error("OpenAPI_resource_usage_requirement_parseFromJSON failed [rsc_usg_req]");
+        goto end;
+    }
+    }
+
     confidence = cJSON_GetObjectItemCaseSensitive(network_perf_infoJSON, "confidence");
     if (confidence) {
     if (!cJSON_IsNumber(confidence)) {
@@ -156,10 +216,12 @@ OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_parseFromJSON(cJSON *netw
     network_perf_info_local_var = OpenAPI_network_perf_info_create (
         network_area ? network_area_local_nonprim : NULL,
         nw_perf_type ? nw_perf_typeVariable : 0,
+        ana_period ? ana_period_local_nonprim : NULL,
         relative_ratio ? true : false,
         relative_ratio ? relative_ratio->valuedouble : 0,
         absolute_num ? true : false,
         absolute_num ? absolute_num->valuedouble : 0,
+        rsc_usg_req ? rsc_usg_req_local_nonprim : NULL,
         confidence ? true : false,
         confidence ? confidence->valuedouble : 0
     );
@@ -169,6 +231,14 @@ end:
     if (network_area_local_nonprim) {
         OpenAPI_network_area_info_free(network_area_local_nonprim);
         network_area_local_nonprim = NULL;
+    }
+    if (ana_period_local_nonprim) {
+        OpenAPI_time_window_free(ana_period_local_nonprim);
+        ana_period_local_nonprim = NULL;
+    }
+    if (rsc_usg_req_local_nonprim) {
+        OpenAPI_resource_usage_requirement_free(rsc_usg_req_local_nonprim);
+        rsc_usg_req_local_nonprim = NULL;
     }
     return NULL;
 }

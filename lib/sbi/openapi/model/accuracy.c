@@ -6,7 +6,7 @@
 
 char* OpenAPI_accuracy_ToString(OpenAPI_accuracy_e accuracy)
 {
-    const char *accuracyArray[] =  { "NULL", "LOW", "HIGH" };
+    const char *accuracyArray[] =  { "NULL", "LOW", "MEDIUM", "HIGH", "HIGHEST" };
     size_t sizeofArray = sizeof(accuracyArray) / sizeof(accuracyArray[0]);
     if (accuracy < sizeofArray)
         return (char *)accuracyArray[accuracy];
@@ -17,7 +17,7 @@ char* OpenAPI_accuracy_ToString(OpenAPI_accuracy_e accuracy)
 OpenAPI_accuracy_e OpenAPI_accuracy_FromString(char* accuracy)
 {
     int stringToReturn = 0;
-    const char *accuracyArray[] =  { "NULL", "LOW", "HIGH" };
+    const char *accuracyArray[] =  { "NULL", "LOW", "MEDIUM", "HIGH", "HIGHEST" };
     size_t sizeofArray = sizeof(accuracyArray) / sizeof(accuracyArray[0]);
     while (stringToReturn < sizeofArray) {
         if (strcmp(accuracy, accuracyArray[stringToReturn]) == 0) {

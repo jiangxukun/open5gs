@@ -1,7 +1,7 @@
 /*
  * resource_usage.h
  *
- * The current usage of the virtual resources assigned to the NF instances belonging to a  particular network slice instance. 
+ * The current usage of the virtual resources assigned to the NF instances belonging to a particular network slice instance. 
  */
 
 #ifndef _OpenAPI_resource_usage_H_

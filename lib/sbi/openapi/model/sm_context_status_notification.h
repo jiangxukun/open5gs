@@ -14,6 +14,7 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_sm_context_status_notification_s OpenAPI_sm_context_status_notification_t;
 #include "apn_rate_status.h"
+#include "guami.h"
 #include "small_data_rate_status.h"
 #include "status_info.h"
 #include "target_dnai_info.h"
@@ -39,6 +40,8 @@ struct OpenAPI_sm_context_status_notification_s {
     struct OpenAPI_target_dnai_info_s *target_dnai_info;
     char *old_pdu_session_ref;
     char *inter_plmn_api_root;
+    char *target_dnai;
+    struct OpenAPI_guami_s *old_guami;
 };
 
 OpenAPI_sm_context_status_notification_t *OpenAPI_sm_context_status_notification_create(
@@ -57,7 +60,9 @@ OpenAPI_sm_context_status_notification_t *OpenAPI_sm_context_status_notification
     char *alt_anchor_smf_id,
     OpenAPI_target_dnai_info_t *target_dnai_info,
     char *old_pdu_session_ref,
-    char *inter_plmn_api_root
+    char *inter_plmn_api_root,
+    char *target_dnai,
+    OpenAPI_guami_t *old_guami
 );
 void OpenAPI_sm_context_status_notification_free(OpenAPI_sm_context_status_notification_t *sm_context_status_notification);
 OpenAPI_sm_context_status_notification_t *OpenAPI_sm_context_status_notification_parseFromJSON(cJSON *sm_context_status_notificationJSON);

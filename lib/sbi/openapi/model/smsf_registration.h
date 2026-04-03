@@ -1,7 +1,7 @@
 /*
  * smsf_registration.h
  *
- * 
+ * This datatype contains SMSF registration for 3GPP access that is created or updated with the received information. 
  */
 
 #ifndef _OpenAPI_smsf_registration_H_
@@ -37,6 +37,8 @@ struct OpenAPI_smsf_registration_s {
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
+    bool is_ue_memory_available_ind;
+    int ue_memory_available_ind;
 };
 
 OpenAPI_smsf_registration_t *OpenAPI_smsf_registration_create(
@@ -54,7 +56,9 @@ OpenAPI_smsf_registration_t *OpenAPI_smsf_registration_create(
     int smsf_sbi_sup_ind,
     bool is_udr_restart_ind,
     int udr_restart_ind,
-    char *last_synchronization_time
+    char *last_synchronization_time,
+    bool is_ue_memory_available_ind,
+    int ue_memory_available_ind
 );
 void OpenAPI_smsf_registration_free(OpenAPI_smsf_registration_t *smsf_registration);
 OpenAPI_smsf_registration_t *OpenAPI_smsf_registration_parseFromJSON(cJSON *smsf_registrationJSON);

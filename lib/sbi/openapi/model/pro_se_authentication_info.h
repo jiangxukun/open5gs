@@ -1,7 +1,7 @@
 /*
  * pro_se_authentication_info.h
  *
- * Contains the UE id (i.e. SUCI) or CP-PRUK ID (in 5gPrukId IE), Relay Service Code and Nonce_1. 
+ * Contains the UE id (i.e. SUCI) or CP-PRUK ID, Relay Service Code and Nonce_1. 
  */
 
 #ifndef _OpenAPI_pro_se_authentication_info_H_
@@ -23,6 +23,7 @@ struct OpenAPI_pro_se_authentication_info_s {
     char *_5g_pruk_id;
     int relay_service_code;
     char *nonce1;
+    char *serving_network_name;
     char *supported_features;
 };
 
@@ -31,6 +32,7 @@ OpenAPI_pro_se_authentication_info_t *OpenAPI_pro_se_authentication_info_create(
     char *_5g_pruk_id,
     int relay_service_code,
     char *nonce1,
+    char *serving_network_name,
     char *supported_features
 );
 void OpenAPI_pro_se_authentication_info_free(OpenAPI_pro_se_authentication_info_t *pro_se_authentication_info);

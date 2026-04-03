@@ -23,13 +23,25 @@ struct OpenAPI_nwdaf_capability_s {
     int analytics_aggregation;
     bool is_analytics_metadata_provisioning;
     int analytics_metadata_provisioning;
+    bool is_ml_model_accuracy_checking;
+    int ml_model_accuracy_checking;
+    bool is_analytics_accuracy_checking;
+    int analytics_accuracy_checking;
+    bool is_roaming_exchange;
+    int roaming_exchange;
 };
 
 OpenAPI_nwdaf_capability_t *OpenAPI_nwdaf_capability_create(
     bool is_analytics_aggregation,
     int analytics_aggregation,
     bool is_analytics_metadata_provisioning,
-    int analytics_metadata_provisioning
+    int analytics_metadata_provisioning,
+    bool is_ml_model_accuracy_checking,
+    int ml_model_accuracy_checking,
+    bool is_analytics_accuracy_checking,
+    int analytics_accuracy_checking,
+    bool is_roaming_exchange,
+    int roaming_exchange
 );
 void OpenAPI_nwdaf_capability_free(OpenAPI_nwdaf_capability_t *nwdaf_capability);
 OpenAPI_nwdaf_capability_t *OpenAPI_nwdaf_capability_parseFromJSON(cJSON *nwdaf_capabilityJSON);

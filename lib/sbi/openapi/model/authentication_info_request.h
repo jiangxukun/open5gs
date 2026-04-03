@@ -31,6 +31,8 @@ struct OpenAPI_authentication_info_request_s {
     int nswo_ind;
     bool is_disaster_roaming_ind;
     int disaster_roaming_ind;
+    bool is_aun3_ind;
+    int aun3_ind;
 };
 
 OpenAPI_authentication_info_request_t *OpenAPI_authentication_info_request_create(
@@ -44,7 +46,9 @@ OpenAPI_authentication_info_request_t *OpenAPI_authentication_info_request_creat
     bool is_nswo_ind,
     int nswo_ind,
     bool is_disaster_roaming_ind,
-    int disaster_roaming_ind
+    int disaster_roaming_ind,
+    bool is_aun3_ind,
+    int aun3_ind
 );
 void OpenAPI_authentication_info_request_free(OpenAPI_authentication_info_request_t *authentication_info_request);
 OpenAPI_authentication_info_request_t *OpenAPI_authentication_info_request_parseFromJSON(cJSON *authentication_info_requestJSON);

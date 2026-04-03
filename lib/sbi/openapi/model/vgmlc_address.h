@@ -1,7 +1,7 @@
 /*
  * vgmlc_address.h
  *
- * 
+ * This data type contains the address(es) of VGMLC.  Depending on the names of Vgmlcaddress, it could indicate either VGMLC IPv4 or IPv6 address. 
  */
 
 #ifndef _OpenAPI_vgmlc_address_H_

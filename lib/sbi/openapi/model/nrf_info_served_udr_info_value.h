@@ -30,6 +30,8 @@ struct OpenAPI_nrf_info_served_udr_info_value_s {
     OpenAPI_list_t *external_group_identifiers_ranges;
     OpenAPI_list_t *supported_data_sets;
     OpenAPI_list_t *shared_data_id_ranges;
+    bool is_any_ue_ind;
+    int any_ue_ind;
 };
 
 OpenAPI_nrf_info_served_udr_info_value_t *OpenAPI_nrf_info_served_udr_info_value_create(
@@ -38,7 +40,9 @@ OpenAPI_nrf_info_served_udr_info_value_t *OpenAPI_nrf_info_served_udr_info_value
     OpenAPI_list_t *gpsi_ranges,
     OpenAPI_list_t *external_group_identifiers_ranges,
     OpenAPI_list_t *supported_data_sets,
-    OpenAPI_list_t *shared_data_id_ranges
+    OpenAPI_list_t *shared_data_id_ranges,
+    bool is_any_ue_ind,
+    int any_ue_ind
 );
 void OpenAPI_nrf_info_served_udr_info_value_free(OpenAPI_nrf_info_served_udr_info_value_t *nrf_info_served_udr_info_value);
 OpenAPI_nrf_info_served_udr_info_value_t *OpenAPI_nrf_info_served_udr_info_value_parseFromJSON(cJSON *nrf_info_served_udr_info_valueJSON);

@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_accuracy_NULL = 0, OpenAPI_accuracy_LOW, OpenAPI_accuracy_HIGH } OpenAPI_accuracy_e;
+typedef enum { OpenAPI_accuracy_NULL = 0, OpenAPI_accuracy_LOW, OpenAPI_accuracy_MEDIUM, OpenAPI_accuracy_HIGH, OpenAPI_accuracy_HIGHEST } OpenAPI_accuracy_e;
 
 char* OpenAPI_accuracy_ToString(OpenAPI_accuracy_e accuracy);
 

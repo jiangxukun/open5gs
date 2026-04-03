@@ -28,6 +28,7 @@ struct OpenAPI_non_ue_n2_info_subscription_create_data_s {
     char *n2_notify_callback_uri;
     char *nf_id;
     char *supported_features;
+    char *notif_correlation_id;
 };
 
 OpenAPI_non_ue_n2_info_subscription_create_data_t *OpenAPI_non_ue_n2_info_subscription_create_data_create(
@@ -36,7 +37,8 @@ OpenAPI_non_ue_n2_info_subscription_create_data_t *OpenAPI_non_ue_n2_info_subscr
     OpenAPI_n2_information_class_e n2_information_class,
     char *n2_notify_callback_uri,
     char *nf_id,
-    char *supported_features
+    char *supported_features,
+    char *notif_correlation_id
 );
 void OpenAPI_non_ue_n2_info_subscription_create_data_free(OpenAPI_non_ue_n2_info_subscription_create_data_t *non_ue_n2_info_subscription_create_data);
 OpenAPI_non_ue_n2_info_subscription_create_data_t *OpenAPI_non_ue_n2_info_subscription_create_data_parseFromJSON(cJSON *non_ue_n2_info_subscription_create_dataJSON);

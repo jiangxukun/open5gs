@@ -19,8 +19,10 @@ typedef struct OpenAPI_nrf_info_served_nwdaf_info_value_s OpenAPI_nrf_info_serve
 #include "nwdaf_capability.h"
 #include "nwdaf_event.h"
 #include "nwdaf_info.h"
+#include "positioning_case.h"
 #include "tai.h"
 #include "tai_range.h"
+#include "tai_weight_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,12 +33,14 @@ struct OpenAPI_nrf_info_served_nwdaf_info_value_s {
     OpenAPI_list_t *nwdaf_events;
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *tai_range_list;
+    OpenAPI_list_t *tai_weight_list;
     struct OpenAPI_nwdaf_capability_s *nwdaf_capability;
     bool is_analytics_delay;
     int analytics_delay;
     OpenAPI_list_t *serving_nf_set_id_list;
     OpenAPI_list_t *serving_nf_type_list;
     OpenAPI_list_t *ml_analytics_list;
+    OpenAPI_list_t *pos_cases;
 };
 
 OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_value_create(
@@ -44,12 +48,14 @@ OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_v
     OpenAPI_list_t *nwdaf_events,
     OpenAPI_list_t *tai_list,
     OpenAPI_list_t *tai_range_list,
+    OpenAPI_list_t *tai_weight_list,
     OpenAPI_nwdaf_capability_t *nwdaf_capability,
     bool is_analytics_delay,
     int analytics_delay,
     OpenAPI_list_t *serving_nf_set_id_list,
     OpenAPI_list_t *serving_nf_type_list,
-    OpenAPI_list_t *ml_analytics_list
+    OpenAPI_list_t *ml_analytics_list,
+    OpenAPI_list_t *pos_cases
 );
 void OpenAPI_nrf_info_served_nwdaf_info_value_free(OpenAPI_nrf_info_served_nwdaf_info_value_t *nrf_info_served_nwdaf_info_value);
 OpenAPI_nrf_info_served_nwdaf_info_value_t *OpenAPI_nrf_info_served_nwdaf_info_value_parseFromJSON(cJSON *nrf_info_served_nwdaf_info_valueJSON);

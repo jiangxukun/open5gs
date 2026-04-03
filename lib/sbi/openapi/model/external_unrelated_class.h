@@ -1,7 +1,7 @@
 /*
  * external_unrelated_class.h
  *
- * 
+ * Contains External Unrelated Class
  */
 
 #ifndef _OpenAPI_external_unrelated_class_H_

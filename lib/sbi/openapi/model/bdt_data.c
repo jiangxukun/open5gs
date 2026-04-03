@@ -8,7 +8,7 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_create(
     char *asp_id,
     OpenAPI_transfer_policy_t *trans_policy,
     char *bdt_ref_id,
-    OpenAPI_network_area_info_3_t *nw_area_info,
+    OpenAPI_network_area_info_2_t *nw_area_info,
     bool is_num_of_ues,
     int num_of_ues,
     OpenAPI_usage_threshold_t *vol_per_ue,
@@ -16,6 +16,11 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_create(
     OpenAPI_snssai_t *snssai,
     char *traffic_des,
     OpenAPI_bdt_policy_status_e bdtp_status,
+    bool is_warn_notif_enabled_null,
+    OpenAPI_any_type_t *warn_notif_enabled,
+    bool is_energy_ind,
+    int energy_ind,
+    char *notif_uri,
     char *supp_feat,
     OpenAPI_list_t *reset_ids
 )
@@ -34,6 +39,11 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_create(
     bdt_data_local_var->snssai = snssai;
     bdt_data_local_var->traffic_des = traffic_des;
     bdt_data_local_var->bdtp_status = bdtp_status;
+    bdt_data_local_var->is_warn_notif_enabled_null = is_warn_notif_enabled_null;
+    bdt_data_local_var->warn_notif_enabled = warn_notif_enabled;
+    bdt_data_local_var->is_energy_ind = is_energy_ind;
+    bdt_data_local_var->energy_ind = energy_ind;
+    bdt_data_local_var->notif_uri = notif_uri;
     bdt_data_local_var->supp_feat = supp_feat;
     bdt_data_local_var->reset_ids = reset_ids;
 
@@ -60,7 +70,7 @@ void OpenAPI_bdt_data_free(OpenAPI_bdt_data_t *bdt_data)
         bdt_data->bdt_ref_id = NULL;
     }
     if (bdt_data->nw_area_info) {
-        OpenAPI_network_area_info_3_free(bdt_data->nw_area_info);
+        OpenAPI_network_area_info_2_free(bdt_data->nw_area_info);
         bdt_data->nw_area_info = NULL;
     }
     if (bdt_data->vol_per_ue) {
@@ -78,6 +88,14 @@ void OpenAPI_bdt_data_free(OpenAPI_bdt_data_t *bdt_data)
     if (bdt_data->traffic_des) {
         ogs_free(bdt_data->traffic_des);
         bdt_data->traffic_des = NULL;
+    }
+    if (bdt_data->warn_notif_enabled) {
+        OpenAPI_any_type_free(bdt_data->warn_notif_enabled);
+        bdt_data->warn_notif_enabled = NULL;
+    }
+    if (bdt_data->notif_uri) {
+        ogs_free(bdt_data->notif_uri);
+        bdt_data->notif_uri = NULL;
     }
     if (bdt_data->supp_feat) {
         ogs_free(bdt_data->supp_feat);
@@ -136,7 +154,7 @@ cJSON *OpenAPI_bdt_data_convertToJSON(OpenAPI_bdt_data_t *bdt_data)
     }
 
     if (bdt_data->nw_area_info) {
-    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_3_convertToJSON(bdt_data->nw_area_info);
+    cJSON *nw_area_info_local_JSON = OpenAPI_network_area_info_2_convertToJSON(bdt_data->nw_area_info);
     if (nw_area_info_local_JSON == NULL) {
         ogs_error("OpenAPI_bdt_data_convertToJSON() failed [nw_area_info]");
         goto end;
@@ -202,6 +220,38 @@ cJSON *OpenAPI_bdt_data_convertToJSON(OpenAPI_bdt_data_t *bdt_data)
     }
     }
 
+    if (bdt_data->warn_notif_enabled) {
+    cJSON *warn_notif_enabled_object = OpenAPI_any_type_convertToJSON(bdt_data->warn_notif_enabled);
+    if (warn_notif_enabled_object == NULL) {
+        ogs_error("OpenAPI_bdt_data_convertToJSON() failed [warn_notif_enabled]");
+        goto end;
+    }
+    cJSON_AddItemToObject(item, "warnNotifEnabled", warn_notif_enabled_object);
+    if (item->child == NULL) {
+        ogs_error("OpenAPI_bdt_data_convertToJSON() failed [warn_notif_enabled]");
+        goto end;
+    }
+    } else if (bdt_data->is_warn_notif_enabled_null) {
+        if (cJSON_AddNullToObject(item, "warnNotifEnabled") == NULL) {
+            ogs_error("OpenAPI_bdt_data_convertToJSON() failed [warn_notif_enabled]");
+            goto end;
+        }
+    }
+
+    if (bdt_data->is_energy_ind) {
+    if (cJSON_AddBoolToObject(item, "energyInd", bdt_data->energy_ind) == NULL) {
+        ogs_error("OpenAPI_bdt_data_convertToJSON() failed [energy_ind]");
+        goto end;
+    }
+    }
+
+    if (bdt_data->notif_uri) {
+    if (cJSON_AddStringToObject(item, "notifUri", bdt_data->notif_uri) == NULL) {
+        ogs_error("OpenAPI_bdt_data_convertToJSON() failed [notif_uri]");
+        goto end;
+    }
+    }
+
     if (bdt_data->supp_feat) {
     if (cJSON_AddStringToObject(item, "suppFeat", bdt_data->supp_feat) == NULL) {
         ogs_error("OpenAPI_bdt_data_convertToJSON() failed [supp_feat]");
@@ -236,7 +286,7 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
     OpenAPI_transfer_policy_t *trans_policy_local_nonprim = NULL;
     cJSON *bdt_ref_id = NULL;
     cJSON *nw_area_info = NULL;
-    OpenAPI_network_area_info_3_t *nw_area_info_local_nonprim = NULL;
+    OpenAPI_network_area_info_2_t *nw_area_info_local_nonprim = NULL;
     cJSON *num_of_ues = NULL;
     cJSON *vol_per_ue = NULL;
     OpenAPI_usage_threshold_t *vol_per_ue_local_nonprim = NULL;
@@ -246,6 +296,10 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
     cJSON *traffic_des = NULL;
     cJSON *bdtp_status = NULL;
     OpenAPI_bdt_policy_status_e bdtp_statusVariable = 0;
+    cJSON *warn_notif_enabled = NULL;
+    OpenAPI_any_type_t *warn_notif_enabled_local_object = NULL;
+    cJSON *energy_ind = NULL;
+    cJSON *notif_uri = NULL;
     cJSON *supp_feat = NULL;
     cJSON *reset_ids = NULL;
     OpenAPI_list_t *reset_idsList = NULL;
@@ -280,9 +334,9 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
 
     nw_area_info = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "nwAreaInfo");
     if (nw_area_info) {
-    nw_area_info_local_nonprim = OpenAPI_network_area_info_3_parseFromJSON(nw_area_info);
+    nw_area_info_local_nonprim = OpenAPI_network_area_info_2_parseFromJSON(nw_area_info);
     if (!nw_area_info_local_nonprim) {
-        ogs_error("OpenAPI_network_area_info_3_parseFromJSON failed [nw_area_info]");
+        ogs_error("OpenAPI_network_area_info_2_parseFromJSON failed [nw_area_info]");
         goto end;
     }
     }
@@ -338,6 +392,29 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
     bdtp_statusVariable = OpenAPI_bdt_policy_status_FromString(bdtp_status->valuestring);
     }
 
+    warn_notif_enabled = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "warnNotifEnabled");
+    if (warn_notif_enabled) {
+    if (!cJSON_IsNull(warn_notif_enabled)) {
+    warn_notif_enabled_local_object = OpenAPI_any_type_parseFromJSON(warn_notif_enabled);
+    }
+    }
+
+    energy_ind = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "energyInd");
+    if (energy_ind) {
+    if (!cJSON_IsBool(energy_ind)) {
+        ogs_error("OpenAPI_bdt_data_parseFromJSON() failed [energy_ind]");
+        goto end;
+    }
+    }
+
+    notif_uri = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "notifUri");
+    if (notif_uri) {
+    if (!cJSON_IsString(notif_uri) && !cJSON_IsNull(notif_uri)) {
+        ogs_error("OpenAPI_bdt_data_parseFromJSON() failed [notif_uri]");
+        goto end;
+    }
+    }
+
     supp_feat = cJSON_GetObjectItemCaseSensitive(bdt_dataJSON, "suppFeat");
     if (supp_feat) {
     if (!cJSON_IsString(supp_feat) && !cJSON_IsNull(supp_feat)) {
@@ -379,6 +456,11 @@ OpenAPI_bdt_data_t *OpenAPI_bdt_data_parseFromJSON(cJSON *bdt_dataJSON)
         snssai ? snssai_local_nonprim : NULL,
         traffic_des && !cJSON_IsNull(traffic_des) ? ogs_strdup(traffic_des->valuestring) : NULL,
         bdtp_status ? bdtp_statusVariable : 0,
+        warn_notif_enabled && cJSON_IsNull(warn_notif_enabled) ? true : false,
+        warn_notif_enabled ? warn_notif_enabled_local_object : NULL,
+        energy_ind ? true : false,
+        energy_ind ? energy_ind->valueint : 0,
+        notif_uri && !cJSON_IsNull(notif_uri) ? ogs_strdup(notif_uri->valuestring) : NULL,
         supp_feat && !cJSON_IsNull(supp_feat) ? ogs_strdup(supp_feat->valuestring) : NULL,
         reset_ids ? reset_idsList : NULL
     );
@@ -390,7 +472,7 @@ end:
         trans_policy_local_nonprim = NULL;
     }
     if (nw_area_info_local_nonprim) {
-        OpenAPI_network_area_info_3_free(nw_area_info_local_nonprim);
+        OpenAPI_network_area_info_2_free(nw_area_info_local_nonprim);
         nw_area_info_local_nonprim = NULL;
     }
     if (vol_per_ue_local_nonprim) {
@@ -400,6 +482,10 @@ end:
     if (snssai_local_nonprim) {
         OpenAPI_snssai_free(snssai_local_nonprim);
         snssai_local_nonprim = NULL;
+    }
+    if (warn_notif_enabled_local_object) {
+        OpenAPI_any_type_free(warn_notif_enabled_local_object);
+        warn_notif_enabled_local_object = NULL;
     }
     if (reset_idsList) {
         OpenAPI_list_for_each(reset_idsList, node) {

@@ -15,6 +15,7 @@
 typedef struct OpenAPI_flow_information_s OpenAPI_flow_information_t;
 #include "eth_flow_description.h"
 #include "flow_direction.h"
+#include "mpx_media_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,8 @@ struct OpenAPI_flow_information_s {
     bool is_flow_label_null;
     char *flow_label;
     OpenAPI_flow_direction_e flow_direction;
+    OpenAPI_list_t *mpx_media_ul_infos;
+    OpenAPI_list_t *mpx_media_dl_infos;
 };
 
 OpenAPI_flow_information_t *OpenAPI_flow_information_create(
@@ -47,7 +50,9 @@ OpenAPI_flow_information_t *OpenAPI_flow_information_create(
     char *spi,
     bool is_flow_label_null,
     char *flow_label,
-    OpenAPI_flow_direction_e flow_direction
+    OpenAPI_flow_direction_e flow_direction,
+    OpenAPI_list_t *mpx_media_ul_infos,
+    OpenAPI_list_t *mpx_media_dl_infos
 );
 void OpenAPI_flow_information_free(OpenAPI_flow_information_t *flow_information);
 OpenAPI_flow_information_t *OpenAPI_flow_information_parseFromJSON(cJSON *flow_informationJSON);

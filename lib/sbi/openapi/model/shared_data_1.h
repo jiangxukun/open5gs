@@ -1,7 +1,7 @@
 /*
  * shared_data_1.h
  *
- * 
+ * Contains Shared Data
  */
 
 #ifndef _OpenAPI_shared_data_1_H_
@@ -16,6 +16,7 @@ typedef struct OpenAPI_shared_data_1_s OpenAPI_shared_data_1_t;
 #include "access_and_mobility_subscription_data_1.h"
 #include "dnn_configuration_1.h"
 #include "ecs_addr_config_info_1.h"
+#include "monitoring_suspension_1.h"
 #include "session_management_subscription_data_1.h"
 #include "shared_data_treatment_instruction.h"
 #include "sms_management_subscription_data_1.h"
@@ -42,6 +43,7 @@ struct OpenAPI_shared_data_1_s {
     struct OpenAPI_session_management_subscription_data_1_s *shared_sm_subs_data;
     bool is_shared_ecs_addr_config_info_null;
     struct OpenAPI_ecs_addr_config_info_1_s *shared_ecs_addr_config_info;
+    struct OpenAPI_monitoring_suspension_1_s *shared_monitoring_suspension;
 };
 
 OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_create(
@@ -57,7 +59,8 @@ OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_create(
     OpenAPI_list_t* treatment_instructions,
     OpenAPI_session_management_subscription_data_1_t *shared_sm_subs_data,
     bool is_shared_ecs_addr_config_info_null,
-    OpenAPI_ecs_addr_config_info_1_t *shared_ecs_addr_config_info
+    OpenAPI_ecs_addr_config_info_1_t *shared_ecs_addr_config_info,
+    OpenAPI_monitoring_suspension_1_t *shared_monitoring_suspension
 );
 void OpenAPI_shared_data_1_free(OpenAPI_shared_data_1_t *shared_data_1);
 OpenAPI_shared_data_1_t *OpenAPI_shared_data_1_parseFromJSON(cJSON *shared_data_1JSON);

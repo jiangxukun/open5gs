@@ -1,7 +1,7 @@
 /*
  * pcf_selection_assistance_info.h
  *
- * 
+ * Contains DNN and S-NSSAI
  */
 
 #ifndef _OpenAPI_pcf_selection_assistance_info_H_

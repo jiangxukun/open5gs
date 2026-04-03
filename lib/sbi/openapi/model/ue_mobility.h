@@ -13,6 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_ue_mobility_s OpenAPI_ue_mobility_t;
+#include "direction_info.h"
 #include "location_info.h"
 #include "scheduled_communication_time_1.h"
 
@@ -28,6 +29,7 @@ struct OpenAPI_ue_mobility_s {
     bool is_duration_variance;
     float duration_variance;
     OpenAPI_list_t *loc_infos;
+    OpenAPI_list_t *direction_infos;
 };
 
 OpenAPI_ue_mobility_t *OpenAPI_ue_mobility_create(
@@ -37,7 +39,8 @@ OpenAPI_ue_mobility_t *OpenAPI_ue_mobility_create(
     int duration,
     bool is_duration_variance,
     float duration_variance,
-    OpenAPI_list_t *loc_infos
+    OpenAPI_list_t *loc_infos,
+    OpenAPI_list_t *direction_infos
 );
 void OpenAPI_ue_mobility_free(OpenAPI_ue_mobility_t *ue_mobility);
 OpenAPI_ue_mobility_t *OpenAPI_ue_mobility_parseFromJSON(cJSON *ue_mobilityJSON);

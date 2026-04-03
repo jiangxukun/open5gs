@@ -1,7 +1,7 @@
 /*
  * user_location.h
  *
- * At least one of eutraLocation, nrLocation and n3gaLocation shall be present. Several of them may be present. 
+ * At least one of eutraLocation, nrLocation, n3gaLocation, utraLocation, geraLocation and plmnLocation shall be present. Several of them may be present. 
  */
 
 #ifndef _OpenAPI_user_location_H_

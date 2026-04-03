@@ -1,7 +1,7 @@
 /*
  * registration_data_sets.h
  *
- * 
+ * This data type contains all the attributes related to 3GPP access and non-access registration. 
  */
 
 #ifndef _OpenAPI_registration_data_sets_H_

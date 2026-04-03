@@ -1,7 +1,7 @@
 /*
  * id_translation_result.h
  *
- * 
+ * Contains Identifier translation result
  */
 
 #ifndef _OpenAPI_id_translation_result_H_

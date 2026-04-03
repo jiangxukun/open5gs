@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_subscribed_event_NULL = 0, OpenAPI_subscribed_event_UP_PATH_CHANGE } OpenAPI_subscribed_event_e;
+typedef enum { OpenAPI_subscribed_event_NULL = 0, OpenAPI_subscribed_event_UP_PATH_CHANGE, OpenAPI_subscribed_event_TRAFF_ROUTE_REQ_OUTCOME, OpenAPI_subscribed_event_SIM_CONN_FAIL } OpenAPI_subscribed_event_e;
 
 char* OpenAPI_subscribed_event_ToString(OpenAPI_subscribed_event_e subscribed_event);
 

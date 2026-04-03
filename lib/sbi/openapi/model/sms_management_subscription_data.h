@@ -1,7 +1,7 @@
 /*
  * sms_management_subscription_data.h
  *
- * 
+ * Contains SMS Management Subscription Data
  */
 
 #ifndef _OpenAPI_sms_management_subscription_data_H_
@@ -36,6 +36,9 @@ struct OpenAPI_sms_management_subscription_data_s {
     OpenAPI_list_t *shared_sms_mng_data_ids;
     bool is_trace_data_null;
     struct OpenAPI_trace_data_s *trace_data;
+    char *shared_trace_data_id;
+    char *chf_group_id;
+    char *_3gpp_charging_characteristics;
 };
 
 OpenAPI_sms_management_subscription_data_t *OpenAPI_sms_management_subscription_data_create(
@@ -54,7 +57,10 @@ OpenAPI_sms_management_subscription_data_t *OpenAPI_sms_management_subscription_
     int mo_sms_barring_roaming,
     OpenAPI_list_t *shared_sms_mng_data_ids,
     bool is_trace_data_null,
-    OpenAPI_trace_data_t *trace_data
+    OpenAPI_trace_data_t *trace_data,
+    char *shared_trace_data_id,
+    char *chf_group_id,
+    char *_3gpp_charging_characteristics
 );
 void OpenAPI_sms_management_subscription_data_free(OpenAPI_sms_management_subscription_data_t *sms_management_subscription_data);
 OpenAPI_sms_management_subscription_data_t *OpenAPI_sms_management_subscription_data_parseFromJSON(cJSON *sms_management_subscription_dataJSON);

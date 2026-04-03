@@ -1,7 +1,7 @@
 /*
  * ue_context_in_smf_data_1.h
  *
- * 
+ * Contains UE Context In SMF Data
  */
 
 #ifndef _OpenAPI_ue_context_in_smf_data_1_H_

@@ -1,7 +1,7 @@
 /*
  * nssai.h
  *
- * 
+ * Contains Network Slice Selection Assistance Information
  */
 
 #ifndef _OpenAPI_nssai_H_

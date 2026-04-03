@@ -1,7 +1,7 @@
 /*
  * amf_non3_gpp_access_registration.h
  *
- * 
+ * Represents the complete set of information relevant to the AMF when the UE has registered via non 3GPP access. 
  */
 
 #ifndef _OpenAPI_amf_non3_gpp_access_registration_H_
@@ -61,6 +61,8 @@ struct OpenAPI_amf_non3_gpp_access_registration_s {
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
+    bool is_ue_snpn_subscription_ind;
+    int ue_snpn_subscription_ind;
 };
 
 OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registration_create(
@@ -98,7 +100,9 @@ OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registra
     int sor_snpn_si_supported,
     bool is_udr_restart_ind,
     int udr_restart_ind,
-    char *last_synchronization_time
+    char *last_synchronization_time,
+    bool is_ue_snpn_subscription_ind,
+    int ue_snpn_subscription_ind
 );
 void OpenAPI_amf_non3_gpp_access_registration_free(OpenAPI_amf_non3_gpp_access_registration_t *amf_non3_gpp_access_registration);
 OpenAPI_amf_non3_gpp_access_registration_t *OpenAPI_amf_non3_gpp_access_registration_parseFromJSON(cJSON *amf_non3_gpp_access_registrationJSON);

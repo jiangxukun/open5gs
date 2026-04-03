@@ -21,12 +21,14 @@ extern "C" {
 struct OpenAPI_routing_info_sm_request_s {
     bool is_ip_sm_gw_ind;
     int ip_sm_gw_ind;
+    char *correlation_id;
     char *supported_features;
 };
 
 OpenAPI_routing_info_sm_request_t *OpenAPI_routing_info_sm_request_create(
     bool is_ip_sm_gw_ind,
     int ip_sm_gw_ind,
+    char *correlation_id,
     char *supported_features
 );
 void OpenAPI_routing_info_sm_request_free(OpenAPI_routing_info_sm_request_t *routing_info_sm_request);

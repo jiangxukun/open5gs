@@ -13,7 +13,7 @@
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
 typedef struct OpenAPI_plmn_route_selection_descriptor_s OpenAPI_plmn_route_selection_descriptor_t;
-#include "plmn_id_1.h"
+#include "plmn_id.h"
 #include "snssai_route_selection_descriptor.h"
 
 #ifdef __cplusplus
@@ -21,12 +21,12 @@ extern "C" {
 #endif
 
 struct OpenAPI_plmn_route_selection_descriptor_s {
-    struct OpenAPI_plmn_id_1_s *serving_plmn;
+    struct OpenAPI_plmn_id_s *serving_plmn;
     OpenAPI_list_t *snssai_route_sel_descs;
 };
 
 OpenAPI_plmn_route_selection_descriptor_t *OpenAPI_plmn_route_selection_descriptor_create(
-    OpenAPI_plmn_id_1_t *serving_plmn,
+    OpenAPI_plmn_id_t *serving_plmn,
     OpenAPI_list_t *snssai_route_sel_descs
 );
 void OpenAPI_plmn_route_selection_descriptor_free(OpenAPI_plmn_route_selection_descriptor_t *plmn_route_selection_descriptor);

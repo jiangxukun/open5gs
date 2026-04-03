@@ -1,7 +1,7 @@
 /*
  * trace_data_response.h
  *
- * 
+ * Contains Trace Data Response
  */
 
 #ifndef _OpenAPI_trace_data_response_H_

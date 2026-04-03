@@ -14,6 +14,8 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_modify_200_response_s OpenAPI_modify_200_response_t;
 #include "context_info.h"
+#include "expected_ue_behaviour_threshold.h"
+#include "guami.h"
 #include "immediate_report.h"
 #include "plmn_id.h"
 #include "service_name.h"
@@ -47,6 +49,15 @@ struct OpenAPI_modify_200_response_s {
     int unique_subscription;
     OpenAPI_list_t *reset_ids;
     struct OpenAPI_ue_context_in_smf_data_sub_filter_s *ue_con_smf_data_sub_filter;
+    OpenAPI_list_t *adjacent_plmns;
+    bool is_disaster_roaming_ind;
+    int disaster_roaming_ind;
+    char *data_restoration_callback_uri;
+    bool is_udr_restart_ind;
+    int udr_restart_ind;
+    char *last_synchronization_time;
+    OpenAPI_list_t* expected_ue_behaviour_thresholds;
+    struct OpenAPI_guami_s *guami;
 };
 
 OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
@@ -71,7 +82,16 @@ OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_create(
     bool is_unique_subscription,
     int unique_subscription,
     OpenAPI_list_t *reset_ids,
-    OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter
+    OpenAPI_ue_context_in_smf_data_sub_filter_t *ue_con_smf_data_sub_filter,
+    OpenAPI_list_t *adjacent_plmns,
+    bool is_disaster_roaming_ind,
+    int disaster_roaming_ind,
+    char *data_restoration_callback_uri,
+    bool is_udr_restart_ind,
+    int udr_restart_ind,
+    char *last_synchronization_time,
+    OpenAPI_list_t* expected_ue_behaviour_thresholds,
+    OpenAPI_guami_t *guami
 );
 void OpenAPI_modify_200_response_free(OpenAPI_modify_200_response_t *modify_200_response);
 OpenAPI_modify_200_response_t *OpenAPI_modify_200_response_parseFromJSON(cJSON *modify_200_responseJSON);

@@ -23,13 +23,17 @@ struct OpenAPI_nsacf_capability_s {
     int support_ue_sac;
     bool is_support_pdu_sac;
     int support_pdu_sac;
+    bool is_support_ue_with_pdu_sac;
+    int support_ue_with_pdu_sac;
 };
 
 OpenAPI_nsacf_capability_t *OpenAPI_nsacf_capability_create(
     bool is_support_ue_sac,
     int support_ue_sac,
     bool is_support_pdu_sac,
-    int support_pdu_sac
+    int support_pdu_sac,
+    bool is_support_ue_with_pdu_sac,
+    int support_ue_with_pdu_sac
 );
 void OpenAPI_nsacf_capability_free(OpenAPI_nsacf_capability_t *nsacf_capability);
 OpenAPI_nsacf_capability_t *OpenAPI_nsacf_capability_parseFromJSON(cJSON *nsacf_capabilityJSON);

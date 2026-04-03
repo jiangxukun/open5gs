@@ -29,6 +29,12 @@ struct OpenAPI_auth_event_s {
     int auth_removal_ind;
     char *nf_set_id;
     OpenAPI_list_t *reset_ids;
+    char *data_restoration_callback_uri;
+    bool is_udr_restart_ind;
+    int udr_restart_ind;
+    char *last_synchronization_time;
+    bool is_nswo_ind;
+    int nswo_ind;
 };
 
 OpenAPI_auth_event_t *OpenAPI_auth_event_create(
@@ -40,7 +46,13 @@ OpenAPI_auth_event_t *OpenAPI_auth_event_create(
     bool is_auth_removal_ind,
     int auth_removal_ind,
     char *nf_set_id,
-    OpenAPI_list_t *reset_ids
+    OpenAPI_list_t *reset_ids,
+    char *data_restoration_callback_uri,
+    bool is_udr_restart_ind,
+    int udr_restart_ind,
+    char *last_synchronization_time,
+    bool is_nswo_ind,
+    int nswo_ind
 );
 void OpenAPI_auth_event_free(OpenAPI_auth_event_t *auth_event);
 OpenAPI_auth_event_t *OpenAPI_auth_event_parseFromJSON(cJSON *auth_eventJSON);

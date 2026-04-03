@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef enum { OpenAPI_event_NULL = 0, OpenAPI_event_SUCCESS_UE_POL_DEL_SP, OpenAPI_event_UNSUCCESS_UE_POL_DEL_SP } OpenAPI_event_e;
+typedef enum { OpenAPI_event_NULL = 0, OpenAPI_event_SUCCESS_UE_POL_DEL_SP, OpenAPI_event_UNSUCCESS_UE_POL_DEL_SP, OpenAPI_event_PARTLY_UNSUCC_UE_POL_DEL_SP, OpenAPI_event_UNSUCCESS_PCF_SERVICE_AUTHORIZATION } OpenAPI_event_e;
 
 char* OpenAPI_event_ToString(OpenAPI_event_e event);
 

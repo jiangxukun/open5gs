@@ -1,7 +1,7 @@
 /*
  * event_report_mode.h
  *
- * 
+ * Event report mode.
  */
 
 #ifndef _OpenAPI_event_report_mode_H_

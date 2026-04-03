@@ -26,6 +26,10 @@ struct OpenAPI_sor_data_s {
     char *sor_mac_iue;
     bool is_me_support_of_sor_cmci;
     int me_support_of_sor_cmci;
+    bool is_me_support_of_sor_snpn_si;
+    int me_support_of_sor_snpn_si;
+    bool is_me_support_of_sor_snpn_si_ls;
+    int me_support_of_sor_snpn_si_ls;
 };
 
 OpenAPI_sor_data_t *OpenAPI_sor_data_create(
@@ -34,7 +38,11 @@ OpenAPI_sor_data_t *OpenAPI_sor_data_create(
     char *sor_xmac_iue,
     char *sor_mac_iue,
     bool is_me_support_of_sor_cmci,
-    int me_support_of_sor_cmci
+    int me_support_of_sor_cmci,
+    bool is_me_support_of_sor_snpn_si,
+    int me_support_of_sor_snpn_si,
+    bool is_me_support_of_sor_snpn_si_ls,
+    int me_support_of_sor_snpn_si_ls
 );
 void OpenAPI_sor_data_free(OpenAPI_sor_data_t *sor_data);
 OpenAPI_sor_data_t *OpenAPI_sor_data_parseFromJSON(cJSON *sor_dataJSON);

@@ -8,11 +8,13 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_create(
     char *dnn,
     char *pgw_fqdn,
     OpenAPI_ip_address_1_t *pgw_ip_addr,
-    OpenAPI_plmn_id_1_t *plmn_id,
+    OpenAPI_plmn_id_t *plmn_id,
     bool is_epdg_ind,
     int epdg_ind,
     char *pcf_id,
-    char *registration_time
+    char *registration_time,
+    bool is_wildcard_ind,
+    int wildcard_ind
 )
 {
     OpenAPI_pgw_info_1_t *pgw_info_1_local_var = ogs_malloc(sizeof(OpenAPI_pgw_info_1_t));
@@ -26,6 +28,8 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_create(
     pgw_info_1_local_var->epdg_ind = epdg_ind;
     pgw_info_1_local_var->pcf_id = pcf_id;
     pgw_info_1_local_var->registration_time = registration_time;
+    pgw_info_1_local_var->is_wildcard_ind = is_wildcard_ind;
+    pgw_info_1_local_var->wildcard_ind = wildcard_ind;
 
     return pgw_info_1_local_var;
 }
@@ -50,7 +54,7 @@ void OpenAPI_pgw_info_1_free(OpenAPI_pgw_info_1_t *pgw_info_1)
         pgw_info_1->pgw_ip_addr = NULL;
     }
     if (pgw_info_1->plmn_id) {
-        OpenAPI_plmn_id_1_free(pgw_info_1->plmn_id);
+        OpenAPI_plmn_id_free(pgw_info_1->plmn_id);
         pgw_info_1->plmn_id = NULL;
     }
     if (pgw_info_1->pcf_id) {
@@ -107,7 +111,7 @@ cJSON *OpenAPI_pgw_info_1_convertToJSON(OpenAPI_pgw_info_1_t *pgw_info_1)
     }
 
     if (pgw_info_1->plmn_id) {
-    cJSON *plmn_id_local_JSON = OpenAPI_plmn_id_1_convertToJSON(pgw_info_1->plmn_id);
+    cJSON *plmn_id_local_JSON = OpenAPI_plmn_id_convertToJSON(pgw_info_1->plmn_id);
     if (plmn_id_local_JSON == NULL) {
         ogs_error("OpenAPI_pgw_info_1_convertToJSON() failed [plmn_id]");
         goto end;
@@ -140,6 +144,13 @@ cJSON *OpenAPI_pgw_info_1_convertToJSON(OpenAPI_pgw_info_1_t *pgw_info_1)
     }
     }
 
+    if (pgw_info_1->is_wildcard_ind) {
+    if (cJSON_AddBoolToObject(item, "wildcardInd", pgw_info_1->wildcard_ind) == NULL) {
+        ogs_error("OpenAPI_pgw_info_1_convertToJSON() failed [wildcard_ind]");
+        goto end;
+    }
+    }
+
 end:
     return item;
 }
@@ -153,10 +164,11 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_parseFromJSON(cJSON *pgw_info_1JSON)
     cJSON *pgw_ip_addr = NULL;
     OpenAPI_ip_address_1_t *pgw_ip_addr_local_nonprim = NULL;
     cJSON *plmn_id = NULL;
-    OpenAPI_plmn_id_1_t *plmn_id_local_nonprim = NULL;
+    OpenAPI_plmn_id_t *plmn_id_local_nonprim = NULL;
     cJSON *epdg_ind = NULL;
     cJSON *pcf_id = NULL;
     cJSON *registration_time = NULL;
+    cJSON *wildcard_ind = NULL;
     dnn = cJSON_GetObjectItemCaseSensitive(pgw_info_1JSON, "dnn");
     if (!dnn) {
         ogs_error("OpenAPI_pgw_info_1_parseFromJSON() failed [dnn]");
@@ -188,9 +200,9 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_parseFromJSON(cJSON *pgw_info_1JSON)
 
     plmn_id = cJSON_GetObjectItemCaseSensitive(pgw_info_1JSON, "plmnId");
     if (plmn_id) {
-    plmn_id_local_nonprim = OpenAPI_plmn_id_1_parseFromJSON(plmn_id);
+    plmn_id_local_nonprim = OpenAPI_plmn_id_parseFromJSON(plmn_id);
     if (!plmn_id_local_nonprim) {
-        ogs_error("OpenAPI_plmn_id_1_parseFromJSON failed [plmn_id]");
+        ogs_error("OpenAPI_plmn_id_parseFromJSON failed [plmn_id]");
         goto end;
     }
     }
@@ -219,6 +231,14 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_parseFromJSON(cJSON *pgw_info_1JSON)
     }
     }
 
+    wildcard_ind = cJSON_GetObjectItemCaseSensitive(pgw_info_1JSON, "wildcardInd");
+    if (wildcard_ind) {
+    if (!cJSON_IsBool(wildcard_ind)) {
+        ogs_error("OpenAPI_pgw_info_1_parseFromJSON() failed [wildcard_ind]");
+        goto end;
+    }
+    }
+
     pgw_info_1_local_var = OpenAPI_pgw_info_1_create (
         ogs_strdup(dnn->valuestring),
         ogs_strdup(pgw_fqdn->valuestring),
@@ -227,7 +247,9 @@ OpenAPI_pgw_info_1_t *OpenAPI_pgw_info_1_parseFromJSON(cJSON *pgw_info_1JSON)
         epdg_ind ? true : false,
         epdg_ind ? epdg_ind->valueint : 0,
         pcf_id && !cJSON_IsNull(pcf_id) ? ogs_strdup(pcf_id->valuestring) : NULL,
-        registration_time && !cJSON_IsNull(registration_time) ? ogs_strdup(registration_time->valuestring) : NULL
+        registration_time && !cJSON_IsNull(registration_time) ? ogs_strdup(registration_time->valuestring) : NULL,
+        wildcard_ind ? true : false,
+        wildcard_ind ? wildcard_ind->valueint : 0
     );
 
     return pgw_info_1_local_var;
@@ -237,7 +259,7 @@ end:
         pgw_ip_addr_local_nonprim = NULL;
     }
     if (plmn_id_local_nonprim) {
-        OpenAPI_plmn_id_1_free(plmn_id_local_nonprim);
+        OpenAPI_plmn_id_free(plmn_id_local_nonprim);
         plmn_id_local_nonprim = NULL;
     }
     return NULL;

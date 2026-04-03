@@ -1,7 +1,7 @@
 /*
  * amf3_gpp_access_registration.h
  *
- * 
+ * This datatype contains the set of information relevant to the AMF where the UE has registered via 3GPP access. 
  */
 
 #ifndef _OpenAPI_amf3_gpp_access_registration_H_
@@ -46,6 +46,8 @@ struct OpenAPI_amf3_gpp_access_registration_s {
     OpenAPI_list_t *backup_amf_info;
     bool is_dr_flag;
     int dr_flag;
+    bool is_eps5_gs_mobility_wo_n26;
+    int eps5_gs_mobility_wo_n26;
     OpenAPI_rat_type_e rat_type;
     bool is_urrp_indicator;
     int urrp_indicator;
@@ -70,11 +72,15 @@ struct OpenAPI_amf3_gpp_access_registration_s {
     int disaster_roaming_ind;
     bool is_ue_mint_capability;
     int ue_mint_capability;
+    bool is_ue_mint_eps_capability;
+    int ue_mint_eps_capability;
     bool is_sor_snpn_si_supported;
     int sor_snpn_si_supported;
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
+    bool is_ue_snpn_subscription_ind;
+    int ue_snpn_subscription_ind;
 };
 
 OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_create(
@@ -96,6 +102,8 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_cre
     OpenAPI_list_t *backup_amf_info,
     bool is_dr_flag,
     int dr_flag,
+    bool is_eps5_gs_mobility_wo_n26,
+    int eps5_gs_mobility_wo_n26,
     OpenAPI_rat_type_e rat_type,
     bool is_urrp_indicator,
     int urrp_indicator,
@@ -120,11 +128,15 @@ OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_cre
     int disaster_roaming_ind,
     bool is_ue_mint_capability,
     int ue_mint_capability,
+    bool is_ue_mint_eps_capability,
+    int ue_mint_eps_capability,
     bool is_sor_snpn_si_supported,
     int sor_snpn_si_supported,
     bool is_udr_restart_ind,
     int udr_restart_ind,
-    char *last_synchronization_time
+    char *last_synchronization_time,
+    bool is_ue_snpn_subscription_ind,
+    int ue_snpn_subscription_ind
 );
 void OpenAPI_amf3_gpp_access_registration_free(OpenAPI_amf3_gpp_access_registration_t *amf3_gpp_access_registration);
 OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_parseFromJSON(cJSON *amf3_gpp_access_registrationJSON);

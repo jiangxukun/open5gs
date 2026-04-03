@@ -1,7 +1,7 @@
 /*
  * immediate_report.h
  *
- * 
+ * Contains the immediate report
  */
 
 #ifndef _OpenAPI_immediate_report_H_

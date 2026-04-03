@@ -39,6 +39,10 @@ struct OpenAPI_authentication_subscription_s {
     bool is_akma_allowed;
     int akma_allowed;
     char *routing_id;
+    bool is_nswo_allowed;
+    int nswo_allowed;
+    bool is__5g_key_hierar_supp;
+    int _5g_key_hierar_supp;
 };
 
 OpenAPI_authentication_subscription_t *OpenAPI_authentication_subscription_create(
@@ -59,7 +63,11 @@ OpenAPI_authentication_subscription_t *OpenAPI_authentication_subscription_creat
     char *supi,
     bool is_akma_allowed,
     int akma_allowed,
-    char *routing_id
+    char *routing_id,
+    bool is_nswo_allowed,
+    int nswo_allowed,
+    bool is__5g_key_hierar_supp,
+    int _5g_key_hierar_supp
 );
 void OpenAPI_authentication_subscription_free(OpenAPI_authentication_subscription_t *authentication_subscription);
 OpenAPI_authentication_subscription_t *OpenAPI_authentication_subscription_parseFromJSON(cJSON *authentication_subscriptionJSON);

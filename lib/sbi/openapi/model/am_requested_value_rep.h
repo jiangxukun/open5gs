@@ -14,9 +14,11 @@
 #include "../include/binary.h"
 typedef struct OpenAPI_am_requested_value_rep_s OpenAPI_am_requested_value_rep_t;
 #include "access_type.h"
+#include "partially_allowed_snssai.h"
 #include "presence_info.h"
 #include "rat_type.h"
 #include "snssai.h"
+#include "snssai_part_rejected.h"
 #include "user_location.h"
 
 #ifdef __cplusplus
@@ -30,6 +32,10 @@ struct OpenAPI_am_requested_value_rep_s {
     OpenAPI_list_t *rat_types;
     OpenAPI_list_t *allowed_snssais;
     OpenAPI_list_t *n3g_allowed_snssais;
+    OpenAPI_list_t* part_allowed_nssai;
+    OpenAPI_list_t* snssais_part_rejected;
+    OpenAPI_list_t *rejected_snssais;
+    OpenAPI_list_t *pending_nssai;
 };
 
 OpenAPI_am_requested_value_rep_t *OpenAPI_am_requested_value_rep_create(
@@ -38,7 +44,11 @@ OpenAPI_am_requested_value_rep_t *OpenAPI_am_requested_value_rep_create(
     OpenAPI_list_t *access_types,
     OpenAPI_list_t *rat_types,
     OpenAPI_list_t *allowed_snssais,
-    OpenAPI_list_t *n3g_allowed_snssais
+    OpenAPI_list_t *n3g_allowed_snssais,
+    OpenAPI_list_t* part_allowed_nssai,
+    OpenAPI_list_t* snssais_part_rejected,
+    OpenAPI_list_t *rejected_snssais,
+    OpenAPI_list_t *pending_nssai
 );
 void OpenAPI_am_requested_value_rep_free(OpenAPI_am_requested_value_rep_t *am_requested_value_rep);
 OpenAPI_am_requested_value_rep_t *OpenAPI_am_requested_value_rep_parseFromJSON(cJSON *am_requested_value_repJSON);

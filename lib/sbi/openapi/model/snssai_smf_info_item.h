@@ -23,11 +23,15 @@ extern "C" {
 struct OpenAPI_snssai_smf_info_item_s {
     struct OpenAPI_ext_snssai_s *s_nssai;
     OpenAPI_list_t *dnn_smf_info_list;
+    bool is_dnn_smf_info_list_id;
+    int dnn_smf_info_list_id;
 };
 
 OpenAPI_snssai_smf_info_item_t *OpenAPI_snssai_smf_info_item_create(
     OpenAPI_ext_snssai_t *s_nssai,
-    OpenAPI_list_t *dnn_smf_info_list
+    OpenAPI_list_t *dnn_smf_info_list,
+    bool is_dnn_smf_info_list_id,
+    int dnn_smf_info_list_id
 );
 void OpenAPI_snssai_smf_info_item_free(OpenAPI_snssai_smf_info_item_t *snssai_smf_info_item);
 OpenAPI_snssai_smf_info_item_t *OpenAPI_snssai_smf_info_item_parseFromJSON(cJSON *snssai_smf_info_itemJSON);
