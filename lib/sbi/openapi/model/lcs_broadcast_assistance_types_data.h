@@ -12,15 +12,15 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_lcs_broadcast_assistance_types_data_s OpenAPI_lcs_broadcast_assistance_types_data_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_lcs_broadcast_assistance_types_data_s OpenAPI_lcs_broadcast_assistance_types_data_t;
-typedef struct OpenAPI_lcs_broadcast_assistance_types_data_s {
+struct OpenAPI_lcs_broadcast_assistance_types_data_s {
     OpenAPI_binary_t* location_assistance_type;
-} OpenAPI_lcs_broadcast_assistance_types_data_t;
+};
 
 OpenAPI_lcs_broadcast_assistance_types_data_t *OpenAPI_lcs_broadcast_assistance_types_data_create(
     OpenAPI_binary_t* location_assistance_type

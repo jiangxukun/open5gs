@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_shared_data_s OpenAPI_shared_data_t;
 #include "access_and_mobility_subscription_data.h"
 #include "dnn_configuration.h"
 #include "ecs_addr_config_info.h"
@@ -27,8 +28,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_shared_data_s OpenAPI_shared_data_t;
-typedef struct OpenAPI_shared_data_s {
+struct OpenAPI_shared_data_s {
     char *shared_data_id;
     struct OpenAPI_access_and_mobility_subscription_data_s *shared_am_data;
     struct OpenAPI_sms_subscription_data_s *shared_sms_subs_data;
@@ -42,7 +42,7 @@ typedef struct OpenAPI_shared_data_s {
     struct OpenAPI_session_management_subscription_data_s *shared_sm_subs_data;
     bool is_shared_ecs_addr_config_info_null;
     struct OpenAPI_ecs_addr_config_info_s *shared_ecs_addr_config_info;
-} OpenAPI_shared_data_t;
+};
 
 OpenAPI_shared_data_t *OpenAPI_shared_data_create(
     char *shared_data_id,

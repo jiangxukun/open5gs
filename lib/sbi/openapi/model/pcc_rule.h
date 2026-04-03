@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pcc_rule_s OpenAPI_pcc_rule_t;
 #include "af_sig_protocol.h"
 #include "downlink_data_notification_control.h"
 #include "downlink_data_notification_control_rm.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pcc_rule_s OpenAPI_pcc_rule_t;
-typedef struct OpenAPI_pcc_rule_s {
+struct OpenAPI_pcc_rule_s {
     OpenAPI_list_t *flow_infos;
     char *app_id;
     char *app_descriptor;
@@ -69,7 +69,7 @@ typedef struct OpenAPI_pcc_rule_s {
     int dis_ue_notif;
     bool is_pack_filt_all_prec;
     int pack_filt_all_prec;
-} OpenAPI_pcc_rule_t;
+};
 
 OpenAPI_pcc_rule_t *OpenAPI_pcc_rule_create(
     OpenAPI_list_t *flow_infos,

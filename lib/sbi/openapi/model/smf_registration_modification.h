@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smf_registration_modification_s OpenAPI_smf_registration_modification_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smf_registration_modification_s OpenAPI_smf_registration_modification_t;
-typedef struct OpenAPI_smf_registration_modification_s {
+struct OpenAPI_smf_registration_modification_s {
     char *smf_instance_id;
     char *smf_set_id;
     char *pgw_fqdn;
-} OpenAPI_smf_registration_modification_t;
+};
 
 OpenAPI_smf_registration_modification_t *OpenAPI_smf_registration_modification_create(
     char *smf_instance_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_1_s OpenAPI_pdu_session_1_t;
 #include "plmn_id_1.h"
 #include "snssai.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_1_s OpenAPI_pdu_session_1_t;
-typedef struct OpenAPI_pdu_session_1_s {
+struct OpenAPI_pdu_session_1_s {
     char *dnn;
     char *smf_instance_id;
     struct OpenAPI_plmn_id_1_s *plmn_id;
     struct OpenAPI_snssai_s *single_nssai;
-} OpenAPI_pdu_session_1_t;
+};
 
 OpenAPI_pdu_session_1_t *OpenAPI_pdu_session_1_create(
     char *dnn,

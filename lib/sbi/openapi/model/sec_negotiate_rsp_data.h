@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sec_negotiate_rsp_data_s OpenAPI_sec_negotiate_rsp_data_t;
 #include "intended_n32_purpose.h"
 #include "plmn_id.h"
 #include "plmn_id_nid.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sec_negotiate_rsp_data_s OpenAPI_sec_negotiate_rsp_data_t;
-typedef struct OpenAPI_sec_negotiate_rsp_data_s {
+struct OpenAPI_sec_negotiate_rsp_data_s {
     char *sender;
     OpenAPI_security_capability_e selected_sec_capability;
     bool is__3_gpp_sbi_target_api_root_supported;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_sec_negotiate_rsp_data_s {
     OpenAPI_list_t *allowed_usage_purpose;
     OpenAPI_list_t *rejected_usage_purpose;
     char *supported_features;
-} OpenAPI_sec_negotiate_rsp_data_t;
+};
 
 OpenAPI_sec_negotiate_rsp_data_t *OpenAPI_sec_negotiate_rsp_data_create(
     char *sender,

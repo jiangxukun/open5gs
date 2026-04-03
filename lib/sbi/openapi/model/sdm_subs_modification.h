@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sdm_subs_modification_s OpenAPI_sdm_subs_modification_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sdm_subs_modification_s OpenAPI_sdm_subs_modification_t;
-typedef struct OpenAPI_sdm_subs_modification_s {
+struct OpenAPI_sdm_subs_modification_s {
     char *expires;
     OpenAPI_list_t *monitored_resource_uris;
-} OpenAPI_sdm_subs_modification_t;
+};
 
 OpenAPI_sdm_subs_modification_t *OpenAPI_sdm_subs_modification_create(
     char *expires,

@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_app_descriptor_1_s OpenAPI_app_descriptor_1_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_app_descriptor_1_s OpenAPI_app_descriptor_1_t;
-typedef struct OpenAPI_app_descriptor_1_s {
+struct OpenAPI_app_descriptor_1_s {
     char *os_id;
     char *app_id;
-} OpenAPI_app_descriptor_1_t;
+};
 
 OpenAPI_app_descriptor_1_t *OpenAPI_app_descriptor_1_create(
     char *os_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_policy_update_s OpenAPI_policy_update_t;
 #include "ambr.h"
 #include "as_time_distribution_param.h"
 #include "pcf_ue_callback_info.h"
@@ -27,8 +28,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_policy_update_s OpenAPI_policy_update_t;
-typedef struct OpenAPI_policy_update_s {
+struct OpenAPI_policy_update_s {
     char *resource_uri;
     bool is_triggers_null;
     OpenAPI_list_t *triggers;
@@ -50,7 +50,7 @@ typedef struct OpenAPI_policy_update_s {
     OpenAPI_list_t *match_pdus;
     bool is_as_time_dis_param_null;
     struct OpenAPI_as_time_distribution_param_s *as_time_dis_param;
-} OpenAPI_policy_update_t;
+};
 
 OpenAPI_policy_update_t *OpenAPI_policy_update_create(
     char *resource_uri,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ml_analytics_info_s OpenAPI_ml_analytics_info_t;
 #include "nwdaf_event.h"
 #include "snssai.h"
 #include "tai.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ml_analytics_info_s OpenAPI_ml_analytics_info_t;
-typedef struct OpenAPI_ml_analytics_info_s {
+struct OpenAPI_ml_analytics_info_s {
     OpenAPI_list_t *ml_analytics_ids;
     OpenAPI_list_t *snssai_list;
     OpenAPI_list_t *tracking_area_list;
-} OpenAPI_ml_analytics_info_t;
+};
 
 OpenAPI_ml_analytics_info_t *OpenAPI_ml_analytics_info_create(
     OpenAPI_list_t *ml_analytics_ids,

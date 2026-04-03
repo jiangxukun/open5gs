@@ -12,13 +12,13 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dnn_info_s OpenAPI_dnn_info_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dnn_info_s OpenAPI_dnn_info_t;
-typedef struct OpenAPI_dnn_info_s {
+struct OpenAPI_dnn_info_s {
     char *dnn;
     bool is_default_dnn_indicator;
     int default_dnn_indicator;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_dnn_info_s {
     OpenAPI_list_t *smf_list;
     bool is_same_smf_ind;
     int same_smf_ind;
-} OpenAPI_dnn_info_t;
+};
 
 OpenAPI_dnn_info_t *OpenAPI_dnn_info_create(
     char *dnn,

@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_roaming_info_update_s OpenAPI_roaming_info_update_t;
 #include "plmn_id.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_roaming_info_update_s OpenAPI_roaming_info_update_t;
-typedef struct OpenAPI_roaming_info_update_s {
+struct OpenAPI_roaming_info_update_s {
     bool is_roaming;
     int roaming;
     struct OpenAPI_plmn_id_s *serving_plmn;
-} OpenAPI_roaming_info_update_t;
+};
 
 OpenAPI_roaming_info_update_t *OpenAPI_roaming_info_update_create(
     bool is_roaming,

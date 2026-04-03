@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_events_subsc_put_data_s OpenAPI_events_subsc_put_data_t;
 #include "acc_net_charging_address.h"
 #include "access_net_charging_identifier.h"
 #include "access_type.h"
@@ -44,8 +45,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_events_subsc_put_data_s OpenAPI_events_subsc_put_data_t;
-typedef struct OpenAPI_events_subsc_put_data_s {
+struct OpenAPI_events_subsc_put_data_s {
     OpenAPI_list_t *events;
     char *notif_uri;
     OpenAPI_list_t *req_qos_mon_params;
@@ -84,7 +84,7 @@ typedef struct OpenAPI_events_subsc_put_data_s {
     struct OpenAPI_bridge_management_container_s *tsn_bridge_man_cont;
     struct OpenAPI_port_management_container_s *tsn_port_man_cont_dstt;
     OpenAPI_list_t *tsn_port_man_cont_nwtts;
-} OpenAPI_events_subsc_put_data_t;
+};
 
 OpenAPI_events_subsc_put_data_t *OpenAPI_events_subsc_put_data_create(
     OpenAPI_list_t *events,

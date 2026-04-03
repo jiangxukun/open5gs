@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_event_notification_s OpenAPI_event_notification_t;
 #include "abnormal_behaviour.h"
 #include "analytics_metadata_info.h"
 #include "dispersion_info.h"
@@ -35,8 +36,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_event_notification_s OpenAPI_event_notification_t;
-typedef struct OpenAPI_event_notification_s {
+struct OpenAPI_event_notification_s {
     OpenAPI_nwdaf_event_e event;
     char *start;
     char *expiry;
@@ -60,7 +60,7 @@ typedef struct OpenAPI_event_notification_s {
     OpenAPI_list_t *red_trans_infos;
     OpenAPI_list_t *wlan_infos;
     OpenAPI_list_t *smcc_exps;
-} OpenAPI_event_notification_t;
+};
 
 OpenAPI_event_notification_t *OpenAPI_event_notification_create(
     OpenAPI_nwdaf_event_e event,

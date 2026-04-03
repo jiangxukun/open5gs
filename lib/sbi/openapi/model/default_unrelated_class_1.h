@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_default_unrelated_class_1_s OpenAPI_default_unrelated_class_1_t;
 #include "code_word_ind.h"
 #include "geographic_area.h"
 #include "privacy_check_related_action.h"
@@ -21,14 +22,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_default_unrelated_class_1_s OpenAPI_default_unrelated_class_1_t;
-typedef struct OpenAPI_default_unrelated_class_1_s {
+struct OpenAPI_default_unrelated_class_1_s {
     OpenAPI_list_t *allowed_geographic_area;
     OpenAPI_privacy_check_related_action_e privacy_check_related_action;
     OpenAPI_code_word_ind_e code_word_ind;
     struct OpenAPI_valid_time_period_1_s *valid_time_period;
     OpenAPI_list_t *code_word_list;
-} OpenAPI_default_unrelated_class_1_t;
+};
 
 OpenAPI_default_unrelated_class_1_t *OpenAPI_default_unrelated_class_1_create(
     OpenAPI_list_t *allowed_geographic_area,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf3_gpp_access_registration_s OpenAPI_amf3_gpp_access_registration_t;
 #include "backup_amf_info.h"
 #include "context_info.h"
 #include "eps_interworking_info.h"
@@ -26,8 +27,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf3_gpp_access_registration_s OpenAPI_amf3_gpp_access_registration_t;
-typedef struct OpenAPI_amf3_gpp_access_registration_s {
+struct OpenAPI_amf3_gpp_access_registration_s {
     char *amf_instance_id;
     char *supported_features;
     bool is_purge_flag;
@@ -75,7 +75,7 @@ typedef struct OpenAPI_amf3_gpp_access_registration_s {
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
-} OpenAPI_amf3_gpp_access_registration_t;
+};
 
 OpenAPI_amf3_gpp_access_registration_t *OpenAPI_amf3_gpp_access_registration_create(
     char *amf_instance_id,

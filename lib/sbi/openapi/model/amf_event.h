@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf_event_s OpenAPI_amf_event_t;
 #include "amf_event_area.h"
 #include "amf_event_type.h"
 #include "dispersion_area.h"
@@ -27,8 +28,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf_event_s OpenAPI_amf_event_t;
-typedef struct OpenAPI_amf_event_s {
+struct OpenAPI_amf_event_s {
     OpenAPI_amf_event_type_e type;
     bool is_immediate_flag;
     int immediate_flag;
@@ -56,7 +56,7 @@ typedef struct OpenAPI_amf_event_s {
     bool is_idle_status_ind;
     int idle_status_ind;
     struct OpenAPI_dispersion_area_s *dispersion_area;
-} OpenAPI_amf_event_t;
+};
 
 OpenAPI_amf_event_t *OpenAPI_amf_event_create(
     OpenAPI_amf_event_type_e type,

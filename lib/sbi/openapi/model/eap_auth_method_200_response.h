@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_eap_auth_method_200_response_s OpenAPI_eap_auth_method_200_response_t;
 #include "links_value_schema.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_eap_auth_method_200_response_s OpenAPI_eap_auth_method_200_response_t;
-typedef struct OpenAPI_eap_auth_method_200_response_s {
+struct OpenAPI_eap_auth_method_200_response_s {
     char *eap_payload;
     OpenAPI_list_t* _links;
-} OpenAPI_eap_auth_method_200_response_t;
+};
 
 OpenAPI_eap_auth_method_200_response_t *OpenAPI_eap_auth_method_200_response_create(
     char *eap_payload,

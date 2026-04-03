@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_media_sub_component_rm_s OpenAPI_media_sub_component_rm_t;
 #include "af_sig_protocol.h"
 #include "eth_flow_description.h"
 #include "flow_status.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_media_sub_component_rm_s OpenAPI_media_sub_component_rm_t;
-typedef struct OpenAPI_media_sub_component_rm_s {
+struct OpenAPI_media_sub_component_rm_s {
     OpenAPI_af_sig_protocol_e af_sig_protocol;
     bool is_ethf_descs_null;
     OpenAPI_list_t *ethf_descs;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_media_sub_component_rm_s {
     bool is_tos_tr_cl_null;
     char *tos_tr_cl;
     OpenAPI_flow_usage_e flow_usage;
-} OpenAPI_media_sub_component_rm_t;
+};
 
 OpenAPI_media_sub_component_rm_t *OpenAPI_media_sub_component_rm_create(
     OpenAPI_af_sig_protocol_e af_sig_protocol,

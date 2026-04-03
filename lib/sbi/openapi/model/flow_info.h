@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_flow_info_s OpenAPI_flow_info_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_flow_info_s OpenAPI_flow_info_t;
-typedef struct OpenAPI_flow_info_s {
+struct OpenAPI_flow_info_s {
     int flow_id;
     OpenAPI_list_t *flow_descriptions;
-} OpenAPI_flow_info_t;
+};
 
 OpenAPI_flow_info_t *OpenAPI_flow_info_create(
     int flow_id,

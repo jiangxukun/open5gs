@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nf_profile_s OpenAPI_nf_profile_t;
 #include "aanf_info.h"
 #include "amf_info.h"
 #include "ausf_info.h"
@@ -60,8 +61,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nf_profile_s OpenAPI_nf_profile_t;
-typedef struct OpenAPI_nf_profile_s {
+struct OpenAPI_nf_profile_s {
     char *nf_instance_id;
     char *nf_instance_name;
     OpenAPI_nf_type_e nf_type;
@@ -157,7 +157,7 @@ typedef struct OpenAPI_nf_profile_s {
     OpenAPI_list_t *hni_list;
     struct OpenAPI_iwmsc_info_s *iwmsc_info;
     struct OpenAPI_mnpf_info_s *mnpf_info;
-} OpenAPI_nf_profile_t;
+};
 
 OpenAPI_nf_profile_t *OpenAPI_nf_profile_create(
     char *nf_instance_id,

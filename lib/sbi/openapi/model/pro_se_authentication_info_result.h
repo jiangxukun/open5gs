@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pro_se_authentication_info_result_s OpenAPI_pro_se_authentication_info_result_t;
 #include "auth_type.h"
 #include "av_eap_aka_prime.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pro_se_authentication_info_result_s OpenAPI_pro_se_authentication_info_result_t;
-typedef struct OpenAPI_pro_se_authentication_info_result_s {
+struct OpenAPI_pro_se_authentication_info_result_s {
     OpenAPI_auth_type_e auth_type;
     OpenAPI_list_t *prose_authentication_vectors;
     char *supi;
     char *supported_features;
-} OpenAPI_pro_se_authentication_info_result_t;
+};
 
 OpenAPI_pro_se_authentication_info_result_t *OpenAPI_pro_se_authentication_info_result_create(
     OpenAPI_auth_type_e auth_type,

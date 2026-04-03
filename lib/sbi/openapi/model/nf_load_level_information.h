@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nf_load_level_information_s OpenAPI_nf_load_level_information_t;
 #include "nf_type.h"
 #include "nnwdaf_nf_status.h"
 #include "snssai.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nf_load_level_information_s OpenAPI_nf_load_level_information_t;
-typedef struct OpenAPI_nf_load_level_information_s {
+struct OpenAPI_nf_load_level_information_s {
     OpenAPI_nf_type_e nf_type;
     char *nf_instance_id;
     char *nf_set_id;
@@ -42,7 +42,7 @@ typedef struct OpenAPI_nf_load_level_information_s {
     struct OpenAPI_snssai_s *snssai;
     bool is_confidence;
     int confidence;
-} OpenAPI_nf_load_level_information_t;
+};
 
 OpenAPI_nf_load_level_information_t *OpenAPI_nf_load_level_information_create(
     OpenAPI_nf_type_e nf_type,

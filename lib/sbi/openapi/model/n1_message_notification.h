@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n1_message_notification_s OpenAPI_n1_message_notification_t;
 #include "ecgi.h"
 #include "guami.h"
 #include "n1_message_container.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n1_message_notification_s OpenAPI_n1_message_notification_t;
-typedef struct OpenAPI_n1_message_notification_s {
+struct OpenAPI_n1_message_notification_s {
     char *n1_notify_subscription_id;
     struct OpenAPI_n1_message_container_s *n1_message_container;
     char *lcs_correlation_id;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_n1_message_notification_s {
     int c_io_t5_gs_optimisation;
     struct OpenAPI_ecgi_s *ecgi;
     struct OpenAPI_ncgi_s *ncgi;
-} OpenAPI_n1_message_notification_t;
+};
 
 OpenAPI_n1_message_notification_t *OpenAPI_n1_message_notification_create(
     char *n1_notify_subscription_id,

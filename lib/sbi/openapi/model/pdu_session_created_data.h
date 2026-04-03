@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_created_data_s OpenAPI_pdu_session_created_data_t;
 #include "ambr.h"
 #include "eps_bearer_info.h"
 #include "eps_pdn_cnx_info.h"
@@ -30,8 +31,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_created_data_s OpenAPI_pdu_session_created_data_t;
-typedef struct OpenAPI_pdu_session_created_data_s {
+struct OpenAPI_pdu_session_created_data_s {
     OpenAPI_pdu_session_type_e pdu_session_type;
     char *ssc_mode;
     struct OpenAPI_tunnel_info_s *hcn_tunnel_info;
@@ -81,7 +81,7 @@ typedef struct OpenAPI_pdu_session_created_data_s {
     int nspu_support_ind;
     char *inter_plmn_api_root;
     char *intra_plmn_api_root;
-} OpenAPI_pdu_session_created_data_t;
+};
 
 OpenAPI_pdu_session_created_data_t *OpenAPI_pdu_session_created_data_create(
     OpenAPI_pdu_session_type_e pdu_session_type,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_registration_data_sets_s OpenAPI_registration_data_sets_t;
 #include "amf3_gpp_access_registration.h"
 #include "amf_non3_gpp_access_registration.h"
 #include "ip_sm_gw_registration.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_registration_data_sets_s OpenAPI_registration_data_sets_t;
-typedef struct OpenAPI_registration_data_sets_s {
+struct OpenAPI_registration_data_sets_s {
     struct OpenAPI_amf3_gpp_access_registration_s *amf3_gpp;
     struct OpenAPI_amf_non3_gpp_access_registration_s *amf_non3_gpp;
     struct OpenAPI_smf_registration_info_s *smf_registration;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_registration_data_sets_s {
     bool is_ip_sm_gw_null;
     struct OpenAPI_ip_sm_gw_registration_s *ip_sm_gw;
     struct OpenAPI_nwdaf_registration_info_s *nwdaf_registration;
-} OpenAPI_registration_data_sets_t;
+};
 
 OpenAPI_registration_data_sets_t *OpenAPI_registration_data_sets_create(
     OpenAPI_amf3_gpp_access_registration_t *amf3_gpp,

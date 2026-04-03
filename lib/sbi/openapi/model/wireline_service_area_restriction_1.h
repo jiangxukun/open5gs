@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_wireline_service_area_restriction_1_s OpenAPI_wireline_service_area_restriction_1_t;
 #include "restriction_type.h"
 #include "wireline_area_1.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_wireline_service_area_restriction_1_s OpenAPI_wireline_service_area_restriction_1_t;
-typedef struct OpenAPI_wireline_service_area_restriction_1_s {
+struct OpenAPI_wireline_service_area_restriction_1_s {
     OpenAPI_restriction_type_e restriction_type;
     OpenAPI_list_t *areas;
-} OpenAPI_wireline_service_area_restriction_1_t;
+};
 
 OpenAPI_wireline_service_area_restriction_1_t *OpenAPI_wireline_service_area_restriction_1_create(
     OpenAPI_restriction_type_e restriction_type,

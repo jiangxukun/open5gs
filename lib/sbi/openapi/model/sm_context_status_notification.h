@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_context_status_notification_s OpenAPI_sm_context_status_notification_t;
 #include "apn_rate_status.h"
 #include "small_data_rate_status.h"
 #include "status_info.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_context_status_notification_s OpenAPI_sm_context_status_notification_t;
-typedef struct OpenAPI_sm_context_status_notification_s {
+struct OpenAPI_sm_context_status_notification_s {
     struct OpenAPI_status_info_s *status_info;
     struct OpenAPI_small_data_rate_status_s *small_data_rate_status;
     struct OpenAPI_apn_rate_status_s *apn_rate_status;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_sm_context_status_notification_s {
     struct OpenAPI_target_dnai_info_s *target_dnai_info;
     char *old_pdu_session_ref;
     char *inter_plmn_api_root;
-} OpenAPI_sm_context_status_notification_t;
+};
 
 OpenAPI_sm_context_status_notification_t *OpenAPI_sm_context_status_notification_create(
     OpenAPI_status_info_t *status_info,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_s OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_t;
 #include "dnai_change_type.h"
 #include "eth_flow_description.h"
 #include "flow_info.h"
@@ -26,8 +27,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_s OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_t;
-typedef struct OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_s {
+struct OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_s {
     char *up_path_chg_notif_corre_id;
     bool is_app_relo_ind;
     int app_relo_ind;
@@ -63,7 +63,7 @@ typedef struct OpenAPI__application_data_influence_data_subs_to_notify_post_requ
     char *res_uri;
     OpenAPI_list_t *reset_ids;
     struct OpenAPI_traffic_influ_data_s *traffic_influ_data;
-} OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_t;
+};
 
 OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_t *OpenAPI__application_data_influence_data_subs_to_notify_post_request_inner_create(
     char *up_path_chg_notif_corre_id,

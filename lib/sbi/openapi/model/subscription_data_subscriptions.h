@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_subscription_data_subscriptions_s OpenAPI_subscription_data_subscriptions_t;
 #include "hss_subscription_info.h"
 #include "sdm_subscription_1.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_subscription_data_subscriptions_s OpenAPI_subscription_data_subscriptions_t;
-typedef struct OpenAPI_subscription_data_subscriptions_s {
+struct OpenAPI_subscription_data_subscriptions_s {
     char *ue_id;
     char *callback_reference;
     char *original_callback_reference;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_subscription_data_subscriptions_s {
     bool is_unique_subscription;
     int unique_subscription;
     char *supported_features;
-} OpenAPI_subscription_data_subscriptions_t;
+};
 
 OpenAPI_subscription_data_subscriptions_t *OpenAPI_subscription_data_subscriptions_create(
     char *ue_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pro_se_allowed_plmn_1_s OpenAPI_pro_se_allowed_plmn_1_t;
 #include "plmn_id_1.h"
 #include "prose_direct_allowed.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pro_se_allowed_plmn_1_s OpenAPI_pro_se_allowed_plmn_1_t;
-typedef struct OpenAPI_pro_se_allowed_plmn_1_s {
+struct OpenAPI_pro_se_allowed_plmn_1_s {
     struct OpenAPI_plmn_id_1_s *visited_plmn;
     OpenAPI_list_t *prose_direct_allowed;
-} OpenAPI_pro_se_allowed_plmn_1_t;
+};
 
 OpenAPI_pro_se_allowed_plmn_1_t *OpenAPI_pro_se_allowed_plmn_1_create(
     OpenAPI_plmn_id_1_t *visited_plmn,

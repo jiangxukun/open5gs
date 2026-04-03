@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smf_registration_s OpenAPI_smf_registration_t;
 #include "context_info.h"
 #include "ip_address.h"
 #include "plmn_id.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smf_registration_s OpenAPI_smf_registration_t;
-typedef struct OpenAPI_smf_registration_s {
+struct OpenAPI_smf_registration_s {
     char *smf_instance_id;
     char *smf_set_id;
     char *supported_features;
@@ -48,7 +48,7 @@ typedef struct OpenAPI_smf_registration_s {
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
-} OpenAPI_smf_registration_t;
+};
 
 OpenAPI_smf_registration_t *OpenAPI_smf_registration_create(
     char *smf_instance_id,

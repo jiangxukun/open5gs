@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_location_info_s OpenAPI_location_info_t;
 #include "user_location.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_location_info_s OpenAPI_location_info_t;
-typedef struct OpenAPI_location_info_s {
+struct OpenAPI_location_info_s {
     struct OpenAPI_user_location_s *loc;
     bool is_ratio;
     int ratio;
     bool is_confidence;
     int confidence;
-} OpenAPI_location_info_t;
+};
 
 OpenAPI_location_info_t *OpenAPI_location_info_create(
     OpenAPI_user_location_t *loc,

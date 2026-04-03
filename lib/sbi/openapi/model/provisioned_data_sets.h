@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_provisioned_data_sets_s OpenAPI_provisioned_data_sets_t;
 #include "access_and_mobility_subscription_data.h"
 #include "authorization_data.h"
 #include "ee_profile_data.h"
@@ -33,8 +34,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_provisioned_data_sets_s OpenAPI_provisioned_data_sets_t;
-typedef struct OpenAPI_provisioned_data_sets_s {
+struct OpenAPI_provisioned_data_sets_s {
     struct OpenAPI_access_and_mobility_subscription_data_s *am_data;
     struct OpenAPI_smf_selection_subscription_data_s *smf_sel_data;
     struct OpenAPI_sms_subscription_data_s *sms_subs_data;
@@ -52,7 +52,7 @@ typedef struct OpenAPI_provisioned_data_sets_s {
     struct OpenAPI_pp_profile_data_s *pp_profile_data;
     struct OpenAPI_authorization_data_s *nidd_auth_data;
     struct OpenAPI_mbs_subscription_data_1_s *mbs_subscription_data;
-} OpenAPI_provisioned_data_sets_t;
+};
 
 OpenAPI_provisioned_data_sets_t *OpenAPI_provisioned_data_sets_create(
     OpenAPI_access_and_mobility_subscription_data_t *am_data,

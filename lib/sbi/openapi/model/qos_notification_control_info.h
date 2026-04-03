@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_notification_control_info_s OpenAPI_qos_notification_control_info_t;
 #include "flows.h"
 #include "qos_notif_type.h"
 
@@ -19,12 +20,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_notification_control_info_s OpenAPI_qos_notification_control_info_t;
-typedef struct OpenAPI_qos_notification_control_info_s {
+struct OpenAPI_qos_notification_control_info_s {
     OpenAPI_qos_notif_type_e notif_type;
     OpenAPI_list_t *flows;
     char *alt_ser_req;
-} OpenAPI_qos_notification_control_info_t;
+};
 
 OpenAPI_qos_notification_control_info_t *OpenAPI_qos_notification_control_info_create(
     OpenAPI_qos_notif_type_e notif_type,

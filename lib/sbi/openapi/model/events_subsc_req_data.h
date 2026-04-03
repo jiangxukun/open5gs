@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_events_subsc_req_data_s OpenAPI_events_subsc_req_data_t;
 #include "af_event_subscription.h"
 #include "qos_monitoring_information.h"
 #include "requested_qos_monitoring_parameter.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_events_subsc_req_data_s OpenAPI_events_subsc_req_data_t;
-typedef struct OpenAPI_events_subsc_req_data_s {
+struct OpenAPI_events_subsc_req_data_s {
     OpenAPI_list_t *events;
     char *notif_uri;
     OpenAPI_list_t *req_qos_mon_params;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_events_subsc_req_data_s {
     OpenAPI_list_t *af_app_ids;
     bool is_direct_notif_ind;
     int direct_notif_ind;
-} OpenAPI_events_subsc_req_data_t;
+};
 
 OpenAPI_events_subsc_req_data_t *OpenAPI_events_subsc_req_data_create(
     OpenAPI_list_t *events,

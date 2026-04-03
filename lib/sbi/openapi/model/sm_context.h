@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_context_s OpenAPI_sm_context_t;
 #include "ambr.h"
 #include "charging_information.h"
 #include "dnn_selection_mode.h"
@@ -34,8 +35,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_context_s OpenAPI_sm_context_t;
-typedef struct OpenAPI_sm_context_s {
+struct OpenAPI_sm_context_s {
     int pdu_session_id;
     char *dnn;
     char *selected_dnn;
@@ -106,7 +106,7 @@ typedef struct OpenAPI_sm_context_s {
     int disaster_roaming_ind;
     bool is_anchor_smf_oauth2_required;
     int anchor_smf_oauth2_required;
-} OpenAPI_sm_context_t;
+};
 
 OpenAPI_sm_context_t *OpenAPI_sm_context_create(
     int pdu_session_id,

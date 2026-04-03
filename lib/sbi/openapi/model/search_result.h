@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_search_result_s OpenAPI_search_result_t;
 #include "nf_instance_info.h"
 #include "nf_profile.h"
 #include "no_profile_match_info.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_search_result_s OpenAPI_search_result_t;
-typedef struct OpenAPI_search_result_s {
+struct OpenAPI_search_result_s {
     bool is_validity_period;
     int validity_period;
     OpenAPI_list_t *nf_instances;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_search_result_s {
     bool is_altered_priority_ind;
     int altered_priority_ind;
     struct OpenAPI_no_profile_match_info_s *no_profile_match_info;
-} OpenAPI_search_result_t;
+};
 
 OpenAPI_search_result_t *OpenAPI_search_result_create(
     bool is_validity_period,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_subs_data_1_s OpenAPI_sm_subs_data_1_t;
 #include "extended_sm_subs_data.h"
 #include "session_management_subscription_data_1.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_subs_data_1_s OpenAPI_sm_subs_data_1_t;
-typedef struct OpenAPI_sm_subs_data_1_s {
+struct OpenAPI_sm_subs_data_1_s {
     OpenAPI_list_t *session_management_subscription_data_list;
     struct OpenAPI_extended_sm_subs_data_s *extended_sm_subs_data;
-} OpenAPI_sm_subs_data_1_t;
+};
 
 OpenAPI_sm_subs_data_1_t *OpenAPI_sm_subs_data_1_create(
     OpenAPI_list_t *session_management_subscription_data_list,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_authentication_info_s OpenAPI_authentication_info_t;
 #include "resynchronization_info.h"
 #include "trace_data.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_authentication_info_s OpenAPI_authentication_info_t;
-typedef struct OpenAPI_authentication_info_s {
+struct OpenAPI_authentication_info_s {
     char *supi_or_suci;
     char *serving_network_name;
     struct OpenAPI_resynchronization_info_s *resynchronization_info;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_authentication_info_s {
     int disaster_roaming_ind;
     bool is_onboarding_ind;
     int onboarding_ind;
-} OpenAPI_authentication_info_t;
+};
 
 OpenAPI_authentication_info_t *OpenAPI_authentication_info_create(
     char *supi_or_suci,

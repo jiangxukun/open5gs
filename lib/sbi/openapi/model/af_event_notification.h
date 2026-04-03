@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_af_event_notification_s OpenAPI_af_event_notification_t;
 #include "flows.h"
 #include "npcf_af_event.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_af_event_notification_s OpenAPI_af_event_notification_t;
-typedef struct OpenAPI_af_event_notification_s {
+struct OpenAPI_af_event_notification_s {
     OpenAPI_npcf_af_event_e event;
     OpenAPI_list_t *flows;
-} OpenAPI_af_event_notification_t;
+};
 
 OpenAPI_af_event_notification_t *OpenAPI_af_event_notification_create(
     OpenAPI_npcf_af_event_e event,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_immediate_report_s OpenAPI_immediate_report_t;
 #include "shared_data.h"
 #include "subscription_data_sets.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_immediate_report_s OpenAPI_immediate_report_t;
-typedef struct OpenAPI_immediate_report_s {
+struct OpenAPI_immediate_report_s {
     struct OpenAPI_subscription_data_sets_s *subscription_data_sets;
     OpenAPI_list_t *shared_data_list;
-} OpenAPI_immediate_report_t;
+};
 
 OpenAPI_immediate_report_t *OpenAPI_immediate_report_create(
     OpenAPI_subscription_data_sets_t *subscription_data_sets,

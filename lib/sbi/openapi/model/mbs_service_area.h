@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_mbs_service_area_s OpenAPI_mbs_service_area_t;
 #include "ncgi_tai.h"
 #include "tai.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_mbs_service_area_s OpenAPI_mbs_service_area_t;
-typedef struct OpenAPI_mbs_service_area_s {
+struct OpenAPI_mbs_service_area_s {
     OpenAPI_list_t *ncgi_list;
     OpenAPI_list_t *tai_list;
-} OpenAPI_mbs_service_area_t;
+};
 
 OpenAPI_mbs_service_area_t *OpenAPI_mbs_service_area_create(
     OpenAPI_list_t *ncgi_list,

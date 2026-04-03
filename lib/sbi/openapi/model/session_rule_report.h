@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_session_rule_report_s OpenAPI_session_rule_report_t;
 #include "policy_decision_failure_code.h"
 #include "rule_status.h"
 #include "session_rule_failure_code.h"
@@ -20,13 +21,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_session_rule_report_s OpenAPI_session_rule_report_t;
-typedef struct OpenAPI_session_rule_report_s {
+struct OpenAPI_session_rule_report_s {
     OpenAPI_list_t *rule_ids;
     OpenAPI_rule_status_e rule_status;
     OpenAPI_session_rule_failure_code_e sess_rule_failure_code;
     OpenAPI_list_t *policy_dec_failure_reports;
-} OpenAPI_session_rule_report_t;
+};
 
 OpenAPI_session_rule_report_t *OpenAPI_session_rule_report_create(
     OpenAPI_list_t *rule_ids,

@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_data_s OpenAPI_qos_data_t;
 #include "arp.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_data_s OpenAPI_qos_data_t;
-typedef struct OpenAPI_qos_data_s {
+struct OpenAPI_qos_data_s {
     char *qos_id;
     bool is__5qi;
     int _5qi;
@@ -61,7 +61,7 @@ typedef struct OpenAPI_qos_data_s {
     bool is_packet_delay_budget;
     int packet_delay_budget;
     char *packet_error_rate;
-} OpenAPI_qos_data_t;
+};
 
 OpenAPI_qos_data_t *OpenAPI_qos_data_create(
     char *qos_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_context_s OpenAPI_pdu_session_context_t;
 #include "access_type.h"
 #include "cn_assisted_ran_para.h"
 #include "ebi_arp_mapping.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_context_s OpenAPI_pdu_session_context_t;
-typedef struct OpenAPI_pdu_session_context_s {
+struct OpenAPI_pdu_session_context_s {
     int pdu_session_id;
     char *sm_context_ref;
     struct OpenAPI_snssai_s *s_nssai;
@@ -65,7 +65,7 @@ typedef struct OpenAPI_pdu_session_context_s {
     char *anchor_smf_supported_features;
     bool is_anchor_smf_oauth2_required;
     int anchor_smf_oauth2_required;
-} OpenAPI_pdu_session_context_t;
+};
 
 OpenAPI_pdu_session_context_t *OpenAPI_pdu_session_context_create(
     int pdu_session_id,

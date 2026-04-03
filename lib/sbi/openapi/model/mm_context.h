@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_mm_context_s OpenAPI_mm_context_t;
 #include "access_type.h"
 #include "eps_nas_security_mode.h"
 #include "expected_ue_behavior.h"
@@ -27,8 +28,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_mm_context_s OpenAPI_mm_context_t;
-typedef struct OpenAPI_mm_context_s {
+struct OpenAPI_mm_context_s {
     OpenAPI_access_type_e access_type;
     struct OpenAPI_nas_security_mode_s *nas_security_mode;
     struct OpenAPI_eps_nas_security_mode_s *eps_nas_security_mode;
@@ -55,7 +55,7 @@ typedef struct OpenAPI_mm_context_s {
     OpenAPI_list_t *nssaa_status_list;
     OpenAPI_list_t *pending_nssai_mapping_list;
     OpenAPI_uuaa_mm_status_e uuaa_mm_status;
-} OpenAPI_mm_context_t;
+};
 
 OpenAPI_mm_context_t *OpenAPI_mm_context_create(
     OpenAPI_access_type_e access_type,

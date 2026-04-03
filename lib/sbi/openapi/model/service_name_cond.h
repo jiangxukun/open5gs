@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_service_name_cond_s OpenAPI_service_name_cond_t;
 #include "service_name.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_service_name_cond_s OpenAPI_service_name_cond_t;
-typedef struct OpenAPI_service_name_cond_s {
+struct OpenAPI_service_name_cond_s {
     OpenAPI_service_name_e service_name;
-} OpenAPI_service_name_cond_t;
+};
 
 OpenAPI_service_name_cond_t *OpenAPI_service_name_cond_create(
     OpenAPI_service_name_e service_name

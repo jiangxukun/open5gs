@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pp_data_entry_s OpenAPI_pp_data_entry_t;
 #include "communication_characteristics_af.h"
 #include "ec_restriction_1.h"
 #include "ecs_addr_config_info_1.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pp_data_entry_s OpenAPI_pp_data_entry_t;
-typedef struct OpenAPI_pp_data_entry_s {
+struct OpenAPI_pp_data_entry_s {
     bool is_communication_characteristics_null;
     struct OpenAPI_communication_characteristics_af_s *communication_characteristics;
     bool is_reference_id;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_pp_data_entry_s {
     OpenAPI_list_t *additional_ecs_addr_config_infos;
     bool is_ec_restriction_null;
     struct OpenAPI_ec_restriction_1_s *ec_restriction;
-} OpenAPI_pp_data_entry_t;
+};
 
 OpenAPI_pp_data_entry_t *OpenAPI_pp_data_entry_create(
     bool is_communication_characteristics_null,

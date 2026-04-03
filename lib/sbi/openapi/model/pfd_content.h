@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pfd_content_s OpenAPI_pfd_content_t;
 #include "domain_name_protocol.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pfd_content_s OpenAPI_pfd_content_t;
-typedef struct OpenAPI_pfd_content_s {
+struct OpenAPI_pfd_content_s {
     char *pfd_id;
     OpenAPI_list_t *flow_descriptions;
     OpenAPI_list_t *urls;
     OpenAPI_list_t *domain_names;
     OpenAPI_domain_name_protocol_e dn_protocol;
-} OpenAPI_pfd_content_t;
+};
 
 OpenAPI_pfd_content_t *OpenAPI_pfd_content_create(
     char *pfd_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_problem_details_1_s OpenAPI_problem_details_1_t;
 #include "access_token_err.h"
 #include "access_token_req.h"
 #include "invalid_param.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_problem_details_1_s OpenAPI_problem_details_1_t;
-typedef struct OpenAPI_problem_details_1_s {
+struct OpenAPI_problem_details_1_s {
     char *type;
     char *title;
     bool is_status;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_problem_details_1_s {
     struct OpenAPI_access_token_err_s *access_token_error;
     struct OpenAPI_access_token_req_s *access_token_request;
     char *nrf_id;
-} OpenAPI_problem_details_1_t;
+};
 
 OpenAPI_problem_details_1_t *OpenAPI_problem_details_1_create(
     char *type,

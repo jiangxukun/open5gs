@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_pcscf_info_list_value_value_s OpenAPI_nrf_info_served_pcscf_info_list_value_value_t;
 #include "access_type.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_pcscf_info_list_value_value_s OpenAPI_nrf_info_served_pcscf_info_list_value_value_t;
-typedef struct OpenAPI_nrf_info_served_pcscf_info_list_value_value_s {
+struct OpenAPI_nrf_info_served_pcscf_info_list_value_value_s {
     OpenAPI_list_t *access_type;
     OpenAPI_list_t *dnn_list;
     char *gm_fqdn;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_nrf_info_served_pcscf_info_list_value_value_s {
     OpenAPI_list_t *mw_ipv6_addresses;
     OpenAPI_list_t *served_ipv4_address_ranges;
     OpenAPI_list_t *served_ipv6_prefix_ranges;
-} OpenAPI_nrf_info_served_pcscf_info_list_value_value_t;
+};
 
 OpenAPI_nrf_info_served_pcscf_info_list_value_value_t *OpenAPI_nrf_info_served_pcscf_info_list_value_value_create(
     OpenAPI_list_t *access_type,

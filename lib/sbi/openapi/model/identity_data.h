@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_identity_data_s OpenAPI_identity_data_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_identity_data_s OpenAPI_identity_data_t;
-typedef struct OpenAPI_identity_data_s {
+struct OpenAPI_identity_data_s {
     OpenAPI_list_t *supi_list;
     OpenAPI_list_t *gpsi_list;
     OpenAPI_list_t *allowed_af_ids;
     OpenAPI_list_t* application_port_ids;
-} OpenAPI_identity_data_t;
+};
 
 OpenAPI_identity_data_t *OpenAPI_identity_data_create(
     OpenAPI_list_t *supi_list,

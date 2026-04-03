@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_wlan_performance_req_s OpenAPI_wlan_performance_req_t;
 #include "matching_direction.h"
 #include "wlan_ordering_criterion.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_wlan_performance_req_s OpenAPI_wlan_performance_req_t;
-typedef struct OpenAPI_wlan_performance_req_s {
+struct OpenAPI_wlan_performance_req_s {
     OpenAPI_list_t *ss_ids;
     OpenAPI_list_t *bss_ids;
     OpenAPI_wlan_ordering_criterion_e wlan_order_criter;
     OpenAPI_matching_direction_e order;
-} OpenAPI_wlan_performance_req_t;
+};
 
 OpenAPI_wlan_performance_req_t *OpenAPI_wlan_performance_req_create(
     OpenAPI_list_t *ss_ids,

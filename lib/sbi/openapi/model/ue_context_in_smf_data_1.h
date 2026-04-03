@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_in_smf_data_1_s OpenAPI_ue_context_in_smf_data_1_t;
 #include "emergency_info_1.h"
 #include "pdu_session_1.h"
 #include "pgw_info_1.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_in_smf_data_1_s OpenAPI_ue_context_in_smf_data_1_t;
-typedef struct OpenAPI_ue_context_in_smf_data_1_s {
+struct OpenAPI_ue_context_in_smf_data_1_s {
     OpenAPI_list_t* pdu_sessions;
     OpenAPI_list_t *pgw_info;
     struct OpenAPI_emergency_info_1_s *emergency_info;
-} OpenAPI_ue_context_in_smf_data_1_t;
+};
 
 OpenAPI_ue_context_in_smf_data_1_t *OpenAPI_ue_context_in_smf_data_1_create(
     OpenAPI_list_t* pdu_sessions,

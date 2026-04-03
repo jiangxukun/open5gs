@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_hss_authentication_vectors_s OpenAPI_hss_authentication_vectors_t;
 #include "av_eap_aka_prime.h"
 #include "av_eps_aka.h"
 #include "av_ims_gba_eap_aka.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_hss_authentication_vectors_s OpenAPI_hss_authentication_vectors_t;
-typedef struct OpenAPI_hss_authentication_vectors_s {
+struct OpenAPI_hss_authentication_vectors_s {
     OpenAPI_list_t *av_eps_aka_list;
     OpenAPI_list_t *av_ims_gba_eap_aka_list;
     OpenAPI_list_t *av_eap_aka_prime_list;
-} OpenAPI_hss_authentication_vectors_t;
+};
 
 OpenAPI_hss_authentication_vectors_t *OpenAPI_hss_authentication_vectors_create(
     OpenAPI_list_t *av_eps_aka_list,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_vsmf_updated_data_s OpenAPI_vsmf_updated_data_t;
 #include "arp.h"
 #include "ebi_arp_mapping.h"
 #include "n4_information.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_vsmf_updated_data_s OpenAPI_vsmf_updated_data_t;
-typedef struct OpenAPI_vsmf_updated_data_s {
+struct OpenAPI_vsmf_updated_data_s {
     OpenAPI_list_t *qos_flows_add_mod_list;
     OpenAPI_list_t *qos_flows_rel_list;
     OpenAPI_list_t *qos_flows_failedto_add_mod_list;
@@ -45,7 +45,7 @@ typedef struct OpenAPI_vsmf_updated_data_s {
     struct OpenAPI_n4_information_s *n4_info_ext1;
     struct OpenAPI_n4_information_s *n4_info_ext2;
     struct OpenAPI_n4_information_s *n4_info_ext3;
-} OpenAPI_vsmf_updated_data_t;
+};
 
 OpenAPI_vsmf_updated_data_t *OpenAPI_vsmf_updated_data_create(
     OpenAPI_list_t *qos_flows_add_mod_list,

@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nsacf_capability_s OpenAPI_nsacf_capability_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nsacf_capability_s OpenAPI_nsacf_capability_t;
-typedef struct OpenAPI_nsacf_capability_s {
+struct OpenAPI_nsacf_capability_s {
     bool is_support_ue_sac;
     int support_ue_sac;
     bool is_support_pdu_sac;
     int support_pdu_sac;
-} OpenAPI_nsacf_capability_t;
+};
 
 OpenAPI_nsacf_capability_t *OpenAPI_nsacf_capability_create(
     bool is_support_ue_sac,

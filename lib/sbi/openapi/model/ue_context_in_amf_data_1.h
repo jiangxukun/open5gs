@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_in_amf_data_1_s OpenAPI_ue_context_in_amf_data_1_t;
 #include "amf_info_1.h"
 #include "eps_interworking_info.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_in_amf_data_1_s OpenAPI_ue_context_in_amf_data_1_t;
-typedef struct OpenAPI_ue_context_in_amf_data_1_s {
+struct OpenAPI_ue_context_in_amf_data_1_s {
     struct OpenAPI_eps_interworking_info_s *eps_interworking_info;
     OpenAPI_list_t *amf_info;
-} OpenAPI_ue_context_in_amf_data_1_t;
+};
 
 OpenAPI_ue_context_in_amf_data_1_t *OpenAPI_ue_context_in_amf_data_1_create(
     OpenAPI_eps_interworking_info_t *eps_interworking_info,

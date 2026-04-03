@@ -12,21 +12,21 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_policy_set_patch_s OpenAPI_ue_policy_set_patch_t;
 #include "ue_policy_section.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_policy_set_patch_s OpenAPI_ue_policy_set_patch_t;
-typedef struct OpenAPI_ue_policy_set_patch_s {
+struct OpenAPI_ue_policy_set_patch_s {
     OpenAPI_list_t* ue_policy_sections;
     OpenAPI_list_t *upsis;
     bool is_andsp_ind;
     int andsp_ind;
     char *pei;
     OpenAPI_list_t *os_ids;
-} OpenAPI_ue_policy_set_patch_t;
+};
 
 OpenAPI_ue_policy_set_patch_t *OpenAPI_ue_policy_set_patch_create(
     OpenAPI_list_t* ue_policy_sections,

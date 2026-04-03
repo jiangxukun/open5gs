@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_service_experience_info_s OpenAPI_service_experience_info_t;
 #include "addr_fqdn.h"
 #include "location_info.h"
 #include "network_area_info.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_service_experience_info_s OpenAPI_service_experience_info_t;
-typedef struct OpenAPI_service_experience_info_s {
+struct OpenAPI_service_experience_info_s {
     struct OpenAPI_svc_experience_s *svc_exprc;
     bool is_svc_exprc_variance;
     float svc_exprc_variance;
@@ -46,7 +46,7 @@ typedef struct OpenAPI_service_experience_info_s {
     bool is_ratio;
     int ratio;
     struct OpenAPI_rat_freq_information_s *rat_freq;
-} OpenAPI_service_experience_info_t;
+};
 
 OpenAPI_service_experience_info_t *OpenAPI_service_experience_info_create(
     OpenAPI_svc_experience_t *svc_exprc,

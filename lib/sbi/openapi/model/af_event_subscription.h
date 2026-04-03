@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_af_event_subscription_s OpenAPI_af_event_subscription_t;
 #include "af_notif_method.h"
 #include "npcf_af_event.h"
 
@@ -19,15 +20,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_af_event_subscription_s OpenAPI_af_event_subscription_t;
-typedef struct OpenAPI_af_event_subscription_s {
+struct OpenAPI_af_event_subscription_s {
     OpenAPI_npcf_af_event_e event;
     OpenAPI_af_notif_method_e notif_method;
     bool is_rep_period;
     int rep_period;
     bool is_wait_time;
     int wait_time;
-} OpenAPI_af_event_subscription_t;
+};
 
 OpenAPI_af_event_subscription_t *OpenAPI_af_event_subscription_create(
     OpenAPI_npcf_af_event_e event,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_hsmf_updated_data_s OpenAPI_hsmf_updated_data_t;
 #include "ambr.h"
 #include "eps_bearer_info.h"
 #include "eps_pdn_cnx_info.h"
@@ -26,8 +27,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_hsmf_updated_data_s OpenAPI_hsmf_updated_data_t;
-typedef struct OpenAPI_hsmf_updated_data_s {
+struct OpenAPI_hsmf_updated_data_s {
     struct OpenAPI_ref_to_binary_data_s *n1_sm_info_to_ue;
     struct OpenAPI_n4_information_s *n4_info;
     struct OpenAPI_n4_information_s *n4_info_ext1;
@@ -49,7 +49,7 @@ typedef struct OpenAPI_hsmf_updated_data_s {
     int pti;
     char *inter_plmn_api_root;
     char *intra_plmn_api_root;
-} OpenAPI_hsmf_updated_data_t;
+};
 
 OpenAPI_hsmf_updated_data_t *OpenAPI_hsmf_updated_data_create(
     OpenAPI_ref_to_binary_data_t *n1_sm_info_to_ue,

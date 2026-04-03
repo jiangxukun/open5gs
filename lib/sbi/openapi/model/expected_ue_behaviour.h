@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_expected_ue_behaviour_s OpenAPI_expected_ue_behaviour_t;
 #include "battery_indication_rm.h"
 #include "location_area.h"
 #include "scheduled_communication_time_rm.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_expected_ue_behaviour_s OpenAPI_expected_ue_behaviour_t;
-typedef struct OpenAPI_expected_ue_behaviour_s {
+struct OpenAPI_expected_ue_behaviour_s {
     char *af_instance_id;
     int reference_id;
     OpenAPI_stationary_indication_e stationary_indication;
@@ -44,7 +44,7 @@ typedef struct OpenAPI_expected_ue_behaviour_s {
     struct OpenAPI_battery_indication_rm_s *battery_indication;
     char *validity_time;
     char *mtc_provider_information;
-} OpenAPI_expected_ue_behaviour_t;
+};
 
 OpenAPI_expected_ue_behaviour_t *OpenAPI_expected_ue_behaviour_create(
     char *af_instance_id,

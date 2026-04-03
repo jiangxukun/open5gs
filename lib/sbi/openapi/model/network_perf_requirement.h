@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_network_perf_requirement_s OpenAPI_network_perf_requirement_t;
 #include "network_perf_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_network_perf_requirement_s OpenAPI_network_perf_requirement_t;
-typedef struct OpenAPI_network_perf_requirement_s {
+struct OpenAPI_network_perf_requirement_s {
     OpenAPI_network_perf_type_e nw_perf_type;
     bool is_relative_ratio;
     int relative_ratio;
     bool is_absolute_num;
     int absolute_num;
-} OpenAPI_network_perf_requirement_t;
+};
 
 OpenAPI_network_perf_requirement_t *OpenAPI_network_perf_requirement_create(
     OpenAPI_network_perf_type_e nw_perf_type,

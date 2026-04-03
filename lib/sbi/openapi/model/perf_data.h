@@ -12,13 +12,13 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_perf_data_s OpenAPI_perf_data_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_perf_data_s OpenAPI_perf_data_t;
-typedef struct OpenAPI_perf_data_s {
+struct OpenAPI_perf_data_s {
     char *avg_traffic_rate;
     char *max_traffic_rate;
     bool is_ave_packet_delay;
@@ -27,7 +27,7 @@ typedef struct OpenAPI_perf_data_s {
     int max_packet_delay;
     bool is_avg_packet_loss_rate;
     int avg_packet_loss_rate;
-} OpenAPI_perf_data_t;
+};
 
 OpenAPI_perf_data_t *OpenAPI_perf_data_create(
     char *avg_traffic_rate,

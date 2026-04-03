@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nf_service_s OpenAPI_nf_service_t;
 #include "default_notification_subscription.h"
 #include "ext_snssai.h"
 #include "ip_end_point.h"
@@ -30,8 +31,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nf_service_s OpenAPI_nf_service_t;
-typedef struct OpenAPI_nf_service_s {
+struct OpenAPI_nf_service_s {
     char *service_instance_id;
     OpenAPI_service_name_e service_name;
     OpenAPI_list_t *versions;
@@ -66,7 +66,7 @@ typedef struct OpenAPI_nf_service_s {
     bool is_oauth2_required;
     int oauth2_required;
     struct OpenAPI_plmn_oauth2_s *per_plmn_oauth2_req_list;
-} OpenAPI_nf_service_t;
+};
 
 OpenAPI_nf_service_t *OpenAPI_nf_service_create(
     char *service_instance_id,

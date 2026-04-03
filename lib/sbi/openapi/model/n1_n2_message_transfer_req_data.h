@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n1_n2_message_transfer_req_data_s OpenAPI_n1_n2_message_transfer_req_data_t;
 #include "access_type.h"
 #include "area_of_validity.h"
 #include "arp.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n1_n2_message_transfer_req_data_s OpenAPI_n1_n2_message_transfer_req_data_t;
-typedef struct OpenAPI_n1_n2_message_transfer_req_data_s {
+struct OpenAPI_n1_n2_message_transfer_req_data_s {
     struct OpenAPI_n1_message_container_s *n1_message_container;
     struct OpenAPI_n2_info_container_s *n2_info_container;
     struct OpenAPI_ref_to_binary_data_s *mt_data;
@@ -53,7 +53,7 @@ typedef struct OpenAPI_n1_n2_message_transfer_req_data_s {
     int ext_buf_support;
     OpenAPI_access_type_e target_access;
     char *nf_id;
-} OpenAPI_n1_n2_message_transfer_req_data_t;
+};
 
 OpenAPI_n1_n2_message_transfer_req_data_t *OpenAPI_n1_n2_message_transfer_req_data_create(
     OpenAPI_n1_message_container_t *n1_message_container,

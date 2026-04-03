@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf3_gpp_access_registration_modification_s OpenAPI_amf3_gpp_access_registration_modification_t;
 #include "backup_amf_info.h"
 #include "eps_interworking_info.h"
 #include "guami.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf3_gpp_access_registration_modification_s OpenAPI_amf3_gpp_access_registration_modification_t;
-typedef struct OpenAPI_amf3_gpp_access_registration_modification_s {
+struct OpenAPI_amf3_gpp_access_registration_modification_s {
     struct OpenAPI_guami_s *guami;
     bool is_purge_flag;
     int purge_flag;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_amf3_gpp_access_registration_modification_s {
     int ue_srvcc_capability;
     bool is_ue_mint_capability;
     int ue_mint_capability;
-} OpenAPI_amf3_gpp_access_registration_modification_t;
+};
 
 OpenAPI_amf3_gpp_access_registration_modification_t *OpenAPI_amf3_gpp_access_registration_modification_create(
     OpenAPI_guami_t *guami,

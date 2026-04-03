@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_plmn_ec_info_1_s OpenAPI_plmn_ec_info_1_t;
 #include "ec_restriction_data_wb.h"
 #include "plmn_id_1.h"
 
@@ -19,14 +20,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_plmn_ec_info_1_s OpenAPI_plmn_ec_info_1_t;
-typedef struct OpenAPI_plmn_ec_info_1_s {
+struct OpenAPI_plmn_ec_info_1_s {
     struct OpenAPI_plmn_id_1_s *plmn_id;
     bool is_ec_restriction_data_wb_null;
     struct OpenAPI_ec_restriction_data_wb_s *ec_restriction_data_wb;
     bool is_ec_restriction_data_nb;
     int ec_restriction_data_nb;
-} OpenAPI_plmn_ec_info_1_t;
+};
 
 OpenAPI_plmn_ec_info_1_t *OpenAPI_plmn_ec_info_1_create(
     OpenAPI_plmn_id_1_t *plmn_id,

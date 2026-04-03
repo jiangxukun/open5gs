@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_udm_info_value_s OpenAPI_nrf_info_served_udm_info_value_t;
 #include "identity_range.h"
 #include "internal_group_id_range.h"
 #include "suci_info.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_udm_info_value_s OpenAPI_nrf_info_served_udm_info_value_t;
-typedef struct OpenAPI_nrf_info_served_udm_info_value_s {
+struct OpenAPI_nrf_info_served_udm_info_value_s {
     char *group_id;
     OpenAPI_list_t *supi_ranges;
     OpenAPI_list_t *gpsi_ranges;
@@ -31,7 +31,7 @@ typedef struct OpenAPI_nrf_info_served_udm_info_value_s {
     OpenAPI_list_t *routing_indicators;
     OpenAPI_list_t *internal_group_identifiers_ranges;
     OpenAPI_list_t *suci_infos;
-} OpenAPI_nrf_info_served_udm_info_value_t;
+};
 
 OpenAPI_nrf_info_served_udm_info_value_t *OpenAPI_nrf_info_served_udm_info_value_create(
     char *group_id,

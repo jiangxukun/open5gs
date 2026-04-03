@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_traffic_influ_sub_s OpenAPI_traffic_influ_sub_t;
 #include "snssai.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_traffic_influ_sub_s OpenAPI_traffic_influ_sub_t;
-typedef struct OpenAPI_traffic_influ_sub_s {
+struct OpenAPI_traffic_influ_sub_s {
     OpenAPI_list_t *dnns;
     OpenAPI_list_t *snssais;
     OpenAPI_list_t *internal_group_ids;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_traffic_influ_sub_s {
     char *expiry;
     char *supported_features;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_traffic_influ_sub_t;
+};
 
 OpenAPI_traffic_influ_sub_t *OpenAPI_traffic_influ_sub_create(
     OpenAPI_list_t *dnns,

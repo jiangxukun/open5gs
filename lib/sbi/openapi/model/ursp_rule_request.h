@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ursp_rule_request_s OpenAPI_ursp_rule_request_t;
 #include "route_selection_parameter_set.h"
 #include "traffic_descriptor_components.h"
 
@@ -19,14 +20,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ursp_rule_request_s OpenAPI_ursp_rule_request_t;
-typedef struct OpenAPI_ursp_rule_request_s {
+struct OpenAPI_ursp_rule_request_s {
     bool is_traffic_desc_null;
     struct OpenAPI_traffic_descriptor_components_s *traffic_desc;
     bool is_relat_precedence;
     int relat_precedence;
     OpenAPI_list_t *route_sel_param_sets;
-} OpenAPI_ursp_rule_request_t;
+};
 
 OpenAPI_ursp_rule_request_t *OpenAPI_ursp_rule_request_create(
     bool is_traffic_desc_null,

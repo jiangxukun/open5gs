@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smf_selection_subscription_data_s OpenAPI_smf_selection_subscription_data_t;
 #include "snssai_info.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smf_selection_subscription_data_s OpenAPI_smf_selection_subscription_data_t;
-typedef struct OpenAPI_smf_selection_subscription_data_s {
+struct OpenAPI_smf_selection_subscription_data_s {
     char *supported_features;
     OpenAPI_list_t* subscribed_snssai_infos;
     char *shared_snssai_infos_id;
     char *hss_group_id;
-} OpenAPI_smf_selection_subscription_data_t;
+};
 
 OpenAPI_smf_selection_subscription_data_t *OpenAPI_smf_selection_subscription_data_create(
     char *supported_features,

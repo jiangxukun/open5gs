@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smsf_registration_s OpenAPI_smsf_registration_t;
 #include "context_info.h"
 #include "network_node_diameter_address.h"
 #include "plmn_id.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smsf_registration_s OpenAPI_smsf_registration_t;
-typedef struct OpenAPI_smsf_registration_s {
+struct OpenAPI_smsf_registration_s {
     char *smsf_instance_id;
     char *smsf_set_id;
     char *supported_features;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_smsf_registration_s {
     bool is_udr_restart_ind;
     int udr_restart_ind;
     char *last_synchronization_time;
-} OpenAPI_smsf_registration_t;
+};
 
 OpenAPI_smsf_registration_t *OpenAPI_smsf_registration_create(
     char *smsf_instance_id,

@@ -12,13 +12,13 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_tscai_input_container_s OpenAPI_tscai_input_container_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_tscai_input_container_s OpenAPI_tscai_input_container_t;
-typedef struct OpenAPI_tscai_input_container_s {
+struct OpenAPI_tscai_input_container_s {
     bool is_periodicity;
     int periodicity;
     char *burst_arrival_time;
@@ -26,7 +26,7 @@ typedef struct OpenAPI_tscai_input_container_s {
     int sur_time_in_num_msg;
     bool is_sur_time_in_time;
     int sur_time_in_time;
-} OpenAPI_tscai_input_container_t;
+};
 
 OpenAPI_tscai_input_container_t *OpenAPI_tscai_input_container_create(
     bool is_periodicity,

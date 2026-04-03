@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s OpenAPI_local3d_point_uncertainty_ellipsoid_t;
 #include "gad_shape.h"
 #include "local_origin.h"
 #include "relative_cartesian_location.h"
@@ -22,14 +23,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s OpenAPI_local3d_point_uncertainty_ellipsoid_t;
-typedef struct OpenAPI_local3d_point_uncertainty_ellipsoid_s {
+struct OpenAPI_local3d_point_uncertainty_ellipsoid_s {
     OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_local_origin_s *local_origin;
     struct OpenAPI_relative_cartesian_location_s *point;
     struct OpenAPI_uncertainty_ellipsoid_s *uncertainty_ellipsoid;
     int confidence;
-} OpenAPI_local3d_point_uncertainty_ellipsoid_t;
+};
 
 OpenAPI_local3d_point_uncertainty_ellipsoid_t *OpenAPI_local3d_point_uncertainty_ellipsoid_create(
     OpenAPI_supported_gad_shapes_e shape,

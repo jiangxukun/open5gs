@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_access_token_req_s OpenAPI_access_token_req_t;
 #include "nf_type.h"
 #include "plmn_id.h"
 #include "plmn_id_nid.h"
@@ -21,13 +22,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_access_token_req_s OpenAPI_access_token_req_t;
 typedef enum { OpenAPI_access_token_req_GRANTTYPE_NULL = 0, OpenAPI_access_token_req_GRANTTYPE_client_credentials } OpenAPI_access_token_req_grant_type_e;
 
 char* OpenAPI_access_token_req_grant_type_ToString(OpenAPI_access_token_req_grant_type_e grant_type);
 
 OpenAPI_access_token_req_grant_type_e OpenAPI_access_token_req_grant_type_FromString(char* grant_type);
-typedef struct OpenAPI_access_token_req_s {
+struct OpenAPI_access_token_req_s {
     OpenAPI_access_token_req_grant_type_e grant_type;
     char *nf_instance_id;
     OpenAPI_nf_type_e nf_type;
@@ -47,7 +47,7 @@ typedef struct OpenAPI_access_token_req_s {
     char *target_nf_service_set_id;
     char *hnrf_access_token_uri;
     char *source_nf_instance_id;
-} OpenAPI_access_token_req_t;
+};
 
 OpenAPI_access_token_req_t *OpenAPI_access_token_req_create(
     OpenAPI_access_token_req_grant_type_e grant_type,

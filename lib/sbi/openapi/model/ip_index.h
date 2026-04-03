@@ -12,15 +12,15 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ip_index_s OpenAPI_ip_index_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ip_index_s OpenAPI_ip_index_t;
-typedef struct OpenAPI_ip_index_s {
+struct OpenAPI_ip_index_s {
     char *value;
-} OpenAPI_ip_index_t;
+};
 
 OpenAPI_ip_index_t *OpenAPI_ip_index_create(
 char *value

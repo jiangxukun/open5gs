@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_transfer_mt_data_error_s OpenAPI_transfer_mt_data_error_t;
 #include "access_token_err.h"
 #include "access_token_req.h"
 #include "invalid_param.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_transfer_mt_data_error_s OpenAPI_transfer_mt_data_error_t;
-typedef struct OpenAPI_transfer_mt_data_error_s {
+struct OpenAPI_transfer_mt_data_error_s {
     char *type;
     char *title;
     bool is_status;
@@ -38,7 +38,7 @@ typedef struct OpenAPI_transfer_mt_data_error_s {
     int remote_error;
     bool is_max_waiting_time;
     int max_waiting_time;
-} OpenAPI_transfer_mt_data_error_t;
+};
 
 OpenAPI_transfer_mt_data_error_t *OpenAPI_transfer_mt_data_error_create(
     char *type,

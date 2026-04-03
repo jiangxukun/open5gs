@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_eps_interworking_info_s OpenAPI_eps_interworking_info_t;
 #include "eps_iwk_pgw.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_eps_interworking_info_s OpenAPI_eps_interworking_info_t;
-typedef struct OpenAPI_eps_interworking_info_s {
+struct OpenAPI_eps_interworking_info_s {
     OpenAPI_list_t* eps_iwk_pgws;
-} OpenAPI_eps_interworking_info_t;
+};
 
 OpenAPI_eps_interworking_info_t *OpenAPI_eps_interworking_info_create(
     OpenAPI_list_t* eps_iwk_pgws

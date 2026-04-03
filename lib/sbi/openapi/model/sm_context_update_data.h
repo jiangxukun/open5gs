@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_context_update_data_s OpenAPI_sm_context_update_data_t;
 #include "access_type.h"
 #include "backup_amf_info.h"
 #include "cause.h"
@@ -42,8 +43,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_context_update_data_s OpenAPI_sm_context_update_data_t;
-typedef struct OpenAPI_sm_context_update_data_s {
+struct OpenAPI_sm_context_update_data_s {
     char *pei;
     char *serving_nf_id;
     struct OpenAPI_guami_s *guami;
@@ -115,7 +115,7 @@ typedef struct OpenAPI_sm_context_update_data_s {
     bool is_pcf_ue_callback_info_null;
     struct OpenAPI_pcf_ue_callback_info_s *pcf_ue_callback_info;
     OpenAPI_satellite_backhaul_category_e satellite_backhaul_cat;
-} OpenAPI_sm_context_update_data_t;
+};
 
 OpenAPI_sm_context_update_data_t *OpenAPI_sm_context_update_data_create(
     char *pei,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n2_information_transfer_error_s OpenAPI_n2_information_transfer_error_t;
 #include "problem_details.h"
 #include "pws_error_data.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n2_information_transfer_error_s OpenAPI_n2_information_transfer_error_t;
-typedef struct OpenAPI_n2_information_transfer_error_s {
+struct OpenAPI_n2_information_transfer_error_s {
     struct OpenAPI_problem_details_s *error;
     struct OpenAPI_pws_error_data_s *pws_error_info;
-} OpenAPI_n2_information_transfer_error_t;
+};
 
 OpenAPI_n2_information_transfer_error_t *OpenAPI_n2_information_transfer_error_create(
     OpenAPI_problem_details_t *error,

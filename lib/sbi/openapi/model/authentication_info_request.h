@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_authentication_info_request_s OpenAPI_authentication_info_request_t;
 #include "resynchronization_info.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_authentication_info_request_s OpenAPI_authentication_info_request_t;
-typedef struct OpenAPI_authentication_info_request_s {
+struct OpenAPI_authentication_info_request_s {
     char *supported_features;
     char *serving_network_name;
     struct OpenAPI_resynchronization_info_s *resynchronization_info;
@@ -31,7 +31,7 @@ typedef struct OpenAPI_authentication_info_request_s {
     int nswo_ind;
     bool is_disaster_roaming_ind;
     int disaster_roaming_ind;
-} OpenAPI_authentication_info_request_t;
+};
 
 OpenAPI_authentication_info_request_t *OpenAPI_authentication_info_request_create(
     char *supported_features,

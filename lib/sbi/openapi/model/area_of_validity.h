@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_area_of_validity_s OpenAPI_area_of_validity_t;
 #include "tai.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_area_of_validity_s OpenAPI_area_of_validity_t;
-typedef struct OpenAPI_area_of_validity_s {
+struct OpenAPI_area_of_validity_s {
     OpenAPI_list_t *tai_list;
-} OpenAPI_area_of_validity_t;
+};
 
 OpenAPI_area_of_validity_t *OpenAPI_area_of_validity_create(
     OpenAPI_list_t *tai_list

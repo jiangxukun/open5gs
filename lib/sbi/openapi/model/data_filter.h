@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_data_filter_s OpenAPI_data_filter_t;
 #include "data_ind.h"
 #include "dnn_snssai_information.h"
 #include "snssai.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_data_filter_s OpenAPI_data_filter_t;
-typedef struct OpenAPI_data_filter_s {
+struct OpenAPI_data_filter_s {
     OpenAPI_data_ind_e data_ind;
     OpenAPI_list_t *dnns;
     OpenAPI_list_t *snssais;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_data_filter_s {
     bool is_any_ue_ind;
     int any_ue_ind;
     OpenAPI_list_t *dnn_snssai_infos;
-} OpenAPI_data_filter_t;
+};
 
 OpenAPI_data_filter_t *OpenAPI_data_filter_create(
     OpenAPI_data_ind_e data_ind,

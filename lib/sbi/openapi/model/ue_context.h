@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_s OpenAPI_ue_context_t;
 #include "ambr.h"
 #include "analytics_subscription.h"
 #include "area.h"
@@ -45,8 +46,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_s OpenAPI_ue_context_t;
-typedef struct OpenAPI_ue_context_s {
+struct OpenAPI_ue_context_s {
     char *supi;
     bool is_supi_unauth_ind;
     int supi_unauth_ind;
@@ -140,7 +140,7 @@ typedef struct OpenAPI_ue_context_s {
     bool is_disaster_roaming_ind;
     int disaster_roaming_ind;
     struct OpenAPI_plmn_id_s *disaster_plmn;
-} OpenAPI_ue_context_t;
+};
 
 OpenAPI_ue_context_t *OpenAPI_ue_context_create(
     char *supi,

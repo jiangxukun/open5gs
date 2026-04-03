@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_vsmf_update_data_s OpenAPI_vsmf_update_data_t;
 #include "ambr.h"
 #include "arp.h"
 #include "cause.h"
@@ -31,8 +32,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_vsmf_update_data_s OpenAPI_vsmf_update_data_t;
-typedef struct OpenAPI_vsmf_update_data_s {
+struct OpenAPI_vsmf_update_data_s {
     OpenAPI_request_indication_e request_indication;
     struct OpenAPI_ambr_s *session_ambr;
     OpenAPI_list_t *qos_flows_add_mod_request_list;
@@ -71,7 +71,7 @@ typedef struct OpenAPI_vsmf_update_data_s {
     int n9_data_forwarding_ind;
     bool is_n9_inactivity_timer;
     int n9_inactivity_timer;
-} OpenAPI_vsmf_update_data_t;
+};
 
 OpenAPI_vsmf_update_data_t *OpenAPI_vsmf_update_data_create(
     OpenAPI_request_indication_e request_indication,

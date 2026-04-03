@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_emergency_info_1_s OpenAPI_emergency_info_1_t;
 #include "ip_address_1.h"
 #include "plmn_id_1.h"
 
@@ -19,15 +20,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_emergency_info_1_s OpenAPI_emergency_info_1_t;
-typedef struct OpenAPI_emergency_info_1_s {
+struct OpenAPI_emergency_info_1_s {
     char *pgw_fqdn;
     struct OpenAPI_ip_address_1_s *pgw_ip_address;
     char *smf_instance_id;
     bool is_epdg_ind;
     int epdg_ind;
     struct OpenAPI_plmn_id_1_s *plmn_id;
-} OpenAPI_emergency_info_1_t;
+};
 
 OpenAPI_emergency_info_1_t *OpenAPI_emergency_info_1_create(
     char *pgw_fqdn,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_additional_access_info_s OpenAPI_additional_access_info_t;
 #include "access_type.h"
 #include "rat_type.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_additional_access_info_s OpenAPI_additional_access_info_t;
-typedef struct OpenAPI_additional_access_info_s {
+struct OpenAPI_additional_access_info_s {
     OpenAPI_access_type_e access_type;
     OpenAPI_rat_type_e rat_type;
-} OpenAPI_additional_access_info_t;
+};
 
 OpenAPI_additional_access_info_t *OpenAPI_additional_access_info_create(
     OpenAPI_access_type_e access_type,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_policy_data_for_individual_ue_s OpenAPI_policy_data_for_individual_ue_t;
 #include "am_policy_data.h"
 #include "operator_specific_data_container.h"
 #include "sm_policy_data.h"
@@ -22,14 +23,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_policy_data_for_individual_ue_s OpenAPI_policy_data_for_individual_ue_t;
-typedef struct OpenAPI_policy_data_for_individual_ue_s {
+struct OpenAPI_policy_data_for_individual_ue_s {
     struct OpenAPI_ue_policy_set_s *ue_policy_data_set;
     struct OpenAPI_sm_policy_data_s *sm_policy_data_set;
     struct OpenAPI_am_policy_data_s *am_policy_data_set;
     OpenAPI_list_t* um_data;
     OpenAPI_list_t* operator_specific_data_set;
-} OpenAPI_policy_data_for_individual_ue_t;
+};
 
 OpenAPI_policy_data_for_individual_ue_t *OpenAPI_policy_data_for_individual_ue_create(
     OpenAPI_ue_policy_set_t *ue_policy_data_set,

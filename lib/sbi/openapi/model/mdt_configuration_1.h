@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_mdt_configuration_1_s OpenAPI_mdt_configuration_1_t;
 #include "area_scope.h"
 #include "collection_period_rmm_lte_mdt.h"
 #include "collection_period_rmm_nr_mdt.h"
@@ -39,8 +40,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_mdt_configuration_1_s OpenAPI_mdt_configuration_1_t;
-typedef struct OpenAPI_mdt_configuration_1_s {
+struct OpenAPI_mdt_configuration_1_s {
     OpenAPI_job_type_e job_type;
     OpenAPI_report_type_mdt_e report_type;
     struct OpenAPI_area_scope_s *area_scope;
@@ -72,7 +72,7 @@ typedef struct OpenAPI_mdt_configuration_1_s {
     OpenAPI_list_t *mdt_allowed_plmn_id_list;
     OpenAPI_list_t *mbsfn_area_list;
     OpenAPI_list_t *inter_freq_target_list;
-} OpenAPI_mdt_configuration_1_t;
+};
 
 OpenAPI_mdt_configuration_1_t *OpenAPI_mdt_configuration_1_create(
     OpenAPI_job_type_e job_type,

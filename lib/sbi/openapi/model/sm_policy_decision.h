@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_policy_decision_s OpenAPI_sm_policy_decision_t;
 #include "bridge_management_container.h"
 #include "charging_data.h"
 #include "charging_information.h"
@@ -35,8 +36,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_policy_decision_s OpenAPI_sm_policy_decision_t;
-typedef struct OpenAPI_sm_policy_decision_s {
+struct OpenAPI_sm_policy_decision_s {
     OpenAPI_list_t* sess_rules;
     bool is_pcc_rules_null;
     OpenAPI_list_t* pcc_rules;
@@ -81,7 +81,7 @@ typedef struct OpenAPI_sm_policy_decision_s {
     OpenAPI_list_t *tsn_port_man_cont_nwtts;
     bool is_red_sess_indication;
     int red_sess_indication;
-} OpenAPI_sm_policy_decision_t;
+};
 
 OpenAPI_sm_policy_decision_t *OpenAPI_sm_policy_decision_create(
     OpenAPI_list_t* sess_rules,

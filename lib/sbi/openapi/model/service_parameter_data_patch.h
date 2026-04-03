@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_service_parameter_data_patch_s OpenAPI_service_parameter_data_patch_t;
 #include "event.h"
 #include "ursp_rule_request.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_service_parameter_data_patch_s OpenAPI_service_parameter_data_patch_t;
-typedef struct OpenAPI_service_parameter_data_patch_s {
+struct OpenAPI_service_parameter_data_patch_s {
     char *param_over_pc5;
     char *param_over_uu;
     char *param_for_pro_se_dd;
@@ -30,7 +30,7 @@ typedef struct OpenAPI_service_parameter_data_patch_s {
     OpenAPI_list_t *ursp_influence;
     OpenAPI_list_t *delivery_events;
     char *polic_deliv_notif_uri;
-} OpenAPI_service_parameter_data_patch_t;
+};
 
 OpenAPI_service_parameter_data_patch_t *OpenAPI_service_parameter_data_patch_create(
     char *param_over_pc5,

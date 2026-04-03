@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_geographic_area_s OpenAPI_geographic_area_t;
 #include "ellipsoid_arc.h"
 #include "geographical_coordinates.h"
 #include "point.h"
@@ -27,8 +28,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_geographic_area_s OpenAPI_geographic_area_t;
-typedef struct OpenAPI_geographic_area_s {
+struct OpenAPI_geographic_area_s {
     OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_geographical_coordinates_s *point;
     float uncertainty;
@@ -41,7 +41,7 @@ typedef struct OpenAPI_geographic_area_s {
     float uncertainty_radius;
     int offset_angle;
     int included_angle;
-} OpenAPI_geographic_area_t;
+};
 
 OpenAPI_geographic_area_t *OpenAPI_geographic_area_create(
     OpenAPI_supported_gad_shapes_e shape,

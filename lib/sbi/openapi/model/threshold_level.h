@@ -12,13 +12,13 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_threshold_level_s OpenAPI_threshold_level_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_threshold_level_s OpenAPI_threshold_level_t;
-typedef struct OpenAPI_threshold_level_s {
+struct OpenAPI_threshold_level_s {
     bool is_cong_level;
     int cong_level;
     bool is_nf_load_level;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_threshold_level_s {
     int avg_packet_loss_rate;
     bool is_svc_exp_level;
     float svc_exp_level;
-} OpenAPI_threshold_level_t;
+};
 
 OpenAPI_threshold_level_t *OpenAPI_threshold_level_create(
     bool is_cong_level,

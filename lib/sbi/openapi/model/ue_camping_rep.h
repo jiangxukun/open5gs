@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_camping_rep_s OpenAPI_ue_camping_rep_t;
 #include "access_type.h"
 #include "net_loc_access_support.h"
 #include "plmn_id_nid.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_camping_rep_s OpenAPI_ue_camping_rep_t;
-typedef struct OpenAPI_ue_camping_rep_s {
+struct OpenAPI_ue_camping_rep_s {
     OpenAPI_access_type_e access_type;
     OpenAPI_rat_type_e rat_type;
     struct OpenAPI_serving_nf_identity_s *serv_nf_id;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_ue_camping_rep_s {
     char *ue_time_zone;
     OpenAPI_net_loc_access_support_e net_loc_acc_supp;
     OpenAPI_satellite_backhaul_category_e sat_backhaul_category;
-} OpenAPI_ue_camping_rep_t;
+};
 
 OpenAPI_ue_camping_rep_t *OpenAPI_ue_camping_rep_create(
     OpenAPI_access_type_e access_type,

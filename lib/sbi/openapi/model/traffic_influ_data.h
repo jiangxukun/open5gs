@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_traffic_influ_data_s OpenAPI_traffic_influ_data_t;
 #include "dnai_change_type.h"
 #include "eth_flow_description_1.h"
 #include "flow_info.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_traffic_influ_data_s OpenAPI_traffic_influ_data_t;
-typedef struct OpenAPI_traffic_influ_data_s {
+struct OpenAPI_traffic_influ_data_s {
     char *up_path_chg_notif_corre_id;
     bool is_app_relo_ind;
     int app_relo_ind;
@@ -61,7 +61,7 @@ typedef struct OpenAPI_traffic_influ_data_s {
     char *supported_features;
     char *res_uri;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_traffic_influ_data_t;
+};
 
 OpenAPI_traffic_influ_data_t *OpenAPI_traffic_influ_data_create(
     char *up_path_chg_notif_corre_id,

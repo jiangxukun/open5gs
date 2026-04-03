@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf_event_area_s OpenAPI_amf_event_area_t;
 #include "ladn_info.h"
 #include "presence_info.h"
 #include "snssai.h"
@@ -20,13 +21,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf_event_area_s OpenAPI_amf_event_area_t;
-typedef struct OpenAPI_amf_event_area_s {
+struct OpenAPI_amf_event_area_s {
     struct OpenAPI_presence_info_s *presence_info;
     struct OpenAPI_ladn_info_s *ladn_info;
     struct OpenAPI_snssai_s *s_nssai;
     char *nsi_id;
-} OpenAPI_amf_event_area_t;
+};
 
 OpenAPI_amf_event_area_t *OpenAPI_amf_event_area_create(
     OpenAPI_presence_info_t *presence_info,

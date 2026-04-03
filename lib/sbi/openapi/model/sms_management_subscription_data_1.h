@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sms_management_subscription_data_1_s OpenAPI_sms_management_subscription_data_1_t;
 #include "trace_data.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sms_management_subscription_data_1_s OpenAPI_sms_management_subscription_data_1_t;
-typedef struct OpenAPI_sms_management_subscription_data_1_s {
+struct OpenAPI_sms_management_subscription_data_1_s {
     char *supported_features;
     bool is_mt_sms_subscribed;
     int mt_sms_subscribed;
@@ -36,7 +36,7 @@ typedef struct OpenAPI_sms_management_subscription_data_1_s {
     OpenAPI_list_t *shared_sms_mng_data_ids;
     bool is_trace_data_null;
     struct OpenAPI_trace_data_s *trace_data;
-} OpenAPI_sms_management_subscription_data_1_t;
+};
 
 OpenAPI_sms_management_subscription_data_1_t *OpenAPI_sms_management_subscription_data_1_create(
     char *supported_features,

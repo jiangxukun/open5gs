@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_wlan_performance_info_s OpenAPI_wlan_performance_info_t;
 #include "network_area_info.h"
 #include "wlan_per_ss_id_performance_info.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_wlan_performance_info_s OpenAPI_wlan_performance_info_t;
-typedef struct OpenAPI_wlan_performance_info_s {
+struct OpenAPI_wlan_performance_info_s {
     struct OpenAPI_network_area_info_s *network_area;
     OpenAPI_list_t *wlan_per_ssid_infos;
-} OpenAPI_wlan_performance_info_t;
+};
 
 OpenAPI_wlan_performance_info_t *OpenAPI_wlan_performance_info_create(
     OpenAPI_network_area_info_t *network_area,

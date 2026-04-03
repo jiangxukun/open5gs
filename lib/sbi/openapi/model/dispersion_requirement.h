@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dispersion_requirement_s OpenAPI_dispersion_requirement_t;
 #include "class_criterion.h"
 #include "dispersion_ordering_criterion.h"
 #include "dispersion_type.h"
@@ -22,14 +23,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dispersion_requirement_s OpenAPI_dispersion_requirement_t;
-typedef struct OpenAPI_dispersion_requirement_s {
+struct OpenAPI_dispersion_requirement_s {
     OpenAPI_dispersion_type_e disper_type;
     OpenAPI_list_t *class_criters;
     OpenAPI_list_t *rank_criters;
     OpenAPI_dispersion_ordering_criterion_e disp_order_criter;
     OpenAPI_matching_direction_e order;
-} OpenAPI_dispersion_requirement_t;
+};
 
 OpenAPI_dispersion_requirement_t *OpenAPI_dispersion_requirement_create(
     OpenAPI_dispersion_type_e disper_type,

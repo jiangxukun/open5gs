@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_class_criterion_s OpenAPI_class_criterion_t;
 #include "dispersion_class.h"
 #include "matching_direction.h"
 
@@ -19,12 +20,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_class_criterion_s OpenAPI_class_criterion_t;
-typedef struct OpenAPI_class_criterion_s {
+struct OpenAPI_class_criterion_s {
     OpenAPI_dispersion_class_e disper_class;
     int class_threshold;
     OpenAPI_matching_direction_e thres_match;
-} OpenAPI_class_criterion_t;
+};
 
 OpenAPI_class_criterion_t *OpenAPI_class_criterion_create(
     OpenAPI_dispersion_class_e disper_class,

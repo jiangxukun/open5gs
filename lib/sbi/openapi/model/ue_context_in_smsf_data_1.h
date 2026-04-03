@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_in_smsf_data_1_s OpenAPI_ue_context_in_smsf_data_1_t;
 #include "smsf_info_1.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_in_smsf_data_1_s OpenAPI_ue_context_in_smsf_data_1_t;
-typedef struct OpenAPI_ue_context_in_smsf_data_1_s {
+struct OpenAPI_ue_context_in_smsf_data_1_s {
     struct OpenAPI_smsf_info_1_s *smsf_info3_gpp_access;
     struct OpenAPI_smsf_info_1_s *smsf_info_non3_gpp_access;
-} OpenAPI_ue_context_in_smsf_data_1_t;
+};
 
 OpenAPI_ue_context_in_smsf_data_1_t *OpenAPI_ue_context_in_smsf_data_1_create(
     OpenAPI_smsf_info_1_t *smsf_info3_gpp_access,

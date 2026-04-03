@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_subscription_data_s OpenAPI_subscription_data_t;
 #include "ext_snssai.h"
 #include "nf_type.h"
 #include "notif_condition.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_subscription_data_s OpenAPI_subscription_data_t;
-typedef struct OpenAPI_subscription_data_s {
+struct OpenAPI_subscription_data_s {
     char *nf_status_notification_uri;
     char *req_nf_instance_id;
     struct OpenAPI_subscr_cond_s *subscr_cond;
@@ -50,7 +50,7 @@ typedef struct OpenAPI_subscription_data_s {
     int onboarding_capability;
     char *target_hni;
     char *preferred_locality;
-} OpenAPI_subscription_data_t;
+};
 
 OpenAPI_subscription_data_t *OpenAPI_subscription_data_create(
     char *nf_status_notification_uri,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_hsmf_update_data_s OpenAPI_hsmf_update_data_t;
 #include "access_type.h"
 #include "cause.h"
 #include "eps_interworking_indication.h"
@@ -48,8 +49,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_hsmf_update_data_s OpenAPI_hsmf_update_data_t;
-typedef struct OpenAPI_hsmf_update_data_s {
+struct OpenAPI_hsmf_update_data_s {
     OpenAPI_request_indication_e request_indication;
     char *pei;
     struct OpenAPI_tunnel_info_s *vcn_tunnel_info;
@@ -125,7 +125,7 @@ typedef struct OpenAPI_hsmf_update_data_s {
     OpenAPI_max_integrity_protected_data_rate_e max_integrity_protected_data_rate_ul;
     OpenAPI_max_integrity_protected_data_rate_e max_integrity_protected_data_rate_dl;
     OpenAPI_up_cnx_state_e up_cnx_state;
-} OpenAPI_hsmf_update_data_t;
+};
 
 OpenAPI_hsmf_update_data_t *OpenAPI_hsmf_update_data_create(
     OpenAPI_request_indication_e request_indication,

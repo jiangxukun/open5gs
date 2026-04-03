@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_event_reporting_requirement_s OpenAPI_event_reporting_requirement_t;
 #include "accuracy.h"
 #include "analytics_metadata.h"
 #include "analytics_metadata_indication.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_event_reporting_requirement_s OpenAPI_event_reporting_requirement_t;
-typedef struct OpenAPI_event_reporting_requirement_s {
+struct OpenAPI_event_reporting_requirement_s {
     OpenAPI_accuracy_e accuracy;
     OpenAPI_list_t *acc_per_subset;
     char *start_ts;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_event_reporting_requirement_s {
     char *time_ana_needed;
     OpenAPI_list_t *ana_meta;
     struct OpenAPI_analytics_metadata_indication_s *ana_meta_ind;
-} OpenAPI_event_reporting_requirement_t;
+};
 
 OpenAPI_event_reporting_requirement_t *OpenAPI_event_reporting_requirement_create(
     OpenAPI_accuracy_e accuracy,

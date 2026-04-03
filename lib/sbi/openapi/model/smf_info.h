@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smf_info_s OpenAPI_smf_info_t;
 #include "access_type.h"
 #include "ip_addr.h"
 #include "snssai_smf_info_item.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smf_info_s OpenAPI_smf_info_t;
-typedef struct OpenAPI_smf_info_s {
+struct OpenAPI_smf_info_s {
     OpenAPI_list_t *s_nssai_smf_info_list;
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *tai_range_list;
@@ -41,7 +41,7 @@ typedef struct OpenAPI_smf_info_s {
     int ismf_support_ind;
     bool is_smf_uprp_capability;
     int smf_uprp_capability;
-} OpenAPI_smf_info_t;
+};
 
 OpenAPI_smf_info_t *OpenAPI_smf_info_create(
     OpenAPI_list_t *s_nssai_smf_info_list,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n32f_error_info_s OpenAPI_n32f_error_info_t;
 #include "failed_modification_info.h"
 #include "n32f_error_detail.h"
 #include "n32f_error_type.h"
@@ -20,14 +21,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n32f_error_info_s OpenAPI_n32f_error_info_t;
-typedef struct OpenAPI_n32f_error_info_s {
+struct OpenAPI_n32f_error_info_s {
     char *n32f_message_id;
     OpenAPI_n32f_error_type_e n32f_error_type;
     char *n32f_context_id;
     OpenAPI_list_t *failed_modification_list;
     OpenAPI_list_t *error_details_list;
-} OpenAPI_n32f_error_info_t;
+};
 
 OpenAPI_n32f_error_info_t *OpenAPI_n32f_error_info_create(
     char *n32f_message_id,

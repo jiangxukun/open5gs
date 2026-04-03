@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI__sm_policies_post_200_response_s OpenAPI__sm_policies_post_200_response_t;
 #include "partial_success_report.h"
 #include "policy_decision_failure_code.h"
 #include "ue_camping_rep.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI__sm_policies_post_200_response_s OpenAPI__sm_policies_post_200_response_t;
-typedef struct OpenAPI__sm_policies_post_200_response_s {
+struct OpenAPI__sm_policies_post_200_response_s {
     struct OpenAPI_ue_camping_rep_s *ue_camping_rep;
     OpenAPI_list_t *partial_success_report_list;
     OpenAPI_list_t *policy_decision_failure_code_list;
-} OpenAPI__sm_policies_post_200_response_t;
+};
 
 OpenAPI__sm_policies_post_200_response_t *OpenAPI__sm_policies_post_200_response_create(
     OpenAPI_ue_camping_rep_t *ue_camping_rep,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dnn_upf_info_item_s OpenAPI_dnn_upf_info_item_t;
 #include "ip_index.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dnn_upf_info_item_s OpenAPI_dnn_upf_info_item_t;
-typedef struct OpenAPI_dnn_upf_info_item_s {
+struct OpenAPI_dnn_upf_info_item_s {
     char *dnn;
     OpenAPI_list_t *dnai_list;
     OpenAPI_list_t *pdu_session_types;
@@ -31,7 +31,7 @@ typedef struct OpenAPI_dnn_upf_info_item_s {
     OpenAPI_list_t *ipv4_index_list;
     OpenAPI_list_t *ipv6_index_list;
     OpenAPI_list_t* dnai_nw_instance_list;
-} OpenAPI_dnn_upf_info_item_t;
+};
 
 OpenAPI_dnn_upf_info_item_t *OpenAPI_dnn_upf_info_item_create(
     char *dnn,

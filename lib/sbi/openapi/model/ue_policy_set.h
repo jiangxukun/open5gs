@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_policy_set_s OpenAPI_ue_policy_set_t;
 #include "plmn_route_selection_descriptor.h"
 #include "presence_info.h"
 #include "ue_policy_section.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_policy_set_s OpenAPI_ue_policy_set_t;
-typedef struct OpenAPI_ue_policy_set_s {
+struct OpenAPI_ue_policy_set_s {
     OpenAPI_list_t* pra_infos;
     OpenAPI_list_t *subsc_cats;
     OpenAPI_list_t* ue_policy_sections;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_ue_policy_set_s {
     OpenAPI_list_t *os_ids;
     char *supp_feat;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_ue_policy_set_t;
+};
 
 OpenAPI_ue_policy_set_t *OpenAPI_ue_policy_set_create(
     OpenAPI_list_t* pra_infos,

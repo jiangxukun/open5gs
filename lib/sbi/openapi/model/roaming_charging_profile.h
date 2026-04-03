@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_roaming_charging_profile_s OpenAPI_roaming_charging_profile_t;
 #include "partial_record_method.h"
 #include "trigger.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_roaming_charging_profile_s OpenAPI_roaming_charging_profile_t;
-typedef struct OpenAPI_roaming_charging_profile_s {
+struct OpenAPI_roaming_charging_profile_s {
     OpenAPI_list_t *triggers;
     OpenAPI_partial_record_method_e partial_record_method;
-} OpenAPI_roaming_charging_profile_t;
+};
 
 OpenAPI_roaming_charging_profile_t *OpenAPI_roaming_charging_profile_create(
     OpenAPI_list_t *triggers,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ie_info_s OpenAPI_ie_info_t;
 #include "ie_location.h"
 #include "ie_type.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ie_info_s OpenAPI_ie_info_t;
-typedef struct OpenAPI_ie_info_s {
+struct OpenAPI_ie_info_s {
     OpenAPI_ie_location_e ie_loc;
     OpenAPI_ie_type_e ie_type;
     char *req_ie;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_ie_info_s {
     bool is_is_modifiable;
     int is_modifiable;
     OpenAPI_list_t* is_modifiable_by_ipx;
-} OpenAPI_ie_info_t;
+};
 
 OpenAPI_ie_info_t *OpenAPI_ie_info_create(
     OpenAPI_ie_location_e ie_loc,

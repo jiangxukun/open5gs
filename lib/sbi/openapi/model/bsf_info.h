@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_bsf_info_s OpenAPI_bsf_info_t;
 #include "identity_range.h"
 #include "ipv4_address_range.h"
 #include "ipv6_prefix_range.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_bsf_info_s OpenAPI_bsf_info_t;
-typedef struct OpenAPI_bsf_info_s {
+struct OpenAPI_bsf_info_s {
     OpenAPI_list_t *dnn_list;
     OpenAPI_list_t *ip_domain_list;
     OpenAPI_list_t *ipv4_address_ranges;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_bsf_info_s {
     char *group_id;
     OpenAPI_list_t *supi_ranges;
     OpenAPI_list_t *gpsi_ranges;
-} OpenAPI_bsf_info_t;
+};
 
 OpenAPI_bsf_info_t *OpenAPI_bsf_info_create(
     OpenAPI_list_t *dnn_list,

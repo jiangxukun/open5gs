@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_authentication_subscription_s OpenAPI_authentication_subscription_t;
 #include "auth_method.h"
 #include "sequence_number.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_authentication_subscription_s OpenAPI_authentication_subscription_t;
-typedef struct OpenAPI_authentication_subscription_s {
+struct OpenAPI_authentication_subscription_s {
     OpenAPI_auth_method_e authentication_method;
     char *enc_permanent_key;
     char *protection_parameter_id;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_authentication_subscription_s {
     bool is_akma_allowed;
     int akma_allowed;
     char *routing_id;
-} OpenAPI_authentication_subscription_t;
+};
 
 OpenAPI_authentication_subscription_t *OpenAPI_authentication_subscription_create(
     OpenAPI_auth_method_e authentication_method,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_arp_1_s OpenAPI_arp_1_t;
 #include "preemption_capability.h"
 #include "preemption_vulnerability.h"
 
@@ -19,12 +20,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_arp_1_s OpenAPI_arp_1_t;
-typedef struct OpenAPI_arp_1_s {
+struct OpenAPI_arp_1_s {
     int priority_level;
     OpenAPI_preemption_capability_e preempt_cap;
     OpenAPI_preemption_vulnerability_e preempt_vuln;
-} OpenAPI_arp_1_t;
+};
 
 OpenAPI_arp_1_t *OpenAPI_arp_1_create(
     int priority_level,

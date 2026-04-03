@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf_info_1_s OpenAPI_amf_info_1_t;
 #include "access_type.h"
 #include "guami_1.h"
 
@@ -19,12 +20,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf_info_1_s OpenAPI_amf_info_1_t;
-typedef struct OpenAPI_amf_info_1_s {
+struct OpenAPI_amf_info_1_s {
     char *amf_instance_id;
     struct OpenAPI_guami_1_s *guami;
     OpenAPI_access_type_e access_type;
-} OpenAPI_amf_info_1_t;
+};
 
 OpenAPI_amf_info_1_t *OpenAPI_amf_info_1_create(
     char *amf_instance_id,

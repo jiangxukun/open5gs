@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_data_restoration_notification_s OpenAPI_data_restoration_notification_t;
 #include "identity_range.h"
 #include "plmn_id.h"
 #include "snssai.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_data_restoration_notification_s OpenAPI_data_restoration_notification_t;
-typedef struct OpenAPI_data_restoration_notification_s {
+struct OpenAPI_data_restoration_notification_s {
     char *last_replication_time;
     char *recovery_time;
     struct OpenAPI_plmn_id_s *plmn_id;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_data_restoration_notification_s {
     OpenAPI_list_t *s_nssai_list;
     OpenAPI_list_t *dnn_list;
     char *udm_group_id;
-} OpenAPI_data_restoration_notification_t;
+};
 
 OpenAPI_data_restoration_notification_t *OpenAPI_data_restoration_notification_create(
     char *last_replication_time,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n2_info_container_s OpenAPI_n2_info_container_t;
 #include "n2_information_class.h"
 #include "n2_ran_information.h"
 #include "n2_sm_information.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n2_info_container_s OpenAPI_n2_info_container_t;
-typedef struct OpenAPI_n2_info_container_s {
+struct OpenAPI_n2_info_container_s {
     OpenAPI_n2_information_class_e n2_information_class;
     struct OpenAPI_n2_sm_information_s *sm_info;
     struct OpenAPI_n2_ran_information_s *ran_info;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_n2_info_container_s {
     struct OpenAPI_pws_information_s *pws_info;
     struct OpenAPI_v2x_information_s *v2x_info;
     struct OpenAPI_pro_se_information_s *prose_info;
-} OpenAPI_n2_info_container_t;
+};
 
 OpenAPI_n2_info_container_t *OpenAPI_n2_info_container_create(
     OpenAPI_n2_information_class_e n2_information_class,

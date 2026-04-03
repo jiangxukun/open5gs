@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_model_5_gvn_group_configuration_s OpenAPI_model_5_gvn_group_configuration_t;
 #include "model_5_gvn_group_data.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_model_5_gvn_group_configuration_s OpenAPI_model_5_gvn_group_configuration_t;
-typedef struct OpenAPI_model_5_gvn_group_configuration_s {
+struct OpenAPI_model_5_gvn_group_configuration_s {
     struct OpenAPI_model_5_gvn_group_data_s *_5g_vn_group_data;
     OpenAPI_list_t *members;
     bool is_reference_id;
@@ -27,7 +27,7 @@ typedef struct OpenAPI_model_5_gvn_group_configuration_s {
     char *af_instance_id;
     char *internal_group_identifier;
     char *mtc_provider_information;
-} OpenAPI_model_5_gvn_group_configuration_t;
+};
 
 OpenAPI_model_5_gvn_group_configuration_t *OpenAPI_model_5_gvn_group_configuration_create(
     OpenAPI_model_5_gvn_group_data_t *_5g_vn_group_data,

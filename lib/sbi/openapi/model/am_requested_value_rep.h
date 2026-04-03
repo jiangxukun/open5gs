@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_am_requested_value_rep_s OpenAPI_am_requested_value_rep_t;
 #include "access_type.h"
 #include "presence_info.h"
 #include "rat_type.h"
@@ -22,15 +23,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_am_requested_value_rep_s OpenAPI_am_requested_value_rep_t;
-typedef struct OpenAPI_am_requested_value_rep_s {
+struct OpenAPI_am_requested_value_rep_s {
     struct OpenAPI_user_location_s *user_loc;
     OpenAPI_list_t* pra_statuses;
     OpenAPI_list_t *access_types;
     OpenAPI_list_t *rat_types;
     OpenAPI_list_t *allowed_snssais;
     OpenAPI_list_t *n3g_allowed_snssais;
-} OpenAPI_am_requested_value_rep_t;
+};
 
 OpenAPI_am_requested_value_rep_t *OpenAPI_am_requested_value_rep_create(
     OpenAPI_user_location_t *user_loc,

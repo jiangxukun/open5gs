@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_gbr_qos_flow_information_s OpenAPI_gbr_qos_flow_information_t;
 #include "alternative_qos_profile.h"
 #include "notification_control.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_gbr_qos_flow_information_s OpenAPI_gbr_qos_flow_information_t;
-typedef struct OpenAPI_gbr_qos_flow_information_s {
+struct OpenAPI_gbr_qos_flow_information_s {
     char *max_fbr_dl;
     char *max_fbr_ul;
     char *gua_fbr_dl;
@@ -31,7 +31,7 @@ typedef struct OpenAPI_gbr_qos_flow_information_s {
     bool is_max_packet_loss_rate_ul;
     int max_packet_loss_rate_ul;
     OpenAPI_list_t *alternative_qos_profile_list;
-} OpenAPI_gbr_qos_flow_information_t;
+};
 
 OpenAPI_gbr_qos_flow_information_t *OpenAPI_gbr_qos_flow_information_create(
     char *max_fbr_dl,

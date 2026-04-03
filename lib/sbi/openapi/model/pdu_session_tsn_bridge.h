@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_tsn_bridge_s OpenAPI_pdu_session_tsn_bridge_t;
 #include "bridge_management_container.h"
 #include "port_management_container.h"
 #include "snssai.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_tsn_bridge_s OpenAPI_pdu_session_tsn_bridge_t;
-typedef struct OpenAPI_pdu_session_tsn_bridge_s {
+struct OpenAPI_pdu_session_tsn_bridge_s {
     struct OpenAPI_tsn_bridge_info_s *tsn_bridge_info;
     struct OpenAPI_bridge_management_container_s *tsn_bridge_man_cont;
     struct OpenAPI_port_management_container_s *tsn_port_man_cont_dstt;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_pdu_session_tsn_bridge_s {
     struct OpenAPI_snssai_s *snssai;
     char *ip_domain;
     char *ue_ipv6_addr_prefix;
-} OpenAPI_pdu_session_tsn_bridge_t;
+};
 
 OpenAPI_pdu_session_tsn_bridge_t *OpenAPI_pdu_session_tsn_bridge_create(
     OpenAPI_tsn_bridge_info_t *tsn_bridge_info,

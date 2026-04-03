@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_flow_setup_item_s OpenAPI_qos_flow_setup_item_t;
 #include "qos_flow_access_type.h"
 #include "qos_flow_profile.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_flow_setup_item_s OpenAPI_qos_flow_setup_item_t;
-typedef struct OpenAPI_qos_flow_setup_item_s {
+struct OpenAPI_qos_flow_setup_item_s {
     int qfi;
     char *qos_rules;
     bool is_ebi;
@@ -30,7 +30,7 @@ typedef struct OpenAPI_qos_flow_setup_item_s {
     OpenAPI_qos_flow_access_type_e associated_an_type;
     bool is_default_qos_rule_ind;
     int default_qos_rule_ind;
-} OpenAPI_qos_flow_setup_item_t;
+};
 
 OpenAPI_qos_flow_setup_item_t *OpenAPI_qos_flow_setup_item_create(
     int qfi,

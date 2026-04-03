@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pro_se_eap_session_s OpenAPI_pro_se_eap_session_t;
 #include "auth_result.h"
 #include "links_value_schema.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pro_se_eap_session_s OpenAPI_pro_se_eap_session_t;
-typedef struct OpenAPI_pro_se_eap_session_s {
+struct OpenAPI_pro_se_eap_session_s {
     char *eap_payload;
     char *knr_pro_se;
     OpenAPI_list_t* _links;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_pro_se_eap_session_s {
     bool is_nonce2_null;
     char *nonce2;
     char *_5g_pruk_id;
-} OpenAPI_pro_se_eap_session_t;
+};
 
 OpenAPI_pro_se_eap_session_t *OpenAPI_pro_se_eap_session_create(
     char *eap_payload,

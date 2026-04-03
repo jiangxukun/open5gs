@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_policy_data_subscription_s OpenAPI_policy_data_subscription_t;
 #include "resource_item.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_policy_data_subscription_s OpenAPI_policy_data_subscription_t;
-typedef struct OpenAPI_policy_data_subscription_s {
+struct OpenAPI_policy_data_subscription_s {
     char *notification_uri;
     char *notif_id;
     OpenAPI_list_t *monitored_resource_uris;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_policy_data_subscription_s {
     char *expiry;
     char *supported_features;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_policy_data_subscription_t;
+};
 
 OpenAPI_policy_data_subscription_t *OpenAPI_policy_data_subscription_create(
     char *notification_uri,

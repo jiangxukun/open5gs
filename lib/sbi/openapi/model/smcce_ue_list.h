@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smcce_ue_list_s OpenAPI_smcce_ue_list_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smcce_ue_list_s OpenAPI_smcce_ue_list_t;
-typedef struct OpenAPI_smcce_ue_list_s {
+struct OpenAPI_smcce_ue_list_s {
     OpenAPI_list_t *high_level;
     OpenAPI_list_t *medium_level;
     OpenAPI_list_t *low_level;
-} OpenAPI_smcce_ue_list_t;
+};
 
 OpenAPI_smcce_ue_list_t *OpenAPI_smcce_ue_list_create(
     OpenAPI_list_t *high_level,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_session_management_subscription_data_1_s OpenAPI_session_management_subscription_data_1_t;
 #include "dnn_configuration_1.h"
 #include "expected_ue_behaviour_data_1.h"
 #include "odb_packet_services.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_session_management_subscription_data_1_s OpenAPI_session_management_subscription_data_1_t;
-typedef struct OpenAPI_session_management_subscription_data_1_s {
+struct OpenAPI_session_management_subscription_data_1_s {
     struct OpenAPI_snssai_s *single_nssai;
     OpenAPI_list_t* dnn_configurations;
     OpenAPI_list_t *internal_group_ids;
@@ -38,7 +38,7 @@ typedef struct OpenAPI_session_management_subscription_data_1_s {
     OpenAPI_list_t* suggested_packet_num_dl_list;
     char *_3gpp_charging_characteristics;
     char *supported_features;
-} OpenAPI_session_management_subscription_data_1_t;
+};
 
 OpenAPI_session_management_subscription_data_1_t *OpenAPI_session_management_subscription_data_1_create(
     OpenAPI_snssai_t *single_nssai,

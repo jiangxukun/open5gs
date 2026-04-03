@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_exposure_data_subscription_s OpenAPI_exposure_data_subscription_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_exposure_data_subscription_s OpenAPI_exposure_data_subscription_t;
-typedef struct OpenAPI_exposure_data_subscription_s {
+struct OpenAPI_exposure_data_subscription_s {
     char *notification_uri;
     OpenAPI_list_t *monitored_resource_uris;
     char *expiry;
     char *supported_features;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_exposure_data_subscription_t;
+};
 
 OpenAPI_exposure_data_subscription_t *OpenAPI_exposure_data_subscription_create(
     char *notification_uri,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dispersion_area_s OpenAPI_dispersion_area_t;
 #include "ecgi.h"
 #include "ncgi.h"
 #include "tai.h"
@@ -20,14 +21,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dispersion_area_s OpenAPI_dispersion_area_t;
-typedef struct OpenAPI_dispersion_area_s {
+struct OpenAPI_dispersion_area_s {
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *ncgi_list;
     OpenAPI_list_t *ecgi_list;
     bool is_n3ga_ind;
     int n3ga_ind;
-} OpenAPI_dispersion_area_t;
+};
 
 OpenAPI_dispersion_area_t *OpenAPI_dispersion_area_create(
     OpenAPI_list_t *tai_list,

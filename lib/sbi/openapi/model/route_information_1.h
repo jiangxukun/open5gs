@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_route_information_1_s OpenAPI_route_information_1_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_route_information_1_s OpenAPI_route_information_1_t;
-typedef struct OpenAPI_route_information_1_s {
+struct OpenAPI_route_information_1_s {
     char *ipv4_addr;
     char *ipv6_addr;
     int port_number;
-} OpenAPI_route_information_1_t;
+};
 
 OpenAPI_route_information_1_t *OpenAPI_route_information_1_create(
     char *ipv4_addr,

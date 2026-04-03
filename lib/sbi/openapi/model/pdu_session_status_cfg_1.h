@@ -12,15 +12,15 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_status_cfg_1_s OpenAPI_pdu_session_status_cfg_1_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_status_cfg_1_s OpenAPI_pdu_session_status_cfg_1_t;
-typedef struct OpenAPI_pdu_session_status_cfg_1_s {
+struct OpenAPI_pdu_session_status_cfg_1_s {
     char *dnn;
-} OpenAPI_pdu_session_status_cfg_1_t;
+};
 
 OpenAPI_pdu_session_status_cfg_1_t *OpenAPI_pdu_session_status_cfg_1_create(
     char *dnn

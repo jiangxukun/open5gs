@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nwdaf_capability_s OpenAPI_nwdaf_capability_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nwdaf_capability_s OpenAPI_nwdaf_capability_t;
-typedef struct OpenAPI_nwdaf_capability_s {
+struct OpenAPI_nwdaf_capability_s {
     bool is_analytics_aggregation;
     int analytics_aggregation;
     bool is_analytics_metadata_provisioning;
     int analytics_metadata_provisioning;
-} OpenAPI_nwdaf_capability_t;
+};
 
 OpenAPI_nwdaf_capability_t *OpenAPI_nwdaf_capability_create(
     bool is_analytics_aggregation,

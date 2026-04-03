@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_rule_report_s OpenAPI_rule_report_t;
 #include "failure_code.h"
 #include "final_unit_action.h"
 #include "ran_nas_rel_cause.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_rule_report_s OpenAPI_rule_report_t;
-typedef struct OpenAPI_rule_report_s {
+struct OpenAPI_rule_report_s {
     OpenAPI_list_t *pcc_rule_ids;
     OpenAPI_rule_status_e rule_status;
     OpenAPI_list_t *cont_vers;
@@ -30,7 +30,7 @@ typedef struct OpenAPI_rule_report_s {
     OpenAPI_final_unit_action_e fin_unit_act;
     OpenAPI_list_t *ran_nas_rel_causes;
     char *alt_qos_param_id;
-} OpenAPI_rule_report_t;
+};
 
 OpenAPI_rule_report_t *OpenAPI_rule_report_create(
     OpenAPI_list_t *pcc_rule_ids,

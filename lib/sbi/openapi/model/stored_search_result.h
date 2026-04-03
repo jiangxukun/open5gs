@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_stored_search_result_s OpenAPI_stored_search_result_t;
 #include "nf_profile.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_stored_search_result_s OpenAPI_stored_search_result_t;
-typedef struct OpenAPI_stored_search_result_s {
+struct OpenAPI_stored_search_result_s {
     OpenAPI_list_t *nf_instances;
-} OpenAPI_stored_search_result_t;
+};
 
 OpenAPI_stored_search_result_t *OpenAPI_stored_search_result_create(
     OpenAPI_list_t *nf_instances

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_monitoring_configuration_s OpenAPI_monitoring_configuration_t;
 #include "association_type.h"
 #include "datalink_reporting_configuration.h"
 #include "event_type.h"
@@ -26,8 +27,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_monitoring_configuration_s OpenAPI_monitoring_configuration_t;
-typedef struct OpenAPI_monitoring_configuration_s {
+struct OpenAPI_monitoring_configuration_s {
     OpenAPI_event_type_e event_type;
     bool is_immediate_flag;
     int immediate_flag;
@@ -50,7 +50,7 @@ typedef struct OpenAPI_monitoring_configuration_s {
     struct OpenAPI_reachability_for_data_configuration_s *reachability_for_data_cfg;
     bool is_idle_status_ind;
     int idle_status_ind;
-} OpenAPI_monitoring_configuration_t;
+};
 
 OpenAPI_monitoring_configuration_t *OpenAPI_monitoring_configuration_create(
     OpenAPI_event_type_e event_type,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_upf_info_s OpenAPI_upf_info_t;
 #include "atsss_capability.h"
 #include "interface_upf_info_item.h"
 #include "pdu_session_type.h"
@@ -26,8 +27,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_upf_info_s OpenAPI_upf_info_t;
-typedef struct OpenAPI_upf_info_s {
+struct OpenAPI_upf_info_s {
     OpenAPI_list_t *s_nssai_upf_info_list;
     OpenAPI_list_t *smf_serving_area;
     OpenAPI_list_t *interface_upf_info_list;
@@ -51,7 +51,7 @@ typedef struct OpenAPI_upf_info_s {
     bool is_data_forwarding;
     int data_forwarding;
     char *supported_pfcp_features;
-} OpenAPI_upf_info_t;
+};
 
 OpenAPI_upf_info_t *OpenAPI_upf_info_create(
     OpenAPI_list_t *s_nssai_upf_info_list,

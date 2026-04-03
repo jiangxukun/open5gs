@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_notification_data_s OpenAPI_notification_data_t;
 #include "change_item.h"
 #include "condition_event_type.h"
 #include "nf_profile.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_notification_data_s OpenAPI_notification_data_t;
-typedef struct OpenAPI_notification_data_s {
+struct OpenAPI_notification_data_s {
     OpenAPI_notification_event_type_e event;
     char *nf_instance_uri;
     bool is_nf_profile_null;
@@ -31,7 +31,7 @@ typedef struct OpenAPI_notification_data_s {
     OpenAPI_list_t *profile_changes;
     OpenAPI_condition_event_type_e condition_event;
     struct OpenAPI_subscription_context_s *subscription_context;
-} OpenAPI_notification_data_t;
+};
 
 OpenAPI_notification_data_t *OpenAPI_notification_data_create(
     OpenAPI_notification_event_type_e event,

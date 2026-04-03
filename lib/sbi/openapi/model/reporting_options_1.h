@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_reporting_options_1_s OpenAPI_reporting_options_1_t;
 #include "event_report_mode.h"
 #include "notification_flag.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_reporting_options_1_s OpenAPI_reporting_options_1_t;
-typedef struct OpenAPI_reporting_options_1_s {
+struct OpenAPI_reporting_options_1_s {
     OpenAPI_event_report_mode_e report_mode;
     bool is_max_num_of_reports;
     int max_num_of_reports;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_reporting_options_1_s {
     bool is_report_period;
     int report_period;
     OpenAPI_notification_flag_e notif_flag;
-} OpenAPI_reporting_options_1_t;
+};
 
 OpenAPI_reporting_options_1_t *OpenAPI_reporting_options_1_create(
     OpenAPI_event_report_mode_e report_mode,

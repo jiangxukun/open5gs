@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n1_n2_msg_txfr_failure_notification_s OpenAPI_n1_n2_msg_txfr_failure_notification_t;
 #include "n1_n2_message_transfer_cause.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n1_n2_msg_txfr_failure_notification_s OpenAPI_n1_n2_msg_txfr_failure_notification_t;
-typedef struct OpenAPI_n1_n2_msg_txfr_failure_notification_s {
+struct OpenAPI_n1_n2_msg_txfr_failure_notification_s {
     OpenAPI_n1_n2_message_transfer_cause_e cause;
     char *n1n2_msg_data_uri;
-} OpenAPI_n1_n2_msg_txfr_failure_notification_t;
+};
 
 OpenAPI_n1_n2_msg_txfr_failure_notification_t *OpenAPI_n1_n2_msg_txfr_failure_notification_create(
     OpenAPI_n1_n2_message_transfer_cause_e cause,

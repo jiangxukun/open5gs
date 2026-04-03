@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_requirement_s OpenAPI_qos_requirement_t;
 #include "qos_resource_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_requirement_s OpenAPI_qos_requirement_t;
-typedef struct OpenAPI_qos_requirement_s {
+struct OpenAPI_qos_requirement_s {
     bool is__5qi;
     int _5qi;
     char *gfbr_ul;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_qos_requirement_s {
     bool is_pdb;
     int pdb;
     char *per;
-} OpenAPI_qos_requirement_t;
+};
 
 OpenAPI_qos_requirement_t *OpenAPI_qos_requirement_create(
     bool is__5qi,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_redundant_transmission_exp_req_s OpenAPI_redundant_transmission_exp_req_t;
 #include "matching_direction.h"
 #include "red_trans_exp_ordering_criterion.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_redundant_transmission_exp_req_s OpenAPI_redundant_transmission_exp_req_t;
-typedef struct OpenAPI_redundant_transmission_exp_req_s {
+struct OpenAPI_redundant_transmission_exp_req_s {
     OpenAPI_red_trans_exp_ordering_criterion_e red_t_order_criter;
     OpenAPI_matching_direction_e order;
-} OpenAPI_redundant_transmission_exp_req_t;
+};
 
 OpenAPI_redundant_transmission_exp_req_t *OpenAPI_redundant_transmission_exp_req_create(
     OpenAPI_red_trans_exp_ordering_criterion_e red_t_order_criter,

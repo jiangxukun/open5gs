@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_prose_service_auth_s OpenAPI_prose_service_auth_t;
 #include "ue_auth.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_prose_service_auth_s OpenAPI_prose_service_auth_t;
-typedef struct OpenAPI_prose_service_auth_s {
+struct OpenAPI_prose_service_auth_s {
     OpenAPI_ue_auth_e prose_direct_discovery_auth;
     OpenAPI_ue_auth_e prose_direct_communication_auth;
-} OpenAPI_prose_service_auth_t;
+};
 
 OpenAPI_prose_service_auth_t *OpenAPI_prose_service_auth_create(
     OpenAPI_ue_auth_e prose_direct_discovery_auth,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_authorized_network_slice_info_s OpenAPI_authorized_network_slice_info_t;
 #include "allowed_nssai.h"
 #include "configured_snssai.h"
 #include "nsag_info.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_authorized_network_slice_info_s OpenAPI_authorized_network_slice_info_t;
-typedef struct OpenAPI_authorized_network_slice_info_s {
+struct OpenAPI_authorized_network_slice_info_s {
     OpenAPI_list_t *allowed_nssai_list;
     OpenAPI_list_t *configured_nssai;
     char *target_amf_set;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_authorized_network_slice_info_s {
     char *target_amf_service_set;
     OpenAPI_list_t *target_nssai;
     OpenAPI_list_t *nsag_infos;
-} OpenAPI_authorized_network_slice_info_t;
+};
 
 OpenAPI_authorized_network_slice_info_t *OpenAPI_authorized_network_slice_info_create(
     OpenAPI_list_t *allowed_nssai_list,

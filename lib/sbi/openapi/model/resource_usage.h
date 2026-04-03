@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_resource_usage_s OpenAPI_resource_usage_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_resource_usage_s OpenAPI_resource_usage_t;
-typedef struct OpenAPI_resource_usage_s {
+struct OpenAPI_resource_usage_s {
     bool is_cpu_usage;
     int cpu_usage;
     bool is_memory_usage;
     int memory_usage;
     bool is_storage_usage;
     int storage_usage;
-} OpenAPI_resource_usage_t;
+};
 
 OpenAPI_resource_usage_t *OpenAPI_resource_usage_create(
     bool is_cpu_usage,

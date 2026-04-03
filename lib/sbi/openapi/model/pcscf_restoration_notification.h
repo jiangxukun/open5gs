@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pcscf_restoration_notification_s OpenAPI_pcscf_restoration_notification_t;
 #include "pcscf_address.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pcscf_restoration_notification_s OpenAPI_pcscf_restoration_notification_t;
-typedef struct OpenAPI_pcscf_restoration_notification_s {
+struct OpenAPI_pcscf_restoration_notification_s {
     char *supi;
     bool is_failed_pcscf_null;
     struct OpenAPI_pcscf_address_s *failed_pcscf;
-} OpenAPI_pcscf_restoration_notification_t;
+};
 
 OpenAPI_pcscf_restoration_notification_t *OpenAPI_pcscf_restoration_notification_create(
     char *supi,

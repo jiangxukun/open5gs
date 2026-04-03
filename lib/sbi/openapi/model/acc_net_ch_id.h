@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_acc_net_ch_id_s OpenAPI_acc_net_ch_id_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_acc_net_ch_id_s OpenAPI_acc_net_ch_id_t;
-typedef struct OpenAPI_acc_net_ch_id_s {
+struct OpenAPI_acc_net_ch_id_s {
     bool is_acc_net_cha_id_value;
     int acc_net_cha_id_value;
     char *acc_net_charg_id;
     OpenAPI_list_t *ref_pcc_rule_ids;
     bool is_session_ch_scope;
     int session_ch_scope;
-} OpenAPI_acc_net_ch_id_t;
+};
 
 OpenAPI_acc_net_ch_id_t *OpenAPI_acc_net_ch_id_create(
     bool is_acc_net_cha_id_value,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_expected_ue_behaviour_data_s OpenAPI_expected_ue_behaviour_data_t;
 #include "battery_indication.h"
 #include "location_area.h"
 #include "scheduled_communication_time.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_expected_ue_behaviour_data_s OpenAPI_expected_ue_behaviour_data_t;
-typedef struct OpenAPI_expected_ue_behaviour_data_s {
+struct OpenAPI_expected_ue_behaviour_data_s {
     OpenAPI_stationary_indication_e stationary_indication;
     bool is_communication_duration_time;
     int communication_duration_time;
@@ -36,7 +36,7 @@ typedef struct OpenAPI_expected_ue_behaviour_data_s {
     OpenAPI_traffic_profile_e traffic_profile;
     struct OpenAPI_battery_indication_s *battery_indication;
     char *validity_time;
-} OpenAPI_expected_ue_behaviour_data_t;
+};
 
 OpenAPI_expected_ue_behaviour_data_t *OpenAPI_expected_ue_behaviour_data_create(
     OpenAPI_stationary_indication_e stationary_indication,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n2_information_transfer_rsp_data_s OpenAPI_n2_information_transfer_rsp_data_t;
 #include "n2_information_transfer_result.h"
 #include "pws_response_data.h"
 
@@ -19,12 +20,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n2_information_transfer_rsp_data_s OpenAPI_n2_information_transfer_rsp_data_t;
-typedef struct OpenAPI_n2_information_transfer_rsp_data_s {
+struct OpenAPI_n2_information_transfer_rsp_data_s {
     OpenAPI_n2_information_transfer_result_e result;
     struct OpenAPI_pws_response_data_s *pws_rsp_data;
     char *supported_features;
-} OpenAPI_n2_information_transfer_rsp_data_t;
+};
 
 OpenAPI_n2_information_transfer_rsp_data_t *OpenAPI_n2_information_transfer_rsp_data_create(
     OpenAPI_n2_information_transfer_result_e result,

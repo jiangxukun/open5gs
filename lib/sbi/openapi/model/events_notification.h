@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_events_notification_s OpenAPI_events_notification_t;
 #include "acc_net_charging_address.h"
 #include "access_net_charging_identifier.h"
 #include "access_type.h"
@@ -37,8 +38,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_events_notification_s OpenAPI_events_notification_t;
-typedef struct OpenAPI_events_notification_s {
+struct OpenAPI_events_notification_s {
     OpenAPI_list_t *ad_reports;
     OpenAPI_access_type_e access_type;
     struct OpenAPI_additional_access_info_s *add_access_info;
@@ -67,7 +67,7 @@ typedef struct OpenAPI_events_notification_s {
     struct OpenAPI_bridge_management_container_s *tsn_bridge_man_cont;
     struct OpenAPI_port_management_container_s *tsn_port_man_cont_dstt;
     OpenAPI_list_t *tsn_port_man_cont_nwtts;
-} OpenAPI_events_notification_t;
+};
 
 OpenAPI_events_notification_t *OpenAPI_events_notification_create(
     OpenAPI_list_t *ad_reports,

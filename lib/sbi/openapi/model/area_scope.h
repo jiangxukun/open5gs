@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_area_scope_s OpenAPI_area_scope_t;
 #include "tac_info.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_area_scope_s OpenAPI_area_scope_t;
-typedef struct OpenAPI_area_scope_s {
+struct OpenAPI_area_scope_s {
     OpenAPI_list_t *eutra_cell_id_list;
     OpenAPI_list_t *nr_cell_id_list;
     OpenAPI_list_t *tac_list;
     OpenAPI_list_t* tac_info_per_plmn;
-} OpenAPI_area_scope_t;
+};
 
 OpenAPI_area_scope_t *OpenAPI_area_scope_create(
     OpenAPI_list_t *eutra_cell_id_list,

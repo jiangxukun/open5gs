@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_default_notification_subscription_s OpenAPI_default_notification_subscription_t;
 #include "def_sub_service_info.h"
 #include "n1_message_class.h"
 #include "n2_information_class.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_default_notification_subscription_s OpenAPI_default_notification_subscription_t;
-typedef struct OpenAPI_default_notification_subscription_s {
+struct OpenAPI_default_notification_subscription_s {
     OpenAPI_notification_type_e notification_type;
     char *callback_uri;
     OpenAPI_n1_message_class_e n1_message_class;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_default_notification_subscription_s {
     char *accepted_encoding;
     char *supported_features;
     OpenAPI_list_t* service_info_list;
-} OpenAPI_default_notification_subscription_t;
+};
 
 OpenAPI_default_notification_subscription_t *OpenAPI_default_notification_subscription_create(
     OpenAPI_notification_type_e notification_type,

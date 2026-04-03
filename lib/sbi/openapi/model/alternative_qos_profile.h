@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_alternative_qos_profile_s OpenAPI_alternative_qos_profile_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_alternative_qos_profile_s OpenAPI_alternative_qos_profile_t;
-typedef struct OpenAPI_alternative_qos_profile_s {
+struct OpenAPI_alternative_qos_profile_s {
     int index;
     char *gua_fbr_dl;
     char *gua_fbr_ul;
     bool is_packet_delay_budget;
     int packet_delay_budget;
     char *packet_err_rate;
-} OpenAPI_alternative_qos_profile_t;
+};
 
 OpenAPI_alternative_qos_profile_t *OpenAPI_alternative_qos_profile_create(
     int index,

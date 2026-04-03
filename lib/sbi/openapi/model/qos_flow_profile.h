@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_flow_profile_s OpenAPI_qos_flow_profile_t;
 #include "additional_qos_flow_info.h"
 #include "arp.h"
 #include "dynamic5_qi.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_flow_profile_s OpenAPI_qos_flow_profile_t;
-typedef struct OpenAPI_qos_flow_profile_s {
+struct OpenAPI_qos_flow_profile_s {
     int _5qi;
     struct OpenAPI_non_dynamic5_qi_s *non_dynamic5_qi;
     struct OpenAPI_dynamic5_qi_s *dynamic5_qi;
@@ -36,7 +36,7 @@ typedef struct OpenAPI_qos_flow_profile_s {
     OpenAPI_qos_monitoring_req_e qos_monitoring_req;
     bool is_qos_rep_period;
     int qos_rep_period;
-} OpenAPI_qos_flow_profile_t;
+};
 
 OpenAPI_qos_flow_profile_t *OpenAPI_qos_flow_profile_create(
     int _5qi,

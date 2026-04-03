@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_amf_event_mode_s OpenAPI_amf_event_mode_t;
 #include "amf_event_trigger.h"
 #include "notification_flag.h"
 #include "partitioning_criteria.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_amf_event_mode_s OpenAPI_amf_event_mode_t;
-typedef struct OpenAPI_amf_event_mode_s {
+struct OpenAPI_amf_event_mode_s {
     OpenAPI_amf_event_trigger_e trigger;
     bool is_max_reports;
     int max_reports;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_amf_event_mode_s {
     int samp_ratio;
     OpenAPI_list_t *partitioning_criteria;
     OpenAPI_notification_flag_e notif_flag;
-} OpenAPI_amf_event_mode_t;
+};
 
 OpenAPI_amf_event_mode_t *OpenAPI_amf_event_mode_create(
     OpenAPI_amf_event_trigger_e trigger,

@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ext_snssai_s OpenAPI_ext_snssai_t;
 #include "sd_range.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ext_snssai_s OpenAPI_ext_snssai_t;
-typedef struct OpenAPI_ext_snssai_s {
+struct OpenAPI_ext_snssai_s {
     int sst;
     char *sd;
     OpenAPI_list_t *sd_ranges;
     bool is_wildcard_sd;
     int wildcard_sd;
-} OpenAPI_ext_snssai_t;
+};
 
 OpenAPI_ext_snssai_t *OpenAPI_ext_snssai_create(
     int sst,

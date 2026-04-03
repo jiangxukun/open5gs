@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_status_info_s OpenAPI_status_info_t;
 #include "access_type.h"
 #include "cause.h"
 #include "cn_assisted_ran_para.h"
@@ -21,13 +22,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_status_info_s OpenAPI_status_info_t;
-typedef struct OpenAPI_status_info_s {
+struct OpenAPI_status_info_s {
     OpenAPI_resource_status_e resource_status;
     OpenAPI_cause_e cause;
     struct OpenAPI_cn_assisted_ran_para_s *cn_assisted_ran_para;
     OpenAPI_access_type_e an_type;
-} OpenAPI_status_info_t;
+};
 
 OpenAPI_status_info_t *OpenAPI_status_info_create(
     OpenAPI_resource_status_e resource_status,

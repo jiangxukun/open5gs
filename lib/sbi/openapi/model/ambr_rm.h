@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ambr_rm_s OpenAPI_ambr_rm_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ambr_rm_s OpenAPI_ambr_rm_t;
-typedef struct OpenAPI_ambr_rm_s {
+struct OpenAPI_ambr_rm_s {
     char *uplink;
     char *downlink;
-} OpenAPI_ambr_rm_t;
+};
 
 OpenAPI_ambr_rm_t *OpenAPI_ambr_rm_create(
     char *uplink,

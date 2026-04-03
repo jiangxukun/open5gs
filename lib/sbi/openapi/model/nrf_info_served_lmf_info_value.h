@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_lmf_info_value_s OpenAPI_nrf_info_served_lmf_info_value_t;
 #include "access_type.h"
 #include "an_node_type.h"
 #include "external_client_type.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_lmf_info_value_s OpenAPI_nrf_info_served_lmf_info_value_t;
-typedef struct OpenAPI_nrf_info_served_lmf_info_value_s {
+struct OpenAPI_nrf_info_served_lmf_info_value_s {
     OpenAPI_list_t *serving_client_types;
     char *lmf_id;
     OpenAPI_list_t *serving_access_types;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_nrf_info_served_lmf_info_value_s {
     OpenAPI_list_t *tai_list;
     OpenAPI_list_t *tai_range_list;
     OpenAPI_list_t *supported_gad_shapes;
-} OpenAPI_nrf_info_served_lmf_info_value_t;
+};
 
 OpenAPI_nrf_info_served_lmf_info_value_t *OpenAPI_nrf_info_served_lmf_info_value_create(
     OpenAPI_list_t *serving_client_types,

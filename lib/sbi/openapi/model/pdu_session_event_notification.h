@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_event_notification_s OpenAPI_pdu_session_event_notification_t;
 #include "af_event_notification.h"
 #include "pcf_addressing_info.h"
 #include "pdu_session_status.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_event_notification_s OpenAPI_pdu_session_event_notification_t;
-typedef struct OpenAPI_pdu_session_event_notification_s {
+struct OpenAPI_pdu_session_event_notification_s {
     struct OpenAPI_af_event_notification_s *ev_notif;
     char *supi;
     char *ue_ipv4;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_pdu_session_event_notification_s {
     char *dnn;
     struct OpenAPI_snssai_s *snssai;
     char *gpsi;
-} OpenAPI_pdu_session_event_notification_t;
+};
 
 OpenAPI_pdu_session_event_notification_t *OpenAPI_pdu_session_event_notification_create(
     OpenAPI_af_event_notification_t *ev_notif,

@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_smsf_info_s OpenAPI_smsf_info_t;
 #include "plmn_id.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_smsf_info_s OpenAPI_smsf_info_t;
-typedef struct OpenAPI_smsf_info_s {
+struct OpenAPI_smsf_info_s {
     char *smsf_instance_id;
     struct OpenAPI_plmn_id_s *plmn_id;
     char *smsf_set_id;
-} OpenAPI_smsf_info_t;
+};
 
 OpenAPI_smsf_info_t *OpenAPI_smsf_info_create(
     char *smsf_instance_id,

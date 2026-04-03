@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pp_data_s OpenAPI_pp_data_t;
 #include "acs_info_rm.h"
 #include "communication_characteristics.h"
 #include "ec_restriction.h"
@@ -24,8 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pp_data_s OpenAPI_pp_data_t;
-typedef struct OpenAPI_pp_data_s {
+struct OpenAPI_pp_data_s {
     bool is_communication_characteristics_null;
     struct OpenAPI_communication_characteristics_s *communication_characteristics;
     char *supported_features;
@@ -42,7 +42,7 @@ typedef struct OpenAPI_pp_data_s {
     struct OpenAPI_sor_info_s *sor_info;
     bool is__5mbs_authorization_info_null;
     struct OpenAPI_model_5_mbs_authorization_info_s *_5mbs_authorization_info;
-} OpenAPI_pp_data_t;
+};
 
 OpenAPI_pp_data_t *OpenAPI_pp_data_create(
     bool is_communication_characteristics_null,

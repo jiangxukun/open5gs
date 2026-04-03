@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_prose_context_s OpenAPI_prose_context_t;
 #include "pc5_qo_s_para.h"
 #include "ue_auth.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_prose_context_s OpenAPI_prose_context_t;
-typedef struct OpenAPI_prose_context_s {
+struct OpenAPI_prose_context_s {
     OpenAPI_ue_auth_e direct_discovery;
     OpenAPI_ue_auth_e direct_comm;
     OpenAPI_ue_auth_e l2_relay;
@@ -28,7 +28,7 @@ typedef struct OpenAPI_prose_context_s {
     OpenAPI_ue_auth_e l2_remote;
     char *nr_ue_pc5_ambr;
     struct OpenAPI_pc5_qo_s_para_s *pc5_qo_s_para;
-} OpenAPI_prose_context_t;
+};
 
 OpenAPI_prose_context_t *OpenAPI_prose_context_create(
     OpenAPI_ue_auth_e direct_discovery,

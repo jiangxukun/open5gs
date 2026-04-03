@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sdm_subscription_1_s OpenAPI_sdm_subscription_1_t;
 #include "context_info.h"
 #include "immediate_report_1.h"
 #include "plmn_id_1.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sdm_subscription_1_s OpenAPI_sdm_subscription_1_t;
-typedef struct OpenAPI_sdm_subscription_1_s {
+struct OpenAPI_sdm_subscription_1_s {
     char *nf_instance_id;
     bool is_implicit_unsubscribe;
     int implicit_unsubscribe;
@@ -47,7 +47,7 @@ typedef struct OpenAPI_sdm_subscription_1_s {
     int unique_subscription;
     OpenAPI_list_t *reset_ids;
     struct OpenAPI_ue_context_in_smf_data_sub_filter_1_s *ue_con_smf_data_sub_filter;
-} OpenAPI_sdm_subscription_1_t;
+};
 
 OpenAPI_sdm_subscription_1_t *OpenAPI_sdm_subscription_1_create(
     char *nf_instance_id,

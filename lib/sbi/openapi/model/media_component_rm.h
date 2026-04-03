@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_media_component_rm_s OpenAPI_media_component_rm_t;
 #include "af_routing_requirement_rm.h"
 #include "alternative_service_requirements_data.h"
 #include "flow_status.h"
@@ -28,8 +29,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_media_component_rm_s OpenAPI_media_component_rm_t;
-typedef struct OpenAPI_media_component_rm_s {
+struct OpenAPI_media_component_rm_s {
     char *af_app_id;
     bool is_af_rout_req_null;
     struct OpenAPI_af_routing_requirement_rm_s *af_rout_req;
@@ -100,7 +100,7 @@ typedef struct OpenAPI_media_component_rm_s {
     struct OpenAPI_tscai_input_container_s *tscai_input_ul;
     bool is_tscai_time_dom;
     int tscai_time_dom;
-} OpenAPI_media_component_rm_t;
+};
 
 OpenAPI_media_component_rm_t *OpenAPI_media_component_rm_create(
     char *af_app_id,

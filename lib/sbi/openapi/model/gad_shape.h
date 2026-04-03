@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_gad_shape_s OpenAPI_gad_shape_t;
 #include "supported_gad_shapes.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_gad_shape_s OpenAPI_gad_shape_t;
-typedef struct OpenAPI_gad_shape_s {
+struct OpenAPI_gad_shape_s {
     OpenAPI_supported_gad_shapes_e shape;
-} OpenAPI_gad_shape_t;
+};
 
 OpenAPI_gad_shape_t *OpenAPI_gad_shape_create(
     OpenAPI_supported_gad_shapes_e shape

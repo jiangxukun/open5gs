@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_point_altitude_uncertainty_s OpenAPI_point_altitude_uncertainty_t;
 #include "gad_shape.h"
 #include "geographical_coordinates.h"
 #include "supported_gad_shapes.h"
@@ -21,15 +22,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_point_altitude_uncertainty_s OpenAPI_point_altitude_uncertainty_t;
-typedef struct OpenAPI_point_altitude_uncertainty_s {
+struct OpenAPI_point_altitude_uncertainty_s {
     OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_geographical_coordinates_s *point;
     double altitude;
     struct OpenAPI_uncertainty_ellipse_s *uncertainty_ellipse;
     float uncertainty_altitude;
     int confidence;
-} OpenAPI_point_altitude_uncertainty_t;
+};
 
 OpenAPI_point_altitude_uncertainty_t *OpenAPI_point_altitude_uncertainty_create(
     OpenAPI_supported_gad_shapes_e shape,

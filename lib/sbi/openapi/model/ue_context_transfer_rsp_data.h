@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_transfer_rsp_data_s OpenAPI_ue_context_transfer_rsp_data_t;
 #include "n2_info_content.h"
 #include "ue_context.h"
 
@@ -19,14 +20,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_transfer_rsp_data_s OpenAPI_ue_context_transfer_rsp_data_t;
-typedef struct OpenAPI_ue_context_transfer_rsp_data_s {
+struct OpenAPI_ue_context_transfer_rsp_data_s {
     struct OpenAPI_ue_context_s *ue_context;
     struct OpenAPI_n2_info_content_s *ue_radio_capability;
     struct OpenAPI_n2_info_content_s *ue_radio_capability_for_paging;
     struct OpenAPI_n2_info_content_s *ue_nbiot_radio_capability;
     char *supported_features;
-} OpenAPI_ue_context_transfer_rsp_data_t;
+};
 
 OpenAPI_ue_context_transfer_rsp_data_t *OpenAPI_ue_context_transfer_rsp_data_create(
     OpenAPI_ue_context_t *ue_context,

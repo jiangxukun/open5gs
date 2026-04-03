@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n2_information_notification_s OpenAPI_n2_information_notification_t;
 #include "global_ran_node_id.h"
 #include "guami.h"
 #include "n2_info_container.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n2_information_notification_s OpenAPI_n2_information_notification_t;
-typedef struct OpenAPI_n2_information_notification_s {
+struct OpenAPI_n2_information_notification_s {
     char *n2_notify_subscription_id;
     struct OpenAPI_n2_info_container_s *n2_info_container;
     OpenAPI_list_t *to_release_session_list;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_n2_information_notification_s {
     struct OpenAPI_guami_s *guami;
     bool is_notify_source_ng_ran;
     int notify_source_ng_ran;
-} OpenAPI_n2_information_notification_t;
+};
 
 OpenAPI_n2_information_notification_t *OpenAPI_n2_information_notification_create(
     char *n2_notify_subscription_id,

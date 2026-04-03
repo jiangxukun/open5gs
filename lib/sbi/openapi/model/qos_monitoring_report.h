@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_monitoring_report_s OpenAPI_qos_monitoring_report_t;
 #include "flows.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_monitoring_report_s OpenAPI_qos_monitoring_report_t;
-typedef struct OpenAPI_qos_monitoring_report_s {
+struct OpenAPI_qos_monitoring_report_s {
     OpenAPI_list_t *flows;
     OpenAPI_list_t *ul_delays;
     OpenAPI_list_t *dl_delays;
     OpenAPI_list_t *rt_delays;
-} OpenAPI_qos_monitoring_report_t;
+};
 
 OpenAPI_qos_monitoring_report_t *OpenAPI_qos_monitoring_report_create(
     OpenAPI_list_t *flows,

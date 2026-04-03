@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dnn_configuration_s OpenAPI_dnn_configuration_t;
 #include "acs_info.h"
 #include "aerial_ue_indication.h"
 #include "ambr.h"
@@ -30,8 +31,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dnn_configuration_s OpenAPI_dnn_configuration_t;
-typedef struct OpenAPI_dnn_configuration_s {
+struct OpenAPI_dnn_configuration_s {
     struct OpenAPI_pdu_session_types_s *pdu_session_types;
     struct OpenAPI_ssc_modes_s *ssc_modes;
     bool is_iwk_eps_ind;
@@ -75,7 +75,7 @@ typedef struct OpenAPI_dnn_configuration_s {
     OpenAPI_aerial_ue_indication_e aerial_ue_ind;
     bool is_subscribed_max_ipv6_prefix_size;
     int subscribed_max_ipv6_prefix_size;
-} OpenAPI_dnn_configuration_t;
+};
 
 OpenAPI_dnn_configuration_t *OpenAPI_dnn_configuration_create(
     OpenAPI_pdu_session_types_t *pdu_session_types,

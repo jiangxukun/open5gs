@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_vn_group_data_1_s OpenAPI_vn_group_data_1_t;
 #include "app_descriptor_1.h"
 #include "pdu_session_types_1.h"
 #include "snssai.h"
@@ -20,13 +21,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_vn_group_data_1_s OpenAPI_vn_group_data_1_t;
-typedef struct OpenAPI_vn_group_data_1_s {
+struct OpenAPI_vn_group_data_1_s {
     struct OpenAPI_pdu_session_types_1_s *pdu_session_types;
     char *dnn;
     struct OpenAPI_snssai_s *single_nssai;
     OpenAPI_list_t *app_descriptors;
-} OpenAPI_vn_group_data_1_t;
+};
 
 OpenAPI_vn_group_data_1_t *OpenAPI_vn_group_data_1_create(
     OpenAPI_pdu_session_types_1_t *pdu_session_types,

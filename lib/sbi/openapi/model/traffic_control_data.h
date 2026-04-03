@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_traffic_control_data_s OpenAPI_traffic_control_data_t;
 #include "eas_ip_replacement_info.h"
 #include "flow_status.h"
 #include "npcf_multicast_access_control.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_traffic_control_data_s OpenAPI_traffic_control_data_t;
-typedef struct OpenAPI_traffic_control_data_s {
+struct OpenAPI_traffic_control_data_s {
     char *tc_id;
     OpenAPI_flow_status_e flow_status;
     struct OpenAPI_redirect_information_s *redirect_info;
@@ -56,7 +56,7 @@ typedef struct OpenAPI_traffic_control_data_s {
     struct OpenAPI_steering_mode_s *steer_mode_dl;
     struct OpenAPI_steering_mode_s *steer_mode_ul;
     OpenAPI_npcf_multicast_access_control_e mul_acc_ctrl;
-} OpenAPI_traffic_control_data_t;
+};
 
 OpenAPI_traffic_control_data_t *OpenAPI_traffic_control_data_create(
     char *tc_id,

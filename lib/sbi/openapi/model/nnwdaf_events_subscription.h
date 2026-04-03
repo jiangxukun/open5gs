@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nnwdaf_events_subscription_s OpenAPI_nnwdaf_events_subscription_t;
 #include "consumer_nf_information.h"
 #include "event_notification.h"
 #include "event_subscription.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nnwdaf_events_subscription_s OpenAPI_nnwdaf_events_subscription_t;
-typedef struct OpenAPI_nnwdaf_events_subscription_s {
+struct OpenAPI_nnwdaf_events_subscription_s {
     OpenAPI_list_t *event_subscriptions;
     struct OpenAPI_reporting_information_s *evt_req;
     char *notification_uri;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_nnwdaf_events_subscription_s {
     OpenAPI_list_t *fail_event_reports;
     struct OpenAPI_prev_sub_info_s *prev_sub;
     struct OpenAPI_consumer_nf_information_s *cons_nf_info;
-} OpenAPI_nnwdaf_events_subscription_t;
+};
 
 OpenAPI_nnwdaf_events_subscription_t *OpenAPI_nnwdaf_events_subscription_create(
     OpenAPI_list_t *event_subscriptions,

@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_lcs_privacy_s OpenAPI_lcs_privacy_t;
 #include "lpi.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_lcs_privacy_s OpenAPI_lcs_privacy_t;
-typedef struct OpenAPI_lcs_privacy_s {
+struct OpenAPI_lcs_privacy_s {
     char *af_instance_id;
     bool is_reference_id;
     int reference_id;
     struct OpenAPI_lpi_s *lpi;
     char *mtc_provider_information;
-} OpenAPI_lcs_privacy_t;
+};
 
 OpenAPI_lcs_privacy_t *OpenAPI_lcs_privacy_create(
     char *af_instance_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_bsf_info_value_s OpenAPI_nrf_info_served_bsf_info_value_t;
 #include "bsf_info.h"
 #include "identity_range.h"
 #include "ipv4_address_range.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_bsf_info_value_s OpenAPI_nrf_info_served_bsf_info_value_t;
-typedef struct OpenAPI_nrf_info_served_bsf_info_value_s {
+struct OpenAPI_nrf_info_served_bsf_info_value_s {
     OpenAPI_list_t *dnn_list;
     OpenAPI_list_t *ip_domain_list;
     OpenAPI_list_t *ipv4_address_ranges;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_nrf_info_served_bsf_info_value_s {
     char *group_id;
     OpenAPI_list_t *supi_ranges;
     OpenAPI_list_t *gpsi_ranges;
-} OpenAPI_nrf_info_served_bsf_info_value_t;
+};
 
 OpenAPI_nrf_info_served_bsf_info_value_t *OpenAPI_nrf_info_served_bsf_info_value_create(
     OpenAPI_list_t *dnn_list,

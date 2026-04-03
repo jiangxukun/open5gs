@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_atsss_capability_s OpenAPI_atsss_capability_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_atsss_capability_s OpenAPI_atsss_capability_t;
-typedef struct OpenAPI_atsss_capability_s {
+struct OpenAPI_atsss_capability_s {
     bool is_atsss_ll;
     int atsss_ll;
     bool is_mptcp;
     int mptcp;
     bool is_rtt_without_pmf;
     int rtt_without_pmf;
-} OpenAPI_atsss_capability_t;
+};
 
 OpenAPI_atsss_capability_t *OpenAPI_atsss_capability_create(
     bool is_atsss_ll,

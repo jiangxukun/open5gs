@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_steering_mode_s OpenAPI_steering_mode_t;
 #include "access_type.h"
 #include "steer_mode_indicator.h"
 #include "steer_mode_value.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_steering_mode_s OpenAPI_steering_mode_t;
-typedef struct OpenAPI_steering_mode_s {
+struct OpenAPI_steering_mode_s {
     OpenAPI_steer_mode_value_e steer_mode_value;
     OpenAPI_access_type_e active;
     OpenAPI_access_type_e standby;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_steering_mode_s {
     bool is_thres_value_null;
     struct OpenAPI_threshold_value_s *thres_value;
     OpenAPI_steer_mode_indicator_e steer_mode_ind;
-} OpenAPI_steering_mode_t;
+};
 
 OpenAPI_steering_mode_t *OpenAPI_steering_mode_create(
     OpenAPI_steer_mode_value_e steer_mode_value,

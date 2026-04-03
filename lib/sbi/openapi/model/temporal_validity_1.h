@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_temporal_validity_1_s OpenAPI_temporal_validity_1_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_temporal_validity_1_s OpenAPI_temporal_validity_1_t;
-typedef struct OpenAPI_temporal_validity_1_s {
+struct OpenAPI_temporal_validity_1_s {
     char *start_time;
     char *stop_time;
-} OpenAPI_temporal_validity_1_t;
+};
 
 OpenAPI_temporal_validity_1_t *OpenAPI_temporal_validity_1_create(
     char *start_time,

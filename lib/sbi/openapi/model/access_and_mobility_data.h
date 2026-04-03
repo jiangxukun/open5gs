@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_access_and_mobility_data_s OpenAPI_access_and_mobility_data_t;
 #include "access_type.h"
 #include "cm_info.h"
 #include "plmn_id_1.h"
@@ -25,8 +26,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_access_and_mobility_data_s OpenAPI_access_and_mobility_data_t;
-typedef struct OpenAPI_access_and_mobility_data_s {
+struct OpenAPI_access_and_mobility_data_s {
     struct OpenAPI_user_location_s *location;
     char *location_ts;
     char *time_zone;
@@ -49,7 +49,7 @@ typedef struct OpenAPI_access_and_mobility_data_s {
     char *rat_types_ts;
     char *supp_feat;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_access_and_mobility_data_t;
+};
 
 OpenAPI_access_and_mobility_data_t *OpenAPI_access_and_mobility_data_create(
     OpenAPI_user_location_t *location,

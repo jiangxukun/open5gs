@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_policy_dnn_data_s OpenAPI_sm_policy_dnn_data_t;
 #include "charging_information.h"
 #include "limit_id_to_monitoring_key.h"
 #include "presence_info.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_policy_dnn_data_s OpenAPI_sm_policy_dnn_data_t;
-typedef struct OpenAPI_sm_policy_dnn_data_s {
+struct OpenAPI_sm_policy_dnn_data_s {
     char *dnn;
     OpenAPI_list_t *allowed_services;
     OpenAPI_list_t *subsc_cats;
@@ -56,7 +56,7 @@ typedef struct OpenAPI_sm_policy_dnn_data_s {
     OpenAPI_list_t* bdt_ref_ids;
     bool is_loc_rout_not_allowed;
     int loc_rout_not_allowed;
-} OpenAPI_sm_policy_dnn_data_t;
+};
 
 OpenAPI_sm_policy_dnn_data_t *OpenAPI_sm_policy_dnn_data_create(
     char *dnn,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_plmn_restriction_1_s OpenAPI_plmn_restriction_1_t;
 #include "area_1.h"
 #include "core_network_type.h"
 #include "rat_type.h"
@@ -21,15 +22,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_plmn_restriction_1_s OpenAPI_plmn_restriction_1_t;
-typedef struct OpenAPI_plmn_restriction_1_s {
+struct OpenAPI_plmn_restriction_1_s {
     OpenAPI_list_t *rat_restrictions;
     OpenAPI_list_t *forbidden_areas;
     struct OpenAPI_service_area_restriction_1_s *service_area_restriction;
     OpenAPI_list_t *core_network_type_restrictions;
     OpenAPI_list_t *primary_rat_restrictions;
     OpenAPI_list_t *secondary_rat_restrictions;
-} OpenAPI_plmn_restriction_1_t;
+};
 
 OpenAPI_plmn_restriction_1_t *OpenAPI_plmn_restriction_1_create(
     OpenAPI_list_t *rat_restrictions,

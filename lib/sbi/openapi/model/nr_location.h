@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nr_location_s OpenAPI_nr_location_t;
 #include "global_ran_node_id.h"
 #include "ncgi.h"
 #include "tai.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nr_location_s OpenAPI_nr_location_t;
-typedef struct OpenAPI_nr_location_s {
+struct OpenAPI_nr_location_s {
     struct OpenAPI_tai_s *tai;
     struct OpenAPI_ncgi_s *ncgi;
     bool is_ignore_ncgi;
@@ -32,7 +32,7 @@ typedef struct OpenAPI_nr_location_s {
     char *geographical_information;
     char *geodetic_information;
     struct OpenAPI_global_ran_node_id_s *global_gnb_id;
-} OpenAPI_nr_location_t;
+};
 
 OpenAPI_nr_location_t *OpenAPI_nr_location_create(
     OpenAPI_tai_t *tai,

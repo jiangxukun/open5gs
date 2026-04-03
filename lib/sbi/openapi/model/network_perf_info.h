@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_network_perf_info_s OpenAPI_network_perf_info_t;
 #include "network_area_info.h"
 #include "network_perf_type.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_network_perf_info_s OpenAPI_network_perf_info_t;
-typedef struct OpenAPI_network_perf_info_s {
+struct OpenAPI_network_perf_info_s {
     struct OpenAPI_network_area_info_s *network_area;
     OpenAPI_network_perf_type_e nw_perf_type;
     bool is_relative_ratio;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_network_perf_info_s {
     int absolute_num;
     bool is_confidence;
     int confidence;
-} OpenAPI_network_perf_info_t;
+};
 
 OpenAPI_network_perf_info_t *OpenAPI_network_perf_info_create(
     OpenAPI_network_area_info_t *network_area,

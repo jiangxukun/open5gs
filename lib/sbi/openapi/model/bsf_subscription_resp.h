@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_bsf_subscription_resp_s OpenAPI_bsf_subscription_resp_t;
 #include "binding_level.h"
 #include "bsf_event.h"
 #include "bsf_event_notification.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_bsf_subscription_resp_s OpenAPI_bsf_subscription_resp_t;
-typedef struct OpenAPI_bsf_subscription_resp_s {
+struct OpenAPI_bsf_subscription_resp_s {
     OpenAPI_list_t *events;
     char *notif_uri;
     char *notif_corre_id;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_bsf_subscription_resp_s {
     char *pcf_set_id;
     OpenAPI_binding_level_e bind_level;
     OpenAPI_list_t *event_notifs;
-} OpenAPI_bsf_subscription_resp_t;
+};
 
 OpenAPI_bsf_subscription_resp_t *OpenAPI_bsf_subscription_resp_create(
     OpenAPI_list_t *events,

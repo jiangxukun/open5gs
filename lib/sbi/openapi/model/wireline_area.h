@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_wireline_area_s OpenAPI_wireline_area_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_wireline_area_s OpenAPI_wireline_area_t;
-typedef struct OpenAPI_wireline_area_s {
+struct OpenAPI_wireline_area_s {
     OpenAPI_list_t *global_line_ids;
     OpenAPI_list_t *hfc_n_ids;
     char *area_code_b;
     char *area_code_c;
-} OpenAPI_wireline_area_t;
+};
 
 OpenAPI_wireline_area_t *OpenAPI_wireline_area_create(
     OpenAPI_list_t *global_line_ids,

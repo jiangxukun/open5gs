@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_hss_info_list_value_value_s OpenAPI_nrf_info_served_hss_info_list_value_value_t;
 #include "hss_info.h"
 #include "identity_range.h"
 #include "imsi_range.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_hss_info_list_value_value_s OpenAPI_nrf_info_served_hss_info_list_value_value_t;
-typedef struct OpenAPI_nrf_info_served_hss_info_list_value_value_s {
+struct OpenAPI_nrf_info_served_hss_info_list_value_value_s {
     char *group_id;
     OpenAPI_list_t *imsi_ranges;
     OpenAPI_list_t *ims_private_identity_ranges;
@@ -30,7 +30,7 @@ typedef struct OpenAPI_nrf_info_served_hss_info_list_value_value_s {
     OpenAPI_list_t *msisdn_ranges;
     OpenAPI_list_t *external_group_identifiers_ranges;
     struct OpenAPI_network_node_diameter_address_s *hss_diameter_address;
-} OpenAPI_nrf_info_served_hss_info_list_value_value_t;
+};
 
 OpenAPI_nrf_info_served_hss_info_list_value_value_t *OpenAPI_nrf_info_served_hss_info_list_value_value_create(
     char *group_id,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pdu_session_create_data_s OpenAPI_pdu_session_create_data_t;
 #include "access_type.h"
 #include "apn_rate_status.h"
 #include "dnn_selection_mode.h"
@@ -40,8 +41,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pdu_session_create_data_s OpenAPI_pdu_session_create_data_t;
-typedef struct OpenAPI_pdu_session_create_data_s {
+struct OpenAPI_pdu_session_create_data_s {
     char *supi;
     bool is_unauthenticated_supi;
     int unauthenticated_supi;
@@ -132,7 +132,7 @@ typedef struct OpenAPI_pdu_session_create_data_s {
     OpenAPI_up_cnx_state_e up_cnx_state;
     bool is_disaster_roaming_ind;
     int disaster_roaming_ind;
-} OpenAPI_pdu_session_create_data_t;
+};
 
 OpenAPI_pdu_session_create_data_t *OpenAPI_pdu_session_create_data_create(
     char *supi,

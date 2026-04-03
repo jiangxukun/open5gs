@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_group_identifiers_s OpenAPI_group_identifiers_t;
 #include "ue_id.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_group_identifiers_s OpenAPI_group_identifiers_t;
-typedef struct OpenAPI_group_identifiers_s {
+struct OpenAPI_group_identifiers_s {
     char *ext_group_id;
     char *int_group_id;
     OpenAPI_list_t *ue_id_list;
-} OpenAPI_group_identifiers_t;
+};
 
 OpenAPI_group_identifiers_t *OpenAPI_group_identifiers_create(
     char *ext_group_id,

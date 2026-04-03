@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_policy_association_update_request_s OpenAPI_policy_association_update_request_t;
 #include "access_type.h"
 #include "ambr.h"
 #include "guami.h"
@@ -32,8 +33,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_policy_association_update_request_s OpenAPI_policy_association_update_request_t;
-typedef struct OpenAPI_policy_association_update_request_s {
+struct OpenAPI_policy_association_update_request_s {
     char *notification_uri;
     OpenAPI_list_t *alt_notif_ipv4_addrs;
     OpenAPI_list_t *alt_notif_ipv6_addrs;
@@ -60,7 +60,7 @@ typedef struct OpenAPI_policy_association_update_request_s {
     struct OpenAPI_guami_s *guami;
     bool is_nwdaf_datas_null;
     OpenAPI_list_t *nwdaf_datas;
-} OpenAPI_policy_association_update_request_t;
+};
 
 OpenAPI_policy_association_update_request_t *OpenAPI_policy_association_update_request_create(
     char *notification_uri,

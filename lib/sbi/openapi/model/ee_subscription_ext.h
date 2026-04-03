@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ee_subscription_ext_s OpenAPI_ee_subscription_ext_t;
 #include "amf_subscription_info.h"
 #include "context_info.h"
 #include "hss_subscription_info.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ee_subscription_ext_s OpenAPI_ee_subscription_ext_t;
-typedef struct OpenAPI_ee_subscription_ext_s {
+struct OpenAPI_ee_subscription_ext_s {
     char *callback_reference;
     OpenAPI_list_t* monitoring_configurations;
     struct OpenAPI_reporting_options_1_s *reporting_options;
@@ -44,7 +44,7 @@ typedef struct OpenAPI_ee_subscription_ext_s {
     OpenAPI_list_t *amf_subscription_info_list;
     struct OpenAPI_smf_subscription_info_s *smf_subscription_info;
     struct OpenAPI_hss_subscription_info_s *hss_subscription_info;
-} OpenAPI_ee_subscription_ext_t;
+};
 
 OpenAPI_ee_subscription_ext_t *OpenAPI_ee_subscription_ext_create(
     char *callback_reference,

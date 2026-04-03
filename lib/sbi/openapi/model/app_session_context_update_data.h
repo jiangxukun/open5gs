@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_app_session_context_update_data_s OpenAPI_app_session_context_update_data_t;
 #include "af_routing_requirement_rm.h"
 #include "bridge_management_container.h"
 #include "events_subsc_req_data_rm.h"
@@ -28,8 +29,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_app_session_context_update_data_s OpenAPI_app_session_context_update_data_t;
-typedef struct OpenAPI_app_session_context_update_data_s {
+struct OpenAPI_app_session_context_update_data_s {
     char *af_app_id;
     bool is_af_rout_req_null;
     struct OpenAPI_af_routing_requirement_rm_s *af_rout_req;
@@ -52,7 +52,7 @@ typedef struct OpenAPI_app_session_context_update_data_s {
     struct OpenAPI_bridge_management_container_s *tsn_bridge_man_cont;
     struct OpenAPI_port_management_container_s *tsn_port_man_cont_dstt;
     OpenAPI_list_t *tsn_port_man_cont_nwtts;
-} OpenAPI_app_session_context_update_data_t;
+};
 
 OpenAPI_app_session_context_update_data_t *OpenAPI_app_session_context_update_data_create(
     char *af_app_id,

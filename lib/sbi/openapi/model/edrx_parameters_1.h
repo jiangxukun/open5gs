@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_edrx_parameters_1_s OpenAPI_edrx_parameters_1_t;
 #include "rat_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_edrx_parameters_1_s OpenAPI_edrx_parameters_1_t;
-typedef struct OpenAPI_edrx_parameters_1_s {
+struct OpenAPI_edrx_parameters_1_s {
     OpenAPI_rat_type_e rat_type;
     char *edrx_value;
-} OpenAPI_edrx_parameters_1_t;
+};
 
 OpenAPI_edrx_parameters_1_t *OpenAPI_edrx_parameters_1_create(
     OpenAPI_rat_type_e rat_type,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_communication_s OpenAPI_ue_communication_t;
 #include "app_list_for_ue_comm.h"
 #include "scheduled_communication_time_1.h"
 #include "sess_inact_timer_for_ue_comm.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_communication_s OpenAPI_ue_communication_t;
-typedef struct OpenAPI_ue_communication_s {
+struct OpenAPI_ue_communication_s {
     bool is_comm_dur;
     int comm_dur;
     bool is_comm_dur_variance;
@@ -45,7 +45,7 @@ typedef struct OpenAPI_ue_communication_s {
     int confidence;
     struct OpenAPI_app_list_for_ue_comm_s *ana_of_app_list;
     struct OpenAPI_sess_inact_timer_for_ue_comm_s *sess_inact_timer;
-} OpenAPI_ue_communication_t;
+};
 
 OpenAPI_ue_communication_t *OpenAPI_ue_communication_create(
     bool is_comm_dur,

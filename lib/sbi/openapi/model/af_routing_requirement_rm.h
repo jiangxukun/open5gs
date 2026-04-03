@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_af_routing_requirement_rm_s OpenAPI_af_routing_requirement_rm_t;
 #include "eas_ip_replacement_info.h"
 #include "route_to_location.h"
 #include "spatial_validity_rm.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_af_routing_requirement_rm_s OpenAPI_af_routing_requirement_rm_t;
-typedef struct OpenAPI_af_routing_requirement_rm_s {
+struct OpenAPI_af_routing_requirement_rm_s {
     bool is_app_reloc;
     int app_reloc;
     bool is_route_to_locs_null;
@@ -50,7 +50,7 @@ typedef struct OpenAPI_af_routing_requirement_rm_s {
     bool is_max_allowed_up_lat_null;
     bool is_max_allowed_up_lat;
     int max_allowed_up_lat;
-} OpenAPI_af_routing_requirement_rm_t;
+};
 
 OpenAPI_af_routing_requirement_rm_t *OpenAPI_af_routing_requirement_rm_create(
     bool is_app_reloc,

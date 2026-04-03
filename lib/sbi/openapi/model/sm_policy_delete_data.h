@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_policy_delete_data_s OpenAPI_sm_policy_delete_data_t;
 #include "accu_usage_report.h"
 #include "pdu_session_rel_cause.h"
 #include "plmn_id_nid.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_policy_delete_data_s OpenAPI_sm_policy_delete_data_t;
-typedef struct OpenAPI_sm_policy_delete_data_s {
+struct OpenAPI_sm_policy_delete_data_s {
     struct OpenAPI_user_location_s *user_location_info;
     char *ue_time_zone;
     struct OpenAPI_plmn_id_nid_s *serving_network;
@@ -33,7 +33,7 @@ typedef struct OpenAPI_sm_policy_delete_data_s {
     OpenAPI_list_t *accu_usage_reports;
     OpenAPI_pdu_session_rel_cause_e pdu_sess_rel_cause;
     OpenAPI_list_t *qos_mon_reports;
-} OpenAPI_sm_policy_delete_data_t;
+};
 
 OpenAPI_sm_policy_delete_data_t *OpenAPI_sm_policy_delete_data_create(
     OpenAPI_user_location_t *user_location_info,

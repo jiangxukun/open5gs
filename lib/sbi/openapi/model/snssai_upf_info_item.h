@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_snssai_upf_info_item_s OpenAPI_snssai_upf_info_item_t;
 #include "dnn_upf_info_item.h"
 #include "ext_snssai.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_snssai_upf_info_item_s OpenAPI_snssai_upf_info_item_t;
-typedef struct OpenAPI_snssai_upf_info_item_s {
+struct OpenAPI_snssai_upf_info_item_s {
     struct OpenAPI_ext_snssai_s *s_nssai;
     OpenAPI_list_t *dnn_upf_info_list;
     bool is_redundant_transport;
     int redundant_transport;
-} OpenAPI_snssai_upf_info_item_t;
+};
 
 OpenAPI_snssai_upf_info_item_t *OpenAPI_snssai_upf_info_item_create(
     OpenAPI_ext_snssai_t *s_nssai,

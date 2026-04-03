@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_served_pcf_info_value_s OpenAPI_nrf_info_served_pcf_info_value_t;
 #include "identity_range.h"
 #include "pcf_info.h"
 #include "pro_se_capability.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_served_pcf_info_value_s OpenAPI_nrf_info_served_pcf_info_value_t;
-typedef struct OpenAPI_nrf_info_served_pcf_info_value_s {
+struct OpenAPI_nrf_info_served_pcf_info_value_s {
     char *group_id;
     OpenAPI_list_t *dnn_list;
     OpenAPI_list_t *supi_ranges;
@@ -36,7 +36,7 @@ typedef struct OpenAPI_nrf_info_served_pcf_info_value_s {
     int prose_support_ind;
     struct OpenAPI_pro_se_capability_s *prose_capability;
     struct OpenAPI_v2x_capability_s *v2x_capability;
-} OpenAPI_nrf_info_served_pcf_info_value_t;
+};
 
 OpenAPI_nrf_info_served_pcf_info_value_t *OpenAPI_nrf_info_served_pcf_info_value_create(
     char *group_id,

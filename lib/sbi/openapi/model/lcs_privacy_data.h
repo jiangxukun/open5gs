@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_lcs_privacy_data_s OpenAPI_lcs_privacy_data_t;
 #include "lpi.h"
 #include "plmn_operator_class.h"
 #include "unrelated_class.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_lcs_privacy_data_s OpenAPI_lcs_privacy_data_t;
-typedef struct OpenAPI_lcs_privacy_data_s {
+struct OpenAPI_lcs_privacy_data_s {
     struct OpenAPI_lpi_s *lpi;
     struct OpenAPI_unrelated_class_s *unrelated_class;
     OpenAPI_list_t *plmn_operator_classes;
-} OpenAPI_lcs_privacy_data_t;
+};
 
 OpenAPI_lcs_privacy_data_t *OpenAPI_lcs_privacy_data_create(
     OpenAPI_lpi_t *lpi,

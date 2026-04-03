@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sms_subscription_data_1_s OpenAPI_sms_subscription_data_1_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sms_subscription_data_1_s OpenAPI_sms_subscription_data_1_t;
-typedef struct OpenAPI_sms_subscription_data_1_s {
+struct OpenAPI_sms_subscription_data_1_s {
     bool is_sms_subscribed;
     int sms_subscribed;
     char *shared_sms_subs_data_id;
     char *supported_features;
-} OpenAPI_sms_subscription_data_1_t;
+};
 
 OpenAPI_sms_subscription_data_1_t *OpenAPI_sms_subscription_data_1_create(
     bool is_sms_subscribed,

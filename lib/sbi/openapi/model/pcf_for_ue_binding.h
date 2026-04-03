@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pcf_for_ue_binding_s OpenAPI_pcf_for_ue_binding_t;
 #include "binding_level.h"
 #include "ip_end_point.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pcf_for_ue_binding_s OpenAPI_pcf_for_ue_binding_t;
-typedef struct OpenAPI_pcf_for_ue_binding_s {
+struct OpenAPI_pcf_for_ue_binding_s {
     char *supi;
     char *gpsi;
     char *pcf_for_ue_fqdn;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_pcf_for_ue_binding_s {
     char *pcf_set_id;
     OpenAPI_binding_level_e bind_level;
     char *supp_feat;
-} OpenAPI_pcf_for_ue_binding_t;
+};
 
 OpenAPI_pcf_for_ue_binding_t *OpenAPI_pcf_for_ue_binding_create(
     char *supi,

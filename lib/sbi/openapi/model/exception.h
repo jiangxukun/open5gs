@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_exception_s OpenAPI_exception_t;
 #include "exception_id.h"
 #include "exception_trend.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_exception_s OpenAPI_exception_t;
-typedef struct OpenAPI_exception_s {
+struct OpenAPI_exception_s {
     OpenAPI_exception_id_e excep_id;
     bool is_excep_level;
     int excep_level;
     OpenAPI_exception_trend_e excep_trend;
-} OpenAPI_exception_t;
+};
 
 OpenAPI_exception_t *OpenAPI_exception_create(
     OpenAPI_exception_id_e excep_id,

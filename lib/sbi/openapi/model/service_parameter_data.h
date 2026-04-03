@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_service_parameter_data_s OpenAPI_service_parameter_data_t;
 #include "event.h"
 #include "snssai.h"
 #include "ursp_rule_request.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_service_parameter_data_s OpenAPI_service_parameter_data_t;
-typedef struct OpenAPI_service_parameter_data_s {
+struct OpenAPI_service_parameter_data_s {
     char *app_id;
     char *dnn;
     struct OpenAPI_snssai_s *snssai;
@@ -46,7 +46,7 @@ typedef struct OpenAPI_service_parameter_data_s {
     char *res_uri;
     OpenAPI_list_t *headers;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_service_parameter_data_t;
+};
 
 OpenAPI_service_parameter_data_t *OpenAPI_service_parameter_data_create(
     char *app_id,

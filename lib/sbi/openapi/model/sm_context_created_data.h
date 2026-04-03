@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_context_created_data_s OpenAPI_sm_context_created_data_t;
 #include "ebi_arp_mapping.h"
 #include "ho_state.h"
 #include "n2_sm_info_type.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_context_created_data_s OpenAPI_sm_context_created_data_t;
-typedef struct OpenAPI_sm_context_created_data_s {
+struct OpenAPI_sm_context_created_data_s {
     char *h_smf_uri;
     char *smf_uri;
     bool is_pdu_session_id;
@@ -42,7 +42,7 @@ typedef struct OpenAPI_sm_context_created_data_s {
     char *selected_smf_id;
     char *selected_old_smf_id;
     char *inter_plmn_api_root;
-} OpenAPI_sm_context_created_data_t;
+};
 
 OpenAPI_sm_context_created_data_t *OpenAPI_sm_context_created_data_create(
     char *h_smf_uri,

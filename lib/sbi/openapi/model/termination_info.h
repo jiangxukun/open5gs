@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_termination_info_s OpenAPI_termination_info_t;
 #include "termination_cause.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_termination_info_s OpenAPI_termination_info_t;
-typedef struct OpenAPI_termination_info_s {
+struct OpenAPI_termination_info_s {
     OpenAPI_termination_cause_e term_cause;
     char *res_uri;
-} OpenAPI_termination_info_t;
+};
 
 OpenAPI_termination_info_t *OpenAPI_termination_info_create(
     OpenAPI_termination_cause_e term_cause,

@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_trigger_request_s OpenAPI_trigger_request_t;
 #include "pcscf_address.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_trigger_request_s OpenAPI_trigger_request_t;
-typedef struct OpenAPI_trigger_request_s {
+struct OpenAPI_trigger_request_s {
     char *supi;
     bool is_failed_pcscf_null;
     struct OpenAPI_pcscf_address_s *failed_pcscf;
-} OpenAPI_trigger_request_t;
+};
 
 OpenAPI_trigger_request_t *OpenAPI_trigger_request_create(
     char *supi,

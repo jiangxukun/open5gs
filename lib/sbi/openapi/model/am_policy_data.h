@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_am_policy_data_s OpenAPI_am_policy_data_t;
 #include "presence_info.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_am_policy_data_s OpenAPI_am_policy_data_t;
-typedef struct OpenAPI_am_policy_data_s {
+struct OpenAPI_am_policy_data_s {
     OpenAPI_list_t* pra_infos;
     OpenAPI_list_t *subsc_cats;
-} OpenAPI_am_policy_data_t;
+};
 
 OpenAPI_am_policy_data_t *OpenAPI_am_policy_data_create(
     OpenAPI_list_t* pra_infos,

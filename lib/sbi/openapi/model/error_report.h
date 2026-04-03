@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_error_report_s OpenAPI_error_report_t;
 #include "invalid_param.h"
 #include "policy_decision_failure_code.h"
 #include "problem_details.h"
@@ -22,14 +23,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_error_report_s OpenAPI_error_report_t;
-typedef struct OpenAPI_error_report_s {
+struct OpenAPI_error_report_s {
     struct OpenAPI_problem_details_s *error;
     OpenAPI_list_t *rule_reports;
     OpenAPI_list_t *sess_rule_reports;
     OpenAPI_list_t *pol_dec_failure_reports;
     OpenAPI_list_t *invalid_policy_decs;
-} OpenAPI_error_report_t;
+};
 
 OpenAPI_error_report_t *OpenAPI_error_report_create(
     OpenAPI_problem_details_t *error,

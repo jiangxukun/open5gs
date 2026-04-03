@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_alternative_service_requirements_data_s OpenAPI_alternative_service_requirements_data_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_alternative_service_requirements_data_s OpenAPI_alternative_service_requirements_data_t;
-typedef struct OpenAPI_alternative_service_requirements_data_s {
+struct OpenAPI_alternative_service_requirements_data_s {
     char *alt_qos_param_set_ref;
     char *gbr_ul;
     char *gbr_dl;
     bool is_pdb;
     int pdb;
-} OpenAPI_alternative_service_requirements_data_t;
+};
 
 OpenAPI_alternative_service_requirements_data_t *OpenAPI_alternative_service_requirements_data_create(
     char *alt_qos_param_set_ref,

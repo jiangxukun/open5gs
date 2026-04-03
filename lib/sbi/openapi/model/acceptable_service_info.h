@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_acceptable_service_info_s OpenAPI_acceptable_service_info_t;
 #include "media_component.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_acceptable_service_info_s OpenAPI_acceptable_service_info_t;
-typedef struct OpenAPI_acceptable_service_info_s {
+struct OpenAPI_acceptable_service_info_s {
     OpenAPI_list_t* acc_bw_med_comps;
     char *mar_bw_ul;
     char *mar_bw_dl;
-} OpenAPI_acceptable_service_info_t;
+};
 
 OpenAPI_acceptable_service_info_t *OpenAPI_acceptable_service_info_create(
     OpenAPI_list_t* acc_bw_med_comps,

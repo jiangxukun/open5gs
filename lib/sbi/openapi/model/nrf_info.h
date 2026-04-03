@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_nrf_info_s OpenAPI_nrf_info_t;
 #include "dccf_info.h"
 #include "easdf_info.h"
 #include "mb_upf_info.h"
@@ -47,8 +48,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_nrf_info_s OpenAPI_nrf_info_t;
-typedef struct OpenAPI_nrf_info_s {
+struct OpenAPI_nrf_info_s {
     OpenAPI_list_t* served_udr_info;
     OpenAPI_list_t* served_udr_info_list;
     OpenAPI_list_t* served_udm_info;
@@ -89,7 +89,7 @@ typedef struct OpenAPI_nrf_info_s {
     OpenAPI_list_t* served_mb_upf_info_list;
     OpenAPI_list_t* served_trust_af_info;
     OpenAPI_list_t* served_nssaaf_info;
-} OpenAPI_nrf_info_t;
+};
 
 OpenAPI_nrf_info_t *OpenAPI_nrf_info_create(
     OpenAPI_list_t* served_udr_info,

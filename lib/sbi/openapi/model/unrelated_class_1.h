@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_unrelated_class_1_s OpenAPI_unrelated_class_1_t;
 #include "default_unrelated_class_1.h"
 #include "external_unrelated_class.h"
 #include "service_type_unrelated_class_1.h"
@@ -20,12 +21,11 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_unrelated_class_1_s OpenAPI_unrelated_class_1_t;
-typedef struct OpenAPI_unrelated_class_1_s {
+struct OpenAPI_unrelated_class_1_s {
     struct OpenAPI_default_unrelated_class_1_s *default_unrelated_class;
     struct OpenAPI_external_unrelated_class_s *external_unrelated_class;
     OpenAPI_list_t *service_type_unrelated_classes;
-} OpenAPI_unrelated_class_1_t;
+};
 
 OpenAPI_unrelated_class_1_t *OpenAPI_unrelated_class_1_create(
     OpenAPI_default_unrelated_class_1_t *default_unrelated_class,

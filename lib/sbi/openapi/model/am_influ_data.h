@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_am_influ_data_s OpenAPI_am_influ_data_t;
 #include "am_influ_event.h"
 #include "dnn_snssai_information.h"
 #include "service_area_coverage_info.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_am_influ_data_s OpenAPI_am_influ_data_t;
-typedef struct OpenAPI_am_influ_data_s {
+struct OpenAPI_am_influ_data_s {
     OpenAPI_list_t *app_ids;
     OpenAPI_list_t *dnn_snssai_infos;
     char *inter_group_id;
@@ -40,7 +40,7 @@ typedef struct OpenAPI_am_influ_data_s {
     char *supported_features;
     char *res_uri;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_am_influ_data_t;
+};
 
 OpenAPI_am_influ_data_t *OpenAPI_am_influ_data_create(
     OpenAPI_list_t *app_ids,

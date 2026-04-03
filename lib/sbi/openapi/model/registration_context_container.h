@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_registration_context_container_s OpenAPI_registration_context_container_t;
 #include "access_type.h"
 #include "allowed_nssai.h"
 #include "ce_mode_b_ind.h"
@@ -28,8 +29,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_registration_context_container_s OpenAPI_registration_context_container_t;
-typedef struct OpenAPI_registration_context_container_s {
+struct OpenAPI_registration_context_container_s {
     struct OpenAPI_ue_context_s *ue_context;
     char *local_time_zone;
     OpenAPI_access_type_e an_type;
@@ -56,7 +56,7 @@ typedef struct OpenAPI_registration_context_container_s {
     bool is_authenticated_ind;
     int authenticated_ind;
     struct OpenAPI_npn_access_info_s *npn_access_info;
-} OpenAPI_registration_context_container_t;
+};
 
 OpenAPI_registration_context_container_t *OpenAPI_registration_context_container_create(
     OpenAPI_ue_context_t *ue_context,

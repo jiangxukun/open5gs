@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_routing_info_sm_response_s OpenAPI_routing_info_sm_response_t;
 #include "ip_sm_gw_info.h"
 #include "sms_router_info.h"
 #include "smsf_registration.h"
@@ -20,14 +21,13 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_routing_info_sm_response_s OpenAPI_routing_info_sm_response_t;
-typedef struct OpenAPI_routing_info_sm_response_s {
+struct OpenAPI_routing_info_sm_response_s {
     char *supi;
     struct OpenAPI_smsf_registration_s *smsf3_gpp;
     struct OpenAPI_smsf_registration_s *smsf_non3_gpp;
     struct OpenAPI_ip_sm_gw_info_s *ip_sm_gw;
     struct OpenAPI_sms_router_info_s *sms_router;
-} OpenAPI_routing_info_sm_response_t;
+};
 
 OpenAPI_routing_info_sm_response_t *OpenAPI_routing_info_sm_response_create(
     char *supi,

@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pws_response_data_s OpenAPI_pws_response_data_t;
 #include "tai.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pws_response_data_s OpenAPI_pws_response_data_t;
-typedef struct OpenAPI_pws_response_data_s {
+struct OpenAPI_pws_response_data_s {
     int ngap_message_type;
     int serial_number;
     int message_identifier;
     OpenAPI_list_t *unknown_tai_list;
-} OpenAPI_pws_response_data_t;
+};
 
 OpenAPI_pws_response_data_t *OpenAPI_pws_response_data_create(
     int ngap_message_type,

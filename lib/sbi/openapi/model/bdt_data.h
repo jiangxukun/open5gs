@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_bdt_data_s OpenAPI_bdt_data_t;
 #include "bdt_policy_status.h"
 #include "network_area_info_3.h"
 #include "snssai.h"
@@ -22,8 +23,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_bdt_data_s OpenAPI_bdt_data_t;
-typedef struct OpenAPI_bdt_data_s {
+struct OpenAPI_bdt_data_s {
     char *asp_id;
     struct OpenAPI_transfer_policy_s *trans_policy;
     char *bdt_ref_id;
@@ -37,7 +37,7 @@ typedef struct OpenAPI_bdt_data_s {
     OpenAPI_bdt_policy_status_e bdtp_status;
     char *supp_feat;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_bdt_data_t;
+};
 
 OpenAPI_bdt_data_t *OpenAPI_bdt_data_create(
     char *asp_id,

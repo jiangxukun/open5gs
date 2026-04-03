@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_subscription_data_sets_1_s OpenAPI_subscription_data_sets_1_t;
 #include "access_and_mobility_subscription_data_1.h"
 #include "lcs_broadcast_assistance_types_data_1.h"
 #include "lcs_mo_data_1.h"
@@ -33,8 +34,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_subscription_data_sets_1_s OpenAPI_subscription_data_sets_1_t;
-typedef struct OpenAPI_subscription_data_sets_1_s {
+struct OpenAPI_subscription_data_sets_1_s {
     struct OpenAPI_access_and_mobility_subscription_data_1_s *am_data;
     struct OpenAPI_smf_selection_subscription_data_1_s *smf_sel_data;
     struct OpenAPI_ue_context_in_amf_data_1_s *uec_amf_data;
@@ -52,7 +52,7 @@ typedef struct OpenAPI_subscription_data_sets_1_s {
     struct OpenAPI_prose_subscription_data_1_s *prose_data;
     struct OpenAPI_mbs_subscription_data_1_s *mbs_data;
     struct OpenAPI_uc_subscription_data_s *uc_data;
-} OpenAPI_subscription_data_sets_1_t;
+};
 
 OpenAPI_subscription_data_sets_1_t *OpenAPI_subscription_data_sets_1_create(
     OpenAPI_access_and_mobility_subscription_data_1_t *am_data,

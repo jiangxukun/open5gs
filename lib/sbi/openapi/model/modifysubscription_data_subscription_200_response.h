@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_modifysubscription_data_subscription_200_response_s OpenAPI_modifysubscription_data_subscription_200_response_t;
 #include "hss_subscription_info.h"
 #include "report_item.h"
 #include "sdm_subscription_1.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_modifysubscription_data_subscription_200_response_s OpenAPI_modifysubscription_data_subscription_200_response_t;
-typedef struct OpenAPI_modifysubscription_data_subscription_200_response_s {
+struct OpenAPI_modifysubscription_data_subscription_200_response_s {
     OpenAPI_list_t *report;
     char *ue_id;
     char *callback_reference;
@@ -34,7 +34,7 @@ typedef struct OpenAPI_modifysubscription_data_subscription_200_response_s {
     bool is_unique_subscription;
     int unique_subscription;
     char *supported_features;
-} OpenAPI_modifysubscription_data_subscription_200_response_t;
+};
 
 OpenAPI_modifysubscription_data_subscription_200_response_t *OpenAPI_modifysubscription_data_subscription_200_response_create(
     OpenAPI_list_t *report,

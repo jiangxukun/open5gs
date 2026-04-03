@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_event_subscription_s OpenAPI_event_subscription_t;
 #include "addr_fqdn.h"
 #include "analytics_subset.h"
 #include "bw_requirement.h"
@@ -42,8 +43,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_event_subscription_s OpenAPI_event_subscription_t;
-typedef struct OpenAPI_event_subscription_s {
+struct OpenAPI_event_subscription_s {
     bool is_any_slice;
     int any_slice;
     OpenAPI_list_t *app_ids;
@@ -89,7 +89,7 @@ typedef struct OpenAPI_event_subscription_s {
     struct OpenAPI_upf_information_s *upf_info;
     OpenAPI_list_t *app_server_addrs;
     OpenAPI_list_t *dn_perf_reqs;
-} OpenAPI_event_subscription_t;
+};
 
 OpenAPI_event_subscription_t *OpenAPI_event_subscription_create(
     bool is_any_slice,

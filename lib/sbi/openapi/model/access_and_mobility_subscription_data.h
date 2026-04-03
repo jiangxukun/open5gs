@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_access_and_mobility_subscription_data_s OpenAPI_access_and_mobility_subscription_data_t;
 #include "aerial_ue_subscription_info.h"
 #include "ambr_rm.h"
 #include "area.h"
@@ -41,8 +42,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_access_and_mobility_subscription_data_s OpenAPI_access_and_mobility_subscription_data_t;
-typedef struct OpenAPI_access_and_mobility_subscription_data_s {
+struct OpenAPI_access_and_mobility_subscription_data_s {
     char *supported_features;
     OpenAPI_list_t *gpsis;
     char *hss_group_id;
@@ -117,7 +117,7 @@ typedef struct OpenAPI_access_and_mobility_subscription_data_s {
     struct OpenAPI_roaming_restrictions_s *roaming_restrictions;
     bool is_remote_prov_ind;
     int remote_prov_ind;
-} OpenAPI_access_and_mobility_subscription_data_t;
+};
 
 OpenAPI_access_and_mobility_subscription_data_t *OpenAPI_access_and_mobility_subscription_data_create(
     char *supported_features,

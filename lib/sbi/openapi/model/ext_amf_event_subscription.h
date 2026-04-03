@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ext_amf_event_subscription_s OpenAPI_ext_amf_event_subscription_t;
 #include "amf_event.h"
 #include "amf_event_mode.h"
 #include "area_of_interest_event_state.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ext_amf_event_subscription_s OpenAPI_ext_amf_event_subscription_t;
-typedef struct OpenAPI_ext_amf_event_subscription_s {
+struct OpenAPI_ext_amf_event_subscription_s {
     OpenAPI_list_t *event_list;
     char *event_notify_uri;
     char *notify_correlation_id;
@@ -47,7 +47,7 @@ typedef struct OpenAPI_ext_amf_event_subscription_s {
     int event_sync_ind;
     OpenAPI_list_t *nf_consumer_info;
     OpenAPI_list_t* aoi_state_list;
-} OpenAPI_ext_amf_event_subscription_t;
+};
 
 OpenAPI_ext_amf_event_subscription_t *OpenAPI_ext_amf_event_subscription_create(
     OpenAPI_list_t *event_list,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_immediate_mdt_conf_s OpenAPI_immediate_mdt_conf_t;
 #include "area_scope.h"
 #include "collection_period_rmm_lte_mdt.h"
 #include "collection_period_rmm_nr_mdt.h"
@@ -31,8 +32,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_immediate_mdt_conf_s OpenAPI_immediate_mdt_conf_t;
-typedef struct OpenAPI_immediate_mdt_conf_s {
+struct OpenAPI_immediate_mdt_conf_s {
     OpenAPI_job_type_e job_type;
     OpenAPI_list_t *measurement_lte_list;
     OpenAPI_list_t *measurement_nr_list;
@@ -56,7 +56,7 @@ typedef struct OpenAPI_immediate_mdt_conf_s {
     OpenAPI_list_t *add_positioning_method_list;
     OpenAPI_list_t *mdt_allowed_plmn_id_list;
     OpenAPI_list_t *sensor_measurement_list;
-} OpenAPI_immediate_mdt_conf_t;
+};
 
 OpenAPI_immediate_mdt_conf_t *OpenAPI_immediate_mdt_conf_create(
     OpenAPI_job_type_e job_type,

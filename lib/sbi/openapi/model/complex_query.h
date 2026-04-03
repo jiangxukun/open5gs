@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_complex_query_s OpenAPI_complex_query_t;
 #include "cnf_unit.h"
 #include "dnf_unit.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_complex_query_s OpenAPI_complex_query_t;
-typedef struct OpenAPI_complex_query_s {
+struct OpenAPI_complex_query_s {
     OpenAPI_list_t *cnf_units;
     OpenAPI_list_t *dnf_units;
-} OpenAPI_complex_query_t;
+};
 
 OpenAPI_complex_query_t *OpenAPI_complex_query_create(
     OpenAPI_list_t *cnf_units,

@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_as_time_distribution_param_s OpenAPI_as_time_distribution_param_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_as_time_distribution_param_s OpenAPI_as_time_distribution_param_t;
-typedef struct OpenAPI_as_time_distribution_param_s {
+struct OpenAPI_as_time_distribution_param_s {
     bool is_as_time_dist_ind;
     int as_time_dist_ind;
     bool is_uu_error_budget_null;
     bool is_uu_error_budget;
     int uu_error_budget;
-} OpenAPI_as_time_distribution_param_t;
+};
 
 OpenAPI_as_time_distribution_param_t *OpenAPI_as_time_distribution_param_create(
     bool is_as_time_dist_ind,

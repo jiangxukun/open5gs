@@ -12,13 +12,13 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_communication_characteristics_af_s OpenAPI_communication_characteristics_af_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_communication_characteristics_af_s OpenAPI_communication_characteristics_af_t;
-typedef struct OpenAPI_communication_characteristics_af_s {
+struct OpenAPI_communication_characteristics_af_s {
     bool is_pp_dl_packet_count_null;
     bool is_pp_dl_packet_count;
     int pp_dl_packet_count;
@@ -26,7 +26,7 @@ typedef struct OpenAPI_communication_characteristics_af_s {
     int maximum_response_time;
     bool is_maximum_latency;
     int maximum_latency;
-} OpenAPI_communication_characteristics_af_t;
+};
 
 OpenAPI_communication_characteristics_af_t *OpenAPI_communication_characteristics_af_create(
     bool is_pp_dl_packet_count_null,

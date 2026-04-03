@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_monitoring_data_s OpenAPI_qos_monitoring_data_t;
 #include "reporting_frequency.h"
 #include "requested_qos_monitoring_parameter.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_monitoring_data_s OpenAPI_qos_monitoring_data_t;
-typedef struct OpenAPI_qos_monitoring_data_s {
+struct OpenAPI_qos_monitoring_data_s {
     char *qm_id;
     OpenAPI_list_t *req_qos_mon_params;
     OpenAPI_list_t *rep_freqs;
@@ -45,7 +45,7 @@ typedef struct OpenAPI_qos_monitoring_data_s {
     char *notify_corre_id;
     bool is_direct_notif_ind;
     int direct_notif_ind;
-} OpenAPI_qos_monitoring_data_t;
+};
 
 OpenAPI_qos_monitoring_data_t *OpenAPI_qos_monitoring_data_create(
     char *qm_id,

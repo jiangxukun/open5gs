@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ue_context_create_data_s OpenAPI_ue_context_create_data_t;
 #include "n2_info_content.h"
 #include "n2_sm_information.h"
 #include "ng_ap_cause.h"
@@ -23,8 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ue_context_create_data_s OpenAPI_ue_context_create_data_t;
-typedef struct OpenAPI_ue_context_create_data_s {
+struct OpenAPI_ue_context_create_data_s {
     struct OpenAPI_ue_context_s *ue_context;
     struct OpenAPI_ng_ran_target_id_s *target_id;
     struct OpenAPI_n2_info_content_s *source_to_target_data;
@@ -35,7 +35,7 @@ typedef struct OpenAPI_ue_context_create_data_s {
     struct OpenAPI_ng_ap_cause_s *ngap_cause;
     char *supported_features;
     struct OpenAPI_plmn_id_nid_s *serving_network;
-} OpenAPI_ue_context_create_data_t;
+};
 
 OpenAPI_ue_context_create_data_t *OpenAPI_ue_context_create_data_create(
     OpenAPI_ue_context_t *ue_context,

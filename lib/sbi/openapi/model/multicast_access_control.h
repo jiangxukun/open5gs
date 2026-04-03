@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_multicast_access_control_s OpenAPI_multicast_access_control_t;
 #include "access_right_status.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_multicast_access_control_s OpenAPI_multicast_access_control_t;
-typedef struct OpenAPI_multicast_access_control_s {
+struct OpenAPI_multicast_access_control_s {
     char *src_ipv4_addr;
     char *src_ipv6_addr;
     char *multicast_v4_addr;
     char *multicast_v6_addr;
     OpenAPI_access_right_status_e acc_status;
-} OpenAPI_multicast_access_control_t;
+};
 
 OpenAPI_multicast_access_control_t *OpenAPI_multicast_access_control_create(
     char *src_ipv4_addr,

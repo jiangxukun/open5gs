@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ecs_addr_config_info_1_s OpenAPI_ecs_addr_config_info_1_t;
 #include "ecs_server_addr.h"
 #include "spatial_validity_cond_1.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ecs_addr_config_info_1_s OpenAPI_ecs_addr_config_info_1_t;
-typedef struct OpenAPI_ecs_addr_config_info_1_s {
+struct OpenAPI_ecs_addr_config_info_1_s {
     struct OpenAPI_ecs_server_addr_s *ecs_server_addr;
     struct OpenAPI_spatial_validity_cond_1_s *spatial_validity_cond;
-} OpenAPI_ecs_addr_config_info_1_t;
+};
 
 OpenAPI_ecs_addr_config_info_1_t *OpenAPI_ecs_addr_config_info_1_create(
     OpenAPI_ecs_server_addr_t *ecs_server_addr,

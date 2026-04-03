@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_n1_message_notify_request_s OpenAPI_n1_message_notify_request_t;
 #include "n1_message_notification.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_n1_message_notify_request_s OpenAPI_n1_message_notify_request_t;
-typedef struct OpenAPI_n1_message_notify_request_s {
+struct OpenAPI_n1_message_notify_request_s {
     struct OpenAPI_n1_message_notification_s *json_data;
     OpenAPI_binary_t* binary_data_n1_message;
-} OpenAPI_n1_message_notify_request_t;
+};
 
 OpenAPI_n1_message_notify_request_t *OpenAPI_n1_message_notify_request_create(
     OpenAPI_n1_message_notification_t *json_data,

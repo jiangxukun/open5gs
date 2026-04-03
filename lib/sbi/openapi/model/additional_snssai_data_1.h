@@ -12,20 +12,20 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_additional_snssai_data_1_s OpenAPI_additional_snssai_data_1_t;
 #include "slice_mbr_rm.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_additional_snssai_data_1_s OpenAPI_additional_snssai_data_1_t;
-typedef struct OpenAPI_additional_snssai_data_1_s {
+struct OpenAPI_additional_snssai_data_1_s {
     bool is_required_authn_authz;
     int required_authn_authz;
     bool is_subscribed_ue_slice_mbr_null;
     struct OpenAPI_slice_mbr_rm_s *subscribed_ue_slice_mbr;
     OpenAPI_list_t *subscribed_ns_srg_list;
-} OpenAPI_additional_snssai_data_1_t;
+};
 
 OpenAPI_additional_snssai_data_1_t *OpenAPI_additional_snssai_data_1_create(
     bool is_required_authn_authz,

@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_qos_sustainability_info_s OpenAPI_qos_sustainability_info_t;
 #include "network_area_info.h"
 #include "retainability_threshold.h"
 #include "snssai.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_qos_sustainability_info_s OpenAPI_qos_sustainability_info_t;
-typedef struct OpenAPI_qos_sustainability_info_s {
+struct OpenAPI_qos_sustainability_info_s {
     struct OpenAPI_network_area_info_s *area_info;
     char *start_ts;
     char *end_ts;
@@ -30,7 +30,7 @@ typedef struct OpenAPI_qos_sustainability_info_s {
     struct OpenAPI_snssai_s *snssai;
     bool is_confidence;
     int confidence;
-} OpenAPI_qos_sustainability_info_t;
+};
 
 OpenAPI_qos_sustainability_info_t *OpenAPI_qos_sustainability_info_create(
     OpenAPI_network_area_info_t *area_info,

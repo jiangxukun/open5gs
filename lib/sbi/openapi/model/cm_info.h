@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_cm_info_s OpenAPI_cm_info_t;
 #include "access_type.h"
 #include "cm_state.h"
 
@@ -19,11 +20,10 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_cm_info_s OpenAPI_cm_info_t;
-typedef struct OpenAPI_cm_info_s {
+struct OpenAPI_cm_info_s {
     OpenAPI_cm_state_e cm_state;
     OpenAPI_access_type_e access_type;
-} OpenAPI_cm_info_t;
+};
 
 OpenAPI_cm_info_t *OpenAPI_cm_info_create(
     OpenAPI_cm_state_e cm_state,

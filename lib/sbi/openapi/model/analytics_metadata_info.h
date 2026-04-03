@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_analytics_metadata_info_s OpenAPI_analytics_metadata_info_t;
 #include "accuracy.h"
 #include "dataset_statistical_property.h"
 #include "output_strategy.h"
@@ -21,15 +22,14 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_analytics_metadata_info_s OpenAPI_analytics_metadata_info_t;
-typedef struct OpenAPI_analytics_metadata_info_s {
+struct OpenAPI_analytics_metadata_info_s {
     bool is_num_samples;
     int num_samples;
     struct OpenAPI_time_window_s *data_window;
     OpenAPI_list_t *data_stat_props;
     OpenAPI_output_strategy_e strategy;
     OpenAPI_accuracy_e accuracy;
-} OpenAPI_analytics_metadata_info_t;
+};
 
 OpenAPI_analytics_metadata_info_t *OpenAPI_analytics_metadata_info_create(
     bool is_num_samples,

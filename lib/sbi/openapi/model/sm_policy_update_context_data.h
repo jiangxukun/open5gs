@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_policy_update_context_data_s OpenAPI_sm_policy_update_context_data_t;
 #include "acc_net_ch_id.h"
 #include "access_type.h"
 #include "accu_usage_report.h"
@@ -52,8 +53,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_policy_update_context_data_s OpenAPI_sm_policy_update_context_data_t;
-typedef struct OpenAPI_sm_policy_update_context_data_s {
+struct OpenAPI_sm_policy_update_context_data_s {
     OpenAPI_list_t *rep_policy_ctrl_req_triggers;
     OpenAPI_list_t *acc_net_ch_ids;
     OpenAPI_access_type_e access_type;
@@ -118,7 +118,7 @@ typedef struct OpenAPI_sm_policy_update_context_data_s {
     OpenAPI_list_t *nwdaf_datas;
     bool is_an_gw_status;
     int an_gw_status;
-} OpenAPI_sm_policy_update_context_data_t;
+};
 
 OpenAPI_sm_policy_update_context_data_t *OpenAPI_sm_policy_update_context_data_create(
     OpenAPI_list_t *rep_policy_ctrl_req_triggers,

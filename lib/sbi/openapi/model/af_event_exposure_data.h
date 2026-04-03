@@ -12,18 +12,18 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_af_event_exposure_data_s OpenAPI_af_event_exposure_data_t;
 #include "af_event.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_af_event_exposure_data_s OpenAPI_af_event_exposure_data_t;
-typedef struct OpenAPI_af_event_exposure_data_s {
+struct OpenAPI_af_event_exposure_data_s {
     OpenAPI_list_t *af_events;
     OpenAPI_list_t *af_ids;
     OpenAPI_list_t *app_ids;
-} OpenAPI_af_event_exposure_data_t;
+};
 
 OpenAPI_af_event_exposure_data_t *OpenAPI_af_event_exposure_data_create(
     OpenAPI_list_t *af_events,

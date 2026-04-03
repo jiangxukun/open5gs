@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_dispersion_collection_s OpenAPI_dispersion_collection_t;
 #include "application_volume.h"
 #include "dispersion_class.h"
 #include "snssai.h"
@@ -21,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_dispersion_collection_s OpenAPI_dispersion_collection_t;
-typedef struct OpenAPI_dispersion_collection_s {
+struct OpenAPI_dispersion_collection_s {
     struct OpenAPI_user_location_s *ue_loc;
     struct OpenAPI_snssai_s *snssai;
     OpenAPI_list_t *supis;
@@ -39,7 +39,7 @@ typedef struct OpenAPI_dispersion_collection_s {
     int ue_ratio;
     bool is_confidence;
     int confidence;
-} OpenAPI_dispersion_collection_t;
+};
 
 OpenAPI_dispersion_collection_t *OpenAPI_dispersion_collection_create(
     OpenAPI_user_location_t *ue_loc,

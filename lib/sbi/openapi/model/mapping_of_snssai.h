@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_mapping_of_snssai_s OpenAPI_mapping_of_snssai_t;
 #include "snssai.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_mapping_of_snssai_s OpenAPI_mapping_of_snssai_t;
-typedef struct OpenAPI_mapping_of_snssai_s {
+struct OpenAPI_mapping_of_snssai_s {
     struct OpenAPI_snssai_s *serving_snssai;
     struct OpenAPI_snssai_s *home_snssai;
-} OpenAPI_mapping_of_snssai_t;
+};
 
 OpenAPI_mapping_of_snssai_t *OpenAPI_mapping_of_snssai_create(
     OpenAPI_snssai_t *serving_snssai,

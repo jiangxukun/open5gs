@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ellipsoid_arc_s OpenAPI_ellipsoid_arc_t;
 #include "gad_shape.h"
 #include "geographical_coordinates.h"
 #include "supported_gad_shapes.h"
@@ -20,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ellipsoid_arc_s OpenAPI_ellipsoid_arc_t;
-typedef struct OpenAPI_ellipsoid_arc_s {
+struct OpenAPI_ellipsoid_arc_s {
     OpenAPI_supported_gad_shapes_e shape;
     struct OpenAPI_geographical_coordinates_s *point;
     int inner_radius;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_ellipsoid_arc_s {
     int offset_angle;
     int included_angle;
     int confidence;
-} OpenAPI_ellipsoid_arc_t;
+};
 
 OpenAPI_ellipsoid_arc_t *OpenAPI_ellipsoid_arc_create(
     OpenAPI_supported_gad_shapes_e shape,

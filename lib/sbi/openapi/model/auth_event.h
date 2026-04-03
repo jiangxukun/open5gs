@@ -12,14 +12,14 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_auth_event_s OpenAPI_auth_event_t;
 #include "auth_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_auth_event_s OpenAPI_auth_event_t;
-typedef struct OpenAPI_auth_event_s {
+struct OpenAPI_auth_event_s {
     char *nf_instance_id;
     int success;
     char *time_stamp;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_auth_event_s {
     int auth_removal_ind;
     char *nf_set_id;
     OpenAPI_list_t *reset_ids;
-} OpenAPI_auth_event_t;
+};
 
 OpenAPI_auth_event_t *OpenAPI_auth_event_create(
     char *nf_instance_id,

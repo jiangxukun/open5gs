@@ -12,16 +12,16 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_app_session_context_update_data_patch_s OpenAPI_app_session_context_update_data_patch_t;
 #include "app_session_context_update_data.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_app_session_context_update_data_patch_s OpenAPI_app_session_context_update_data_patch_t;
-typedef struct OpenAPI_app_session_context_update_data_patch_s {
+struct OpenAPI_app_session_context_update_data_patch_s {
     struct OpenAPI_app_session_context_update_data_s *asc_req_data;
-} OpenAPI_app_session_context_update_data_patch_t;
+};
 
 OpenAPI_app_session_context_update_data_patch_t *OpenAPI_app_session_context_update_data_patch_create(
     OpenAPI_app_session_context_update_data_t *asc_req_data

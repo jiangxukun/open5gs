@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_context_create_data_s OpenAPI_sm_context_create_data_t;
 #include "access_type.h"
 #include "apn_rate_status.h"
 #include "backup_amf_info.h"
@@ -45,8 +46,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_context_create_data_s OpenAPI_sm_context_create_data_t;
-typedef struct OpenAPI_sm_context_create_data_s {
+struct OpenAPI_sm_context_create_data_s {
     char *supi;
     bool is_unauthenticated_supi;
     int unauthenticated_supi;
@@ -169,7 +169,7 @@ typedef struct OpenAPI_sm_context_create_data_s {
     int anchor_smf_oauth2_required;
     bool is_sm_context_smf_oauth2_required;
     int sm_context_smf_oauth2_required;
-} OpenAPI_sm_context_create_data_t;
+};
 
 OpenAPI_sm_context_create_data_t *OpenAPI_sm_context_create_data_create(
     char *supi,

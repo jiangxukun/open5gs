@@ -12,19 +12,19 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pro_se_authentication_info_s OpenAPI_pro_se_authentication_info_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pro_se_authentication_info_s OpenAPI_pro_se_authentication_info_t;
-typedef struct OpenAPI_pro_se_authentication_info_s {
+struct OpenAPI_pro_se_authentication_info_s {
     char *supi_or_suci;
     char *_5g_pruk_id;
     int relay_service_code;
     char *nonce1;
     char *supported_features;
-} OpenAPI_pro_se_authentication_info_t;
+};
 
 OpenAPI_pro_se_authentication_info_t *OpenAPI_pro_se_authentication_info_create(
     char *supi_or_suci,

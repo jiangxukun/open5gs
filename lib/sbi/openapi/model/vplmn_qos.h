@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_vplmn_qos_s OpenAPI_vplmn_qos_t;
 #include "ambr.h"
 #include "arp.h"
 
@@ -19,8 +20,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_vplmn_qos_s OpenAPI_vplmn_qos_t;
-typedef struct OpenAPI_vplmn_qos_s {
+struct OpenAPI_vplmn_qos_s {
     bool is__5qi;
     int _5qi;
     struct OpenAPI_arp_s *arp;
@@ -29,7 +29,7 @@ typedef struct OpenAPI_vplmn_qos_s {
     char *max_fbr_ul;
     char *gua_fbr_dl;
     char *gua_fbr_ul;
-} OpenAPI_vplmn_qos_t;
+};
 
 OpenAPI_vplmn_qos_t *OpenAPI_vplmn_qos_create(
     bool is__5qi,

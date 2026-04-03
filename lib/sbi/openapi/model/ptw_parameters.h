@@ -12,17 +12,17 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_ptw_parameters_s OpenAPI_ptw_parameters_t;
 #include "operation_mode.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_ptw_parameters_s OpenAPI_ptw_parameters_t;
-typedef struct OpenAPI_ptw_parameters_s {
+struct OpenAPI_ptw_parameters_s {
     OpenAPI_operation_mode_e operation_mode;
     char *ptw_value;
-} OpenAPI_ptw_parameters_t;
+};
 
 OpenAPI_ptw_parameters_t *OpenAPI_ptw_parameters_create(
     OpenAPI_operation_mode_e operation_mode,

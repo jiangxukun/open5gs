@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_subscr_cond_s OpenAPI_subscr_cond_t;
 #include "af_event.h"
 #include "guami.h"
 #include "identity_range.h"
@@ -27,13 +28,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_subscr_cond_s OpenAPI_subscr_cond_t;
 typedef enum { OpenAPI_subscr_cond_CONDITIONTYPE_NULL = 0, OpenAPI_subscr_cond_CONDITIONTYPE_SERVICE_NAME_LIST_COND } OpenAPI_subscr_cond_condition_type_e;
 
 char* OpenAPI_subscr_cond_condition_type_ToString(OpenAPI_subscr_cond_condition_type_e condition_type);
 
 OpenAPI_subscr_cond_condition_type_e OpenAPI_subscr_cond_condition_type_FromString(char* condition_type);
-typedef struct OpenAPI_subscr_cond_s {
+struct OpenAPI_subscr_cond_s {
     char *nf_instance_id;
     OpenAPI_list_t *nf_instance_id_list;
     OpenAPI_nf_type_e nf_type;
@@ -63,7 +63,7 @@ typedef struct OpenAPI_subscr_cond_s {
     OpenAPI_list_t *gpsi_ranges;
     OpenAPI_list_t *external_group_identifiers_ranges;
     OpenAPI_list_t *served_fqdn_list;
-} OpenAPI_subscr_cond_t;
+};
 
 OpenAPI_subscr_cond_t *OpenAPI_subscr_cond_create(
     char *nf_instance_id,

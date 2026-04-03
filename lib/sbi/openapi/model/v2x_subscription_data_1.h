@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_v2x_subscription_data_1_s OpenAPI_v2x_subscription_data_1_t;
 #include "lte_v2x_auth_1.h"
 #include "nr_v2x_auth_1.h"
 
@@ -19,13 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_v2x_subscription_data_1_s OpenAPI_v2x_subscription_data_1_t;
-typedef struct OpenAPI_v2x_subscription_data_1_s {
+struct OpenAPI_v2x_subscription_data_1_s {
     struct OpenAPI_nr_v2x_auth_1_s *nr_v2x_services_auth;
     struct OpenAPI_lte_v2x_auth_1_s *lte_v2x_services_auth;
     char *nr_ue_pc5_ambr;
     char *lte_pc5_ambr;
-} OpenAPI_v2x_subscription_data_1_t;
+};
 
 OpenAPI_v2x_subscription_data_1_t *OpenAPI_v2x_subscription_data_1_create(
     OpenAPI_nr_v2x_auth_1_t *nr_v2x_services_auth,

@@ -12,21 +12,21 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_pp_dl_packet_count_ext_s OpenAPI_pp_dl_packet_count_ext_t;
 #include "snssai.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct OpenAPI_pp_dl_packet_count_ext_s OpenAPI_pp_dl_packet_count_ext_t;
-typedef struct OpenAPI_pp_dl_packet_count_ext_s {
+struct OpenAPI_pp_dl_packet_count_ext_s {
     char *af_instance_id;
     int reference_id;
     char *dnn;
     struct OpenAPI_snssai_s *single_nssai;
     char *validity_time;
     char *mtc_provider_information;
-} OpenAPI_pp_dl_packet_count_ext_t;
+};
 
 OpenAPI_pp_dl_packet_count_ext_t *OpenAPI_pp_dl_packet_count_ext_create(
     char *af_instance_id,

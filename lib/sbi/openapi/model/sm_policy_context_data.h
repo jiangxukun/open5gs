@@ -12,6 +12,7 @@
 #include "../include/list.h"
 #include "../include/keyValuePair.h"
 #include "../include/binary.h"
+typedef struct OpenAPI_sm_policy_context_data_s OpenAPI_sm_policy_context_data_t;
 #include "acc_net_ch_id.h"
 #include "acc_net_charging_address.h"
 #include "access_type.h"
@@ -39,8 +40,7 @@
 extern "C" {
 #endif
 
-typedef struct OpenAPI_sm_policy_context_data_s OpenAPI_sm_policy_context_data_t;
-typedef struct OpenAPI_sm_policy_context_data_s {
+struct OpenAPI_sm_policy_context_data_s {
     struct OpenAPI_acc_net_ch_id_s *acc_net_ch_id;
     bool is_charg_entity_addr_null;
     struct OpenAPI_acc_net_charging_address_s *charg_entity_addr;
@@ -98,7 +98,7 @@ typedef struct OpenAPI_sm_policy_context_data_s {
     bool is_onboard_ind;
     int onboard_ind;
     OpenAPI_list_t *nwdaf_datas;
-} OpenAPI_sm_policy_context_data_t;
+};
 
 OpenAPI_sm_policy_context_data_t *OpenAPI_sm_policy_context_data_create(
     OpenAPI_acc_net_ch_id_t *acc_net_ch_id,
