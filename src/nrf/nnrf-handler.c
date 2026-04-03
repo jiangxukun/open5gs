@@ -1142,7 +1142,7 @@ bool nrf_nnrf_handle_nf_discover(
 
         /* NF-Instances are Discovered */
 
-        SearchResult->is_validity_period = true;
+        ogs_assert(ogs_local_conf()->time.nf_instance.validity_duration);
         SearchResult->validity_period =
             ogs_local_conf()->time.nf_instance.validity_duration;
         ogs_assert(SearchResult->validity_period);

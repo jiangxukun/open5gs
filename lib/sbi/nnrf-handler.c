@@ -1291,8 +1291,7 @@ void ogs_nnrf_disc_handle_nf_discover_search_result(
             }
 
             /* TIME : Update validity from NRF */
-            if (SearchResult->is_validity_period &&
-                SearchResult->validity_period) {
+            if (SearchResult->validity_period) {
                 nf_instance->time.validity_duration =
                         SearchResult->validity_period;
 
