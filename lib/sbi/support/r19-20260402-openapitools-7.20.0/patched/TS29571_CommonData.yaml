@@ -1697,7 +1697,8 @@ components:
             - LTE_M_GEO
             - LTE_M_OTHERSAT
             - NR_EREDCAP
-            - HSPA_EVOLUTION        - type: string
+            - HSPA_EVOLUTION
+        - type: string
       description: Indicates the radio access used.
 
     RatTypeRm:

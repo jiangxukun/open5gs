@@ -5,7 +5,7 @@
 #include "{{classname}}.h"
 
 {{#isEnum}}
-char* OpenAPI_{{classname}}_ToString(OpenAPI_{{classVarName}}_e {{classname}})
+char* OpenAPI_{{classname}}_ToString(OpenAPI_{{classname}}_e {{classname}})
 {
     const char *{{classname}}Array[] =  { "NULL"{{#allowableValues}}{{#values}}, "{{.}}"{{/values}}{{/allowableValues}} };
     size_t sizeofArray = sizeof({{classname}}Array) / sizeof({{classname}}Array[0]);
@@ -15,7 +15,7 @@ char* OpenAPI_{{classname}}_ToString(OpenAPI_{{classVarName}}_e {{classname}})
         return (char *)"Unknown";
 }
 
-OpenAPI_{{classVarName}}_e OpenAPI_{{classname}}_FromString(char* {{classname}})
+OpenAPI_{{classname}}_e OpenAPI_{{classname}}_FromString(char* {{classname}})
 {
     int stringToReturn = 0;
     const char *{{classname}}Array[] =  { "NULL"{{#allowableValues}}{{#values}}, "{{.}}"{{/values}}{{/allowableValues}} };

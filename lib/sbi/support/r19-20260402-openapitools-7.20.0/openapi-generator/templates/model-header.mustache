@@ -22,12 +22,12 @@ extern "C" {
 
 {{#isEnum}}
     {{#allowableValues}}
-typedef enum { OpenAPI_{{classVarName}}_NULL = 0{{#enumVars}}, OpenAPI_{{classVarName}}_{{{value}}}{{/enumVars}} } OpenAPI_{{classVarName}}_e;
+typedef enum { OpenAPI_{{classname}}_NULL = 0{{#enumVars}}, OpenAPI_{{classname}}_{{{value}}}{{/enumVars}} } OpenAPI_{{classname}}_e;
     {{/allowableValues}}
 
-char* OpenAPI_{{classname}}_ToString(OpenAPI_{{classVarName}}_e {{classname}});
+char* OpenAPI_{{classname}}_ToString(OpenAPI_{{classname}}_e {{classname}});
 
-OpenAPI_{{classVarName}}_e OpenAPI_{{classname}}_FromString(char* {{classname}});
+OpenAPI_{{classname}}_e OpenAPI_{{classname}}_FromString(char* {{classname}});
 {{/isEnum}}
 {{^isEnum}}
 typedef struct OpenAPI_{{classname}}_s OpenAPI_{{classname}}_t;
