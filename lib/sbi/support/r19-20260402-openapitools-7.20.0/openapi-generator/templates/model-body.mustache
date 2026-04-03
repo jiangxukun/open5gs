@@ -264,7 +264,12 @@ void OpenAPI_{{classname}}_free(OpenAPI_{{classname}}_t *{{classname}})
             ogs_free(node->data);
                 {{/isPrimitiveType}}
                 {{^isPrimitiveType}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(node->data);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(node->data);
+            {{/complexType}}
                 {{/isPrimitiveType}}
         }
             {{/isEnum}}
@@ -281,14 +286,24 @@ void OpenAPI_{{classname}}_free(OpenAPI_{{classname}}_t *{{classname}})
                 {{#items}}
                     {{#isPrimitiveType}}
                         {{#isMap}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(localKeyValue->value);
+            {{/complexType}}
                         {{/isMap}}
                         {{^isMap}}
             ogs_free(localKeyValue->value);
                         {{/isMap}}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(localKeyValue->value);
+            {{/complexType}}
                     {{/isPrimitiveType}}
                 {{/items}}
             {{/isEnum}}
@@ -533,7 +548,12 @@ cJSON *OpenAPI_{{classname}}_convertToJSON(OpenAPI_{{classname}}_t *{{classname}
                         {{/isBoolean}}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
+        {{#complexType}}
         cJSON *itemLocal = OpenAPI_{{complexType}}_convertToJSON(node->data);
+        {{/complexType}}
+        {{^complexType}}
+        cJSON *itemLocal = node->data ? cJSON_Duplicate(node->data, 1) : cJSON_CreateNull();
+        {{/complexType}}
         if (itemLocal == NULL) {
             ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
             goto end;
@@ -573,7 +593,12 @@ cJSON *OpenAPI_{{classname}}_convertToJSON(OpenAPI_{{classname}}_t *{{classname}
                     {{#isPrimitiveType}}
                         {{#isMap}}
             cJSON *itemLocal = localKeyValue->value ?
+                {{#complexType}}
                 OpenAPI_{{complexType}}_convertToJSON(localKeyValue->value) :
+                {{/complexType}}
+                {{^complexType}}
+                cJSON_Duplicate(localKeyValue->value, 1) :
+                {{/complexType}}
                 cJSON_CreateNull();
             if (itemLocal == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
@@ -614,7 +639,12 @@ cJSON *OpenAPI_{{classname}}_convertToJSON(OpenAPI_{{classname}}_t *{{classname}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
             cJSON *itemLocal = localKeyValue->value ?
+                {{#complexType}}
                 OpenAPI_{{complexType}}_convertToJSON(localKeyValue->value) :
+                {{/complexType}}
+                {{^complexType}}
+                cJSON_Duplicate(localKeyValue->value, 1) :
+                {{/complexType}}
                 cJSON_CreateNull();
             if (itemLocal == NULL) {
                 ogs_error("OpenAPI_{{classname}}_convertToJSON() failed [{{{name}}}]");
@@ -883,7 +913,12 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                 ogs_error("OpenAPI_{{classname}}_parseFromJSON() failed [{{{name}}}]");
                 goto end;
             }
+            {{#complexType}}
             OpenAPI_{{complexType}}_t *{{{name}}}Item = OpenAPI_{{complexType}}_parseFromJSON({{{name}}}_local);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON *{{{name}}}Item = cJSON_Duplicate({{{name}}}_local, 1);
+            {{/complexType}}
             if (!{{{name}}}Item) {
                 ogs_error("No {{{name}}}Item");
                 goto end;
@@ -924,7 +959,12 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                         {{#isMap}}
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
+                        {{#complexType}}
                         ogs_strdup(localMapObject->string), OpenAPI_{{complexType}}_parseFromJSON(localMapObject));
+                        {{/complexType}}
+                        {{^complexType}}
+                        ogs_strdup(localMapObject->string), cJSON_Duplicate(localMapObject, 1));
+                        {{/complexType}}
                 } else if (cJSON_IsNull(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), NULL);
                 } else {
@@ -980,7 +1020,12 @@ OpenAPI_{{classname}}_t *OpenAPI_{{classname}}_parseFromJSON(cJSON *{{classname}
                     {{^isPrimitiveType}}
                 if (cJSON_IsObject(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(
+                        {{#complexType}}
                         ogs_strdup(localMapObject->string), OpenAPI_{{complexType}}_parseFromJSON(localMapObject));
+                        {{/complexType}}
+                        {{^complexType}}
+                        ogs_strdup(localMapObject->string), cJSON_Duplicate(localMapObject, 1));
+                        {{/complexType}}
                 } else if (cJSON_IsNull(localMapObject)) {
                     localMapKeyPair = OpenAPI_map_create(ogs_strdup(localMapObject->string), NULL);
                 } else {
@@ -1118,7 +1163,12 @@ end:
             ogs_free(node->data);
                 {{/isPrimitiveType}}
                 {{^isPrimitiveType}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(node->data);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(node->data);
+            {{/complexType}}
                 {{/isPrimitiveType}}
         }
             {{/isEnum}}
@@ -1135,14 +1185,24 @@ end:
                 {{#items}}
                     {{#isPrimitiveType}}
                         {{#isMap}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(localKeyValue->value);
+            {{/complexType}}
                         {{/isMap}}
                         {{^isMap}}
             ogs_free(localKeyValue->value);
                         {{/isMap}}
                     {{/isPrimitiveType}}
                     {{^isPrimitiveType}}
+            {{#complexType}}
             OpenAPI_{{complexType}}_free(localKeyValue->value);
+            {{/complexType}}
+            {{^complexType}}
+            cJSON_Delete(localKeyValue->value);
+            {{/complexType}}
                     {{/isPrimitiveType}}
                 {{/items}}
             {{/isEnum}}
