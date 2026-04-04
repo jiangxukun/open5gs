@@ -798,6 +798,16 @@ static int nf_discover_handler(
         res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;
         goto cleanup;
     }
+    if (!message.SearchResult->validity_period) {
+        strerror = ogs_msprintf("No SearchResult->validity_period");
+        res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;
+        goto cleanup;
+    }
+    if (!message.SearchResult->nf_instances) {
+        strerror = ogs_msprintf("No SearchResult->nf_instances");
+        res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;
+        goto cleanup;
+    }
 
     ogs_nnrf_disc_handle_nf_discover_search_result(message.SearchResult);
 
@@ -926,13 +936,11 @@ static int sepp_discover_handler(
         res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;
         goto cleanup;
     }
-
     if (message.res_status != OGS_SBI_HTTP_STATUS_OK) {
         strerror = ogs_msprintf("NF-Discover failed [%d]", message.res_status);
         res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;
         goto cleanup;
     }
-
     if (!message.SearchResult) {
         strerror = ogs_msprintf("No SearchResult");
         res_status = OGS_SBI_HTTP_STATUS_BAD_REQUEST;

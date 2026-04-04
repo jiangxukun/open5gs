@@ -370,6 +370,24 @@ static int client_discover_cb(
 
         goto cleanup;
     }
+    if (!message.SearchResult->validity_period) {
+        ogs_error("No SearchResult->validity_period");
+        r = nas_5gs_send_back_gsm_message(ran_ue, sess,
+            OGS_5GMM_CAUSE_PAYLOAD_WAS_NOT_FORWARDED, AMF_NAS_BACKOFF_TIME);
+        ogs_expect(r == OGS_OK);
+        ogs_assert(r != OGS_ERROR);
+
+        goto cleanup;
+    }
+    if (!message.SearchResult->nf_instances) {
+        ogs_error("No SearchResult->nf_instances");
+        r = nas_5gs_send_back_gsm_message(ran_ue, sess,
+            OGS_5GMM_CAUSE_PAYLOAD_WAS_NOT_FORWARDED, AMF_NAS_BACKOFF_TIME);
+        ogs_expect(r == OGS_OK);
+        ogs_assert(r != OGS_ERROR);
+
+        goto cleanup;
+    }
 
     ogs_nnrf_disc_handle_nf_discover_search_result(message.SearchResult);
 

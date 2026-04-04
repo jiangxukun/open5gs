@@ -58,6 +58,14 @@ void udm_nnrf_handle_nf_discover(
         ogs_error("No SearchResult");
         return;
     }
+    if (!SearchResult->validity_period) {
+        ogs_error("No SearchResult->validity_period");
+        return;
+    }
+    if (!SearchResult->nf_instances) {
+        ogs_error("No SearchResult->nf_instances");
+        return;
+    }
 
     if (sbi_object->type == OGS_SBI_OBJ_UE_TYPE) {
         udm_ue = udm_ue_find_by_id(sbi_object_id);

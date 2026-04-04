@@ -50,6 +50,14 @@ void smf_nnrf_handle_nf_discover(
         ogs_error("No SearchResult");
         return;
     }
+    if (!SearchResult->validity_period) {
+        ogs_error("No SearchResult->validity_period");
+        return;
+    }
+    if (!SearchResult->nf_instances) {
+        ogs_error("No SearchResult->nf_instances");
+        return;
+    }
 
     ogs_nnrf_disc_handle_nf_discover_search_result(SearchResult);
 

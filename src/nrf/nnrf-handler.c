@@ -1085,6 +1085,11 @@ bool nrf_nnrf_handle_nf_discover(
     SearchResult = ogs_calloc(1, sizeof(*SearchResult));
     ogs_assert(SearchResult);
 
+    ogs_assert(ogs_local_conf()->time.nf_instance.validity_duration);
+    SearchResult->validity_period =
+        ogs_local_conf()->time.nf_instance.validity_duration;
+    ogs_assert(SearchResult->validity_period);
+
     SearchResult->nf_instances = OpenAPI_list_create();
     ogs_assert(SearchResult->nf_instances);
 
@@ -1141,11 +1146,6 @@ bool nrf_nnrf_handle_nf_discover(
     if (SearchResult->nf_instances->count) {
 
         /* NF-Instances are Discovered */
-
-        ogs_assert(ogs_local_conf()->time.nf_instance.validity_duration);
-        SearchResult->validity_period =
-            ogs_local_conf()->time.nf_instance.validity_duration;
-        ogs_assert(SearchResult->validity_period);
 
         sendmsg.SearchResult = SearchResult;
         sendmsg.http.cache_control =
@@ -1330,6 +1330,9 @@ bool nrf_nnrf_handle_nf_discover(
         /* No Discovery */
 
         sendmsg.SearchResult = SearchResult;
+        sendmsg.http.cache_control =
+            ogs_msprintf("max-age=%d", SearchResult->validity_period);
+        ogs_assert(sendmsg.http.cache_control);
 
         response = ogs_sbi_build_response(&sendmsg, OGS_SBI_HTTP_STATUS_OK);
         ogs_assert(response);

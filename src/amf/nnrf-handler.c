@@ -66,6 +66,16 @@ void amf_nnrf_handle_nf_discover(
         amf_nnrf_handle_failed_amf_discovery(xact);
         return;
     }
+    if (!SearchResult->validity_period) {
+        ogs_error("No SearchResult->validity_period");
+        amf_nnrf_handle_failed_amf_discovery(xact);
+        return;
+    }
+    if (!SearchResult->nf_instances) {
+        ogs_error("No SearchResult->nf_instances");
+        amf_nnrf_handle_failed_amf_discovery(xact);
+        return;
+    }
 
     if (sbi_object->type == OGS_SBI_OBJ_UE_TYPE) {
         amf_ue = amf_ue_find_by_id(sbi_object_id);

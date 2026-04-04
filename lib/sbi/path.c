@@ -963,6 +963,14 @@ static int sepp_discover_handler(
         strerror = ogs_msprintf("No SearchResult");
         goto cleanup;
     }
+    if (!message.SearchResult->validity_period) {
+        strerror = ogs_msprintf("No SearchResult.validity_period");
+        goto cleanup;
+    }
+    if (!message.SearchResult->nf_instances) {
+        strerror = ogs_msprintf("No SearchResult.nf_instances");
+        goto cleanup;
+    }
 
     ogs_nnrf_disc_handle_nf_discover_search_result(message.SearchResult);
 
