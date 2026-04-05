@@ -637,6 +637,8 @@ int ogs_sbi_context_parse_config(
                             if (name)
                                 self.service_name[self.num_of_service_name++] =
                                     name;
+                            else
+                                ogs_warn("unknown service-name `%s`", v);
                         }
 
                     } while (ogs_yaml_iter_type(
@@ -2481,15 +2483,22 @@ ogs_sbi_client_t *ogs_sbi_client_find_by_service_name(
         ogs_sbi_nf_instance_t *nf_instance, char *name, char *version)
 {
     ogs_sbi_nf_service_t *nf_service = NULL;
+    OpenAPI_service_name_e service_name = OpenAPI_service_name_NULL;
     int i;
 
     ogs_assert(nf_instance);
     ogs_assert(name);
     ogs_assert(version);
 
+    service_name = OpenAPI_service_name_FromString(name);
+    if (!service_name) {
+        ogs_error("Invalid service-name[%s]", name);
+        return NULL;
+    }
+
     ogs_list_for_each(&nf_instance->nf_service_list, nf_service) {
         ogs_assert(nf_service->name);
-        if (nf_service->name == OpenAPI_service_name_FromString(name)) {
+        if (nf_service->name == service_name) {
             for (i = 0; i < nf_service->num_of_version; i++) {
                 if (strcmp(nf_service->version[i].in_uri, version) == 0) {
                     return nf_service->client;
